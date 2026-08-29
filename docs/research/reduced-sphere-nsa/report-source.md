@@ -684,8 +684,9 @@ stage-by-stage existence statements. Extend the completed sequence by
 
 For every unlimited \(H\):
 
-1. \(\mathcal F_H\) is an internal smooth finite-stage map with transferred
-   exact cap gluing.
+1. \(\mathcal F_H\) is an internal \({}^\ast C^1\) map on
+   \({}^\ast S^2\), internally smooth on ribbon and cap interiors, with
+   transferred exact \(C^1\) cap attachment.
 2. \(\|{}^\ast I_h-I_{\mathcal F_H}\|_\infty\approx0\).
 3. For unlimited \(H,K\),
    \(\|\mathcal F_H-\mathcal F_K\|_{C^1}\approx0\).
@@ -694,6 +695,10 @@ For every unlimited \(H\):
 5. \(I_{f_\infty}=I_h\).
 
 ### Proof spine
+
+Item 1 refers to the transferred construction at hyperfinite index \(H\).
+The paper does not claim that all higher derivatives match across the cap
+seams.
 
 The metric estimate splits as
 
@@ -704,10 +709,26 @@ The metric estimate splits as
 +C\sqrt{{}^\ast\tau_{H-1}}.
 \]
 
-The second term is infinitesimal. The first is infinitesimal because the
-altered targets converge uniformly: inside the active ribbon they approach
-\(I_h\), while the omitted boundary strip was chosen where
-\(\|I_h-I_{f_0}\|\le\tau_H^2\).
+The second term is infinitesimal. For the first, write the altered target as
+
+\[
+I_{k,3}=(1-\lambda_{k,3})I_{f_0}+\lambda_{k,3}I_k.
+\]
+
+Then
+
+\[
+I_h-I_{k,3}
+=(1-\lambda_{k,3})(I_h-I_{f_0})
++\lambda_{k,3}(I_h-I_k).
+\]
+
+On \(D_{k,2}\), \(\lambda_{k,3}=1\), so the remaining target error is
+bounded by \(\tau_k^2\|I_h-I_{f_0}\|_\infty\). Outside \(D_{k,2}\), the
+first term tends uniformly to zero because \(D_{k,2}\uparrow D\) and the
+continuous defect \(I_h-I_{f_0}\) vanishes on \(\partial D\). Thus
+\(I_{k,3}\to I_h\) uniformly, and transfer makes the first term
+infinitesimal at unlimited \(H\).
 
 For \(H>K\), telescope the derivative:
 
@@ -718,9 +739,14 @@ For \(H>K\), telescope the derivative:
 
 Every hyperfinite tail beyond an unlimited \(K\) is infinitesimal because the
 standard series is summable. The analogous \(C^0\) increments were selected
-with a summable budget. Completeness of the standard Banach space
-\(C^1(S^2,\mathbb R^3)\) identifies a unique standard shadow. Because the
-shadow is in \(C^1\), standard part commutes with its derivative, and the
+with a summable budget. These standard estimates first show that the standard
+sequence \((f_{k,3})\) is Cauchy in the standard Banach space
+\(C^1(S^2,\mathbb R^3)\). Standard completeness gives a standard limit
+\(f_\infty\). Transfer of the ordinary convergence
+\(f_{k,3}\to f_\infty\) then yields
+\({}^\ast f_{H,3}\approx_{C^1}{}^\ast f_\infty\) for every unlimited
+\(H\). This does not infer nearstandardness from boundedness alone. Because
+the shadow is in \(C^1\), standard part commutes with its derivative, and the
 infinitesimal metric identity becomes exact.
 
 This is Corollary 10 in a different coordinate system of thought. It is not a
@@ -801,12 +827,21 @@ F_\varepsilon:{}^\ast S^2\to{}^\ast B_\varepsilon,
 Then:
 
 1. \(\operatorname{st}(F_\varepsilon(p))=0\) for every standard \(p\).
-2. For every standard \(C^1\) path \(\gamma\),
-   \({}^\ast L(F_\varepsilon\circ{}^\ast\gamma)=L(h\circ\gamma)\).
-3. Standard part and length do not commute:
-   \(\operatorname{st}({}^\ast L(F_\varepsilon\circ{}^\ast\gamma))=L(\gamma)\),
-   while \(L(\operatorname{st}F_\varepsilon\circ\gamma)=0\).
-4. \(dF_\varepsilon\) is not S-continuous at any standard point.
+2. For every standard \(C^1\) path \(\gamma:[0,1]\to S^2\),
+   \({}^\ast L_{\mathbb R^3}(F_\varepsilon\circ{}^\ast\gamma)
+   ={}^\ast L_{S^2}({}^\ast\gamma)
+   ={}^\ast(L_{S^2}(\gamma))\).
+3. If \(f^\flat:S^2\to\mathbb R^3\) is the pointwise shadow
+   \(f^\flat(p)=\operatorname{st}F_\varepsilon(p)\), then
+   \(f^\flat\equiv0\). Consequently,
+   \(\operatorname{st}({}^\ast L_{\mathbb R^3}
+   (F_\varepsilon\circ{}^\ast\gamma))=L_{S^2}(\gamma)\), while
+   \(L_{\mathbb R^3}(f^\flat\circ\gamma)=0\). Taking pointwise shadow
+   before forming length changes the answer whenever
+   \(L_{S^2}(\gamma)>0\).
+4. In any fixed standard local chart and standard smooth tangent-frame
+   trivialization around a standard point \(p\), the represented derivative
+   field \(dF_\varepsilon\) is not S-continuous at \(p\).
 5. For appreciably separated standard \(p,q\), their ambient separation is
    infinitesimal while their intrinsic separation is appreciable.
 
@@ -819,14 +854,16 @@ point shadows to zero.
 Length is the integral of speed. Pulling back the Euclidean metric by an exact
 isometry preserves the speed of every internal tangent vector, so transfer of
 the ordinary length identity gives item 2. Taking the standard part of that
-limited scalar gives the first equality in item 3; applying ordinary length to
-the constant pointwise shadow gives the second.
+limited scalar gives the first equality in item 3; applying ordinary
+Euclidean length to the constant pointwise shadow gives the second.
 
-Suppose \(dF_\varepsilon\) were S-continuous at a standard \(p\). The local
-standard-part differentiation theorem would identify the derivative of the
-shadow with the shadow of the derivative. The former is zero. The latter has
-unit norm on every unit standard tangent vector because the internal metric
-identity is exact. Contradiction.
+Suppose the represented \(dF_\varepsilon\) were S-continuous at a standard
+\(p\) in one such chart and frame. The local standard-part differentiation
+theorem would identify the derivative of the shadow with the shadow of the
+represented derivative. The former is zero. The latter sends every standard
+unit tangent vector to a unit vector because the internal metric identity is
+exact. Contradiction. Standard smooth changes of frame preserve this
+conclusion.
 
 Finally,
 
@@ -883,34 +920,46 @@ This is the formal version of the product decision:
 They can be synchronized by address, but not identified as one Euclidean
 camera scale.
 
-## 20. Hyperfinite path length and aliasing
+## 20. Hyperfinite path length and resolution
 
-Let \(\gamma:[0,1]\to S^2\) be a standard finite-length path. Choose an
-internal partition
+Let \(F:{}^\ast S^2\to{}^\ast\mathbb R^3\) be an internal \({}^\ast C^1\)
+map with exact pullback metric \(I_F={}^\ast I_h\), let
+\(\gamma:[0,1]\to S^2\) be a standard \(C^1\), finite-length path, and set
+\(g=F\circ{}^\ast\gamma\). Choose a positive infinitesimal \(\alpha\).
+Because \(g'\) is internal and continuous on \({}^\ast[0,1]\), transferred
+uniform continuity supplies an internal \(\delta>0\) such that
+
+\[
+|s-t|<\delta\Longrightarrow\|g'(s)-g'(t)\|<\alpha.
+\]
+
+Choose an internal hyperfinite partition
 
 \[
 0=t_0<t_1<\cdots<t_M=1,
 \qquad M\in{}^\ast\mathbb N\setminus\mathbb N.
 \]
 
-If the partition resolves the active derivative oscillations, then
+whose mesh is smaller than \(\delta\). Its polygonal sum differs
+infinitesimally from the internal speed integral. Therefore, for an exact
+isometry,
 
 \[
-L(\gamma)=\operatorname{st}
+L_{S^2}(\gamma)=\operatorname{st}
 \sum_{j=0}^{M-1}
 \left\|
-F(\gamma(t_{j+1}))-F(\gamma(t_j))
+F({}^\ast\gamma(t_{j+1}))-F({}^\ast\gamma(t_j))
 \right\|.
 \]
 
-“\(M\) is infinite” is not a resolution certificate. If the largest active
-frequency is \(N_{\max}\), demand
-
-\[
-M/N_{\max}\text{ is unlimited}.
-\]
-
-Otherwise an infinite sampler can still alias a more infinite corrugation.
+“\(M\) is infinite” is not by itself a resolution certificate; the actual
+criterion is the derivative modulus
+\(\omega_{g'}(1/M)\approx0\). In a particular cutoff construction,
+\(M/N_{\max}\) being unlimited is a useful frequency heuristic, but it is
+sufficient only after the phase derivatives, transition cutoffs,
+compositions, and amplitudes have been included in a proof of that modulus.
+Conversely, a high-frequency component with infinitesimal amplitude need not
+force that ratio to be unlimited.
 
 For a micro-isometric stage with relative metric error
 \(\eta\approx0\), a limited path length \(L\) has infinitesimal accumulated
