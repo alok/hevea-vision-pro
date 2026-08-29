@@ -145,6 +145,14 @@ public enum HeveaCoreError: Error, Equatable, Sendable, CustomStringConvertible 
     case degenerateNormal(u: Int, v: Int)
     case invalidDiagnosticConfiguration(reason: String)
     case invalidCurve(reason: String)
+    case invalidSphereGrid(reason: String)
+    case invalidSphereConfiguration(reason: String)
+    case invalidSphereAddress(reason: String)
+    case sphereTopologyViolation(reason: String)
+    case sphereSeamViolation(positionResidual: Double, normalResidualRadians: Double)
+    case sphereContainingRadiusExceeded(measured: Double, declared: Double)
+    case degenerateSphereTriangle(index: Int, doubledArea: Double)
+    case invertedSphereTriangle(index: Int, orientationDot: Double)
 
     public var description: String {
         switch self {
@@ -170,6 +178,22 @@ public enum HeveaCoreError: Error, Equatable, Sendable, CustomStringConvertible 
             "Invalid diagnostic configuration: \(reason)"
         case let .invalidCurve(reason):
             "Invalid curve diagnostic: \(reason)"
+        case let .invalidSphereGrid(reason):
+            "Invalid reduced-sphere grid: \(reason)"
+        case let .invalidSphereConfiguration(reason):
+            "Invalid reduced-sphere configuration: \(reason)"
+        case let .invalidSphereAddress(reason):
+            "Invalid intrinsic sphere address: \(reason)"
+        case let .sphereTopologyViolation(reason):
+            "Reduced-sphere topology validation failed: \(reason)"
+        case let .sphereSeamViolation(positionResidual, normalResidualRadians):
+            "Reduced-sphere cap seam exceeded tolerance (position \(positionResidual), normal \(normalResidualRadians) rad)."
+        case let .sphereContainingRadiusExceeded(measured, declared):
+            "Reduced-sphere containing radius \(measured) exceeds declared bound \(declared)."
+        case let .degenerateSphereTriangle(index, doubledArea):
+            "Reduced-sphere triangle \(index) is degenerate (doubled area \(doubledArea))."
+        case let .invertedSphereTriangle(index, orientationDot):
+            "Reduced-sphere triangle \(index) is inverted (orientation dot \(orientationDot))."
         }
     }
 }

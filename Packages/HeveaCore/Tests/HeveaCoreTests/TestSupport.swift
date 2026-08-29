@@ -15,6 +15,33 @@ enum TestSupport {
         )
     }
 
+    static func sphereConfiguration(
+        longitudeCount: Int = 48,
+        nonPolarLatitudeRingCount: Int = 31,
+        schedule: SphereProxySchedule = .default,
+        declaredRadius: Double = JudddReducedSphereProfile.certifiedContainingRadius,
+        maximumNavigationStep: Double = Double.pi
+    ) throws -> SphereConfiguration {
+        try SphereConfiguration(
+            grid: SphereGrid(
+                longitudeCount: longitudeCount,
+                nonPolarLatitudeRingCount: nonPolarLatitudeRingCount
+            ),
+            proxySchedule: schedule,
+            declaredProxyContainingRadius: declaredRadius,
+            maximumNavigationStep: maximumNavigationStep
+        )
+    }
+
+    static func unitDirection(longitude: Double, latitude: Double) -> Vector3 {
+        let radial = cos(latitude)
+        return Vector3(
+            x: radial * cos(longitude),
+            y: radial * sin(longitude),
+            z: sin(latitude)
+        )
+    }
+
     static func assertEqual(
         _ lhs: Vector3,
         _ rhs: Vector3,
