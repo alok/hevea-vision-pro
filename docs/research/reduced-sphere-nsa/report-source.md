@@ -19,19 +19,19 @@ and the idea that a limit can be represented by an unlimited hyperfinite
 stage.
 
 The exposition is newly written. It follows the mathematical order and
-equation numbering of Bartzos–Borrelli–Denis–Lazarus–Rohmer–Thibert without
+equation numbering of Bartzos-Borrelli-Denis-Lazarus-Rohmer-Thibert without
 reproducing their copyrighted prose or figures.
 
 ### Claim labels
 
-- **[PAPER]** — stated or proved in the reduced-sphere paper.
-- **[NSA-EQUIV]** — an equivalent reformulation by transfer, hyperfinite
+- **[PAPER]** - stated or proved in the reduced-sphere paper.
+- **[NSA-EQUIV]** - an equivalent reformulation by transfer, hyperfinite
   indexing, or standard part.
-- **[NEW-COROLLARY]** — a result derived here by combining the paper with
+- **[NEW-COROLLARY]** - a result derived here by combining the paper with
   standard nonstandard-analysis machinery.
-- **[APP-MODEL]** — a product/visualization consequence, not a theorem about
+- **[APP-MODEL]** - a product/visualization consequence, not a theorem about
   the paper's surface.
-- **[OPEN]** — a plausible research direction for which this report does not
+- **[OPEN]** - a plausible research direction for which this report does not
   supply a proof.
 
 ---
@@ -39,7 +39,7 @@ reproducing their copyrighted prose or figures.
 ## 0. The whole idea in ninety seconds
 
 The ordinary unit sphere has intrinsic diameter \(\pi\). A smooth sphere is
-rigid at \(C^2\) regularity, but Nash–Kuiper flexibility begins at \(C^1\).
+rigid at \(C^2\) regularity, but Nash-Kuiper flexibility begins at \(C^1\).
 Hévéa turns that existence phenomenon into an explicit boundary-aware convex
 integration scheme.
 
@@ -182,7 +182,7 @@ B=\sum_{i=1}^3\rho_i(B)\,\ell_i\otimes\ell_i.
 \tag{2.2}
 \]
 
-For \(B=\begin{psmallmatrix}E&F\\F&G\end{psmallmatrix}\), this convention
+For \(B=\left(\begin{smallmatrix}E&F\\F&G\end{smallmatrix}\right)\), this convention
 gives
 
 \[
@@ -225,11 +225,11 @@ broader stated claim.
 
 ---
 
-# Part I — The paper, faithfully reconstructed
+# Part I - The paper, faithfully reconstructed
 
 ## 4. The initial map: shorten first, repair later
 
-**[PAPER, Sections 2–3]** Split the sphere into closed north/south caps and an
+**[PAPER, Sections 2-3]** Split the sphere into closed north/south caps and an
 open equatorial belt. Translate the two caps toward the origin. On the belt,
 seek a rotational map
 
@@ -411,7 +411,7 @@ Lemma 4 forces the phase origin
 a_p=\ell_i(p-(0,0))+\text{constant}.
 \]
 
-Consequently the ridge lines are parallel to \(v_i\). Lemmas 5–6 show that
+Consequently the ridge lines are parallel to \(v_i\). Lemmas 5-6 show that
 the \(v_i\) derivative changes by only \(O(1/N_i)\), the induced metric is
 \(O(1/N_i)\)-close to \(\mu_i\), and the selected primitive defect becomes
 \(O(1/N_i)\).
@@ -476,7 +476,7 @@ The quotient requirement becomes
 
 ## 9. The Stage and Step theorems
 
-**[PAPER, Sections 7–8]** Lemma 8 bounds the gluing difference in \(C^1\) by
+**[PAPER, Sections 7-8]** Lemma 8 bounds the gluing difference in \(C^1\) by
 \(O(1/N_{k,i})\).
 
 The Step theorem packages one correction. With
@@ -570,12 +570,12 @@ Gauss map. It is not, by itself, a Hausdorff-dimension theorem.
 
 ## 12. What the published computation actually shows
 
-**[PAPER, pp. 15–16]** The gallery's central object is a discretization of the
+**[PAPER, pp. 15-16]** The gallery's central object is a discretization of the
 first stage after three primitive corrections, \(f_{1,3}\).
 
 | row | corrugation number \(N_{k,j}\) | visible ridges | average/max error vs. round metric | average/max error vs. current altered target |
 |---|---:|---:|---:|---:|
-| initial | — | — | 0.90 / 1.17 | — |
+| initial | - | - | 0.90 / 1.17 | - |
 | \((1,1)\) | 4.72 | 21 | 0.83 / 1.03 | 0.14 / 0.24 |
 | \((1,2)\) | 31.96 | 142 | 0.73 / 0.95 | 0.07 / 0.16 |
 | \((1,3)\) | 334.92 | 997 | 0.66 / 0.94 | 0.03 / 0.18 |
@@ -602,7 +602,7 @@ turns that static viewpoint into a navigable intrinsic address.
 
 ---
 
-# Part II — The nonstandard reconstruction
+# Part II - The nonstandard reconstruction
 
 ## 13. Choose one foundation and say which one
 
@@ -680,7 +680,7 @@ stage-by-stage existence statements. Extend the completed sequence by
 \mathcal F_H={}^\ast f_{H,3}.
 \]
 
-### Theorem 15.1 — hyperfinite shadow **[NSA-EQUIV]**
+### Theorem 15.1 - hyperfinite shadow **[NSA-EQUIV]**
 
 For every unlimited \(H\):
 
@@ -756,12 +756,12 @@ stronger theorem.
 
 | Paper item | Hyperfinite form | Status |
 |---|---|---|
-| Proposition 1 | \({}^\ast f_0\) satisfies transferred C1–C4 and endpoint equations | exact transfer; the positive margin may be infinitesimal near the seam |
-| (4.8)–(4.11) | phase/Bessel formula accepts internal curves and frequencies | exact transfer |
+| Proposition 1 | \({}^\ast f_0\) satisfies transferred C1-C4 and endpoint equations | exact transfer; the positive margin may be infinitesimal near the seam |
+| (4.8)-(4.11) | phase/Bessel formula accepts internal curves and frequencies | exact transfer |
 | Lemma 2 | \(N\Delta\in{}^\ast\mathbb Z\Rightarrow\) exact quotient descent | exact; “infinitesimally integral” is insufficient |
 | Lemma 3 | transverse error \(\le{}^\ast C/N\) | infinitesimal only if \(C/N\approx0\) |
 | Lemma 4 | \(\nu\in\ker{}^\ast\ell_i\iff a_p={}^\ast\ell_i(p)+c\) | exact algebra |
-| Lemmas 5–6 | selected primitive defect becomes infinitesimal | one coordinate only; constants must be dominated |
+| Lemmas 5-6 | selected primitive defect becomes infinitesimal | one coordinate only; constants must be dominated |
 | Lemma 7 | \(2\pi N_{k,i}\ell_i(e_X)\in{}^\ast\mathbb Z\) | exact seam certificate |
 | Lemma 8 | blending error is \({}^\ast O(1/N_{k,i})\) in \(C^1\) | exact gluing plus scale condition |
 | Theorem 9 | transferred stage estimates at hyperfinite \(k\) | works because displayed \(C,C'\) are independent of \(k\) |
@@ -800,7 +800,7 @@ without new estimates.
 
 ---
 
-# Part III — Original research: the two radius regimes
+# Part III - Original research: the two radius regimes
 
 ## 18. Infinitesimal-radius scale-loss theorem
 
@@ -815,7 +815,7 @@ The exact coding of \(C^1\) maps, derivatives, and pullback metrics lives in
 the superstructure and contains no “standard” predicate. Transfer therefore
 allows a nonstandard radius.
 
-### Theorem 18.1 — scale loss **[NEW-COROLLARY]**
+### Theorem 18.1 - scale loss **[NEW-COROLLARY]**
 
 Let \(0<\varepsilon\approx0\). There is an internal exact isometric map
 
@@ -878,8 +878,8 @@ while the round distance of appreciably separated points is appreciable.
 
 Internal \({}^\ast C^1\) continuity permits a nonstandard modulus of
 continuity. The derivative can change substantially over intervals smaller
-than every standard interval. The map is S-continuous in position—it is even
-globally infinitesimally close to zero—but it is not S-\(C^1\).
+than every standard interval. The map is S-continuous in position-it is even
+globally infinitesimally close to zero-but it is not S-\(C^1\).
 
 Compare the standard-radius hyperfinite stage:
 
@@ -991,7 +991,7 @@ These must not be conflated.
 
 ---
 
-# Part IV — App semantics derived from the mathematics
+# Part IV - App semantics derived from the mathematics
 
 ## 22. Intrinsic address is the identity
 
@@ -1068,7 +1068,7 @@ It cannot say:
 
 ---
 
-# Part V — Proof obligations and formalization hooks
+# Part V - Proof obligations and formalization hooks
 
 ## 26. Fifteen fail-closed obligations
 
@@ -1105,7 +1105,7 @@ The shortest path to formal confidence is not to formalize a nonstandard
 universe first. Formalize the ordinary convergence skeleton, then prove that
 the NSA statement is an equivalence in whichever NSA library is selected.
 
-### Layer A — ordinary analysis
+### Layer A - ordinary analysis
 
 ```text
 StageData:
@@ -1137,7 +1137,7 @@ isometric_limit
 ball_containment_of_uniform_clearance
 ```
 
-### Layer B — geometry and paths
+### Layer B - geometry and paths
 
 ```text
 SphereAddress := { q : R3 // norm q = 1 }
@@ -1149,7 +1149,7 @@ theorem expStep_distance_small
 theorem intrinsic_path_length_invariant
 ```
 
-### Layer C — NSA bridge
+### Layer C - NSA bridge
 
 The theorem target is not “take standard part” as a magical operation. It is:
 
@@ -1193,7 +1193,7 @@ foundation and manifold library.
 
 ---
 
-# Part VI — New research directions
+# Part VI - New research directions
 
 ## 29. Questions opened by the scale-loss theorem
 
@@ -1289,16 +1289,16 @@ beyond the displayed convergence theorems.
 ### Nonstandard analysis
 
 - Edward Nelson, “Internal Set Theory: A New Approach to Nonstandard
-  Analysis,” *Bulletin of the AMS* 83 (1977), 1165–1198.
+  Analysis,” *Bulletin of the AMS* 83 (1977), 1165-1198.
   - Author PDF: <https://web.math.princeton.edu/~nelson/papers/ist.pdf>
   - DOI: <https://doi.org/10.1090/S0002-9904-1977-14398-X>
-  - Transfer/Idealization/Standardization: pp. 1166–1169.
+  - Transfer/Idealization/Standardization: pp. 1166-1169.
   - Standard part: p. 1169.
-  - Infinitesimal differentiation and hyperfinite subdivisions: pp. 1181–1184.
-  - Nearstandard points and compactness: pp. 1185–1186.
+  - Infinitesimal differentiation and hyperfinite subdivisions: pp. 1181-1184.
+  - Nearstandard points and compactness: pp. 1185-1186.
 
 - Abraham Robinson, “Non-standard Analysis,” *Indagationes Mathematicae* 23
-  (1961), 432–440.
+  (1961), 432-440.
   - DOI: <https://doi.org/10.1016/S1385-7258(61)50044-3>
 
 - H. Jerome Keisler, *Foundations of Infinitesimal Calculus*.
