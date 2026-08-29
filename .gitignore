@@ -1,6 +1,7 @@
 # Xcode
 DerivedData/
 .derivedData/
+.derivedData*/
 *.xcuserstate
 xcuserdata/
 
