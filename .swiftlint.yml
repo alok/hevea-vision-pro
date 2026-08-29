@@ -1,0 +1,41 @@
+included:
+  - HeveaVision
+  - HeveaVisionTests
+  - HeveaVisionUITests
+
+excluded:
+  - HeveaVision.xcodeproj
+  - Packages
+  - Research
+
+disabled_rules:
+  # Apple swift-format deliberately keeps trailing commas in multiline literals.
+  - trailing_comma
+
+identifier_name:
+  min_length:
+    warning: 1
+    error: 1
+  allowed_symbols: ["_"]
+
+line_length:
+  warning: 140
+  error: 180
+  ignores_comments: true
+  ignores_urls: true
+
+file_length:
+  warning: 550
+  error: 750
+
+type_body_length:
+  warning: 350
+  error: 500
+
+function_parameter_count:
+  warning: 8
+  error: 10
+
+large_tuple:
+  warning: 3
+  error: 4

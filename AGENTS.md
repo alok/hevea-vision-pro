@@ -14,18 +14,23 @@ Never call a finite mesh the limiting C1 isometric embedding. Never turn a simul
 
 ## Build and verification
 
-Use the checked-in XcodeGen specification:
+Use the checked-in XcodeGen specification. This machine currently has a
+repository-local `PATH` quirk, so automation should use the absolute helper
+paths shown below:
 
 ```bash
-xcodegen generate
-xcodebuild -project HeveaVision.xcodeproj -scheme HeveaVision \
-  -sdk xrsimulator \
-  -destination 'platform=visionOS Simulator,name=Apple Vision Pro,OS=27.0' \
+/opt/homebrew/bin/xcodegen generate
+DEVELOPER_DIR=/Applications/Xcode-26.5.0.app/Contents/Developer xcodebuild \
+  -project HeveaVision.xcodeproj -scheme HeveaVision \
+  -sdk xrsimulator26.5 \
+  -destination 'platform=visionOS Simulator,id=820CCDAA-EA00-41FC-8A4A-675701BD9E33' \
   -derivedDataPath .derivedData CODE_SIGNING_ALLOWED=NO build
-xcodebuild -project HeveaVision.xcodeproj -scheme HeveaVision \
-  -sdk xrsimulator \
-  -destination 'platform=visionOS Simulator,name=Apple Vision Pro,OS=27.0' \
+DEVELOPER_DIR=/Applications/Xcode-26.5.0.app/Contents/Developer xcodebuild \
+  -project HeveaVision.xcodeproj -scheme HeveaVision \
+  -sdk xrsimulator26.5 \
+  -destination 'platform=visionOS Simulator,id=820CCDAA-EA00-41FC-8A4A-675701BD9E33' \
   -derivedDataPath .derivedData CODE_SIGNING_ALLOWED=NO test
+/opt/homebrew/bin/swiftlint lint --strict
 ```
 
 Run the platform-neutral Swift package tests independently as well:

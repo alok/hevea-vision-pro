@@ -1,0 +1,624 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0906766657852539BDE9D935 /* HeveaVisionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D145E75AC0654C5DE63A28 /* HeveaVisionUITests.swift */; };
+		1CB0B7EF01BCE2AA6423046E /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9008B4A5A5443E716FEBFF80 /* AppModel.swift */; };
+		4EBF6B456B2CE87F28FD7FC2 /* HeveaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 33D81D99C6FD93B2F213B9CA /* HeveaCore */; };
+		550979F60FE917A12CD5FF33 /* HeveaVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C314D340BEC55B1F986733 /* HeveaVisionApp.swift */; };
+		5853195E2E4BD44A80AB4C17 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68D46699233BC2759651F611 /* Assets.xcassets */; };
+		728BD9071947799E80F4E79C /* HeveaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1FE81AAEC5AB97505D02CDA9 /* HeveaCore */; };
+		7583314D8FFF5A95F3E7081E /* HeveaVisionUITestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38187B0B0FA70D61A12A5A8 /* HeveaVisionUITestHarness.swift */; };
+		863A485481F5939A6E71312D /* HeveaSceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFD98CB3C0800FC7BE2B873 /* HeveaSceneController.swift */; };
+		A07C7418A126244D2E449A5D /* HeveaRealityBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609EB8F70D3DB96C65155C8B /* HeveaRealityBridge.swift */; };
+		AD2E4AFD987BFE3166B29A1A /* MissionControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63212BD96EAACF3F9AB9F06 /* MissionControlView.swift */; };
+		BD1C76458300EA2DF4200685 /* ImmersiveLabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4260B8E55D7FD0ABC06EC17 /* ImmersiveLabView.swift */; };
+		DFA04168B2F4ADB7298830C3 /* ClaimBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CEDF0E94102ADCA77AFD154 /* ClaimBadge.swift */; };
+		F43FB8F405C7903D0FB0054A /* AppModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4928EDD752FB5B8752B596DD /* AppModelTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		661AE33AF07F33845C0650D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 99301907E536C37BD7BAB893 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB803123C4DBDD423AF4A971;
+			remoteInfo = HeveaVision;
+		};
+		B758D392AD043E3603BC5928 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 99301907E536C37BD7BAB893 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB803123C4DBDD423AF4A971;
+			remoteInfo = HeveaVision;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		020F0123F2F3BB3C268B2FCE /* HeveaCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HeveaCore; path = Packages/HeveaCore; sourceTree = SOURCE_ROOT; };
+		232DF6109F453A4A4A8B93C3 /* HeveaVisionTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HeveaVisionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CEDF0E94102ADCA77AFD154 /* ClaimBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimBadge.swift; sourceTree = "<group>"; };
+		4928EDD752FB5B8752B596DD /* AppModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelTests.swift; sourceTree = "<group>"; };
+		572A4BA3F1FDDD635F571BC3 /* HeveaVisionUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HeveaVisionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		609EB8F70D3DB96C65155C8B /* HeveaRealityBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaRealityBridge.swift; sourceTree = "<group>"; };
+		68D46699233BC2759651F611 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		69D145E75AC0654C5DE63A28 /* HeveaVisionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaVisionUITests.swift; sourceTree = "<group>"; };
+		782B3F01CB82720AF7F3C06D /* HeveaVision.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HeveaVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		78C314D340BEC55B1F986733 /* HeveaVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaVisionApp.swift; sourceTree = "<group>"; };
+		9008B4A5A5443E716FEBFF80 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		C38187B0B0FA70D61A12A5A8 /* HeveaVisionUITestHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaVisionUITestHarness.swift; sourceTree = "<group>"; };
+		EDFD98CB3C0800FC7BE2B873 /* HeveaSceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaSceneController.swift; sourceTree = "<group>"; };
+		F4260B8E55D7FD0ABC06EC17 /* ImmersiveLabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveLabView.swift; sourceTree = "<group>"; };
+		F63212BD96EAACF3F9AB9F06 /* MissionControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionControlView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6D39AB8CB715C925613C4521 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4EBF6B456B2CE87F28FD7FC2 /* HeveaCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8494C284A0C4B3A2E182AC9D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				728BD9071947799E80F4E79C /* HeveaCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0286A49CC910347F014C5F20 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				782B3F01CB82720AF7F3C06D /* HeveaVision.app */,
+				232DF6109F453A4A4A8B93C3 /* HeveaVisionTests.xctest */,
+				572A4BA3F1FDDD635F571BC3 /* HeveaVisionUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0480353B798A7034087A38D5 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				020F0123F2F3BB3C268B2FCE /* HeveaCore */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		185C517EDF09647687B63C31 /* HeveaVisionTests */ = {
+			isa = PBXGroup;
+			children = (
+				4928EDD752FB5B8752B596DD /* AppModelTests.swift */,
+			);
+			path = HeveaVisionTests;
+			sourceTree = "<group>";
+		};
+		6729D6E38FA2B794AA62FB9F = {
+			isa = PBXGroup;
+			children = (
+				698E952701099D3D518D913C /* HeveaVision */,
+				185C517EDF09647687B63C31 /* HeveaVisionTests */,
+				6A33B0C24E9B58FF7077D0DA /* HeveaVisionUITests */,
+				0480353B798A7034087A38D5 /* Packages */,
+				0286A49CC910347F014C5F20 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		698E952701099D3D518D913C /* HeveaVision */ = {
+			isa = PBXGroup;
+			children = (
+				68D46699233BC2759651F611 /* Assets.xcassets */,
+				C1BF814D13FC8461A4B7E829 /* App */,
+				F9C2C32FCA98D19D0759C67F /* Reality */,
+				ABED1B3F771600CA72580559 /* Views */,
+			);
+			path = HeveaVision;
+			sourceTree = "<group>";
+		};
+		6A33B0C24E9B58FF7077D0DA /* HeveaVisionUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C38187B0B0FA70D61A12A5A8 /* HeveaVisionUITestHarness.swift */,
+				69D145E75AC0654C5DE63A28 /* HeveaVisionUITests.swift */,
+			);
+			path = HeveaVisionUITests;
+			sourceTree = "<group>";
+		};
+		ABED1B3F771600CA72580559 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3CEDF0E94102ADCA77AFD154 /* ClaimBadge.swift */,
+				F4260B8E55D7FD0ABC06EC17 /* ImmersiveLabView.swift */,
+				F63212BD96EAACF3F9AB9F06 /* MissionControlView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C1BF814D13FC8461A4B7E829 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				9008B4A5A5443E716FEBFF80 /* AppModel.swift */,
+				78C314D340BEC55B1F986733 /* HeveaVisionApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		F9C2C32FCA98D19D0759C67F /* Reality */ = {
+			isa = PBXGroup;
+			children = (
+				609EB8F70D3DB96C65155C8B /* HeveaRealityBridge.swift */,
+				EDFD98CB3C0800FC7BE2B873 /* HeveaSceneController.swift */,
+			);
+			path = Reality;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BB803123C4DBDD423AF4A971 /* HeveaVision */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 90ECEED5F820C2622E3A1D69 /* Build configuration list for PBXNativeTarget "HeveaVision" */;
+			buildPhases = (
+				561135029A04D8BE42EA4D06 /* Sources */,
+				56AE306FB5B4CF3D0A84B195 /* Resources */,
+				8494C284A0C4B3A2E182AC9D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HeveaVision;
+			packageProductDependencies = (
+				1FE81AAEC5AB97505D02CDA9 /* HeveaCore */,
+			);
+			productName = HeveaVision;
+			productReference = 782B3F01CB82720AF7F3C06D /* HeveaVision.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D9F75E70A999CCE433C6FEB0 /* HeveaVisionUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5C3FDD86653E1128A67A5371 /* Build configuration list for PBXNativeTarget "HeveaVisionUITests" */;
+			buildPhases = (
+				4033CF493597D02F79A99A30 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6873FD0C553639932F212743 /* PBXTargetDependency */,
+			);
+			name = HeveaVisionUITests;
+			packageProductDependencies = (
+			);
+			productName = HeveaVisionUITests;
+			productReference = 572A4BA3F1FDDD635F571BC3 /* HeveaVisionUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		E666AC8FC46EC4046643BE42 /* HeveaVisionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 723BBDBE0D4D6EBABB12ED57 /* Build configuration list for PBXNativeTarget "HeveaVisionTests" */;
+			buildPhases = (
+				153A1B8A08725A3EA5061699 /* Sources */,
+				6D39AB8CB715C925613C4521 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0F64E39F3C30AB5BBEBBC5F8 /* PBXTargetDependency */,
+			);
+			name = HeveaVisionTests;
+			packageProductDependencies = (
+				33D81D99C6FD93B2F213B9CA /* HeveaCore */,
+			);
+			productName = HeveaVisionTests;
+			productReference = 232DF6109F453A4A4A8B93C3 /* HeveaVisionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		99301907E536C37BD7BAB893 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					D9F75E70A999CCE433C6FEB0 = {
+						TestTargetID = BB803123C4DBDD423AF4A971;
+					};
+				};
+			};
+			buildConfigurationList = A6F1CE5ECB2DBDC634606808 /* Build configuration list for PBXProject "HeveaVision" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 6729D6E38FA2B794AA62FB9F;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1DFD30B649AA4BD9113E7512 /* XCLocalSwiftPackageReference "Packages/HeveaCore" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 0286A49CC910347F014C5F20 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BB803123C4DBDD423AF4A971 /* HeveaVision */,
+				E666AC8FC46EC4046643BE42 /* HeveaVisionTests */,
+				D9F75E70A999CCE433C6FEB0 /* HeveaVisionUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		56AE306FB5B4CF3D0A84B195 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5853195E2E4BD44A80AB4C17 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		153A1B8A08725A3EA5061699 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F43FB8F405C7903D0FB0054A /* AppModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4033CF493597D02F79A99A30 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7583314D8FFF5A95F3E7081E /* HeveaVisionUITestHarness.swift in Sources */,
+				0906766657852539BDE9D935 /* HeveaVisionUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		561135029A04D8BE42EA4D06 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CB0B7EF01BCE2AA6423046E /* AppModel.swift in Sources */,
+				DFA04168B2F4ADB7298830C3 /* ClaimBadge.swift in Sources */,
+				A07C7418A126244D2E449A5D /* HeveaRealityBridge.swift in Sources */,
+				863A485481F5939A6E71312D /* HeveaSceneController.swift in Sources */,
+				550979F60FE917A12CD5FF33 /* HeveaVisionApp.swift in Sources */,
+				BD1C76458300EA2DF4200685 /* ImmersiveLabView.swift in Sources */,
+				AD2E4AFD987BFE3166B29A1A /* MissionControlView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0F64E39F3C30AB5BBEBBC5F8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB803123C4DBDD423AF4A971 /* HeveaVision */;
+			targetProxy = B758D392AD043E3603BC5928 /* PBXContainerItemProxy */;
+		};
+		6873FD0C553639932F212743 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB803123C4DBDD423AF4A971 /* HeveaVision */;
+			targetProxy = 661AE33AF07F33845C0650D8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0CFECFCD70D12953ED2AA17F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.HeveaVisionTests;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HeveaVision.app/HeveaVision";
+			};
+			name = Release;
+		};
+		1E6F6F6D4BD8E708169DF9EC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		298D7F1C13E392DE88F9901B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		41D2DDDCC30F72BCB4842D81 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.HeveaVisionUITests;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_TARGET_NAME = HeveaVision;
+			};
+			name = Debug;
+		};
+		57E387DFCBDE1FD2ACAEFD3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Hevea Vision";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.HeveaVision;
+				PRODUCT_MODULE_NAME = HeveaVision;
+				PRODUCT_NAME = HeveaVision;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+			};
+			name = Release;
+		};
+		9034F6AE6CF5E0251419D100 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.HeveaVisionTests;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HeveaVision.app/HeveaVision";
+			};
+			name = Debug;
+		};
+		A15782E564CEFCA5DB84FA0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Hevea Vision";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.HeveaVision;
+				PRODUCT_MODULE_NAME = HeveaVision;
+				PRODUCT_NAME = HeveaVision;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+			};
+			name = Debug;
+		};
+		FA88D95C68F085BFEC895C01 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.HeveaVisionUITests;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_TARGET_NAME = HeveaVision;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5C3FDD86653E1128A67A5371 /* Build configuration list for PBXNativeTarget "HeveaVisionUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41D2DDDCC30F72BCB4842D81 /* Debug */,
+				FA88D95C68F085BFEC895C01 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		723BBDBE0D4D6EBABB12ED57 /* Build configuration list for PBXNativeTarget "HeveaVisionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9034F6AE6CF5E0251419D100 /* Debug */,
+				0CFECFCD70D12953ED2AA17F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		90ECEED5F820C2622E3A1D69 /* Build configuration list for PBXNativeTarget "HeveaVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A15782E564CEFCA5DB84FA0F /* Debug */,
+				57E387DFCBDE1FD2ACAEFD3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A6F1CE5ECB2DBDC634606808 /* Build configuration list for PBXProject "HeveaVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1E6F6F6D4BD8E708169DF9EC /* Debug */,
+				298D7F1C13E392DE88F9901B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		1DFD30B649AA4BD9113E7512 /* XCLocalSwiftPackageReference "Packages/HeveaCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/HeveaCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1FE81AAEC5AB97505D02CDA9 /* HeveaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HeveaCore;
+		};
+		33D81D99C6FD93B2F213B9CA /* HeveaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HeveaCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 99301907E536C37BD7BAB893 /* Project object */;
+}
