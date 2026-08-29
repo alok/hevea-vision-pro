@@ -89,13 +89,15 @@ The current evidence ceiling is deliberately uneven:
 |---|---|
 | `HeveaCore`, debug and release | 31 tests passed; periodic topology, exact formula landmarks, stage differences, finite channels, diagnostics, determinism, validation, and Codable round trips |
 | App model | 5 tests passed |
-| visionOS 26.5 UI workflows | 5 workflows passed individually: accessibility/stage rail, every overlay, immersive dismiss/reopen/stage cycle, deterministic metric relaunch, and inside-view escape contract |
+| visionOS 26.5 UI workflows | 6 workflows passed individually: accessibility/stage rail, every overlay, immersive dismiss/reopen/stage cycle, deterministic metric relaunch, inside-view escape contract, and 200-update immersive churn |
 | SwiftLint and Swift Format | SwiftLint passed for the full app/test target; Swift Format passed strictly for the app and UI-test sources |
 | Xcode 26.5 / visionOS 26.5 | app builds; all 8 cells in the final visual matrix differ from the app-terminated baseline |
 | Xcode 27 beta 5 / visionOS 27 beta | app builds and all 8 launches return PIDs, but all 8 screenshots are byte-identical to the empty-room baseline; the matrix correctly reports `partial` |
 | Physical Apple Vision Pro | **not tested yet**: performance, comfort, eye/hand interaction, text placement, and inside-view recovery remain device-test pending |
 
 The final matrix at revision `e56f7fa0c81bf0090e7ed585a15aa705fc14b11a` ran four scenarios twice on both installed runtimes: 16 launches, 16 screenshots, and 16 filtered unified logs. It produced 8/8 visible deltas on visionOS 26.5 and 0/8 on the visionOS 27 beta runtime. This exposed and fixed a hollow-validator bug: a successful `simctl launch` plus a valid PNG no longer counts as rendered evidence. See the [simulator evidence contract](docs/simulator-evidence/README.md) and [current matrix status](docs/SIMULATOR_MATRIX.md).
+
+A separate revision-bound stress run at `4e17464aaa0acdfbe1f0a25d5370d0c8323924a4` drove 200 consecutive spatial stage-control updates while the immersive RealityKit lab was open. It checked foreground liveness every 25 updates, converged on Proxy Stage 3 plus a newly generated selected-sample witness, and dismissed cleanly. The transition loop took `121.64274489879608` seconds and the complete UI test took `151.53133296966553` seconds. This is evidence for rapid-update cancellation and latest-state convergence; it does not assert that all 200 intermediate mesh generations were individually observed. See the curated [stress receipt](docs/simulator-evidence/stress-200-visionos-26-5.json).
 
 ## Build and run
 

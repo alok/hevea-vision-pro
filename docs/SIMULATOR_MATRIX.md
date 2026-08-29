@@ -34,8 +34,30 @@ Each workflow passed individually against simulator `820CCDAA-EA00-41FC-8A4A-675
 | Immersive lifecycle | Open full immersion, await generated geometry, cycle all stages, dismiss, reopen, and dismiss again | passed |
 | Deterministic metric scenario | Repetition 2 relaunches with the same selected-sample label | passed |
 | Inside-view contract | Outside changes to Inside; close-range Return Outside and Exit Lab controls are present and hittable | passed with boundary |
+| Rapid immersive stage churn | 200 consecutive spatial stage-control updates, foreground checks every 25 updates, final geometry/sample convergence, and clean dismissal | passed |
 
 The inside-view boundary matters: visionOS automation could assert the close-range escape controls' presence and hittability but did not reliably activate them after the model surrounded the simulated observer. The state transition and reset logic are app-model tested; physical-device interaction remains pending.
+
+## Revision-bound 200-update churn
+
+The dedicated high-count workflow ran twice on visionOS 26.5. The final run was executed from clean public revision `4e17464aaa0acdfbe1f0a25d5370d0c8323924a4` and retained a local `.xcresult` plus text attachment.
+
+| Field | Final run value |
+|---|---|
+| Test | `testImmersiveStageRailSurvivesTwoHundredRenderedUpdates()` |
+| Simulator | Apple Vision Pro, visionOS 26.5, build `23O470` |
+| Device UUID | `820CCDAA-EA00-41FC-8A4A-675701BD9E33` |
+| Spatial control updates | 200 |
+| Foreground liveness checks | every 25 updates |
+| Final state witness | `Proxy Stage 3` plus `Selected sample #…` |
+| Transition-loop time | `121.64274489879608` seconds |
+| Complete test-case time | `151.53133296966553` seconds |
+| Result | passed; zero failures, clean immersive dismissal |
+| Canonical summary SHA-256 | `700559dfb3bcd4b029212961dbe66e57970c2fc237e3f7204a28ed3b3e9f1d34` |
+| Canonical tests SHA-256 | `6bac09493cbb9f8b567d9619245ce987f71f8ce54117d300278ae7cc0f3a7ff7` |
+| Text receipt SHA-256 | `dbb1cd50284029e9f6ee7c7d7ba6c278ca1c0d84344f97a6713eb2cdfb17ef3f` |
+
+The test changes the visible stage and requests asynchronous regeneration on every tap. Intermediate generation tasks may be cancelled or coalesced when a newer request arrives, so the supported claim is UI/renderer-task churn, foreground survival, and convergence to the latest requested geometry—not 200 separately witnessed completed meshes. The public [curated JSON receipt](simulator-evidence/stress-200-visionos-26-5.json) records the exact boundary. The 9.9 MiB raw result bundle remains local and ignored.
 
 ## Acceptance backlog
 
@@ -48,7 +70,7 @@ The inside-view boundary matters: visionOS automation could assert the close-ran
 | S05 | Manipulation bounds and exact reset | Bounded model-scale and reset unit tests; no automated spatial gesture sweep | partial |
 | S06 | Deterministic sample selection | Immersive workflows await finite selected-sample diagnostics | passed on 26.5 |
 | S07 | Inside/outside and recovery | State change plus escape-control accessibility; physical activation pending | partial |
-| S08 | High-count rapid stage/overlay churn | Bounded 16-launch matrix, but not the proposed 200-update in-process stress loop | pending |
+| S08 | High-count rapid stage/overlay churn | Revision-bound 200-update immersive stage-control workflow with final geometry/sample convergence | passed on 26.5 |
 | S09 | Relaunch policy | Deterministic metric relaunch and immersive dismiss/reopen workflows | passed on 26.5 |
 | S10 | Curated screenshot scenarios | Four inspected 26.5 captures; 27 beta correctly rejected | partial |
 

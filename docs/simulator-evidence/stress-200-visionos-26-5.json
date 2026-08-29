@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "claimClass": "SIMULATOR EVIDENCE",
+  "sourceRevision": "4e17464aaa0acdfbe1f0a25d5370d0c8323924a4",
+  "testIdentifier": "HeveaVisionUITests/testImmersiveStageRailSurvivesTwoHundredRenderedUpdates()",
+  "run": {
+    "startedAt": "2026-08-29T20:35:29.093Z",
+    "finishedAt": "2026-08-29T20:38:03.291Z",
+    "environmentDescription": "HeveaVision · Built with macOS 26.5.1",
+    "simulator": {
+      "platform": "visionOS Simulator",
+      "deviceName": "Apple Vision Pro",
+      "deviceId": "820CCDAA-EA00-41FC-8A4A-675701BD9E33",
+      "architecture": "arm64",
+      "osVersion": "26.5",
+      "osBuildNumber": "23O470"
+    }
+  },
+  "result": {
+    "status": "passed",
+    "failedTests": 0,
+    "updateRequests": 200,
+    "foregroundCheckInterval": 25,
+    "finalStage": "Proxy Stage 3",
+    "selectedSampleWitness": true,
+    "cleanImmersiveDismissal": true,
+    "transitionLoopSeconds": 121.64274489879608,
+    "testCaseSeconds": 151.53133296966553
+  },
+  "retainedEvidence": {
+    "rawXCResultPath": ".derivedData-stress-200-4e17464a.xcresult",
+    "rawXCResultSizeMiB": 9.9,
+    "rawXCResultPublished": false,
+    "canonicalSummarySHA256": "700559dfb3bcd4b029212961dbe66e57970c2fc237e3f7204a28ed3b3e9f1d34",
+    "canonicalTestsSHA256": "6bac09493cbb9f8b567d9619245ce987f71f8ce54117d300278ae7cc0f3a7ff7",
+    "textAttachmentSHA256": "dbb1cd50284029e9f6ee7c7d7ba6c278ca1c0d84344f97a6713eb2cdfb17ef3f",
+    "textAttachment": "iterations=200 finalStage=Proxy Stage 3 elapsedSeconds=121.64274489879608"
+  },
+  "claimCeiling": "The run establishes rapid spatial-control update requests, foreground survival, final geometry/sample convergence, and clean dismissal on this visionOS 26.5 simulator. It does not establish that every intermediate asynchronous mesh generation completed, physical-headset performance, comfort, or shipping visionOS 27 behavior."
+}
