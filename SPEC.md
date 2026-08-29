@@ -1,22 +1,42 @@
 # Hevea Vision Pro revival specification
 
-Status: implementation baseline, 2026-08-29
+Status: reduced-sphere revival baseline, 2026-08-29
+
+The detailed reduced-sphere geometry, navigation, gauge, and verification
+contract lives in [`docs/SPHERE_EXPERIENCE_SPEC.md`](docs/SPHERE_EXPERIENCE_SPEC.md)
+and supersedes the older torus-first release order below wherever the two
+documents differ. The flat-torus observatory remains available as an archive
+exhibit and regression surface.
 
 ## 1. Purpose
 
 Revive the Hévéa project as a native Apple Vision Pro experience in which a person can inhabit, manipulate, and interrogate the geometry behind convex integration. The app should make the original work newly understandable while remaining useful to researchers: every stage has provenance, every numerical overlay states what it measures, and finite-resolution evidence is never promoted into a theorem or an exact limiting object.
 
-The first release centers on the square flat torus because the original GPL source is public and auditable. The reduced sphere and hyperbolic-plane lines are preserved as follow-on exhibits, with their current open technical seams documented rather than silently approximated as official results.
+The public release now centers on the reduced sphere because it most directly
+supports an inhabitable Vision Pro world: the visitor can view the reduced
+ball as an object, walk using the source-sphere metric, hover at signed normal
+altitude, and inspect the shell from within. The original GPL flat-torus
+observatory remains in the app as an auditable archive. The sphere's hidden
+author profile and transition details are not silently guessed: reconstructed
+geometry remains visibly labelled as a proxy.
 
 ## 2. Product promise
 
-On launch, the user enters a quiet mathematical observatory containing a large suspended torus and three linked instruments:
+On launch, the user enters a quiet mathematical observatory organized around
+the reduced sphere and three linked instruments:
 
-- a **stage rail** that moves from the short torus of revolution through three finite corrugation stages;
-- a **metric instrument** that contrasts intrinsic target lengths with ambient chord lengths and colors finite-mesh metric residual;
-- a **C1 microscope** that reveals normal-vector variation across sampling scales and synchronizes selected normals with points on a Gauss sphere.
+- a **sphere stage rail** from the exact unit-sphere formula through a
+  reconstructed short map and three lower-frequency nested proxy families;
+- an **intrinsic address instrument** that stores a unit source direction,
+  tangent heading, signed altitude, step count, and accumulated round-metric
+  path length independently of ambient self-nearness;
+- a **gauge rail** for Atlas, Habitat, Hover, and Interior, motivated by the
+  nonstandard no-single-scale result.
 
-The torus is not a decorative model. It must be selectable, rotatable, scaled, sectioned, colored by diagnostics, and inspected from outside or within. The interface must explain what changed, why the corrugation was introduced, and which claims survive at the current resolution.
+The sphere is not a decorative model. It must be walkable by intrinsic
+exponential-map steps, viewable on/above/inside/around, and readable through
+finite-mesh topology, seam, radius, and provenance receipts. The archived
+torus keeps its selection, overlay, metric, and normal-scale instruments.
 
 ## 3. Provenance and claim contract
 
@@ -42,8 +62,11 @@ Forbidden claims include:
 The primary SwiftUI window contains:
 
 - a concise explanation of Hévéa and the current exhibit;
+- a reduced-sphere / flat-torus archive switcher;
 - a large “Enter Immersive Lab” control with explicit open/close state;
-- stage, overlay, frequency-compression, and presentation controls mirrored into the immersive space;
+- sphere stage, gauge, locomotion, altitude, and reset controls mirrored into
+  the immersive space, plus the existing torus controls when that exhibit is
+  selected;
 - provenance and current claim ceiling;
 - a compact research readout exportable as JSON in a later release.
 
@@ -51,9 +74,11 @@ The primary SwiftUI window contains:
 
 The app declares a full `ImmersiveSpace` and manages its lifecycle explicitly. It contains:
 
-- a central torus at comfortable scale and distance;
-- a parameter-domain floor grid showing the square with identified opposite edges;
-- a Gauss sphere positioned to the user’s right;
+- either the reduced sphere or archived torus, according to the selected
+  exhibit;
+- a bounded Atlas placement, a locally re-anchored Habitat/Hover placement,
+  and a double-sided Interior placement for the sphere;
+- the parameter-domain floor and Gauss sphere for the torus archive;
 - floating SwiftUI attachments for stage, legend, and selected-sample details;
 - spatial audio only if it adds information; v0.1 has no required audio;
 - an always-visible exit affordance and recovery when the immersive space is dismissed externally.
@@ -61,6 +86,11 @@ The app declares a full `ImmersiveSpace` and manages its lifecycle explicitly. I
 ### 4.3 Interaction
 
 - Spatial tap selects a surface sample and its parameter coordinates.
+- Sphere walk controls update only the intrinsic address through the
+  unit-sphere exponential map; ambient nearest-neighbor queries never choose
+  adjacency.
+- Gauge transitions preserve that address while changing the observation
+  scale.
 - Drag rotates the exhibit around its local origin.
 - Magnify rescales within bounded limits.
 - Stage controls change geometry deterministically.
@@ -72,6 +102,14 @@ The app declares a full `ImmersiveSpace` and manages its lifecycle explicitly. I
 
 `HeveaCore` is a platform-neutral Swift package. It owns:
 
+- single-pole genus-zero sphere topology with a hard runtime budget;
+- exact round-sphere and translated-cap formulas;
+- a GPL-attributed constrained short-profile reconstruction and three visibly
+  compressed nested proxy families;
+- finite topology, cap-seam, containing-radius, and deterministic-fingerprint
+  diagnostics;
+- pole-safe intrinsic addresses, tangent frames, exponential-map locomotion,
+  heading, altitude, and accumulated distance;
 - parameter-domain types and periodic indexing;
 - mesh vertices, normals, UVs, triangle indices, and per-vertex scalar fields;
 - the exact short torus of revolution;
@@ -127,6 +165,8 @@ The app is not considered demonstrated until automated build/tests and repeated 
 8. run deterministic rapid-stage and rapid-overlay stress scenarios;
 9. capture screenshots from stable named scenarios;
 10. repeat on visionOS 26.5 and 27.0 when both runtimes are installed.
+11. exercise at least 500 live immersive address re-anchors and a separate
+    deterministic 1,000-step state run without non-finite or unbounded state.
 
 Build success alone satisfies none of the interaction or visual criteria.
 
@@ -145,7 +185,21 @@ The repository is GPL-3.0-or-later and includes an attribution notice. Original 
 
 ## 10. Release gates
 
-### v0.1 - Flat Torus Observatory
+### v1.0 - Inhabitable Reduced Sphere
+
+- exact unit-sphere formula plus constrained short-map and three nested
+  real-time proxy families;
+- Atlas, Habitat, Hover, and Interior regimes synchronized by one intrinsic
+  address;
+- pole-safe walking, turning, altitude, cap-to-equator traversal, reset, and
+  sheet-aware identity;
+- topology, seam, containing-radius, fingerprint, and ridge-count receipts;
+- faithful nonstandard-analysis reader with a claim ledger and polished PDF;
+- repeated visionOS simulator matrix, live re-anchor stress, and README
+  screenshots;
+- physical Vision Pro comfort/performance explicitly pending.
+
+### v0.1 - Flat Torus Observatory (retained archive)
 
 - native window and full immersive space;
 - exact short torus plus three deterministic proxy stages;
@@ -161,7 +215,7 @@ The repository is GPL-3.0-or-later and includes an attribution notice. Original 
 - comparison view between proxy and regenerated finite stage;
 - no redistribution of ambiguous website meshes.
 
-### v0.3 - Reduced sphere collaboration seam
+### v1.1 - Reduced sphere collaboration seam
 
 - incorporate the authors’ published construction parameters and any later transition-function/source release;
 - compare official and independent implementations only after provenance and numeric configurations match;
