@@ -1,114 +1,198 @@
-# Hévéa Vision
+# Hévéa Vision — live inside the reduced sphere
 
-An unofficial, open-source Apple Vision Pro observatory for the mathematics of the [Hévéa project](https://hevea-project.fr/): flat tori, convex integration, metric defect, corrugation, Gauss maps, and finite-scale normal structure.
+An unofficial, open-source Apple Vision Pro observatory for the [Hévéa
+project](https://hevea-project.fr/). Hévéa Vision turns the explicit reduction
+of the unit sphere into a place you can view from afar, walk on, hover above,
+and read from within—without pretending that an interactive finite mesh is the
+paper's limiting isometry.
 
-![Hévéa Vision Mission Control running in the visionOS 26.5 Simulator](docs/screenshots/mission-control-visionos-26-5.png)
-
-Hévéa made the Nash–Kuiper phenomenon computational and visible. This revival asks what happens when that work becomes a place: move through an explicit construction, stand inside a corrugated torus, compare intrinsic and ambient measurements, and inspect how the normal field changes with scale.
-
-This is a working native visionOS prototype, not a concept render. It contains a SwiftUI Mission Control window, a full `ImmersiveSpace`, live RealityKit meshes, spatial interactions, deterministic diagnostics, automated UI workflows, a fail-closed simulator evidence harness, and a reproducible research executable.
-
-## The observatory
+This is a native SwiftUI and RealityKit visionOS app, not a concept render. Its
+public v1 experience centers on the reduced sphere; the earlier flat-torus
+observatory remains available as an auditable archive.
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/screenshots/parameter-grid-immersive-visionos-26-5.png" alt="A corrugated torus with its periodic parameter grid visible in the immersive lab"></td>
-    <td width="50%"><img src="docs/screenshots/metric-heatmap-immersive-visionos-26-5.png" alt="Finite-difference metric residual heatmap on a corrugated torus"></td>
+    <td width="50%">
+      <img src="docs/screenshots/sphere-atlas-visionos-26-5.png" alt="The complete reduced-sphere proxy and unit-sphere comparison shell in the Atlas gauge">
+      <br><strong>Atlas</strong><br>
+      Hold the whole finite reduction in view. Compare intrinsic diameter π
+      with the bounded ambient diameter and the original unit-sphere ghost.
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/sphere-habitat-visionos-26-5.png" alt="The Habitat receipt, foot-scale gauge, intrinsic address, and walk controls; the underfoot shell is outside the simulator's forward frame">
+      <br><strong>Habitat</strong><br>
+      Walk at source-sphere scale. Your intrinsic address stays authoritative
+      while the local finite proxy is re-anchored underfoot. The forward
+      simulator capture shows the instruments; the shell is below its frame.
+    </td>
   </tr>
   <tr>
-    <td align="center"><strong>Parameter domain</strong><br>See the square flat-torus coordinates and identified directions on the surface.</td>
-    <td align="center"><strong>Metric residual</strong><br>Inspect a finite-difference first-fundamental-form diagnostic on the current mesh.</td>
-  </tr>
-  <tr>
-    <td colspan="2"><img src="docs/screenshots/scale-microscope-immersive-visionos-26-5.png" alt="Normal-variation overlay, selected surface sample, and synchronized Gauss sphere"></td>
-  </tr>
-  <tr>
-    <td colspan="2" align="center"><strong>C1 scale microscope</strong><br>Select a surface sample, compare nearby unit normals over a scale ladder, and see the corresponding samples on the Gauss sphere.</td>
+    <td width="50%">
+      <img src="docs/screenshots/sphere-hover-visionos-26-5.png" alt="The Hover receipt, signed-altitude gauge, and intrinsic address; the near-field shell is outside the simulator's forward frame">
+      <br><strong>Hover</strong><br>
+      Keep the same address and heading while changing signed normal altitude.
+      A plumb line keeps “above” distinct from moving across the sphere. The
+      near-field shell is outside this forward simulator capture.
+    </td>
+    <td width="50%">
+      <img src="docs/screenshots/sphere-interior-visionos-26-5.png" alt="The double-sided reduced-sphere proxy viewed from inside the collapsed ball in the Interior gauge">
+      <br><strong>Interior</strong><br>
+      Enter the bounded ball and read a double-sided shell from within. The
+      addressed point and its outward normal remain visible.
+    </td>
   </tr>
 </table>
 
-The current app supports:
+The four views are gauges—coordinated ways to inspect one mathematical
+address—not a claim that a camera traversed every scale in ordinary Euclidean
+space. The images are uncropped `simctl` captures generated from Hévéa
+Vision's finite `REAL-TIME PROXY` on the visionOS 26.5 Simulator. They were
+checked against an empty-room baseline and inspected by a human. They are app
+documentation, not Hévéa gallery assets and not physical-headset evidence.
 
-- four deterministic stages: the exact short-torus formula and three deliberately compressed real-time corrugation proxies;
-- surface, parameter-grid, metric-residual, normal-variation, and corrugation-direction overlays;
-- tap selection, drag rotation, bounded magnification, sectioning, reset, outside view, and close-range inside view;
-- synchronized stage, legend, controls, sample, and emergency-exit spatial HUDs;
-- intrinsic winding-curve, ambient chord, finite-mesh metric, displacement, and normal-scale diagnostics;
-- a stable accessibility identifier contract exercised through visionOS UI automation.
+<table>
+  <tr>
+    <td width="34%">
+      <img src="docs/screenshots/sphere-mission-control-visionos-26-5.png" alt="Hévéa Vision Mission Control with the reduced-sphere construction rail, four gauges, intrinsic address, and immersion entry">
+      <br><strong>Mission Control</strong><br>
+      The five-stage rail, four gauges, source address, paper/proxy schedules,
+      and claim badges stay visible before immersion.
+    </td>
+    <td width="33%">
+      <img src="docs/screenshots/sphere-short-map-visionos-26-5.png" alt="The reconstructed Short map stage shown as a striped reduced sphere in the Atlas gauge">
+      <br><strong>Short map</strong><br>
+      Exact translated caps meet a constrained reconstructed central ribbon.
+    </td>
+    <td width="33%">
+      <img src="docs/screenshots/sphere-family-1-visionos-26-5.png" alt="The first explanatory corrugation family adding a gold ribbed belt to the reduced-sphere short map">
+      <br><strong>Family 1</strong><br>
+      The first nested explanatory correction appears as a corrugated belt.
+    </td>
+  </tr>
+</table>
 
-## Three honesty labels
+## Why a sphere can be collapsed but still walkable
 
-The most important interface feature is epistemic, not graphical. Every exhibit states what kind of claim it can support:
+Bartzos, Borrelli, Denis, Lazarus, Rohmer, and Thibert proved that for every
+standard radius `0 < r < 1`, the round unit sphere has a `C1` isometric map
+whose image lies inside the ball `B_r`. The construction keeps two round caps,
+inserts a short central ribbon, and uses boundary-aware convex integration on
+nested ribbons. The paper's displayed finite object is a discretization of
+`f₁,₃`; it is not the limiting map.
 
-| Label | Meaning in this repository |
-|---|---|
-| `UPSTREAM BASELINE` | A formula or generated artifact tied to a named Hévéa source path, pinned revision, parameters, and license. The current v0.1 baseline is the exact upstream short-torus formula. |
-| `REAL-TIME PROXY` | An original lower-frequency surface designed for interactive explanation. It is not the historical Hévéa corrugation sequence or the limiting isometric embedding. |
-| `HV EXPERIMENT` | A new, deterministic finite-mesh measurement. It is numerical evidence about the displayed samples, not a theorem. |
+The app separates two scales that a single camera cannot honestly preserve:
 
-The runtime proxy frequencies are `5`, `8`, and `13`; the manifest separately retains the upstream reference frequencies `12`, `80`, and `500`. A finite mesh is never called the limiting C1 isometric embedding. A simulator run is never called physical-headset validation.
+- **Atlas scale** makes the collapsed image globally visible.
+- **Habitat scale** preserves the source sphere as the visitor's ruler.
 
-## Original research extension
+That division is not a visual trick hidden from the user. The active gauge,
+intrinsic address, traversed intrinsic distance, altitude, rendered-stage
+receipt, and geometry fingerprint are visible instruments.
 
-`Research/ScaleMicroscope` turns the in-app instrument into a reproducible Swift executable. It generates all four `96 × 128` periodic meshes, measures finite-difference metric residual, evaluates complete `u` and `v` winding curves, samples normal variation at deterministic vertices over a scale ladder, fits descriptive log–log slopes, and writes typed JSON plus a human-readable report.
+## The address is the geometry
 
-Headline results from the pinned run:
-
-| Finite stage | Metric RMS | `u` winding residual | `v` winding residual | Median-normal slope | P95-normal slope | Max displacement from short torus |
-|---|---:|---:|---:|---:|---:|---:|
-| Short Torus | 1.21453437 | -0.80003903 | -0.37021745 | 0.98081618 | 0.98106656 | 0 |
-| Proxy Stage 1 | 1.16028231 | -0.67562724 | -0.41498367 | 0.55309170 | 0.38916578 | 0.01200000 |
-| Proxy Stage 2 | 1.06864371 | -0.63448152 | -0.29244463 | 0.19431871 | 0.10376240 | 0.01800000 |
-| Proxy Stage 3 | 1.03341765 | -0.59569215 | -0.22649523 | 0.13624694 | 0.09733562 | 0.02143275 |
-
-In this particular finite proxy schedule, metric RMS decreases and the fitted normal-scale slopes become shallower as corrugations are added. That does **not** establish convergence to an isometry, estimate a limiting Hölder exponent, recover the historical third stage, or prove fractal dimension. The complete methods, exclusions, configurations, and claim ceiling are in the [research report](docs/research/scale-microscope-report.md); its companion [JSON report](docs/research/scale-microscope-report.json) is byte-deterministic.
-
-```bash
-git diff --exit-code \
-  68202cae55a59a71b1573c869a05ac82b87c7ee2 \
-  -- Packages/HeveaCore
-
-swift run -c release \
-  --package-path Research/ScaleMicroscope \
-  hevea-scale-microscope \
-  --output-directory docs/research
-```
-
-Pinned artifact hashes:
+The visitor does not live at a nearest vertex in RealityKit space. The
+authoritative state is
 
 ```text
-d1bfe4fbd277a42ab26d128c2a91b618016b8090d41de1dd6beb6dec54f963b3  scale-microscope-report.json
-25b31ca9a28032bfd3a197fca7f96c30a04fa7ec7ce93b3682101ced5b817374  scale-microscope-report.md
+SphereAddress = (q ∈ S², signed altitude a, tangent heading ψ).
 ```
 
-## What is actually verified
+For a tangent step `v` of length `s`, walking advances the unit source
+direction by the sphere's exponential map:
 
-The current evidence ceiling is deliberately uneven:
+```text
+qNext = cos(s) q + sin(s) v/s.
+```
 
-| Evidence | Result |
+Longitude and latitude are derived readouts, not navigation state, so pole
+crossings do not create a coordinate singularity. The addressed source point
+is then evaluated on the displayed reduced-sphere proxy. In Habitat and Hover,
+the world is rotated and translated so that point stays locally under the
+visitor while intrinsic distance accumulates. This **mathematical treadmill**
+keeps world coordinates bounded without replacing intrinsic adjacency with an
+ambient nearest-neighbor guess—an essential distinction when distant parts of
+the source sphere fold close together inside the ball.
+
+## What is exact, what is a proxy, and what is an experiment
+
+Every visible result carries one of three claim classes:
+
+| Badge | Sphere-specific meaning |
 |---|---|
-| `HeveaCore`, debug and release | 31 tests passed; periodic topology, exact formula landmarks, stage differences, finite channels, diagnostics, determinism, validation, and Codable round trips |
-| App model | 5 tests passed |
-| visionOS 26.5 UI workflows | 6 workflows passed individually: accessibility/stage rail, every overlay, immersive dismiss/reopen/stage cycle, deterministic metric relaunch, inside-view escape contract, and 200-update immersive churn |
-| SwiftLint and Swift Format | SwiftLint passed for the full app/test target; Swift Format passed strictly for the app and UI-test sources |
-| Xcode 26.5 / visionOS 26.5 | app builds; all 8 cells in the final visual matrix differ from the app-terminated baseline |
-| Xcode 27 beta 5 / visionOS 27 beta | app builds and all 8 launches return PIDs, but all 8 screenshots are byte-identical to the empty-room baseline; the matrix correctly reports `partial` |
-| Physical Apple Vision Pro | **not tested yet**: performance, comfort, eye/hand interaction, text placement, and inside-view recovery remain device-test pending |
+| `UPSTREAM BASELINE` | The exact round unit-sphere formula printed in the paper. The translated-cap formulas are also exact components, but a stage containing the reconstructed central profile remains a proxy overall. |
+| `REAL-TIME PROXY` | The GPL-attributed constrained short-profile reconstruction and lower-frequency nested corrugation families. They explain the construction interactively; they are not the authors' unpublished profile, the paper's `f₁,₃`, or the limiting `C1` map. |
+| `HV EXPERIMENT` | Finite topology, radius, seam, normal, metric, navigation, and fingerprint measurements made by this implementation. These are reproducible sensor readings, not theorem certificates. |
 
-The final matrix at revision `e56f7fa0c81bf0090e7ed585a15aa705fc14b11a` ran four scenarios twice on both installed runtimes: 16 launches, 16 screenshots, and 16 filtered unified logs. It produced 8/8 visible deltas on visionOS 26.5 and 0/8 on the visionOS 27 beta runtime. This exposed and fixed a hollow-validator bug: a successful `simctl launch` plus a valid PNG no longer counts as rendered evidence. See the [simulator evidence contract](docs/simulator-evidence/README.md) and [current matrix status](docs/SIMULATOR_MATRIX.md).
+The construction rail is deliberately explicit:
 
-A separate revision-bound stress run at `4e17464aaa0acdfbe1f0a25d5370d0c8323924a4` drove 200 consecutive spatial stage-control updates while the immersive RealityKit lab was open. It checked foreground liveness every 25 updates, converged on Proxy Stage 3 plus a newly generated selected-sample witness, and dismissed cleanly. The transition loop took `121.64274489879608` seconds and the complete UI test took `151.53133296966553` seconds. This is evidence for rapid-update cancellation and latest-state convergence; it does not assert that all 200 intermediate mesh generations were individually observed. See the curated [stress receipt](docs/simulator-evidence/stress-200-visionos-26-5.json).
+| Rail stage | Rendered geometry | Claim ceiling |
+|---|---|---|
+| Unit sphere | Exact round formula | `UPSTREAM BASELINE` |
+| Short map | Exact translated caps plus a constrained reconstructed ribbon | `REAL-TIME PROXY` |
+| Family 1 | First nested primitive family, rendered `7` ridges; paper reference `21` | `REAL-TIME PROXY` |
+| Family 2 | Adds the second family, rendered `13`; paper reference `142` | `REAL-TIME PROXY` |
+| Family 3 | Adds the third family, rendered `21`; paper reference `997` | `REAL-TIME PROXY` |
 
-## Build and run
+The paper's `21 / 142 / 997` values are the visible ridge counts for its three
+primitive corrections in the displayed finite computation. Hévéa Vision's
+`7 / 13 / 21` counts are intentionally compressed for real-time rendering and
+are retained separately in every sphere manifest. Equality of labels is never
+used to imply equality of geometry.
+
+The central profile is adapted under GPL from the independent community
+project [`Juddd/hevea-reduced-sphere`](https://github.com/Juddd/hevea-reduced-sphere)
+at pinned revision `c098ea6fabb994bdd2555719b64ebbe8d7fca483`.
+That project is itself a constrained reconstruction, not an official release
+of the paper authors' hidden coefficient vector. See [NOTICE.md](NOTICE.md)
+and the [source map](docs/UPSTREAM.md) for the exact reuse boundary.
+
+## A research companion for the scale paradox
+
+The app is paired with a source-audited nonstandard-analysis reader:
+
+- [canonical Markdown source](docs/research/reduced-sphere-nsa/report-source.md)
+- [claim and proof-obligation ledger](docs/research/reduced-sphere-nsa/claim-ledger.md)
+- [typeset PDF](output/pdf/hevea-reduced-sphere-nsa-for-alok.pdf)
+
+The reader marks each statement as a paper result, transfer-equivalent NSA
+reformulation, new corollary, app model, or open obligation. Its central app
+consequence is precise: after transfer to a positive infinitesimal radius, the
+internal isometry has a constant pointwise standard shadow while positive
+standard path lengths remain nonzero internally. No single similarity scale
+can make both global diameter and unit tangent speed appreciable and limited.
+That is why Atlas and Habitat are coordinated views rather than one allegedly
+literal camera scale.
+
+The NSA interpretation is a separate research companion, not a theorem stated
+by the Hévéa authors. The ledger records the dependencies and the exact claim
+ceiling. The product-side contract lives in the
+[inhabitable reduced-sphere specification](docs/SPHERE_EXPERIENCE_SPEC.md) and
+the repository-wide [claim specification](SPEC.md).
+
+Regenerate the PDF from the canonical source with Python managed by `uv`:
+
+```bash
+uv run \
+  --with markdown \
+  --with pymdown-extensions \
+  Scripts/render-nsa-report-pdf.py
+```
+
+The PDF renderer also requires Node.js, Playwright, Chrome, and network access
+to MathJax. The Markdown source and claim ledger remain the authoritative,
+reviewable research artifacts.
+
+## Build and test
 
 Requirements:
 
-- macOS with Apple silicon;
-- Xcode with the visionOS 26 SDK and Simulator runtime;
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen) for regenerating the project;
-- Swift 6.
+- Apple-silicon macOS;
+- Xcode with the visionOS 26 SDK and a Vision Pro Simulator runtime;
+- Swift 6;
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
-Generate and build:
+Generate the Xcode project and build the app without code signing:
 
 ```bash
 xcodegen generate
@@ -122,53 +206,170 @@ xcodebuild \
   build
 ```
 
-Run the platform-neutral core tests:
+Run the platform-neutral geometry and navigation suite:
 
 ```bash
-swift test --package-path Packages/HeveaCore
-swift test -c release --package-path Packages/HeveaCore -Xswiftc -warnings-as-errors
+swift test \
+  --package-path Packages/HeveaCore \
+  -Xswiftc -warnings-as-errors
+
+swift test -c release \
+  --package-path Packages/HeveaCore \
+  -Xswiftc -warnings-as-errors
 ```
 
-Run the bounded simulator matrix after adapting the fixed device IDs in `Scripts/run-simulator-matrix.sh` to your installed simulators:
+Run the app-model and render-receipt tests on an installed Vision Pro
+Simulator, replacing the destination if needed:
 
 ```bash
-Scripts/run-simulator-matrix.sh --preflight-only
-
-Scripts/run-simulator-matrix.sh \
-  --runtime all \
-  --scenarios mission-control,stage-sweep,metric-heatmap,scale-microscope \
-  --repetitions 2 \
-  --settle-seconds 6 \
-  --show-simulator
+xcodebuild test \
+  -project HeveaVision.xcodeproj \
+  -scheme HeveaVision \
+  -destination 'platform=visionOS Simulator,name=Apple Vision Pro' \
+  -only-testing:HeveaVisionTests
 ```
 
-Generated runs stay under `docs/simulator-evidence/runs/` and are ignored until a human deliberately curates them. The harness has bounded scenario/repetition counts, a 16 GiB free-space floor, SHA-256 receipts, separate screenshot and visible-delta verdicts, and no simulator erase/shutdown behavior.
+Current verified non-UI checkpoint:
+
+| Suite | Verified result | What it covers |
+|---|---:|---|
+| `HeveaCore` | **57 tests passed** | Exact formulas, constrained-profile seams, genus-zero topology, containing-radius failure, deterministic fingerprints, explicit paper/proxy ridge metadata, pole-safe exponential-map navigation, and the retained torus diagnostics. |
+| `HeveaVisionTests` | **23 tests passed** | Exhibit and gauge state, deterministic 1,000-step navigation, cap-to-equator traversal, reset, section cuts, render/presentation receipt invalidation and session/install binding, gravity-preserving Habitat/Hover transforms, signed-altitude plumb geometry, non-finite-pose rejection, and regime-specific rotation bounds. |
+
+The complete app-model suite passed 23/23 with zero failures or skips on
+visionOS Simulator 26.5, build `23O470`. The Xcode-exported summary is bound
+by SHA-256
+`ebbb2507754c13e9c7dab60389a2d038c4ae7155b11d102305bdca935c3e1f10`.
+
+### Revision-bound simulator evidence
+
+The deterministic 1,000-step model run and the dedicated visionOS 26.5 UI
+workflow are separate evidence. The UI workflow reached `Address step #1000`
+and awaited a current `Presented Habitat` receipt for that exact step. Its
+exact test case passed in 21.501 seconds.
+
+At app-source revision
+`bdb56b834af1eadcc9136ad27d8e7ebf057a9427`, a dedicated visionOS 26.5
+UI run performed 500 synthesized walk-pad taps in the repeating
+`forward, right, left` pattern. After every tap it awaited a
+`Presented Habitat · address step #n · …` receipt emitted only after the
+matching RealityKit presentation transform was applied. The workflow checked
+foreground liveness, reached step 500, dismissed the immersive space cleanly,
+and witnessed Mission Control again.
+
+| 500-update receipt | Value |
+|---|---|
+| Simulator | Apple Vision Pro Simulator, visionOS 26.5, build `23O470` |
+| Acknowledgement loop | `905.2148829698563` seconds |
+| Complete test case | `934.0711989402771` seconds |
+| Summary SHA-256 | `9d42955b9c9bd9bec12702c4fb00b0c4c7e1eb610860702dbce7652288406924` |
+| Test-detail SHA-256 | `e7ccdb394a64ff745331810719412f757f3b41c7de3c9431032b78377d80d215` |
+| Text-receipt SHA-256 | `f071673e44592915b893de116d4ab8ffc3465a34b7389eb931ca0b0a47bad3a2` |
+
+This establishes **500 acknowledged RealityKit presentation-transform
+updates** on one installed mesh. It is not evidence of 500 regenerated meshes,
+500 newly created anchors, physical footsteps, headset comfort, collision
+behavior, or eye/hand interaction. The exact values and claim ceiling are also
+retained in the
+[`sphere-walk-500` JSON receipt](docs/simulator-evidence/sphere-walk-500-visionos-26-5.json).
+
+A separate test/evidence commit,
+`136a06209d593301fddaa8135ec5bae40c0ee048`, requested 100 construction
+stage changes and 100 gauge changes. It converged to Family 3 + Atlas with the
+intrinsic address preserved, then dismissed cleanly: 200 changes in 122.423
+seconds, 163.399 seconds for the complete test case.
+Its compact
+[`sphere-stage-regime-200` JSON receipt](docs/simulator-evidence/sphere-stage-regime-200-visionos-26-5.json)
+records the exact request split, timings, hashes, and claim boundary.
+
+The two-runtime, 28-row visual matrix is retained in
+[the simulator evidence report](docs/SIMULATOR_MATRIX.md) and its
+[schema-2 JSON receipt](docs/simulator-evidence/reduced-sphere-release-matrix-20260829.json).
+visionOS 26.5 passed 14/14 launch, PNG, log, and visible-delta rows. visionOS
+27 beta built, installed, and launched 14/14, but every screenshot was
+byte-identical to the empty-room baseline, so the matrix correctly remains
+`partial` and makes no rendered-app claim for that beta runtime.
+
+The Interior attachment's Return Habitat and Exit Lab controls were visible
+and reported hittable on visionOS Simulator 26.5. Two synthesized attempts to
+activate Return Habitat did not produce a Habitat presentation receipt, so
+that activation path remains unverified on both simulator and physical Vision
+Pro. Ordinary gauge controls and app-model state transitions are separately
+tested; they do not prove activation of the Interior escape attachment.
+
+## Run the research tools
+
+The sphere/NSA reader is described above. The exact retained flat-torus scale
+microscope receipt is reproduced from its historical public revision so later
+sphere-core additions cannot silently change its dependency tree:
+
+```bash
+git worktree add \
+  ../hevea-torus-research \
+  e56f7fa0c81bf0090e7ed585a15aa705fc14b11a
+
+cd ../hevea-torus-research
+
+git diff --exit-code \
+  68202cae55a59a71b1573c869a05ac82b87c7ee2 \
+  -- Packages/HeveaCore
+
+swift run -c release \
+  --package-path Research/ScaleMicroscope \
+  hevea-scale-microscope \
+  --output-directory docs/research
+```
+
+Its [human-readable report](docs/research/scale-microscope-report.md) and
+[typed JSON receipt](docs/research/scale-microscope-report.json) remain part of
+the archive. The revision guard intentionally checks the earlier torus-core
+checkpoint used for those numbers.
+
+## Flat-torus observatory archive
+
+The original revival release is still built into the app. It includes the
+exact short-torus starting formula adapted from the pinned Hévéa GPL source,
+three explanatory real-time proxy families, parameter-grid and metric
+overlays, intrinsic-versus-ambient curve diagnostics, normal-scale sampling,
+a synchronized Gauss sphere, sectioning, and inside/outside presentation.
+
+The interactive torus frequencies are `5 / 8 / 13`; its manifests separately
+retain the upstream reference frequencies `12 / 80 / 500`. Historical torus
+screenshots, stress receipts, and the archived sections of the current
+simulator evidence contract remain in
+[`docs/screenshots`](docs/screenshots),
+[`docs/simulator-evidence`](docs/simulator-evidence), and
+[`docs/SIMULATOR_MATRIX.md`](docs/SIMULATOR_MATRIX.md). Those sections are
+archive evidence, not reduced-sphere release receipts.
 
 ## Relationship to Hévéa
 
-This repository exists because the original work deserves to remain inspectable, runnable, and surprising.
+This repository is a respectful, unofficial extension of an active research
+line:
 
-- Official project: [hevea-project.fr](https://hevea-project.fr/)
-- Original GPL source: [HeveaProject/Hevea](https://github.com/HeveaProject/Hevea)
-- Pinned source revision: `e792074e4dd6319351bc957afeb16b4725d304f0`
-- Primary paper: [Flat tori in three-dimensional space and convex integration](https://doi.org/10.1073/pnas.1118478109)
-- Reduced-sphere paper: [An Explicit Isometric Reduction of the Unit Sphere into an Arbitrarily Small Ball](https://doi.org/10.1007/s10208-017-9360-1)
-- Live reduced-sphere technical exchange: [HeveaProject/Hevea issue #1](https://github.com/HeveaProject/Hevea/issues/1)
+- [official Hévéa project](https://hevea-project.fr/)
+- [reduced-sphere paper](https://doi.org/10.1007/s10208-017-9360-1)
+- [official reduced-sphere gallery](https://hevea-project.fr/Sphere_Gallery.html)
+- [original GPL flat-torus source](https://github.com/HeveaProject/Hevea), pinned here at `e792074e4dd6319351bc957afeb16b4725d304f0`
+- [live author clarification thread](https://github.com/HeveaProject/Hevea/issues/1)
+- [community GPL sphere reconstruction](https://github.com/Juddd/hevea-reduced-sphere), pinned here at `c098ea6fabb994bdd2555719b64ebbe8d7fca483`
 
-The upstream project is not literally abandoned: its current issue tracker contains a 2026 exchange with newly shared construction details and possible future source publication. Hévéa Vision should therefore be presented to the researchers as a respectful, unofficial extension and a collaboration invitation—not as a claim that their work has been forgotten.
-
-No website mesh is redistributed here because its asset license is not explicit enough. The current screenshots are generated from this implementation. Read the [source map](docs/UPSTREAM.md), [attribution notice](NOTICE.md), and [full product/research specification](SPEC.md) before changing geometry or claims.
-
-## Where this could go
-
-- authenticate regenerated historical finite stages against the pinned GPL implementation;
-- test the spatial composition, gestures, comfort, and performance on physical Vision Pro hardware;
-- turn the current reduced-sphere reproduction seam into a collaboration with the original authors;
-- explore the hyperbolic-plane Gauss-pattern experiments in a separate, equally provenance-aware exhibit;
-- compare 2D and spatial explanations in a controlled comprehension study.
+The official gallery media is separately licensed CC BY-SA 2.0 France, but no
+gallery image or video is bundled in this repository. Official downloadable
+WRL sphere meshes are also not redistributed because no explicit adjacent
+mesh license was found. The seven release images at the top are screenshots
+of this implementation. See [NOTICE.md](NOTICE.md) for credits and
+boundaries.
 
 ## License and status
 
-GNU GPL 3.0 or later. See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
+The combined distribution is available under GNU GPL version 3; original
+files marked `GPL-3.0-or-later` retain that option, while the adapted community
+sphere profile remains `GPL-3.0`. See [LICENSE](LICENSE) and
+[NOTICE.md](NOTICE.md).
 
-Hévéa Vision is an unofficial tribute and independent research prototype by Alok Singh, developed with OpenAI Codex. It is not endorsed by the Hévéa researchers, CNRS, Université Claude Bernard Lyon 1, Université Grenoble Alpes, Apple, or their institutions.
+Hévéa Vision is an unofficial tribute and independent research prototype by
+Alok Singh, developed with OpenAI Codex. It is not endorsed by the Hévéa
+researchers, the cited authors, CNRS, Université Claude Bernard Lyon 1,
+Université Grenoble Alpes, Apple, or their institutions. Physical Apple
+Vision Pro validation remains pending.
