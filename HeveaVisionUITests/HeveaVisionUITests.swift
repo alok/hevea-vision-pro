@@ -167,6 +167,52 @@ final class HeveaVisionUITests: XCTestCase {
     dismissImmersiveLab()
   }
 
+  func testSphereStageAndRegimeSpamConvergesAfterTwoHundredChanges() {
+    let updateCount = 200
+    launch(scenario: "sphere-habitat")
+    requireSphereRender(.proxyFamily3)
+    requireSpherePresentation(step: 0, regime: .habitat)
+    let addressToken = requireElement("sphere-address-token-state", timeout: Timeout.geometry)
+    let initialAddressToken = addressToken.label
+
+    let stageButtons = SphereStageCheckpoint.allCases.map { checkpoint in
+      requireHittable(checkpoint.immersiveIdentifier, timeout: Timeout.immersive)
+    }
+    let regimeCheckpoints: [SphereRegimeCheckpoint] = [.atlas, .habitat, .hover]
+    let regimeButtons = regimeCheckpoints.map { checkpoint in
+      requireHittable(checkpoint.immersiveIdentifier, timeout: Timeout.immersive)
+    }
+    let startedAt = Date()
+
+    for index in 0..<updateCount {
+      if index.isMultiple(of: 2) {
+        stageButtons[(index / 2) % stageButtons.count].tap()
+      } else {
+        regimeButtons[(index / 2) % regimeButtons.count].tap()
+      }
+      if index.isMultiple(of: 25) {
+        XCTAssertEqual(app.state, .runningForeground)
+      }
+    }
+
+    requireSphereRender(.proxyFamily3)
+    requireSpherePresentation(step: 0, regime: .atlas)
+    XCTAssertEqual(addressToken.label, initialAddressToken)
+    XCTAssertEqual(app.state, .runningForeground)
+
+    let elapsedSeconds = Date().timeIntervalSince(startedAt)
+    let receipt =
+      "changes=200 stageRequests=100 regimeRequests=100 finalStage=Family 3 "
+      + "finalRegime=Atlas addressPreserved=true elapsedSeconds=\(elapsedSeconds)"
+    let attachment = XCTAttachment(string: receipt)
+    attachment.name = "Hevea Vision — 200 sphere stage and regime convergence receipt"
+    attachment.lifetime = .keepAlways
+    add(attachment)
+    attachScreenshot(named: "sphere-stage-regime-stress-200-complete")
+
+    dismissImmersiveLab()
+  }
+
   func testImmersivePresentationControlReportsDeterministicState() {
     launch(scenario: "metric-heatmap")
 
