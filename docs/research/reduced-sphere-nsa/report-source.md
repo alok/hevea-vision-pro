@@ -1230,6 +1230,18 @@ beyond the displayed convergence theorems.
   - it explicitly does not claim recovery of the authors' hidden degree-nine
     coefficients.
 
+- Live author clarification:
+  <https://github.com/HeveaProject/Hevea/issues/1#issuecomment-5396587822>
+  - Roland Denis posted the composite-Hermite profile recipe and the article
+    parameters `theta = 88 degrees`, `eta = 0.5`, and `beta = 0.6` on
+    2026-08-24, while saying that transition-function details would follow;
+  - the comment's printed cap/belt interval formulas use
+    `pi / 2 - theta`, which is inconsistent with `theta = 88 degrees`, the
+    paper's condition (3.4), the public mesh envelope, and the reproduced
+    `yInfinity` near 88 degrees;
+  - until that convention is clarified, this report treats the comment as
+    valuable live correspondence, not as an unambiguous executable baseline.
+
 ### Nonstandard analysis
 
 - Edward Nelson, “Internal Set Theory: A New Approach to Nonstandard

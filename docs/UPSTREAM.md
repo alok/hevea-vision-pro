@@ -26,7 +26,7 @@ The paper defines the isometric default, the repeated three-direction decomposit
 - Current independent reproduction: <https://github.com/Juddd/hevea-reduced-sphere>
 - Current technical exchange: <https://github.com/HeveaProject/Hevea/issues/1>
 
-As of 2026-08-29, the issue contains newly shared initial-profile construction details and the paper configuration `theta = 88 degrees`, `eta = 0.5`, and `beta = 0.6`; the transition function and possible official sphere-source publication remain pending. Treat that issue as live collaboration context, not static archival truth.
+As of 2026-08-29, [Roland Denis's author comment](https://github.com/HeveaProject/Hevea/issues/1#issuecomment-5396587822) shares the composite-Hermite initial-profile recipe and the article configuration `theta = 88 degrees`, `eta = 0.5`, and `beta = 0.6`; the transition function and possible official sphere-source publication remain pending. The same comment writes the cap and belt boundaries using `pi / 2 - theta`. Taken literally with `theta = 88 degrees`, those intervals conflict with condition (3.4) of the paper, the public mesh envelope, and the independent reproduction's `yInfinity` near 88 degrees. Until the angle convention is clarified, treat the comment as live collaboration context rather than an executable upstream baseline.
 
 ## Licensing boundary
 
