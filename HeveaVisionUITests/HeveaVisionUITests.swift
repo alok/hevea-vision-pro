@@ -121,6 +121,42 @@ final class HeveaVisionUITests: XCTestCase {
     dismissImmersiveLab()
   }
 
+  func testImmersiveStageRailSurvivesTwoHundredRenderedUpdates() {
+    let updateCount = 200
+    launch(scenario: "mission-control")
+    openImmersiveLab()
+    requireStaticText(beginningWith: "Selected sample #", timeout: Timeout.geometry)
+
+    let stageButtons = StageCheckpoint.allCases.map { checkpoint in
+      requireHittable(checkpoint.immersiveIdentifier, timeout: Timeout.immersive)
+    }
+    let startedAt = Date()
+
+    for index in 0..<updateCount {
+      stageButtons[index % stageButtons.count].tap()
+      if index.isMultiple(of: 25) {
+        XCTAssertEqual(app.state, .runningForeground)
+      }
+    }
+
+    let finalStage = StageCheckpoint.allCases[(updateCount - 1) % stageButtons.count]
+    requireStaticText(finalStage.shortTitle, timeout: Timeout.geometry)
+    requireStaticText(beginningWith: "Selected sample #", timeout: Timeout.geometry)
+    XCTAssertEqual(app.state, .runningForeground)
+
+    let elapsedSeconds = Date().timeIntervalSince(startedAt)
+    let receipt =
+      "iterations=\(updateCount) finalStage=\(finalStage.shortTitle) "
+      + "elapsedSeconds=\(elapsedSeconds)"
+    let attachment = XCTAttachment(string: receipt)
+    attachment.name = "Hevea Vision — 200-update stress receipt"
+    attachment.lifetime = .keepAlways
+    add(attachment)
+    attachScreenshot(named: "immersive-stage-stress-200-complete")
+
+    dismissImmersiveLab()
+  }
+
   func testImmersivePresentationControlReportsDeterministicState() {
     launch(scenario: "metric-heatmap")
 
