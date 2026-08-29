@@ -1,0 +1,5362 @@
+{
+  "boundedFindings" : [
+    {
+      "claimClass" : "HV EXPERIMENT",
+      "identifier" : "metric-rms-range",
+      "limitation" : "Ordering these proxy residuals does not establish convergence toward an isometry; the proxies are explanatory normal ripples, not upstream convex-integration stages.",
+      "statement" : "Across the four sampled meshes, finite-difference metric RMS ranges from 1.0334177 on Proxy Stage 3 to 1.2145344 on Short Torus."
+    },
+    {
+      "claimClass" : "HV EXPERIMENT",
+      "identifier" : "final-proxy-displacement",
+      "limitation" : "This is displacement from the baseline, not error against the upstream third corrugation or a limiting embedding.",
+      "statement" : "Proxy Stage 3 has maximum corresponding-vertex displacement 0.021432748 model units from the short-torus baseline."
+    },
+    {
+      "claimClass" : "HV EXPERIMENT",
+      "identifier" : "winding-polyline-residual",
+      "limitation" : "Only two fixed winding paths are sampled per stage; this is not a global distortion bound.",
+      "statement" : "The largest absolute u/v winding polyline-length residual in this run is 0.80003903 on Short Torus."
+    },
+    {
+      "claimClass" : "HV EXPERIMENT",
+      "identifier" : "normal-median-slope-range",
+      "limitation" : "These least-squares slopes summarize a short finite scale ladder and are not Hölder exponents, graph dimensions, or limiting-regularity estimates.",
+      "statement" : "Descriptive median-normal log-log slopes range from 0.13624694 on Proxy Stage 3 to 0.98081618 on Short Torus over retained grid steps."
+    }
+  ],
+  "claimCeiling" : "Finite deterministic meshes and descriptive numerical diagnostics only. This report does not certify isometry, reproduce the upstream corrugation algorithm, identify a limiting C1 embedding, estimate a theorem-level fractal dimension, or establish limiting regularity.",
+  "claimClass" : "HV EXPERIMENT",
+  "configuration" : {
+    "normalMicroscope" : {
+      "deterministicSeed" : 5207663399573345841,
+      "sampleCount" : 256,
+      "scales" : [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+      ]
+    },
+    "stages" : [
+      "shortTorus",
+      "proxyStage1",
+      "proxyStage2",
+      "proxyStage3"
+    ],
+    "torus" : {
+      "grid" : {
+        "uCount" : 96,
+        "vCount" : 128
+      },
+      "majorRadius" : 0.5,
+      "minorRadius" : 0.2,
+      "proxySchedule" : {
+        "corrugations" : [
+          {
+            "amplitude" : 0.012,
+            "direction" : {
+              "u" : 1,
+              "v" : 0
+            },
+            "displayName" : "REAL-TIME PROXY 1 — u Corrugation",
+            "frequency" : 5,
+            "upstreamReferenceFrequency" : 12
+          },
+          {
+            "amplitude" : 0.006,
+            "direction" : {
+              "u" : 1,
+              "v" : 2
+            },
+            "displayName" : "REAL-TIME PROXY 2 — u + 2v Corrugation",
+            "frequency" : 8,
+            "upstreamReferenceFrequency" : 80
+          },
+          {
+            "amplitude" : 0.0035,
+            "direction" : {
+              "u" : 1,
+              "v" : -2
+            },
+            "displayName" : "REAL-TIME PROXY 3 — u - 2v Corrugation",
+            "frequency" : 13,
+            "upstreamReferenceFrequency" : 500
+          }
+        ]
+      }
+    },
+    "windingCurves" : {
+      "basepoint" : {
+        "u" : 0.1375,
+        "v" : 0.28125
+      },
+      "directions" : [
+        {
+          "u" : 1,
+          "v" : 0
+        },
+        {
+          "u" : 0,
+          "v" : 1
+        }
+      ],
+      "segmentCount" : 2048
+    }
+  },
+  "crossStageComparison" : {
+    "finalProxyMaximumDisplacementFromShortTorus" : 0.021432748481411308,
+    "highestMedianNormalSlope" : {
+      "stage" : "shortTorus",
+      "value" : 0.9808161823731122
+    },
+    "highestMetricRootMeanSquare" : {
+      "stage" : "shortTorus",
+      "value" : 1.2145343718645885
+    },
+    "lowestMedianNormalSlope" : {
+      "stage" : "proxyStage3",
+      "value" : 0.13624694037551546
+    },
+    "lowestMetricRootMeanSquare" : {
+      "stage" : "proxyStage3",
+      "value" : 1.0334176538392266
+    },
+    "maximumAbsoluteWindingPolylineResidual" : {
+      "stage" : "shortTorus",
+      "value" : 0.8000390261263381
+    }
+  },
+  "methods" : {
+    "descriptiveSlope" : "Fit ordinary least squares to log(omega) versus log(sqrt((h/uCount)*(h/vCount))) over valid positive scale observations. Median and 95th-percentile fits are descriptive summaries, not dimensions or regularity exponents.",
+    "metricResidual" : "At each periodic grid vertex, use wrapped central finite differences to form E=<du f,du f>, F=<du f,dv f>, G=<dv f,dv f>; report sqrt((E-1)^2+2F^2+(G-1)^2) against du^2+dv^2.",
+    "normalScaleStatistic" : "For deterministic sampled vertices and each valid grid step h, record omega(p,h), the maximum unit-normal angle over the eight neighbors at offsets {-h,0,h}^2 excluding the center; aggregate median and 95th percentile in radians.",
+    "proxyDisplacement" : "Summarize Euclidean vertex displacement from the short-torus baseline and from the immediately previous finite stage on the same periodic grid.",
+    "samplingBoundary" : "Exclude a normal scale whenever 2*h is greater than or equal to the smaller grid dimension, because that scale reaches the finite periodic Nyquist radius.",
+    "windingCurve" : "Sample one full u winding and one full v winding from a fixed off-grid basepoint with periodic bilinear mesh interpolation; compare ambient polyline length and endpoint chord with unit intrinsic target length."
+  },
+  "run" : {
+    "buildConfiguration" : "release",
+    "coreRevision" : "68202cae55a59a71b1573c869a05ac82b87c7ee2",
+    "reportBaselineDate" : "2026-08-29",
+    "reproductionCommand" : "git diff --exit-code 68202cae55a59a71b1573c869a05ac82b87c7ee2 -- Packages/HeveaCore && swift run -c release --package-path Research/ScaleMicroscope hevea-scale-microscope --output-directory docs/research"
+  },
+  "schemaVersion" : 1,
+  "stages" : [
+    {
+      "appliedProxyCorrugations" : [
+
+      ],
+      "displacement" : {
+        "claimCeiling" : "Finite-stage proxy displacement only; not a geometric error bound against an upstream corrugation or limiting embedding.",
+        "claimClass" : "HV EXPERIMENT",
+        "fromShortTorus" : {
+          "count" : 12288,
+          "maximum" : 0,
+          "mean" : 0,
+          "median" : 0,
+          "minimum" : 0,
+          "percentile95" : 0,
+          "rootMeanSquare" : 0
+        },
+        "reference" : "Euclidean distance between corresponding vertices on the shared periodic grid, in model units"
+      },
+      "displayName" : "UPSTREAM BASELINE — Short Torus",
+      "geometryClaimCeiling" : "Regenerated finite starting surface from the pinned GPL formula and parameters.",
+      "geometryClaimClass" : "UPSTREAM BASELINE",
+      "mesh" : {
+        "generatorIdentifier" : "org.aloksingh.HeveaCore.HeveaMeshGenerator",
+        "generatorVersion" : "0.1.0",
+        "grid" : {
+          "uCount" : 96,
+          "vCount" : 128
+        },
+        "triangleCount" : 24576,
+        "vertexCount" : 12288
+      },
+      "metric" : {
+        "claimCeiling" : "A residual summary of this sampled mesh only; not an isometry certificate and not a bound on a limiting map.",
+        "claimClass" : "HV EXPERIMENT",
+        "finiteDifferenceStepU" : 0.010416666666666666,
+        "finiteDifferenceStepV" : 0.0078125,
+        "residualDefinition" : "sqrt((E-1)^2 + 2F^2 + (G-1)^2) from wrapped central finite differences",
+        "statistics" : {
+          "count" : 12288,
+          "maximum" : 1.3228534039996551,
+          "mean" : 1.2116006885260338,
+          "median" : 1.2184049995304915,
+          "minimum" : 1.087295297217278,
+          "percentile95" : 1.3221458966503514,
+          "rootMeanSquare" : 1.2145343718645885
+        },
+        "targetMetric" : {
+          "e" : 1,
+          "f" : 0,
+          "g" : 1
+        }
+      },
+      "normalMicroscope" : {
+        "actualSampleCount" : 256,
+        "claimCeiling" : "Finite-mesh normal variation only; no fractal-dimension or limiting-regularity theorem is claimed.",
+        "claimClass" : "HV EXPERIMENT",
+        "deterministicSeed" : 5207663399573345841,
+        "excludedScales" : [
+          {
+            "gridStep" : 64,
+            "reason" : "scale reaches or exceeds the finite grid's periodic Nyquist radius"
+          }
+        ],
+        "medianLogLogFit" : {
+          "claimCeiling" : "Descriptive least-squares slope across this finite scale ladder only; not a Hölder exponent, fractal dimension, convergence rate, or theorem.",
+          "coefficientOfDetermination" : 0.9984099136828902,
+          "includedGridSteps" : [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32
+          ],
+          "includedPointCount" : 6,
+          "intercept" : 2.0661414062725605,
+          "radiusDefinition" : "sqrt((h/uCount)*(h/vCount))",
+          "slope" : 0.9808161823731122,
+          "statistic" : "median omega in radians"
+        },
+        "observations" : [
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 1,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 0.08179126912146696,
+              "mean" : 0.07446544134906262,
+              "median" : 0.07564285096432025,
+              "minimum" : 0.06544984694978438,
+              "percentile95" : 0.0817912691214561,
+              "rootMeanSquare" : 0.07469169074697526
+            },
+            "parameterRadiusU" : 0.010416666666666666,
+            "parameterRadiusV" : 0.0078125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 2,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 0.16358253824292354,
+              "mean" : 0.14952788672550849,
+              "median" : 0.1522345665540334,
+              "minimum" : 0.1308996938995724,
+              "percentile95" : 0.16345601037863164,
+              "rootMeanSquare" : 0.149974985194185
+            },
+            "parameterRadiusU" : 0.020833333333333332,
+            "parameterRadiusV" : 0.015625,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 4,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 0.3269120207572628,
+              "mean" : 0.3011435095873818,
+              "median" : 0.3079093734546594,
+              "minimum" : 0.26179938779914674,
+              "percentile95" : 0.32665596910094524,
+              "rootMeanSquare" : 0.3020081930841951
+            },
+            "parameterRadiusU" : 0.041666666666666664,
+            "parameterRadiusV" : 0.03125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 8,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 0.6517820860694041,
+              "mean" : 0.6082204435642107,
+              "median" : 0.6268237978757216,
+              "minimum" : 0.5235987755982967,
+              "percentile95" : 0.6512451210445295,
+              "rootMeanSquare" : 0.609773920287361
+            },
+            "parameterRadiusU" : 0.08333333333333333,
+            "parameterRadiusV" : 0.0625,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 16,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 1.286658360868179,
+              "mean" : 1.2185213972367566,
+              "median" : 1.2549797263914637,
+              "minimum" : 1.047197551196608,
+              "percentile95" : 1.2866583608681528,
+              "rootMeanSquare" : 1.2206128853548506
+            },
+            "parameterRadiusU" : 0.16666666666666666,
+            "parameterRadiusV" : 0.125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 32,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 2.418858405776382,
+              "mean" : 2.219606046173603,
+              "median" : 2.158415010222541,
+              "minimum" : 2.0943951023931895,
+              "percentile95" : 2.4124148236668406,
+              "rootMeanSquare" : 2.22309609974293
+            },
+            "parameterRadiusU" : 0.3333333333333333,
+            "parameterRadiusV" : 0.25,
+            "validSampleCount" : 256
+          }
+        ],
+        "percentile95LogLogFit" : {
+          "claimCeiling" : "Descriptive least-squares slope across this finite scale ladder only; not a Hölder exponent, fractal dimension, convergence rate, or theorem.",
+          "coefficientOfDetermination" : 0.9997419893608188,
+          "includedGridSteps" : [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32
+          ],
+          "includedPointCount" : 6,
+          "intercept" : 2.130682135801006,
+          "radiusDefinition" : "sqrt((h/uCount)*(h/vCount))",
+          "slope" : 0.9810665568189654,
+          "statistic" : "95th-percentile omega in radians"
+        },
+        "requestedSampleCount" : 256,
+        "sampleCoordinates" : [
+          {
+            "u" : 43,
+            "v" : 4
+          },
+          {
+            "u" : 37,
+            "v" : 118
+          },
+          {
+            "u" : 70,
+            "v" : 121
+          },
+          {
+            "u" : 2,
+            "v" : 112
+          },
+          {
+            "u" : 88,
+            "v" : 24
+          },
+          {
+            "u" : 60,
+            "v" : 79
+          },
+          {
+            "u" : 10,
+            "v" : 49
+          },
+          {
+            "u" : 4,
+            "v" : 124
+          },
+          {
+            "u" : 10,
+            "v" : 93
+          },
+          {
+            "u" : 57,
+            "v" : 88
+          },
+          {
+            "u" : 45,
+            "v" : 25
+          },
+          {
+            "u" : 54,
+            "v" : 39
+          },
+          {
+            "u" : 26,
+            "v" : 41
+          },
+          {
+            "u" : 57,
+            "v" : 87
+          },
+          {
+            "u" : 26,
+            "v" : 19
+          },
+          {
+            "u" : 8,
+            "v" : 1
+          },
+          {
+            "u" : 63,
+            "v" : 115
+          },
+          {
+            "u" : 20,
+            "v" : 46
+          },
+          {
+            "u" : 89,
+            "v" : 83
+          },
+          {
+            "u" : 65,
+            "v" : 74
+          },
+          {
+            "u" : 5,
+            "v" : 117
+          },
+          {
+            "u" : 43,
+            "v" : 58
+          },
+          {
+            "u" : 6,
+            "v" : 10
+          },
+          {
+            "u" : 8,
+            "v" : 12
+          },
+          {
+            "u" : 12,
+            "v" : 96
+          },
+          {
+            "u" : 20,
+            "v" : 20
+          },
+          {
+            "u" : 17,
+            "v" : 43
+          },
+          {
+            "u" : 24,
+            "v" : 10
+          },
+          {
+            "u" : 0,
+            "v" : 50
+          },
+          {
+            "u" : 42,
+            "v" : 103
+          },
+          {
+            "u" : 6,
+            "v" : 112
+          },
+          {
+            "u" : 13,
+            "v" : 91
+          },
+          {
+            "u" : 67,
+            "v" : 112
+          },
+          {
+            "u" : 66,
+            "v" : 55
+          },
+          {
+            "u" : 58,
+            "v" : 105
+          },
+          {
+            "u" : 38,
+            "v" : 100
+          },
+          {
+            "u" : 63,
+            "v" : 90
+          },
+          {
+            "u" : 74,
+            "v" : 122
+          },
+          {
+            "u" : 65,
+            "v" : 59
+          },
+          {
+            "u" : 55,
+            "v" : 10
+          },
+          {
+            "u" : 52,
+            "v" : 90
+          },
+          {
+            "u" : 47,
+            "v" : 6
+          },
+          {
+            "u" : 42,
+            "v" : 126
+          },
+          {
+            "u" : 66,
+            "v" : 43
+          },
+          {
+            "u" : 13,
+            "v" : 7
+          },
+          {
+            "u" : 68,
+            "v" : 93
+          },
+          {
+            "u" : 45,
+            "v" : 4
+          },
+          {
+            "u" : 1,
+            "v" : 121
+          },
+          {
+            "u" : 40,
+            "v" : 38
+          },
+          {
+            "u" : 77,
+            "v" : 73
+          },
+          {
+            "u" : 72,
+            "v" : 2
+          },
+          {
+            "u" : 82,
+            "v" : 96
+          },
+          {
+            "u" : 65,
+            "v" : 1
+          },
+          {
+            "u" : 88,
+            "v" : 29
+          },
+          {
+            "u" : 68,
+            "v" : 6
+          },
+          {
+            "u" : 54,
+            "v" : 63
+          },
+          {
+            "u" : 0,
+            "v" : 88
+          },
+          {
+            "u" : 52,
+            "v" : 19
+          },
+          {
+            "u" : 5,
+            "v" : 65
+          },
+          {
+            "u" : 15,
+            "v" : 62
+          },
+          {
+            "u" : 35,
+            "v" : 36
+          },
+          {
+            "u" : 11,
+            "v" : 59
+          },
+          {
+            "u" : 73,
+            "v" : 25
+          },
+          {
+            "u" : 29,
+            "v" : 42
+          },
+          {
+            "u" : 85,
+            "v" : 30
+          },
+          {
+            "u" : 9,
+            "v" : 9
+          },
+          {
+            "u" : 75,
+            "v" : 17
+          },
+          {
+            "u" : 59,
+            "v" : 72
+          },
+          {
+            "u" : 5,
+            "v" : 125
+          },
+          {
+            "u" : 34,
+            "v" : 40
+          },
+          {
+            "u" : 11,
+            "v" : 5
+          },
+          {
+            "u" : 92,
+            "v" : 85
+          },
+          {
+            "u" : 28,
+            "v" : 99
+          },
+          {
+            "u" : 59,
+            "v" : 79
+          },
+          {
+            "u" : 13,
+            "v" : 31
+          },
+          {
+            "u" : 77,
+            "v" : 127
+          },
+          {
+            "u" : 94,
+            "v" : 122
+          },
+          {
+            "u" : 88,
+            "v" : 27
+          },
+          {
+            "u" : 23,
+            "v" : 31
+          },
+          {
+            "u" : 92,
+            "v" : 82
+          },
+          {
+            "u" : 73,
+            "v" : 67
+          },
+          {
+            "u" : 75,
+            "v" : 119
+          },
+          {
+            "u" : 36,
+            "v" : 112
+          },
+          {
+            "u" : 25,
+            "v" : 76
+          },
+          {
+            "u" : 83,
+            "v" : 77
+          },
+          {
+            "u" : 31,
+            "v" : 2
+          },
+          {
+            "u" : 45,
+            "v" : 79
+          },
+          {
+            "u" : 33,
+            "v" : 49
+          },
+          {
+            "u" : 38,
+            "v" : 43
+          },
+          {
+            "u" : 77,
+            "v" : 4
+          },
+          {
+            "u" : 42,
+            "v" : 46
+          },
+          {
+            "u" : 35,
+            "v" : 114
+          },
+          {
+            "u" : 41,
+            "v" : 15
+          },
+          {
+            "u" : 14,
+            "v" : 8
+          },
+          {
+            "u" : 77,
+            "v" : 58
+          },
+          {
+            "u" : 55,
+            "v" : 97
+          },
+          {
+            "u" : 40,
+            "v" : 60
+          },
+          {
+            "u" : 82,
+            "v" : 42
+          },
+          {
+            "u" : 92,
+            "v" : 98
+          },
+          {
+            "u" : 75,
+            "v" : 32
+          },
+          {
+            "u" : 75,
+            "v" : 5
+          },
+          {
+            "u" : 86,
+            "v" : 46
+          },
+          {
+            "u" : 5,
+            "v" : 41
+          },
+          {
+            "u" : 33,
+            "v" : 65
+          },
+          {
+            "u" : 49,
+            "v" : 52
+          },
+          {
+            "u" : 68,
+            "v" : 84
+          },
+          {
+            "u" : 66,
+            "v" : 0
+          },
+          {
+            "u" : 51,
+            "v" : 106
+          },
+          {
+            "u" : 74,
+            "v" : 58
+          },
+          {
+            "u" : 86,
+            "v" : 6
+          },
+          {
+            "u" : 87,
+            "v" : 2
+          },
+          {
+            "u" : 90,
+            "v" : 110
+          },
+          {
+            "u" : 56,
+            "v" : 17
+          },
+          {
+            "u" : 42,
+            "v" : 15
+          },
+          {
+            "u" : 23,
+            "v" : 69
+          },
+          {
+            "u" : 55,
+            "v" : 15
+          },
+          {
+            "u" : 95,
+            "v" : 122
+          },
+          {
+            "u" : 51,
+            "v" : 40
+          },
+          {
+            "u" : 63,
+            "v" : 78
+          },
+          {
+            "u" : 95,
+            "v" : 58
+          },
+          {
+            "u" : 43,
+            "v" : 96
+          },
+          {
+            "u" : 8,
+            "v" : 83
+          },
+          {
+            "u" : 40,
+            "v" : 64
+          },
+          {
+            "u" : 77,
+            "v" : 97
+          },
+          {
+            "u" : 43,
+            "v" : 70
+          },
+          {
+            "u" : 63,
+            "v" : 121
+          },
+          {
+            "u" : 79,
+            "v" : 58
+          },
+          {
+            "u" : 21,
+            "v" : 112
+          },
+          {
+            "u" : 49,
+            "v" : 92
+          },
+          {
+            "u" : 48,
+            "v" : 104
+          },
+          {
+            "u" : 11,
+            "v" : 17
+          },
+          {
+            "u" : 66,
+            "v" : 113
+          },
+          {
+            "u" : 92,
+            "v" : 56
+          },
+          {
+            "u" : 50,
+            "v" : 82
+          },
+          {
+            "u" : 35,
+            "v" : 125
+          },
+          {
+            "u" : 61,
+            "v" : 122
+          },
+          {
+            "u" : 80,
+            "v" : 97
+          },
+          {
+            "u" : 22,
+            "v" : 127
+          },
+          {
+            "u" : 9,
+            "v" : 55
+          },
+          {
+            "u" : 39,
+            "v" : 82
+          },
+          {
+            "u" : 19,
+            "v" : 39
+          },
+          {
+            "u" : 65,
+            "v" : 39
+          },
+          {
+            "u" : 23,
+            "v" : 60
+          },
+          {
+            "u" : 34,
+            "v" : 25
+          },
+          {
+            "u" : 72,
+            "v" : 44
+          },
+          {
+            "u" : 86,
+            "v" : 73
+          },
+          {
+            "u" : 91,
+            "v" : 105
+          },
+          {
+            "u" : 30,
+            "v" : 59
+          },
+          {
+            "u" : 0,
+            "v" : 103
+          },
+          {
+            "u" : 22,
+            "v" : 121
+          },
+          {
+            "u" : 8,
+            "v" : 99
+          },
+          {
+            "u" : 17,
+            "v" : 101
+          },
+          {
+            "u" : 41,
+            "v" : 89
+          },
+          {
+            "u" : 58,
+            "v" : 10
+          },
+          {
+            "u" : 34,
+            "v" : 9
+          },
+          {
+            "u" : 84,
+            "v" : 28
+          },
+          {
+            "u" : 26,
+            "v" : 89
+          },
+          {
+            "u" : 41,
+            "v" : 19
+          },
+          {
+            "u" : 55,
+            "v" : 118
+          },
+          {
+            "u" : 80,
+            "v" : 21
+          },
+          {
+            "u" : 65,
+            "v" : 121
+          },
+          {
+            "u" : 50,
+            "v" : 122
+          },
+          {
+            "u" : 23,
+            "v" : 28
+          },
+          {
+            "u" : 75,
+            "v" : 112
+          },
+          {
+            "u" : 53,
+            "v" : 76
+          },
+          {
+            "u" : 10,
+            "v" : 111
+          },
+          {
+            "u" : 89,
+            "v" : 114
+          },
+          {
+            "u" : 80,
+            "v" : 110
+          },
+          {
+            "u" : 20,
+            "v" : 37
+          },
+          {
+            "u" : 28,
+            "v" : 70
+          },
+          {
+            "u" : 62,
+            "v" : 19
+          },
+          {
+            "u" : 53,
+            "v" : 68
+          },
+          {
+            "u" : 57,
+            "v" : 79
+          },
+          {
+            "u" : 23,
+            "v" : 14
+          },
+          {
+            "u" : 9,
+            "v" : 93
+          },
+          {
+            "u" : 3,
+            "v" : 87
+          },
+          {
+            "u" : 84,
+            "v" : 127
+          },
+          {
+            "u" : 68,
+            "v" : 116
+          },
+          {
+            "u" : 17,
+            "v" : 124
+          },
+          {
+            "u" : 9,
+            "v" : 79
+          },
+          {
+            "u" : 51,
+            "v" : 73
+          },
+          {
+            "u" : 68,
+            "v" : 106
+          },
+          {
+            "u" : 69,
+            "v" : 86
+          },
+          {
+            "u" : 62,
+            "v" : 101
+          },
+          {
+            "u" : 40,
+            "v" : 118
+          },
+          {
+            "u" : 30,
+            "v" : 54
+          },
+          {
+            "u" : 43,
+            "v" : 120
+          },
+          {
+            "u" : 52,
+            "v" : 66
+          },
+          {
+            "u" : 51,
+            "v" : 31
+          },
+          {
+            "u" : 36,
+            "v" : 125
+          },
+          {
+            "u" : 17,
+            "v" : 38
+          },
+          {
+            "u" : 65,
+            "v" : 15
+          },
+          {
+            "u" : 69,
+            "v" : 64
+          },
+          {
+            "u" : 9,
+            "v" : 89
+          },
+          {
+            "u" : 53,
+            "v" : 90
+          },
+          {
+            "u" : 67,
+            "v" : 96
+          },
+          {
+            "u" : 83,
+            "v" : 98
+          },
+          {
+            "u" : 93,
+            "v" : 14
+          },
+          {
+            "u" : 87,
+            "v" : 77
+          },
+          {
+            "u" : 93,
+            "v" : 15
+          },
+          {
+            "u" : 37,
+            "v" : 24
+          },
+          {
+            "u" : 32,
+            "v" : 96
+          },
+          {
+            "u" : 47,
+            "v" : 29
+          },
+          {
+            "u" : 76,
+            "v" : 28
+          },
+          {
+            "u" : 24,
+            "v" : 96
+          },
+          {
+            "u" : 46,
+            "v" : 124
+          },
+          {
+            "u" : 0,
+            "v" : 120
+          },
+          {
+            "u" : 60,
+            "v" : 117
+          },
+          {
+            "u" : 86,
+            "v" : 99
+          },
+          {
+            "u" : 94,
+            "v" : 109
+          },
+          {
+            "u" : 20,
+            "v" : 61
+          },
+          {
+            "u" : 26,
+            "v" : 17
+          },
+          {
+            "u" : 78,
+            "v" : 47
+          },
+          {
+            "u" : 3,
+            "v" : 43
+          },
+          {
+            "u" : 15,
+            "v" : 53
+          },
+          {
+            "u" : 39,
+            "v" : 41
+          },
+          {
+            "u" : 28,
+            "v" : 17
+          },
+          {
+            "u" : 42,
+            "v" : 114
+          },
+          {
+            "u" : 61,
+            "v" : 103
+          },
+          {
+            "u" : 57,
+            "v" : 66
+          },
+          {
+            "u" : 76,
+            "v" : 108
+          },
+          {
+            "u" : 54,
+            "v" : 49
+          },
+          {
+            "u" : 28,
+            "v" : 75
+          },
+          {
+            "u" : 88,
+            "v" : 84
+          },
+          {
+            "u" : 6,
+            "v" : 65
+          },
+          {
+            "u" : 54,
+            "v" : 76
+          },
+          {
+            "u" : 20,
+            "v" : 103
+          },
+          {
+            "u" : 25,
+            "v" : 72
+          },
+          {
+            "u" : 30,
+            "v" : 30
+          },
+          {
+            "u" : 78,
+            "v" : 10
+          },
+          {
+            "u" : 51,
+            "v" : 3
+          },
+          {
+            "u" : 71,
+            "v" : 79
+          },
+          {
+            "u" : 94,
+            "v" : 16
+          },
+          {
+            "u" : 59,
+            "v" : 5
+          },
+          {
+            "u" : 53,
+            "v" : 116
+          },
+          {
+            "u" : 23,
+            "v" : 23
+          },
+          {
+            "u" : 49,
+            "v" : 55
+          },
+          {
+            "u" : 54,
+            "v" : 26
+          },
+          {
+            "u" : 0,
+            "v" : 7
+          },
+          {
+            "u" : 93,
+            "v" : 117
+          },
+          {
+            "u" : 38,
+            "v" : 59
+          },
+          {
+            "u" : 58,
+            "v" : 58
+          },
+          {
+            "u" : 48,
+            "v" : 119
+          },
+          {
+            "u" : 9,
+            "v" : 112
+          },
+          {
+            "u" : 73,
+            "v" : 123
+          },
+          {
+            "u" : 51,
+            "v" : 35
+          },
+          {
+            "u" : 82,
+            "v" : 54
+          },
+          {
+            "u" : 88,
+            "v" : 96
+          },
+          {
+            "u" : 41,
+            "v" : 30
+          },
+          {
+            "u" : 0,
+            "v" : 119
+          },
+          {
+            "u" : 31,
+            "v" : 75
+          },
+          {
+            "u" : 78,
+            "v" : 114
+          },
+          {
+            "u" : 44,
+            "v" : 107
+          },
+          {
+            "u" : 65,
+            "v" : 56
+          },
+          {
+            "u" : 61,
+            "v" : 5
+          },
+          {
+            "u" : 24,
+            "v" : 93
+          }
+        ]
+      },
+      "stage" : "shortTorus",
+      "windingCurves" : [
+        {
+          "claimCeiling" : "Polyline and chord measurements of one interpolated finite-mesh path only.",
+          "diagnostic" : {
+            "ambientChordLength" : 7.757919228897728e-18,
+            "ambientPolylineLength" : 0.1999609738736618,
+            "chordToIntrinsicRatio" : 7.757919228897728e-18,
+            "claimClass" : "HV EXPERIMENT",
+            "end" : {
+              "u" : 1.1375,
+              "v" : 0.28125
+            },
+            "intrinsicTargetLength" : 1,
+            "polylineRelativeLengthResidual" : -0.8000390261263381,
+            "segmentCount" : 2048,
+            "stage" : "shortTorus",
+            "start" : {
+              "u" : 0.1375,
+              "v" : 0.28125
+            }
+          },
+          "direction" : {
+            "u" : 1,
+            "v" : 0
+          },
+          "label" : "u winding at v = 0.28125"
+        },
+        {
+          "claimCeiling" : "Polyline and chord measurements of one interpolated finite-mesh path only.",
+          "diagnostic" : {
+            "ambientChordLength" : 0,
+            "ambientPolylineLength" : 0.6297825537148153,
+            "chordToIntrinsicRatio" : 0,
+            "claimClass" : "HV EXPERIMENT",
+            "end" : {
+              "u" : 0.1375,
+              "v" : 1.28125
+            },
+            "intrinsicTargetLength" : 1,
+            "polylineRelativeLengthResidual" : -0.3702174462851847,
+            "segmentCount" : 2048,
+            "stage" : "shortTorus",
+            "start" : {
+              "u" : 0.1375,
+              "v" : 0.28125
+            }
+          },
+          "direction" : {
+            "u" : 0,
+            "v" : 1
+          },
+          "label" : "v winding at u = 0.1375"
+        }
+      ]
+    },
+    {
+      "appliedProxyCorrugations" : [
+        {
+          "amplitude" : 0.012,
+          "direction" : {
+            "u" : 1,
+            "v" : 0
+          },
+          "displayName" : "REAL-TIME PROXY 1 — u Corrugation",
+          "frequency" : 5,
+          "upstreamReferenceFrequency" : 12
+        }
+      ],
+      "displacement" : {
+        "claimCeiling" : "Finite-stage proxy displacement only; not a geometric error bound against an upstream corrugation or limiting embedding.",
+        "claimClass" : "HV EXPERIMENT",
+        "fromPreviousStage" : {
+          "count" : 12288,
+          "maximum" : 0.012000000000000004,
+          "mean" : 0.007636709996736653,
+          "median" : 0.008485281374238578,
+          "minimum" : 0,
+          "percentile95" : 0.01197430707886324,
+          "rootMeanSquare" : 0.008485281374238424
+        },
+        "fromShortTorus" : {
+          "count" : 12288,
+          "maximum" : 0.012000000000000004,
+          "mean" : 0.007636709996736653,
+          "median" : 0.008485281374238578,
+          "minimum" : 0,
+          "percentile95" : 0.01197430707886324,
+          "rootMeanSquare" : 0.008485281374238424
+        },
+        "previousStage" : "shortTorus",
+        "reference" : "Euclidean distance between corresponding vertices on the shared periodic grid, in model units"
+      },
+      "displayName" : "REAL-TIME PROXY 1 — u Corrugation",
+      "geometryClaimCeiling" : "Interactive explanatory proxy only; not the upstream corrugation, an isometry certificate, or the limiting C1 embedding.",
+      "geometryClaimClass" : "REAL-TIME PROXY",
+      "mesh" : {
+        "generatorIdentifier" : "org.aloksingh.HeveaCore.HeveaMeshGenerator",
+        "generatorVersion" : "0.1.0",
+        "grid" : {
+          "uCount" : 96,
+          "vCount" : 128
+        },
+        "triangleCount" : 24576,
+        "vertexCount" : 12288
+      },
+      "metric" : {
+        "claimCeiling" : "A residual summary of this sampled mesh only; not an isometry certificate and not a bound on a limiting map.",
+        "claimClass" : "HV EXPERIMENT",
+        "finiteDifferenceStepU" : 0.010416666666666666,
+        "finiteDifferenceStepV" : 0.0078125,
+        "residualDefinition" : "sqrt((E-1)^2 + 2F^2 + (G-1)^2) from wrapped central finite differences",
+        "statistics" : {
+          "count" : 12288,
+          "maximum" : 1.3214207845558756,
+          "mean" : 1.1559827533235711,
+          "median" : 1.1732632833056873,
+          "minimum" : 0.955314500543003,
+          "percentile95" : 1.2977040828315098,
+          "rootMeanSquare" : 1.1602823100472683
+        },
+        "targetMetric" : {
+          "e" : 1,
+          "f" : 0,
+          "g" : 1
+        }
+      },
+      "normalMicroscope" : {
+        "actualSampleCount" : 256,
+        "claimCeiling" : "Finite-mesh normal variation only; no fractal-dimension or limiting-regularity theorem is claimed.",
+        "claimClass" : "HV EXPERIMENT",
+        "deterministicSeed" : 5207663399573345841,
+        "excludedScales" : [
+          {
+            "gridStep" : 64,
+            "reason" : "scale reaches or exceeds the finite grid's periodic Nyquist radius"
+          }
+        ],
+        "medianLogLogFit" : {
+          "claimCeiling" : "Descriptive least-squares slope across this finite scale ladder only; not a Hölder exponent, fractal dimension, convergence rate, or theorem.",
+          "coefficientOfDetermination" : 0.6994889582186603,
+          "includedGridSteps" : [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32
+          ],
+          "includedPointCount" : 6,
+          "intercept" : 1.7337492509992136,
+          "radiusDefinition" : "sqrt((h/uCount)*(h/vCount))",
+          "slope" : 0.5530916983844197,
+          "statistic" : "median omega in radians"
+        },
+        "observations" : [
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 1,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 0.8350261023739679,
+              "mean" : 0.3139526731785527,
+              "median" : 0.23770235632616762,
+              "minimum" : 0.050184716835092846,
+              "percentile95" : 0.7830303938545834,
+              "rootMeanSquare" : 0.3809364649031092
+            },
+            "parameterRadiusU" : 0.010416666666666666,
+            "parameterRadiusV" : 0.0078125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 2,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 1.377421358130217,
+              "mean" : 0.6946904962747957,
+              "median" : 0.7169894421541645,
+              "minimum" : 0.19913227178704093,
+              "percentile95" : 1.3593469910663352,
+              "rootMeanSquare" : 0.7812177858291107
+            },
+            "parameterRadiusU" : 0.020833333333333332,
+            "parameterRadiusV" : 0.015625,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 4,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 1.7807708398036146,
+              "mean" : 1.431373882073251,
+              "median" : 1.509607690613946,
+              "minimum" : 0.8322760979191682,
+              "percentile95" : 1.7802897456239153,
+              "rootMeanSquare" : 1.4592595428462014
+            },
+            "parameterRadiusU" : 0.041666666666666664,
+            "parameterRadiusV" : 0.03125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 8,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 2.5794063909661866,
+              "mean" : 2.057384581922109,
+              "median" : 2.2498293307067154,
+              "minimum" : 0.09396487206058621,
+              "percentile95" : 2.577431965948002,
+              "rootMeanSquare" : 2.136434256824203
+            },
+            "parameterRadiusU" : 0.08333333333333333,
+            "parameterRadiusV" : 0.0625,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 16,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 2.945170896878279,
+              "mean" : 1.5695465924485743,
+              "median" : 1.3099783503870097,
+              "minimum" : 0.10603168869390295,
+              "percentile95" : 2.934805750790735,
+              "rootMeanSquare" : 1.781583860941471
+            },
+            "parameterRadiusU" : 0.16666666666666666,
+            "parameterRadiusV" : 0.125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 32,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 3.0355609648958937,
+              "mean" : 2.2287439825683264,
+              "median" : 2.237720900964564,
+              "minimum" : 0.9857281949436694,
+              "percentile95" : 3.0279165692156056,
+              "rootMeanSquare" : 2.264105962692925
+            },
+            "parameterRadiusU" : 0.3333333333333333,
+            "parameterRadiusV" : 0.25,
+            "validSampleCount" : 256
+          }
+        ],
+        "percentile95LogLogFit" : {
+          "claimCeiling" : "Descriptive least-squares slope across this finite scale ladder only; not a Hölder exponent, fractal dimension, convergence rate, or theorem.",
+          "coefficientOfDetermination" : 0.9093942379702076,
+          "includedGridSteps" : [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32
+          ],
+          "includedPointCount" : 6,
+          "intercept" : 1.7863109502678491,
+          "radiusDefinition" : "sqrt((h/uCount)*(h/vCount))",
+          "slope" : 0.3891657780819457,
+          "statistic" : "95th-percentile omega in radians"
+        },
+        "requestedSampleCount" : 256,
+        "sampleCoordinates" : [
+          {
+            "u" : 43,
+            "v" : 4
+          },
+          {
+            "u" : 37,
+            "v" : 118
+          },
+          {
+            "u" : 70,
+            "v" : 121
+          },
+          {
+            "u" : 2,
+            "v" : 112
+          },
+          {
+            "u" : 88,
+            "v" : 24
+          },
+          {
+            "u" : 60,
+            "v" : 79
+          },
+          {
+            "u" : 10,
+            "v" : 49
+          },
+          {
+            "u" : 4,
+            "v" : 124
+          },
+          {
+            "u" : 10,
+            "v" : 93
+          },
+          {
+            "u" : 57,
+            "v" : 88
+          },
+          {
+            "u" : 45,
+            "v" : 25
+          },
+          {
+            "u" : 54,
+            "v" : 39
+          },
+          {
+            "u" : 26,
+            "v" : 41
+          },
+          {
+            "u" : 57,
+            "v" : 87
+          },
+          {
+            "u" : 26,
+            "v" : 19
+          },
+          {
+            "u" : 8,
+            "v" : 1
+          },
+          {
+            "u" : 63,
+            "v" : 115
+          },
+          {
+            "u" : 20,
+            "v" : 46
+          },
+          {
+            "u" : 89,
+            "v" : 83
+          },
+          {
+            "u" : 65,
+            "v" : 74
+          },
+          {
+            "u" : 5,
+            "v" : 117
+          },
+          {
+            "u" : 43,
+            "v" : 58
+          },
+          {
+            "u" : 6,
+            "v" : 10
+          },
+          {
+            "u" : 8,
+            "v" : 12
+          },
+          {
+            "u" : 12,
+            "v" : 96
+          },
+          {
+            "u" : 20,
+            "v" : 20
+          },
+          {
+            "u" : 17,
+            "v" : 43
+          },
+          {
+            "u" : 24,
+            "v" : 10
+          },
+          {
+            "u" : 0,
+            "v" : 50
+          },
+          {
+            "u" : 42,
+            "v" : 103
+          },
+          {
+            "u" : 6,
+            "v" : 112
+          },
+          {
+            "u" : 13,
+            "v" : 91
+          },
+          {
+            "u" : 67,
+            "v" : 112
+          },
+          {
+            "u" : 66,
+            "v" : 55
+          },
+          {
+            "u" : 58,
+            "v" : 105
+          },
+          {
+            "u" : 38,
+            "v" : 100
+          },
+          {
+            "u" : 63,
+            "v" : 90
+          },
+          {
+            "u" : 74,
+            "v" : 122
+          },
+          {
+            "u" : 65,
+            "v" : 59
+          },
+          {
+            "u" : 55,
+            "v" : 10
+          },
+          {
+            "u" : 52,
+            "v" : 90
+          },
+          {
+            "u" : 47,
+            "v" : 6
+          },
+          {
+            "u" : 42,
+            "v" : 126
+          },
+          {
+            "u" : 66,
+            "v" : 43
+          },
+          {
+            "u" : 13,
+            "v" : 7
+          },
+          {
+            "u" : 68,
+            "v" : 93
+          },
+          {
+            "u" : 45,
+            "v" : 4
+          },
+          {
+            "u" : 1,
+            "v" : 121
+          },
+          {
+            "u" : 40,
+            "v" : 38
+          },
+          {
+            "u" : 77,
+            "v" : 73
+          },
+          {
+            "u" : 72,
+            "v" : 2
+          },
+          {
+            "u" : 82,
+            "v" : 96
+          },
+          {
+            "u" : 65,
+            "v" : 1
+          },
+          {
+            "u" : 88,
+            "v" : 29
+          },
+          {
+            "u" : 68,
+            "v" : 6
+          },
+          {
+            "u" : 54,
+            "v" : 63
+          },
+          {
+            "u" : 0,
+            "v" : 88
+          },
+          {
+            "u" : 52,
+            "v" : 19
+          },
+          {
+            "u" : 5,
+            "v" : 65
+          },
+          {
+            "u" : 15,
+            "v" : 62
+          },
+          {
+            "u" : 35,
+            "v" : 36
+          },
+          {
+            "u" : 11,
+            "v" : 59
+          },
+          {
+            "u" : 73,
+            "v" : 25
+          },
+          {
+            "u" : 29,
+            "v" : 42
+          },
+          {
+            "u" : 85,
+            "v" : 30
+          },
+          {
+            "u" : 9,
+            "v" : 9
+          },
+          {
+            "u" : 75,
+            "v" : 17
+          },
+          {
+            "u" : 59,
+            "v" : 72
+          },
+          {
+            "u" : 5,
+            "v" : 125
+          },
+          {
+            "u" : 34,
+            "v" : 40
+          },
+          {
+            "u" : 11,
+            "v" : 5
+          },
+          {
+            "u" : 92,
+            "v" : 85
+          },
+          {
+            "u" : 28,
+            "v" : 99
+          },
+          {
+            "u" : 59,
+            "v" : 79
+          },
+          {
+            "u" : 13,
+            "v" : 31
+          },
+          {
+            "u" : 77,
+            "v" : 127
+          },
+          {
+            "u" : 94,
+            "v" : 122
+          },
+          {
+            "u" : 88,
+            "v" : 27
+          },
+          {
+            "u" : 23,
+            "v" : 31
+          },
+          {
+            "u" : 92,
+            "v" : 82
+          },
+          {
+            "u" : 73,
+            "v" : 67
+          },
+          {
+            "u" : 75,
+            "v" : 119
+          },
+          {
+            "u" : 36,
+            "v" : 112
+          },
+          {
+            "u" : 25,
+            "v" : 76
+          },
+          {
+            "u" : 83,
+            "v" : 77
+          },
+          {
+            "u" : 31,
+            "v" : 2
+          },
+          {
+            "u" : 45,
+            "v" : 79
+          },
+          {
+            "u" : 33,
+            "v" : 49
+          },
+          {
+            "u" : 38,
+            "v" : 43
+          },
+          {
+            "u" : 77,
+            "v" : 4
+          },
+          {
+            "u" : 42,
+            "v" : 46
+          },
+          {
+            "u" : 35,
+            "v" : 114
+          },
+          {
+            "u" : 41,
+            "v" : 15
+          },
+          {
+            "u" : 14,
+            "v" : 8
+          },
+          {
+            "u" : 77,
+            "v" : 58
+          },
+          {
+            "u" : 55,
+            "v" : 97
+          },
+          {
+            "u" : 40,
+            "v" : 60
+          },
+          {
+            "u" : 82,
+            "v" : 42
+          },
+          {
+            "u" : 92,
+            "v" : 98
+          },
+          {
+            "u" : 75,
+            "v" : 32
+          },
+          {
+            "u" : 75,
+            "v" : 5
+          },
+          {
+            "u" : 86,
+            "v" : 46
+          },
+          {
+            "u" : 5,
+            "v" : 41
+          },
+          {
+            "u" : 33,
+            "v" : 65
+          },
+          {
+            "u" : 49,
+            "v" : 52
+          },
+          {
+            "u" : 68,
+            "v" : 84
+          },
+          {
+            "u" : 66,
+            "v" : 0
+          },
+          {
+            "u" : 51,
+            "v" : 106
+          },
+          {
+            "u" : 74,
+            "v" : 58
+          },
+          {
+            "u" : 86,
+            "v" : 6
+          },
+          {
+            "u" : 87,
+            "v" : 2
+          },
+          {
+            "u" : 90,
+            "v" : 110
+          },
+          {
+            "u" : 56,
+            "v" : 17
+          },
+          {
+            "u" : 42,
+            "v" : 15
+          },
+          {
+            "u" : 23,
+            "v" : 69
+          },
+          {
+            "u" : 55,
+            "v" : 15
+          },
+          {
+            "u" : 95,
+            "v" : 122
+          },
+          {
+            "u" : 51,
+            "v" : 40
+          },
+          {
+            "u" : 63,
+            "v" : 78
+          },
+          {
+            "u" : 95,
+            "v" : 58
+          },
+          {
+            "u" : 43,
+            "v" : 96
+          },
+          {
+            "u" : 8,
+            "v" : 83
+          },
+          {
+            "u" : 40,
+            "v" : 64
+          },
+          {
+            "u" : 77,
+            "v" : 97
+          },
+          {
+            "u" : 43,
+            "v" : 70
+          },
+          {
+            "u" : 63,
+            "v" : 121
+          },
+          {
+            "u" : 79,
+            "v" : 58
+          },
+          {
+            "u" : 21,
+            "v" : 112
+          },
+          {
+            "u" : 49,
+            "v" : 92
+          },
+          {
+            "u" : 48,
+            "v" : 104
+          },
+          {
+            "u" : 11,
+            "v" : 17
+          },
+          {
+            "u" : 66,
+            "v" : 113
+          },
+          {
+            "u" : 92,
+            "v" : 56
+          },
+          {
+            "u" : 50,
+            "v" : 82
+          },
+          {
+            "u" : 35,
+            "v" : 125
+          },
+          {
+            "u" : 61,
+            "v" : 122
+          },
+          {
+            "u" : 80,
+            "v" : 97
+          },
+          {
+            "u" : 22,
+            "v" : 127
+          },
+          {
+            "u" : 9,
+            "v" : 55
+          },
+          {
+            "u" : 39,
+            "v" : 82
+          },
+          {
+            "u" : 19,
+            "v" : 39
+          },
+          {
+            "u" : 65,
+            "v" : 39
+          },
+          {
+            "u" : 23,
+            "v" : 60
+          },
+          {
+            "u" : 34,
+            "v" : 25
+          },
+          {
+            "u" : 72,
+            "v" : 44
+          },
+          {
+            "u" : 86,
+            "v" : 73
+          },
+          {
+            "u" : 91,
+            "v" : 105
+          },
+          {
+            "u" : 30,
+            "v" : 59
+          },
+          {
+            "u" : 0,
+            "v" : 103
+          },
+          {
+            "u" : 22,
+            "v" : 121
+          },
+          {
+            "u" : 8,
+            "v" : 99
+          },
+          {
+            "u" : 17,
+            "v" : 101
+          },
+          {
+            "u" : 41,
+            "v" : 89
+          },
+          {
+            "u" : 58,
+            "v" : 10
+          },
+          {
+            "u" : 34,
+            "v" : 9
+          },
+          {
+            "u" : 84,
+            "v" : 28
+          },
+          {
+            "u" : 26,
+            "v" : 89
+          },
+          {
+            "u" : 41,
+            "v" : 19
+          },
+          {
+            "u" : 55,
+            "v" : 118
+          },
+          {
+            "u" : 80,
+            "v" : 21
+          },
+          {
+            "u" : 65,
+            "v" : 121
+          },
+          {
+            "u" : 50,
+            "v" : 122
+          },
+          {
+            "u" : 23,
+            "v" : 28
+          },
+          {
+            "u" : 75,
+            "v" : 112
+          },
+          {
+            "u" : 53,
+            "v" : 76
+          },
+          {
+            "u" : 10,
+            "v" : 111
+          },
+          {
+            "u" : 89,
+            "v" : 114
+          },
+          {
+            "u" : 80,
+            "v" : 110
+          },
+          {
+            "u" : 20,
+            "v" : 37
+          },
+          {
+            "u" : 28,
+            "v" : 70
+          },
+          {
+            "u" : 62,
+            "v" : 19
+          },
+          {
+            "u" : 53,
+            "v" : 68
+          },
+          {
+            "u" : 57,
+            "v" : 79
+          },
+          {
+            "u" : 23,
+            "v" : 14
+          },
+          {
+            "u" : 9,
+            "v" : 93
+          },
+          {
+            "u" : 3,
+            "v" : 87
+          },
+          {
+            "u" : 84,
+            "v" : 127
+          },
+          {
+            "u" : 68,
+            "v" : 116
+          },
+          {
+            "u" : 17,
+            "v" : 124
+          },
+          {
+            "u" : 9,
+            "v" : 79
+          },
+          {
+            "u" : 51,
+            "v" : 73
+          },
+          {
+            "u" : 68,
+            "v" : 106
+          },
+          {
+            "u" : 69,
+            "v" : 86
+          },
+          {
+            "u" : 62,
+            "v" : 101
+          },
+          {
+            "u" : 40,
+            "v" : 118
+          },
+          {
+            "u" : 30,
+            "v" : 54
+          },
+          {
+            "u" : 43,
+            "v" : 120
+          },
+          {
+            "u" : 52,
+            "v" : 66
+          },
+          {
+            "u" : 51,
+            "v" : 31
+          },
+          {
+            "u" : 36,
+            "v" : 125
+          },
+          {
+            "u" : 17,
+            "v" : 38
+          },
+          {
+            "u" : 65,
+            "v" : 15
+          },
+          {
+            "u" : 69,
+            "v" : 64
+          },
+          {
+            "u" : 9,
+            "v" : 89
+          },
+          {
+            "u" : 53,
+            "v" : 90
+          },
+          {
+            "u" : 67,
+            "v" : 96
+          },
+          {
+            "u" : 83,
+            "v" : 98
+          },
+          {
+            "u" : 93,
+            "v" : 14
+          },
+          {
+            "u" : 87,
+            "v" : 77
+          },
+          {
+            "u" : 93,
+            "v" : 15
+          },
+          {
+            "u" : 37,
+            "v" : 24
+          },
+          {
+            "u" : 32,
+            "v" : 96
+          },
+          {
+            "u" : 47,
+            "v" : 29
+          },
+          {
+            "u" : 76,
+            "v" : 28
+          },
+          {
+            "u" : 24,
+            "v" : 96
+          },
+          {
+            "u" : 46,
+            "v" : 124
+          },
+          {
+            "u" : 0,
+            "v" : 120
+          },
+          {
+            "u" : 60,
+            "v" : 117
+          },
+          {
+            "u" : 86,
+            "v" : 99
+          },
+          {
+            "u" : 94,
+            "v" : 109
+          },
+          {
+            "u" : 20,
+            "v" : 61
+          },
+          {
+            "u" : 26,
+            "v" : 17
+          },
+          {
+            "u" : 78,
+            "v" : 47
+          },
+          {
+            "u" : 3,
+            "v" : 43
+          },
+          {
+            "u" : 15,
+            "v" : 53
+          },
+          {
+            "u" : 39,
+            "v" : 41
+          },
+          {
+            "u" : 28,
+            "v" : 17
+          },
+          {
+            "u" : 42,
+            "v" : 114
+          },
+          {
+            "u" : 61,
+            "v" : 103
+          },
+          {
+            "u" : 57,
+            "v" : 66
+          },
+          {
+            "u" : 76,
+            "v" : 108
+          },
+          {
+            "u" : 54,
+            "v" : 49
+          },
+          {
+            "u" : 28,
+            "v" : 75
+          },
+          {
+            "u" : 88,
+            "v" : 84
+          },
+          {
+            "u" : 6,
+            "v" : 65
+          },
+          {
+            "u" : 54,
+            "v" : 76
+          },
+          {
+            "u" : 20,
+            "v" : 103
+          },
+          {
+            "u" : 25,
+            "v" : 72
+          },
+          {
+            "u" : 30,
+            "v" : 30
+          },
+          {
+            "u" : 78,
+            "v" : 10
+          },
+          {
+            "u" : 51,
+            "v" : 3
+          },
+          {
+            "u" : 71,
+            "v" : 79
+          },
+          {
+            "u" : 94,
+            "v" : 16
+          },
+          {
+            "u" : 59,
+            "v" : 5
+          },
+          {
+            "u" : 53,
+            "v" : 116
+          },
+          {
+            "u" : 23,
+            "v" : 23
+          },
+          {
+            "u" : 49,
+            "v" : 55
+          },
+          {
+            "u" : 54,
+            "v" : 26
+          },
+          {
+            "u" : 0,
+            "v" : 7
+          },
+          {
+            "u" : 93,
+            "v" : 117
+          },
+          {
+            "u" : 38,
+            "v" : 59
+          },
+          {
+            "u" : 58,
+            "v" : 58
+          },
+          {
+            "u" : 48,
+            "v" : 119
+          },
+          {
+            "u" : 9,
+            "v" : 112
+          },
+          {
+            "u" : 73,
+            "v" : 123
+          },
+          {
+            "u" : 51,
+            "v" : 35
+          },
+          {
+            "u" : 82,
+            "v" : 54
+          },
+          {
+            "u" : 88,
+            "v" : 96
+          },
+          {
+            "u" : 41,
+            "v" : 30
+          },
+          {
+            "u" : 0,
+            "v" : 119
+          },
+          {
+            "u" : 31,
+            "v" : 75
+          },
+          {
+            "u" : 78,
+            "v" : 114
+          },
+          {
+            "u" : 44,
+            "v" : 107
+          },
+          {
+            "u" : 65,
+            "v" : 56
+          },
+          {
+            "u" : 61,
+            "v" : 5
+          },
+          {
+            "u" : 24,
+            "v" : 93
+          }
+        ]
+      },
+      "stage" : "proxyStage1",
+      "windingCurves" : [
+        {
+          "claimCeiling" : "Polyline and chord measurements of one interpolated finite-mesh path only.",
+          "diagnostic" : {
+            "ambientChordLength" : 3.469446951953614e-18,
+            "ambientPolylineLength" : 0.32437276013781313,
+            "chordToIntrinsicRatio" : 3.469446951953614e-18,
+            "claimClass" : "HV EXPERIMENT",
+            "end" : {
+              "u" : 1.1375,
+              "v" : 0.28125
+            },
+            "intrinsicTargetLength" : 1,
+            "polylineRelativeLengthResidual" : -0.6756272398621869,
+            "segmentCount" : 2048,
+            "stage" : "proxyStage1",
+            "start" : {
+              "u" : 0.1375,
+              "v" : 0.28125
+            }
+          },
+          "direction" : {
+            "u" : 1,
+            "v" : 0
+          },
+          "label" : "u winding at v = 0.28125"
+        },
+        {
+          "claimCeiling" : "Polyline and chord measurements of one interpolated finite-mesh path only.",
+          "diagnostic" : {
+            "ambientChordLength" : 0,
+            "ambientPolylineLength" : 0.5850163290328959,
+            "chordToIntrinsicRatio" : 0,
+            "claimClass" : "HV EXPERIMENT",
+            "end" : {
+              "u" : 0.1375,
+              "v" : 1.28125
+            },
+            "intrinsicTargetLength" : 1,
+            "polylineRelativeLengthResidual" : -0.4149836709671041,
+            "segmentCount" : 2048,
+            "stage" : "proxyStage1",
+            "start" : {
+              "u" : 0.1375,
+              "v" : 0.28125
+            }
+          },
+          "direction" : {
+            "u" : 0,
+            "v" : 1
+          },
+          "label" : "v winding at u = 0.1375"
+        }
+      ]
+    },
+    {
+      "appliedProxyCorrugations" : [
+        {
+          "amplitude" : 0.012,
+          "direction" : {
+            "u" : 1,
+            "v" : 0
+          },
+          "displayName" : "REAL-TIME PROXY 1 — u Corrugation",
+          "frequency" : 5,
+          "upstreamReferenceFrequency" : 12
+        },
+        {
+          "amplitude" : 0.006,
+          "direction" : {
+            "u" : 1,
+            "v" : 2
+          },
+          "displayName" : "REAL-TIME PROXY 2 — u + 2v Corrugation",
+          "frequency" : 8,
+          "upstreamReferenceFrequency" : 80
+        }
+      ],
+      "displacement" : {
+        "claimCeiling" : "Finite-stage proxy displacement only; not a geometric error bound against an upstream corrugation or limiting embedding.",
+        "claimClass" : "HV EXPERIMENT",
+        "fromPreviousStage" : {
+          "count" : 12288,
+          "maximum" : 0.006000000000000007,
+          "mean" : 0.003797877056362737,
+          "median" : 0.004242640687119284,
+          "minimum" : 0,
+          "percentile95" : 0.006,
+          "rootMeanSquare" : 0.004242640687119089
+        },
+        "fromShortTorus" : {
+          "count" : 12288,
+          "maximum" : 0.018000000000000002,
+          "mean" : 0.008119582979810887,
+          "median" : 0.007469163419132587,
+          "minimum" : 0,
+          "percentile95" : 0.016559313976647942,
+          "rootMeanSquare" : 0.009486832980505117
+        },
+        "previousStage" : "proxyStage1",
+        "reference" : "Euclidean distance between corresponding vertices on the shared periodic grid, in model units"
+      },
+      "displayName" : "REAL-TIME PROXY 2 — u + 2v Corrugation",
+      "geometryClaimCeiling" : "Interactive explanatory proxy only; not the upstream corrugation, an isometry certificate, or the limiting C1 embedding.",
+      "geometryClaimClass" : "REAL-TIME PROXY",
+      "mesh" : {
+        "generatorIdentifier" : "org.aloksingh.HeveaCore.HeveaMeshGenerator",
+        "generatorVersion" : "0.1.0",
+        "grid" : {
+          "uCount" : 96,
+          "vCount" : 128
+        },
+        "triangleCount" : 24576,
+        "vertexCount" : 12288
+      },
+      "metric" : {
+        "claimCeiling" : "A residual summary of this sampled mesh only; not an isometry certificate and not a bound on a limiting map.",
+        "claimClass" : "HV EXPERIMENT",
+        "finiteDifferenceStepU" : 0.010416666666666666,
+        "finiteDifferenceStepV" : 0.0078125,
+        "residualDefinition" : "sqrt((E-1)^2 + 2F^2 + (G-1)^2) from wrapped central finite differences",
+        "statistics" : {
+          "count" : 12288,
+          "maximum" : 1.3120893453419185,
+          "mean" : 1.0615842766590162,
+          "median" : 1.066966347037039,
+          "minimum" : 0.7453737189836941,
+          "percentile95" : 1.2522719619562301,
+          "rootMeanSquare" : 1.0686437090732337
+        },
+        "targetMetric" : {
+          "e" : 1,
+          "f" : 0,
+          "g" : 1
+        }
+      },
+      "normalMicroscope" : {
+        "actualSampleCount" : 256,
+        "claimCeiling" : "Finite-mesh normal variation only; no fractal-dimension or limiting-regularity theorem is claimed.",
+        "claimClass" : "HV EXPERIMENT",
+        "deterministicSeed" : 5207663399573345841,
+        "excludedScales" : [
+          {
+            "gridStep" : 64,
+            "reason" : "scale reaches or exceeds the finite grid's periodic Nyquist radius"
+          }
+        ],
+        "medianLogLogFit" : {
+          "claimCeiling" : "Descriptive least-squares slope across this finite scale ladder only; not a Hölder exponent, fractal dimension, convergence rate, or theorem.",
+          "coefficientOfDetermination" : 0.7429551030980728,
+          "includedGridSteps" : [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32
+          ],
+          "includedPointCount" : 6,
+          "intercept" : 1.2188336466438736,
+          "radiusDefinition" : "sqrt((h/uCount)*(h/vCount))",
+          "slope" : 0.19431870777903815,
+          "statistic" : "median omega in radians"
+        },
+        "observations" : [
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 1,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 2.3480483703215707,
+              "mean" : 1.1724979894706422,
+              "median" : 1.1013399745853458,
+              "minimum" : 0.2550372673403324,
+              "percentile95" : 2.0792259710242944,
+              "rootMeanSquare" : 1.2666388685734544
+            },
+            "parameterRadiusU" : 0.010416666666666666,
+            "parameterRadiusV" : 0.0078125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 2,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 2.5187192059473995,
+              "mean" : 1.7267895414604097,
+              "median" : 1.7218225555804334,
+              "minimum" : 0.7994150608822043,
+              "percentile95" : 2.3995734958412016,
+              "rootMeanSquare" : 1.7769280939909866
+            },
+            "parameterRadiusU" : 0.020833333333333332,
+            "parameterRadiusV" : 0.015625,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 4,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 2.5566923993369537,
+              "mean" : 2.0088873273865793,
+              "median" : 2.0502355916496726,
+              "minimum" : 1.0360037338584958,
+              "percentile95" : 2.418024930683027,
+              "rootMeanSquare" : 2.034932329728079
+            },
+            "parameterRadiusU" : 0.041666666666666664,
+            "parameterRadiusV" : 0.03125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 8,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 3.1122762614129944,
+              "mean" : 2.3264005077931,
+              "median" : 2.328776033110614,
+              "minimum" : 0.777647419947633,
+              "percentile95" : 2.9761188636024185,
+              "rootMeanSquare" : 2.3731486031010856
+            },
+            "parameterRadiusU" : 0.08333333333333333,
+            "parameterRadiusV" : 0.0625,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 16,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 3.088209601737006,
+              "mean" : 2.1492677315155397,
+              "median" : 2.1218197847610205,
+              "minimum" : 0.8997591407581579,
+              "percentile95" : 2.9376990385350004,
+              "rootMeanSquare" : 2.2216377542011436
+            },
+            "parameterRadiusU" : 0.16666666666666666,
+            "parameterRadiusV" : 0.125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 32,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 3.07461081358247,
+              "mean" : 2.360034793290905,
+              "median" : 2.4316153097199504,
+              "minimum" : 0.8148897807561593,
+              "percentile95" : 2.922732060972469,
+              "rootMeanSquare" : 2.3936812754096537
+            },
+            "parameterRadiusU" : 0.3333333333333333,
+            "parameterRadiusV" : 0.25,
+            "validSampleCount" : 256
+          }
+        ],
+        "percentile95LogLogFit" : {
+          "claimCeiling" : "Descriptive least-squares slope across this finite scale ladder only; not a Hölder exponent, fractal dimension, convergence rate, or theorem.",
+          "coefficientOfDetermination" : 0.8342089386187741,
+          "includedGridSteps" : [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32
+          ],
+          "includedPointCount" : 6,
+          "intercept" : 1.2638936824795435,
+          "radiusDefinition" : "sqrt((h/uCount)*(h/vCount))",
+          "slope" : 0.10376239771520722,
+          "statistic" : "95th-percentile omega in radians"
+        },
+        "requestedSampleCount" : 256,
+        "sampleCoordinates" : [
+          {
+            "u" : 43,
+            "v" : 4
+          },
+          {
+            "u" : 37,
+            "v" : 118
+          },
+          {
+            "u" : 70,
+            "v" : 121
+          },
+          {
+            "u" : 2,
+            "v" : 112
+          },
+          {
+            "u" : 88,
+            "v" : 24
+          },
+          {
+            "u" : 60,
+            "v" : 79
+          },
+          {
+            "u" : 10,
+            "v" : 49
+          },
+          {
+            "u" : 4,
+            "v" : 124
+          },
+          {
+            "u" : 10,
+            "v" : 93
+          },
+          {
+            "u" : 57,
+            "v" : 88
+          },
+          {
+            "u" : 45,
+            "v" : 25
+          },
+          {
+            "u" : 54,
+            "v" : 39
+          },
+          {
+            "u" : 26,
+            "v" : 41
+          },
+          {
+            "u" : 57,
+            "v" : 87
+          },
+          {
+            "u" : 26,
+            "v" : 19
+          },
+          {
+            "u" : 8,
+            "v" : 1
+          },
+          {
+            "u" : 63,
+            "v" : 115
+          },
+          {
+            "u" : 20,
+            "v" : 46
+          },
+          {
+            "u" : 89,
+            "v" : 83
+          },
+          {
+            "u" : 65,
+            "v" : 74
+          },
+          {
+            "u" : 5,
+            "v" : 117
+          },
+          {
+            "u" : 43,
+            "v" : 58
+          },
+          {
+            "u" : 6,
+            "v" : 10
+          },
+          {
+            "u" : 8,
+            "v" : 12
+          },
+          {
+            "u" : 12,
+            "v" : 96
+          },
+          {
+            "u" : 20,
+            "v" : 20
+          },
+          {
+            "u" : 17,
+            "v" : 43
+          },
+          {
+            "u" : 24,
+            "v" : 10
+          },
+          {
+            "u" : 0,
+            "v" : 50
+          },
+          {
+            "u" : 42,
+            "v" : 103
+          },
+          {
+            "u" : 6,
+            "v" : 112
+          },
+          {
+            "u" : 13,
+            "v" : 91
+          },
+          {
+            "u" : 67,
+            "v" : 112
+          },
+          {
+            "u" : 66,
+            "v" : 55
+          },
+          {
+            "u" : 58,
+            "v" : 105
+          },
+          {
+            "u" : 38,
+            "v" : 100
+          },
+          {
+            "u" : 63,
+            "v" : 90
+          },
+          {
+            "u" : 74,
+            "v" : 122
+          },
+          {
+            "u" : 65,
+            "v" : 59
+          },
+          {
+            "u" : 55,
+            "v" : 10
+          },
+          {
+            "u" : 52,
+            "v" : 90
+          },
+          {
+            "u" : 47,
+            "v" : 6
+          },
+          {
+            "u" : 42,
+            "v" : 126
+          },
+          {
+            "u" : 66,
+            "v" : 43
+          },
+          {
+            "u" : 13,
+            "v" : 7
+          },
+          {
+            "u" : 68,
+            "v" : 93
+          },
+          {
+            "u" : 45,
+            "v" : 4
+          },
+          {
+            "u" : 1,
+            "v" : 121
+          },
+          {
+            "u" : 40,
+            "v" : 38
+          },
+          {
+            "u" : 77,
+            "v" : 73
+          },
+          {
+            "u" : 72,
+            "v" : 2
+          },
+          {
+            "u" : 82,
+            "v" : 96
+          },
+          {
+            "u" : 65,
+            "v" : 1
+          },
+          {
+            "u" : 88,
+            "v" : 29
+          },
+          {
+            "u" : 68,
+            "v" : 6
+          },
+          {
+            "u" : 54,
+            "v" : 63
+          },
+          {
+            "u" : 0,
+            "v" : 88
+          },
+          {
+            "u" : 52,
+            "v" : 19
+          },
+          {
+            "u" : 5,
+            "v" : 65
+          },
+          {
+            "u" : 15,
+            "v" : 62
+          },
+          {
+            "u" : 35,
+            "v" : 36
+          },
+          {
+            "u" : 11,
+            "v" : 59
+          },
+          {
+            "u" : 73,
+            "v" : 25
+          },
+          {
+            "u" : 29,
+            "v" : 42
+          },
+          {
+            "u" : 85,
+            "v" : 30
+          },
+          {
+            "u" : 9,
+            "v" : 9
+          },
+          {
+            "u" : 75,
+            "v" : 17
+          },
+          {
+            "u" : 59,
+            "v" : 72
+          },
+          {
+            "u" : 5,
+            "v" : 125
+          },
+          {
+            "u" : 34,
+            "v" : 40
+          },
+          {
+            "u" : 11,
+            "v" : 5
+          },
+          {
+            "u" : 92,
+            "v" : 85
+          },
+          {
+            "u" : 28,
+            "v" : 99
+          },
+          {
+            "u" : 59,
+            "v" : 79
+          },
+          {
+            "u" : 13,
+            "v" : 31
+          },
+          {
+            "u" : 77,
+            "v" : 127
+          },
+          {
+            "u" : 94,
+            "v" : 122
+          },
+          {
+            "u" : 88,
+            "v" : 27
+          },
+          {
+            "u" : 23,
+            "v" : 31
+          },
+          {
+            "u" : 92,
+            "v" : 82
+          },
+          {
+            "u" : 73,
+            "v" : 67
+          },
+          {
+            "u" : 75,
+            "v" : 119
+          },
+          {
+            "u" : 36,
+            "v" : 112
+          },
+          {
+            "u" : 25,
+            "v" : 76
+          },
+          {
+            "u" : 83,
+            "v" : 77
+          },
+          {
+            "u" : 31,
+            "v" : 2
+          },
+          {
+            "u" : 45,
+            "v" : 79
+          },
+          {
+            "u" : 33,
+            "v" : 49
+          },
+          {
+            "u" : 38,
+            "v" : 43
+          },
+          {
+            "u" : 77,
+            "v" : 4
+          },
+          {
+            "u" : 42,
+            "v" : 46
+          },
+          {
+            "u" : 35,
+            "v" : 114
+          },
+          {
+            "u" : 41,
+            "v" : 15
+          },
+          {
+            "u" : 14,
+            "v" : 8
+          },
+          {
+            "u" : 77,
+            "v" : 58
+          },
+          {
+            "u" : 55,
+            "v" : 97
+          },
+          {
+            "u" : 40,
+            "v" : 60
+          },
+          {
+            "u" : 82,
+            "v" : 42
+          },
+          {
+            "u" : 92,
+            "v" : 98
+          },
+          {
+            "u" : 75,
+            "v" : 32
+          },
+          {
+            "u" : 75,
+            "v" : 5
+          },
+          {
+            "u" : 86,
+            "v" : 46
+          },
+          {
+            "u" : 5,
+            "v" : 41
+          },
+          {
+            "u" : 33,
+            "v" : 65
+          },
+          {
+            "u" : 49,
+            "v" : 52
+          },
+          {
+            "u" : 68,
+            "v" : 84
+          },
+          {
+            "u" : 66,
+            "v" : 0
+          },
+          {
+            "u" : 51,
+            "v" : 106
+          },
+          {
+            "u" : 74,
+            "v" : 58
+          },
+          {
+            "u" : 86,
+            "v" : 6
+          },
+          {
+            "u" : 87,
+            "v" : 2
+          },
+          {
+            "u" : 90,
+            "v" : 110
+          },
+          {
+            "u" : 56,
+            "v" : 17
+          },
+          {
+            "u" : 42,
+            "v" : 15
+          },
+          {
+            "u" : 23,
+            "v" : 69
+          },
+          {
+            "u" : 55,
+            "v" : 15
+          },
+          {
+            "u" : 95,
+            "v" : 122
+          },
+          {
+            "u" : 51,
+            "v" : 40
+          },
+          {
+            "u" : 63,
+            "v" : 78
+          },
+          {
+            "u" : 95,
+            "v" : 58
+          },
+          {
+            "u" : 43,
+            "v" : 96
+          },
+          {
+            "u" : 8,
+            "v" : 83
+          },
+          {
+            "u" : 40,
+            "v" : 64
+          },
+          {
+            "u" : 77,
+            "v" : 97
+          },
+          {
+            "u" : 43,
+            "v" : 70
+          },
+          {
+            "u" : 63,
+            "v" : 121
+          },
+          {
+            "u" : 79,
+            "v" : 58
+          },
+          {
+            "u" : 21,
+            "v" : 112
+          },
+          {
+            "u" : 49,
+            "v" : 92
+          },
+          {
+            "u" : 48,
+            "v" : 104
+          },
+          {
+            "u" : 11,
+            "v" : 17
+          },
+          {
+            "u" : 66,
+            "v" : 113
+          },
+          {
+            "u" : 92,
+            "v" : 56
+          },
+          {
+            "u" : 50,
+            "v" : 82
+          },
+          {
+            "u" : 35,
+            "v" : 125
+          },
+          {
+            "u" : 61,
+            "v" : 122
+          },
+          {
+            "u" : 80,
+            "v" : 97
+          },
+          {
+            "u" : 22,
+            "v" : 127
+          },
+          {
+            "u" : 9,
+            "v" : 55
+          },
+          {
+            "u" : 39,
+            "v" : 82
+          },
+          {
+            "u" : 19,
+            "v" : 39
+          },
+          {
+            "u" : 65,
+            "v" : 39
+          },
+          {
+            "u" : 23,
+            "v" : 60
+          },
+          {
+            "u" : 34,
+            "v" : 25
+          },
+          {
+            "u" : 72,
+            "v" : 44
+          },
+          {
+            "u" : 86,
+            "v" : 73
+          },
+          {
+            "u" : 91,
+            "v" : 105
+          },
+          {
+            "u" : 30,
+            "v" : 59
+          },
+          {
+            "u" : 0,
+            "v" : 103
+          },
+          {
+            "u" : 22,
+            "v" : 121
+          },
+          {
+            "u" : 8,
+            "v" : 99
+          },
+          {
+            "u" : 17,
+            "v" : 101
+          },
+          {
+            "u" : 41,
+            "v" : 89
+          },
+          {
+            "u" : 58,
+            "v" : 10
+          },
+          {
+            "u" : 34,
+            "v" : 9
+          },
+          {
+            "u" : 84,
+            "v" : 28
+          },
+          {
+            "u" : 26,
+            "v" : 89
+          },
+          {
+            "u" : 41,
+            "v" : 19
+          },
+          {
+            "u" : 55,
+            "v" : 118
+          },
+          {
+            "u" : 80,
+            "v" : 21
+          },
+          {
+            "u" : 65,
+            "v" : 121
+          },
+          {
+            "u" : 50,
+            "v" : 122
+          },
+          {
+            "u" : 23,
+            "v" : 28
+          },
+          {
+            "u" : 75,
+            "v" : 112
+          },
+          {
+            "u" : 53,
+            "v" : 76
+          },
+          {
+            "u" : 10,
+            "v" : 111
+          },
+          {
+            "u" : 89,
+            "v" : 114
+          },
+          {
+            "u" : 80,
+            "v" : 110
+          },
+          {
+            "u" : 20,
+            "v" : 37
+          },
+          {
+            "u" : 28,
+            "v" : 70
+          },
+          {
+            "u" : 62,
+            "v" : 19
+          },
+          {
+            "u" : 53,
+            "v" : 68
+          },
+          {
+            "u" : 57,
+            "v" : 79
+          },
+          {
+            "u" : 23,
+            "v" : 14
+          },
+          {
+            "u" : 9,
+            "v" : 93
+          },
+          {
+            "u" : 3,
+            "v" : 87
+          },
+          {
+            "u" : 84,
+            "v" : 127
+          },
+          {
+            "u" : 68,
+            "v" : 116
+          },
+          {
+            "u" : 17,
+            "v" : 124
+          },
+          {
+            "u" : 9,
+            "v" : 79
+          },
+          {
+            "u" : 51,
+            "v" : 73
+          },
+          {
+            "u" : 68,
+            "v" : 106
+          },
+          {
+            "u" : 69,
+            "v" : 86
+          },
+          {
+            "u" : 62,
+            "v" : 101
+          },
+          {
+            "u" : 40,
+            "v" : 118
+          },
+          {
+            "u" : 30,
+            "v" : 54
+          },
+          {
+            "u" : 43,
+            "v" : 120
+          },
+          {
+            "u" : 52,
+            "v" : 66
+          },
+          {
+            "u" : 51,
+            "v" : 31
+          },
+          {
+            "u" : 36,
+            "v" : 125
+          },
+          {
+            "u" : 17,
+            "v" : 38
+          },
+          {
+            "u" : 65,
+            "v" : 15
+          },
+          {
+            "u" : 69,
+            "v" : 64
+          },
+          {
+            "u" : 9,
+            "v" : 89
+          },
+          {
+            "u" : 53,
+            "v" : 90
+          },
+          {
+            "u" : 67,
+            "v" : 96
+          },
+          {
+            "u" : 83,
+            "v" : 98
+          },
+          {
+            "u" : 93,
+            "v" : 14
+          },
+          {
+            "u" : 87,
+            "v" : 77
+          },
+          {
+            "u" : 93,
+            "v" : 15
+          },
+          {
+            "u" : 37,
+            "v" : 24
+          },
+          {
+            "u" : 32,
+            "v" : 96
+          },
+          {
+            "u" : 47,
+            "v" : 29
+          },
+          {
+            "u" : 76,
+            "v" : 28
+          },
+          {
+            "u" : 24,
+            "v" : 96
+          },
+          {
+            "u" : 46,
+            "v" : 124
+          },
+          {
+            "u" : 0,
+            "v" : 120
+          },
+          {
+            "u" : 60,
+            "v" : 117
+          },
+          {
+            "u" : 86,
+            "v" : 99
+          },
+          {
+            "u" : 94,
+            "v" : 109
+          },
+          {
+            "u" : 20,
+            "v" : 61
+          },
+          {
+            "u" : 26,
+            "v" : 17
+          },
+          {
+            "u" : 78,
+            "v" : 47
+          },
+          {
+            "u" : 3,
+            "v" : 43
+          },
+          {
+            "u" : 15,
+            "v" : 53
+          },
+          {
+            "u" : 39,
+            "v" : 41
+          },
+          {
+            "u" : 28,
+            "v" : 17
+          },
+          {
+            "u" : 42,
+            "v" : 114
+          },
+          {
+            "u" : 61,
+            "v" : 103
+          },
+          {
+            "u" : 57,
+            "v" : 66
+          },
+          {
+            "u" : 76,
+            "v" : 108
+          },
+          {
+            "u" : 54,
+            "v" : 49
+          },
+          {
+            "u" : 28,
+            "v" : 75
+          },
+          {
+            "u" : 88,
+            "v" : 84
+          },
+          {
+            "u" : 6,
+            "v" : 65
+          },
+          {
+            "u" : 54,
+            "v" : 76
+          },
+          {
+            "u" : 20,
+            "v" : 103
+          },
+          {
+            "u" : 25,
+            "v" : 72
+          },
+          {
+            "u" : 30,
+            "v" : 30
+          },
+          {
+            "u" : 78,
+            "v" : 10
+          },
+          {
+            "u" : 51,
+            "v" : 3
+          },
+          {
+            "u" : 71,
+            "v" : 79
+          },
+          {
+            "u" : 94,
+            "v" : 16
+          },
+          {
+            "u" : 59,
+            "v" : 5
+          },
+          {
+            "u" : 53,
+            "v" : 116
+          },
+          {
+            "u" : 23,
+            "v" : 23
+          },
+          {
+            "u" : 49,
+            "v" : 55
+          },
+          {
+            "u" : 54,
+            "v" : 26
+          },
+          {
+            "u" : 0,
+            "v" : 7
+          },
+          {
+            "u" : 93,
+            "v" : 117
+          },
+          {
+            "u" : 38,
+            "v" : 59
+          },
+          {
+            "u" : 58,
+            "v" : 58
+          },
+          {
+            "u" : 48,
+            "v" : 119
+          },
+          {
+            "u" : 9,
+            "v" : 112
+          },
+          {
+            "u" : 73,
+            "v" : 123
+          },
+          {
+            "u" : 51,
+            "v" : 35
+          },
+          {
+            "u" : 82,
+            "v" : 54
+          },
+          {
+            "u" : 88,
+            "v" : 96
+          },
+          {
+            "u" : 41,
+            "v" : 30
+          },
+          {
+            "u" : 0,
+            "v" : 119
+          },
+          {
+            "u" : 31,
+            "v" : 75
+          },
+          {
+            "u" : 78,
+            "v" : 114
+          },
+          {
+            "u" : 44,
+            "v" : 107
+          },
+          {
+            "u" : 65,
+            "v" : 56
+          },
+          {
+            "u" : 61,
+            "v" : 5
+          },
+          {
+            "u" : 24,
+            "v" : 93
+          }
+        ]
+      },
+      "stage" : "proxyStage2",
+      "windingCurves" : [
+        {
+          "claimCeiling" : "Polyline and chord measurements of one interpolated finite-mesh path only.",
+          "diagnostic" : {
+            "ambientChordLength" : 1.0971354589302191e-17,
+            "ambientPolylineLength" : 0.36551847804555815,
+            "chordToIntrinsicRatio" : 1.0971354589302191e-17,
+            "claimClass" : "HV EXPERIMENT",
+            "end" : {
+              "u" : 1.1375,
+              "v" : 0.28125
+            },
+            "intrinsicTargetLength" : 1,
+            "polylineRelativeLengthResidual" : -0.6344815219544419,
+            "segmentCount" : 2048,
+            "stage" : "proxyStage2",
+            "start" : {
+              "u" : 0.1375,
+              "v" : 0.28125
+            }
+          },
+          "direction" : {
+            "u" : 1,
+            "v" : 0
+          },
+          "label" : "u winding at v = 0.28125"
+        },
+        {
+          "claimCeiling" : "Polyline and chord measurements of one interpolated finite-mesh path only.",
+          "diagnostic" : {
+            "ambientChordLength" : 0,
+            "ambientPolylineLength" : 0.7075553720918228,
+            "chordToIntrinsicRatio" : 0,
+            "claimClass" : "HV EXPERIMENT",
+            "end" : {
+              "u" : 0.1375,
+              "v" : 1.28125
+            },
+            "intrinsicTargetLength" : 1,
+            "polylineRelativeLengthResidual" : -0.29244462790817716,
+            "segmentCount" : 2048,
+            "stage" : "proxyStage2",
+            "start" : {
+              "u" : 0.1375,
+              "v" : 0.28125
+            }
+          },
+          "direction" : {
+            "u" : 0,
+            "v" : 1
+          },
+          "label" : "v winding at u = 0.1375"
+        }
+      ]
+    },
+    {
+      "appliedProxyCorrugations" : [
+        {
+          "amplitude" : 0.012,
+          "direction" : {
+            "u" : 1,
+            "v" : 0
+          },
+          "displayName" : "REAL-TIME PROXY 1 — u Corrugation",
+          "frequency" : 5,
+          "upstreamReferenceFrequency" : 12
+        },
+        {
+          "amplitude" : 0.006,
+          "direction" : {
+            "u" : 1,
+            "v" : 2
+          },
+          "displayName" : "REAL-TIME PROXY 2 — u + 2v Corrugation",
+          "frequency" : 8,
+          "upstreamReferenceFrequency" : 80
+        },
+        {
+          "amplitude" : 0.0035,
+          "direction" : {
+            "u" : 1,
+            "v" : -2
+          },
+          "displayName" : "REAL-TIME PROXY 3 — u - 2v Corrugation",
+          "frequency" : 13,
+          "upstreamReferenceFrequency" : 500
+        }
+      ],
+      "displacement" : {
+        "claimCeiling" : "Finite-stage proxy displacement only; not a geometric error bound against an upstream corrugation or limiting embedding.",
+        "claimClass" : "HV EXPERIMENT",
+        "fromPreviousStage" : {
+          "count" : 12288,
+          "maximum" : 0.003500000000000007,
+          "mean" : 0.0022279703503759376,
+          "median" : 0.0024748737341529128,
+          "minimum" : 0,
+          "percentile95" : 0.0034925062313351093,
+          "rootMeanSquare" : 0.002474873734152877
+        },
+        "fromShortTorus" : {
+          "count" : 12288,
+          "maximum" : 0.021432748481411308,
+          "mean" : 0.008302011606258196,
+          "median" : 0.007730509268880274,
+          "minimum" : 0,
+          "percentile95" : 0.0177034225781025,
+          "rootMeanSquare" : 0.00980433577556381
+        },
+        "previousStage" : "proxyStage2",
+        "reference" : "Euclidean distance between corresponding vertices on the shared periodic grid, in model units"
+      },
+      "displayName" : "REAL-TIME PROXY 3 — u - 2v Corrugation",
+      "geometryClaimCeiling" : "Interactive explanatory proxy only; not the upstream corrugation, an isometry certificate, or the limiting C1 embedding.",
+      "geometryClaimClass" : "REAL-TIME PROXY",
+      "mesh" : {
+        "generatorIdentifier" : "org.aloksingh.HeveaCore.HeveaMeshGenerator",
+        "generatorVersion" : "0.1.0",
+        "grid" : {
+          "uCount" : 96,
+          "vCount" : 128
+        },
+        "triangleCount" : 24576,
+        "vertexCount" : 12288
+      },
+      "metric" : {
+        "claimCeiling" : "A residual summary of this sampled mesh only; not an isometry certificate and not a bound on a limiting map.",
+        "claimClass" : "HV EXPERIMENT",
+        "finiteDifferenceStepU" : 0.010416666666666666,
+        "finiteDifferenceStepV" : 0.0078125,
+        "residualDefinition" : "sqrt((E-1)^2 + 2F^2 + (G-1)^2) from wrapped central finite differences",
+        "statistics" : {
+          "count" : 12288,
+          "maximum" : 1.3280880669768464,
+          "mean" : 1.0247121555181355,
+          "median" : 1.0095566363825834,
+          "minimum" : 0.5074754748693037,
+          "percentile95" : 1.2549659668881332,
+          "rootMeanSquare" : 1.0334176538392266
+        },
+        "targetMetric" : {
+          "e" : 1,
+          "f" : 0,
+          "g" : 1
+        }
+      },
+      "normalMicroscope" : {
+        "actualSampleCount" : 256,
+        "claimCeiling" : "Finite-mesh normal variation only; no fractal-dimension or limiting-regularity theorem is claimed.",
+        "claimClass" : "HV EXPERIMENT",
+        "deterministicSeed" : 5207663399573345841,
+        "excludedScales" : [
+          {
+            "gridStep" : 64,
+            "reason" : "scale reaches or exceeds the finite grid's periodic Nyquist radius"
+          }
+        ],
+        "medianLogLogFit" : {
+          "claimCeiling" : "Descriptive least-squares slope across this finite scale ladder only; not a Hölder exponent, fractal dimension, convergence rate, or theorem.",
+          "coefficientOfDetermination" : 0.6847777980084946,
+          "includedGridSteps" : [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32
+          ],
+          "includedPointCount" : 6,
+          "intercept" : 1.1612519545659152,
+          "radiusDefinition" : "sqrt((h/uCount)*(h/vCount))",
+          "slope" : 0.13624694037551546,
+          "statistic" : "median omega in radians"
+        },
+        "observations" : [
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 1,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 2.5275355051817963,
+              "mean" : 1.412342902127765,
+              "median" : 1.4315846028088783,
+              "minimum" : 0.5232551073457875,
+              "percentile95" : 2.158532681756008,
+              "rootMeanSquare" : 1.476569541893038
+            },
+            "parameterRadiusU" : 0.010416666666666666,
+            "parameterRadiusV" : 0.0078125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 2,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 2.559761123327661,
+              "mean" : 1.9538055199824818,
+              "median" : 1.977439009682507,
+              "minimum" : 0.9525708542113503,
+              "percentile95" : 2.450525089125418,
+              "rootMeanSquare" : 1.9800389056985166
+            },
+            "parameterRadiusU" : 0.020833333333333332,
+            "parameterRadiusV" : 0.015625,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 4,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 2.7190753101011,
+              "mean" : 2.2044481108584133,
+              "median" : 2.264128586007285,
+              "minimum" : 1.3922143960697853,
+              "percentile95" : 2.593941284806686,
+              "rootMeanSquare" : 2.2233442212915495
+            },
+            "parameterRadiusU" : 0.041666666666666664,
+            "parameterRadiusV" : 0.03125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 8,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 3.110601590103341,
+              "mean" : 2.4592199923602487,
+              "median" : 2.5527005769402855,
+              "minimum" : 1.2987732461032158,
+              "percentile95" : 3.051720341703401,
+              "rootMeanSquare" : 2.497578420693464
+            },
+            "parameterRadiusU" : 0.08333333333333333,
+            "parameterRadiusV" : 0.0625,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 16,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 3.1222171938486603,
+              "mean" : 2.289769964271073,
+              "median" : 2.312718607636599,
+              "minimum" : 0.9199422540699891,
+              "percentile95" : 2.9400908807193993,
+              "rootMeanSquare" : 2.3338406292110903
+            },
+            "parameterRadiusU" : 0.16666666666666666,
+            "parameterRadiusV" : 0.125,
+            "validSampleCount" : 256
+          },
+          {
+            "excludedSampleCount" : 0,
+            "gridStep" : 32,
+            "omegaStatisticsRadians" : {
+              "count" : 256,
+              "maximum" : 3.0905837061814783,
+              "mean" : 2.4490773589167496,
+              "median" : 2.4642590137422755,
+              "minimum" : 1.4231911570686144,
+              "percentile95" : 3.0039129095577493,
+              "rootMeanSquare" : 2.473618101327996
+            },
+            "parameterRadiusU" : 0.3333333333333333,
+            "parameterRadiusV" : 0.25,
+            "validSampleCount" : 256
+          }
+        ],
+        "percentile95LogLogFit" : {
+          "claimCeiling" : "Descriptive least-squares slope across this finite scale ladder only; not a Hölder exponent, fractal dimension, convergence rate, or theorem.",
+          "coefficientOfDetermination" : 0.844108366689959,
+          "includedGridSteps" : [
+            1,
+            2,
+            4,
+            8,
+            16,
+            32
+          ],
+          "includedPointCount" : 6,
+          "intercept" : 1.2750999338989506,
+          "radiusDefinition" : "sqrt((h/uCount)*(h/vCount))",
+          "slope" : 0.09733561959196507,
+          "statistic" : "95th-percentile omega in radians"
+        },
+        "requestedSampleCount" : 256,
+        "sampleCoordinates" : [
+          {
+            "u" : 43,
+            "v" : 4
+          },
+          {
+            "u" : 37,
+            "v" : 118
+          },
+          {
+            "u" : 70,
+            "v" : 121
+          },
+          {
+            "u" : 2,
+            "v" : 112
+          },
+          {
+            "u" : 88,
+            "v" : 24
+          },
+          {
+            "u" : 60,
+            "v" : 79
+          },
+          {
+            "u" : 10,
+            "v" : 49
+          },
+          {
+            "u" : 4,
+            "v" : 124
+          },
+          {
+            "u" : 10,
+            "v" : 93
+          },
+          {
+            "u" : 57,
+            "v" : 88
+          },
+          {
+            "u" : 45,
+            "v" : 25
+          },
+          {
+            "u" : 54,
+            "v" : 39
+          },
+          {
+            "u" : 26,
+            "v" : 41
+          },
+          {
+            "u" : 57,
+            "v" : 87
+          },
+          {
+            "u" : 26,
+            "v" : 19
+          },
+          {
+            "u" : 8,
+            "v" : 1
+          },
+          {
+            "u" : 63,
+            "v" : 115
+          },
+          {
+            "u" : 20,
+            "v" : 46
+          },
+          {
+            "u" : 89,
+            "v" : 83
+          },
+          {
+            "u" : 65,
+            "v" : 74
+          },
+          {
+            "u" : 5,
+            "v" : 117
+          },
+          {
+            "u" : 43,
+            "v" : 58
+          },
+          {
+            "u" : 6,
+            "v" : 10
+          },
+          {
+            "u" : 8,
+            "v" : 12
+          },
+          {
+            "u" : 12,
+            "v" : 96
+          },
+          {
+            "u" : 20,
+            "v" : 20
+          },
+          {
+            "u" : 17,
+            "v" : 43
+          },
+          {
+            "u" : 24,
+            "v" : 10
+          },
+          {
+            "u" : 0,
+            "v" : 50
+          },
+          {
+            "u" : 42,
+            "v" : 103
+          },
+          {
+            "u" : 6,
+            "v" : 112
+          },
+          {
+            "u" : 13,
+            "v" : 91
+          },
+          {
+            "u" : 67,
+            "v" : 112
+          },
+          {
+            "u" : 66,
+            "v" : 55
+          },
+          {
+            "u" : 58,
+            "v" : 105
+          },
+          {
+            "u" : 38,
+            "v" : 100
+          },
+          {
+            "u" : 63,
+            "v" : 90
+          },
+          {
+            "u" : 74,
+            "v" : 122
+          },
+          {
+            "u" : 65,
+            "v" : 59
+          },
+          {
+            "u" : 55,
+            "v" : 10
+          },
+          {
+            "u" : 52,
+            "v" : 90
+          },
+          {
+            "u" : 47,
+            "v" : 6
+          },
+          {
+            "u" : 42,
+            "v" : 126
+          },
+          {
+            "u" : 66,
+            "v" : 43
+          },
+          {
+            "u" : 13,
+            "v" : 7
+          },
+          {
+            "u" : 68,
+            "v" : 93
+          },
+          {
+            "u" : 45,
+            "v" : 4
+          },
+          {
+            "u" : 1,
+            "v" : 121
+          },
+          {
+            "u" : 40,
+            "v" : 38
+          },
+          {
+            "u" : 77,
+            "v" : 73
+          },
+          {
+            "u" : 72,
+            "v" : 2
+          },
+          {
+            "u" : 82,
+            "v" : 96
+          },
+          {
+            "u" : 65,
+            "v" : 1
+          },
+          {
+            "u" : 88,
+            "v" : 29
+          },
+          {
+            "u" : 68,
+            "v" : 6
+          },
+          {
+            "u" : 54,
+            "v" : 63
+          },
+          {
+            "u" : 0,
+            "v" : 88
+          },
+          {
+            "u" : 52,
+            "v" : 19
+          },
+          {
+            "u" : 5,
+            "v" : 65
+          },
+          {
+            "u" : 15,
+            "v" : 62
+          },
+          {
+            "u" : 35,
+            "v" : 36
+          },
+          {
+            "u" : 11,
+            "v" : 59
+          },
+          {
+            "u" : 73,
+            "v" : 25
+          },
+          {
+            "u" : 29,
+            "v" : 42
+          },
+          {
+            "u" : 85,
+            "v" : 30
+          },
+          {
+            "u" : 9,
+            "v" : 9
+          },
+          {
+            "u" : 75,
+            "v" : 17
+          },
+          {
+            "u" : 59,
+            "v" : 72
+          },
+          {
+            "u" : 5,
+            "v" : 125
+          },
+          {
+            "u" : 34,
+            "v" : 40
+          },
+          {
+            "u" : 11,
+            "v" : 5
+          },
+          {
+            "u" : 92,
+            "v" : 85
+          },
+          {
+            "u" : 28,
+            "v" : 99
+          },
+          {
+            "u" : 59,
+            "v" : 79
+          },
+          {
+            "u" : 13,
+            "v" : 31
+          },
+          {
+            "u" : 77,
+            "v" : 127
+          },
+          {
+            "u" : 94,
+            "v" : 122
+          },
+          {
+            "u" : 88,
+            "v" : 27
+          },
+          {
+            "u" : 23,
+            "v" : 31
+          },
+          {
+            "u" : 92,
+            "v" : 82
+          },
+          {
+            "u" : 73,
+            "v" : 67
+          },
+          {
+            "u" : 75,
+            "v" : 119
+          },
+          {
+            "u" : 36,
+            "v" : 112
+          },
+          {
+            "u" : 25,
+            "v" : 76
+          },
+          {
+            "u" : 83,
+            "v" : 77
+          },
+          {
+            "u" : 31,
+            "v" : 2
+          },
+          {
+            "u" : 45,
+            "v" : 79
+          },
+          {
+            "u" : 33,
+            "v" : 49
+          },
+          {
+            "u" : 38,
+            "v" : 43
+          },
+          {
+            "u" : 77,
+            "v" : 4
+          },
+          {
+            "u" : 42,
+            "v" : 46
+          },
+          {
+            "u" : 35,
+            "v" : 114
+          },
+          {
+            "u" : 41,
+            "v" : 15
+          },
+          {
+            "u" : 14,
+            "v" : 8
+          },
+          {
+            "u" : 77,
+            "v" : 58
+          },
+          {
+            "u" : 55,
+            "v" : 97
+          },
+          {
+            "u" : 40,
+            "v" : 60
+          },
+          {
+            "u" : 82,
+            "v" : 42
+          },
+          {
+            "u" : 92,
+            "v" : 98
+          },
+          {
+            "u" : 75,
+            "v" : 32
+          },
+          {
+            "u" : 75,
+            "v" : 5
+          },
+          {
+            "u" : 86,
+            "v" : 46
+          },
+          {
+            "u" : 5,
+            "v" : 41
+          },
+          {
+            "u" : 33,
+            "v" : 65
+          },
+          {
+            "u" : 49,
+            "v" : 52
+          },
+          {
+            "u" : 68,
+            "v" : 84
+          },
+          {
+            "u" : 66,
+            "v" : 0
+          },
+          {
+            "u" : 51,
+            "v" : 106
+          },
+          {
+            "u" : 74,
+            "v" : 58
+          },
+          {
+            "u" : 86,
+            "v" : 6
+          },
+          {
+            "u" : 87,
+            "v" : 2
+          },
+          {
+            "u" : 90,
+            "v" : 110
+          },
+          {
+            "u" : 56,
+            "v" : 17
+          },
+          {
+            "u" : 42,
+            "v" : 15
+          },
+          {
+            "u" : 23,
+            "v" : 69
+          },
+          {
+            "u" : 55,
+            "v" : 15
+          },
+          {
+            "u" : 95,
+            "v" : 122
+          },
+          {
+            "u" : 51,
+            "v" : 40
+          },
+          {
+            "u" : 63,
+            "v" : 78
+          },
+          {
+            "u" : 95,
+            "v" : 58
+          },
+          {
+            "u" : 43,
+            "v" : 96
+          },
+          {
+            "u" : 8,
+            "v" : 83
+          },
+          {
+            "u" : 40,
+            "v" : 64
+          },
+          {
+            "u" : 77,
+            "v" : 97
+          },
+          {
+            "u" : 43,
+            "v" : 70
+          },
+          {
+            "u" : 63,
+            "v" : 121
+          },
+          {
+            "u" : 79,
+            "v" : 58
+          },
+          {
+            "u" : 21,
+            "v" : 112
+          },
+          {
+            "u" : 49,
+            "v" : 92
+          },
+          {
+            "u" : 48,
+            "v" : 104
+          },
+          {
+            "u" : 11,
+            "v" : 17
+          },
+          {
+            "u" : 66,
+            "v" : 113
+          },
+          {
+            "u" : 92,
+            "v" : 56
+          },
+          {
+            "u" : 50,
+            "v" : 82
+          },
+          {
+            "u" : 35,
+            "v" : 125
+          },
+          {
+            "u" : 61,
+            "v" : 122
+          },
+          {
+            "u" : 80,
+            "v" : 97
+          },
+          {
+            "u" : 22,
+            "v" : 127
+          },
+          {
+            "u" : 9,
+            "v" : 55
+          },
+          {
+            "u" : 39,
+            "v" : 82
+          },
+          {
+            "u" : 19,
+            "v" : 39
+          },
+          {
+            "u" : 65,
+            "v" : 39
+          },
+          {
+            "u" : 23,
+            "v" : 60
+          },
+          {
+            "u" : 34,
+            "v" : 25
+          },
+          {
+            "u" : 72,
+            "v" : 44
+          },
+          {
+            "u" : 86,
+            "v" : 73
+          },
+          {
+            "u" : 91,
+            "v" : 105
+          },
+          {
+            "u" : 30,
+            "v" : 59
+          },
+          {
+            "u" : 0,
+            "v" : 103
+          },
+          {
+            "u" : 22,
+            "v" : 121
+          },
+          {
+            "u" : 8,
+            "v" : 99
+          },
+          {
+            "u" : 17,
+            "v" : 101
+          },
+          {
+            "u" : 41,
+            "v" : 89
+          },
+          {
+            "u" : 58,
+            "v" : 10
+          },
+          {
+            "u" : 34,
+            "v" : 9
+          },
+          {
+            "u" : 84,
+            "v" : 28
+          },
+          {
+            "u" : 26,
+            "v" : 89
+          },
+          {
+            "u" : 41,
+            "v" : 19
+          },
+          {
+            "u" : 55,
+            "v" : 118
+          },
+          {
+            "u" : 80,
+            "v" : 21
+          },
+          {
+            "u" : 65,
+            "v" : 121
+          },
+          {
+            "u" : 50,
+            "v" : 122
+          },
+          {
+            "u" : 23,
+            "v" : 28
+          },
+          {
+            "u" : 75,
+            "v" : 112
+          },
+          {
+            "u" : 53,
+            "v" : 76
+          },
+          {
+            "u" : 10,
+            "v" : 111
+          },
+          {
+            "u" : 89,
+            "v" : 114
+          },
+          {
+            "u" : 80,
+            "v" : 110
+          },
+          {
+            "u" : 20,
+            "v" : 37
+          },
+          {
+            "u" : 28,
+            "v" : 70
+          },
+          {
+            "u" : 62,
+            "v" : 19
+          },
+          {
+            "u" : 53,
+            "v" : 68
+          },
+          {
+            "u" : 57,
+            "v" : 79
+          },
+          {
+            "u" : 23,
+            "v" : 14
+          },
+          {
+            "u" : 9,
+            "v" : 93
+          },
+          {
+            "u" : 3,
+            "v" : 87
+          },
+          {
+            "u" : 84,
+            "v" : 127
+          },
+          {
+            "u" : 68,
+            "v" : 116
+          },
+          {
+            "u" : 17,
+            "v" : 124
+          },
+          {
+            "u" : 9,
+            "v" : 79
+          },
+          {
+            "u" : 51,
+            "v" : 73
+          },
+          {
+            "u" : 68,
+            "v" : 106
+          },
+          {
+            "u" : 69,
+            "v" : 86
+          },
+          {
+            "u" : 62,
+            "v" : 101
+          },
+          {
+            "u" : 40,
+            "v" : 118
+          },
+          {
+            "u" : 30,
+            "v" : 54
+          },
+          {
+            "u" : 43,
+            "v" : 120
+          },
+          {
+            "u" : 52,
+            "v" : 66
+          },
+          {
+            "u" : 51,
+            "v" : 31
+          },
+          {
+            "u" : 36,
+            "v" : 125
+          },
+          {
+            "u" : 17,
+            "v" : 38
+          },
+          {
+            "u" : 65,
+            "v" : 15
+          },
+          {
+            "u" : 69,
+            "v" : 64
+          },
+          {
+            "u" : 9,
+            "v" : 89
+          },
+          {
+            "u" : 53,
+            "v" : 90
+          },
+          {
+            "u" : 67,
+            "v" : 96
+          },
+          {
+            "u" : 83,
+            "v" : 98
+          },
+          {
+            "u" : 93,
+            "v" : 14
+          },
+          {
+            "u" : 87,
+            "v" : 77
+          },
+          {
+            "u" : 93,
+            "v" : 15
+          },
+          {
+            "u" : 37,
+            "v" : 24
+          },
+          {
+            "u" : 32,
+            "v" : 96
+          },
+          {
+            "u" : 47,
+            "v" : 29
+          },
+          {
+            "u" : 76,
+            "v" : 28
+          },
+          {
+            "u" : 24,
+            "v" : 96
+          },
+          {
+            "u" : 46,
+            "v" : 124
+          },
+          {
+            "u" : 0,
+            "v" : 120
+          },
+          {
+            "u" : 60,
+            "v" : 117
+          },
+          {
+            "u" : 86,
+            "v" : 99
+          },
+          {
+            "u" : 94,
+            "v" : 109
+          },
+          {
+            "u" : 20,
+            "v" : 61
+          },
+          {
+            "u" : 26,
+            "v" : 17
+          },
+          {
+            "u" : 78,
+            "v" : 47
+          },
+          {
+            "u" : 3,
+            "v" : 43
+          },
+          {
+            "u" : 15,
+            "v" : 53
+          },
+          {
+            "u" : 39,
+            "v" : 41
+          },
+          {
+            "u" : 28,
+            "v" : 17
+          },
+          {
+            "u" : 42,
+            "v" : 114
+          },
+          {
+            "u" : 61,
+            "v" : 103
+          },
+          {
+            "u" : 57,
+            "v" : 66
+          },
+          {
+            "u" : 76,
+            "v" : 108
+          },
+          {
+            "u" : 54,
+            "v" : 49
+          },
+          {
+            "u" : 28,
+            "v" : 75
+          },
+          {
+            "u" : 88,
+            "v" : 84
+          },
+          {
+            "u" : 6,
+            "v" : 65
+          },
+          {
+            "u" : 54,
+            "v" : 76
+          },
+          {
+            "u" : 20,
+            "v" : 103
+          },
+          {
+            "u" : 25,
+            "v" : 72
+          },
+          {
+            "u" : 30,
+            "v" : 30
+          },
+          {
+            "u" : 78,
+            "v" : 10
+          },
+          {
+            "u" : 51,
+            "v" : 3
+          },
+          {
+            "u" : 71,
+            "v" : 79
+          },
+          {
+            "u" : 94,
+            "v" : 16
+          },
+          {
+            "u" : 59,
+            "v" : 5
+          },
+          {
+            "u" : 53,
+            "v" : 116
+          },
+          {
+            "u" : 23,
+            "v" : 23
+          },
+          {
+            "u" : 49,
+            "v" : 55
+          },
+          {
+            "u" : 54,
+            "v" : 26
+          },
+          {
+            "u" : 0,
+            "v" : 7
+          },
+          {
+            "u" : 93,
+            "v" : 117
+          },
+          {
+            "u" : 38,
+            "v" : 59
+          },
+          {
+            "u" : 58,
+            "v" : 58
+          },
+          {
+            "u" : 48,
+            "v" : 119
+          },
+          {
+            "u" : 9,
+            "v" : 112
+          },
+          {
+            "u" : 73,
+            "v" : 123
+          },
+          {
+            "u" : 51,
+            "v" : 35
+          },
+          {
+            "u" : 82,
+            "v" : 54
+          },
+          {
+            "u" : 88,
+            "v" : 96
+          },
+          {
+            "u" : 41,
+            "v" : 30
+          },
+          {
+            "u" : 0,
+            "v" : 119
+          },
+          {
+            "u" : 31,
+            "v" : 75
+          },
+          {
+            "u" : 78,
+            "v" : 114
+          },
+          {
+            "u" : 44,
+            "v" : 107
+          },
+          {
+            "u" : 65,
+            "v" : 56
+          },
+          {
+            "u" : 61,
+            "v" : 5
+          },
+          {
+            "u" : 24,
+            "v" : 93
+          }
+        ]
+      },
+      "stage" : "proxyStage3",
+      "windingCurves" : [
+        {
+          "claimCeiling" : "Polyline and chord measurements of one interpolated finite-mesh path only.",
+          "diagnostic" : {
+            "ambientChordLength" : 2.110382192020081e-17,
+            "ambientPolylineLength" : 0.4043078496128768,
+            "chordToIntrinsicRatio" : 2.110382192020081e-17,
+            "claimClass" : "HV EXPERIMENT",
+            "end" : {
+              "u" : 1.1375,
+              "v" : 0.28125
+            },
+            "intrinsicTargetLength" : 1,
+            "polylineRelativeLengthResidual" : -0.5956921503871232,
+            "segmentCount" : 2048,
+            "stage" : "proxyStage3",
+            "start" : {
+              "u" : 0.1375,
+              "v" : 0.28125
+            }
+          },
+          "direction" : {
+            "u" : 1,
+            "v" : 0
+          },
+          "label" : "u winding at v = 0.28125"
+        },
+        {
+          "claimCeiling" : "Polyline and chord measurements of one interpolated finite-mesh path only.",
+          "diagnostic" : {
+            "ambientChordLength" : 0,
+            "ambientPolylineLength" : 0.773504771053939,
+            "chordToIntrinsicRatio" : 0,
+            "claimClass" : "HV EXPERIMENT",
+            "end" : {
+              "u" : 0.1375,
+              "v" : 1.28125
+            },
+            "intrinsicTargetLength" : 1,
+            "polylineRelativeLengthResidual" : -0.226495228946061,
+            "segmentCount" : 2048,
+            "stage" : "proxyStage3",
+            "start" : {
+              "u" : 0.1375,
+              "v" : 0.28125
+            }
+          },
+          "direction" : {
+            "u" : 0,
+            "v" : 1
+          },
+          "label" : "v winding at u = 0.1375"
+        }
+      ]
+    }
+  ],
+  "title" : "Hévéa Vision finite-mesh scale microscope",
+  "upstreamSource" : {
+    "licenseIdentifier" : "GPL-3.0-or-later",
+    "projectName" : "Hévéa",
+    "projectURL" : "https://hevea-project.fr/",
+    "revision" : "e792074e4dd6319351bc957afeb16b4725d304f0",
+    "sourcePath" : "torus/v0r1m2/include/TOR_implementation.h",
+    "sourceRepositoryURL" : "https://github.com/HeveaProject/Hevea"
+  }
+}
