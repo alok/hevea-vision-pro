@@ -29,6 +29,9 @@ class Event(TypedDict):
     screenshot: str
     screenshot_path: str
     screenshot_sha256: str
+    baseline_path: str
+    baseline_sha256: str
+    visual_delta: str
     logs: str
     log_path: str
     log_sha256: str
@@ -115,6 +118,12 @@ def main() -> None:
                 "launchesPassed": sum(row["launch"] == "passed" for row in rows),
                 "launchesFailed": sum(row["launch"] == "failed" for row in rows),
                 "screenshotsPassed": sum(row["screenshot"] == "passed" for row in rows),
+                "visualDeltasPassed": sum(
+                    row["visual_delta"] == "passed" for row in rows
+                ),
+                "visualDeltasFailed": sum(
+                    row["visual_delta"] == "failed" for row in rows
+                ),
                 "logsPassed": sum(row["logs"] == "passed" for row in rows),
             }
         )
@@ -122,10 +131,18 @@ def main() -> None:
     artifact_count, artifact_bytes = artifact_totals(args.output_dir)
     step_counts = {
         step: dict(Counter(event[step] for event in events))
-        for step in ("build", "boot", "install", "launch", "screenshot", "logs")
+        for step in (
+            "build",
+            "boot",
+            "install",
+            "launch",
+            "screenshot",
+            "visual_delta",
+            "logs",
+        )
     }
     receipt: dict[str, object] = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "runId": args.run_id,
         "status": args.status,
         "startedAt": args.started_at,
@@ -185,13 +202,14 @@ def main() -> None:
         "",
         "## Runtime summary",
         "",
-        "| Runtime | Device | Initial state | Launches | Screenshots | Logs |",
-        "|---|---|---:|---:|---:|---:|",
+        "| Runtime | Device | Initial state | Launches | Screenshots | Visible delta | Logs |",
+        "|---|---|---:|---:|---:|---:|---:|",
     ]
     for summary in runtime_summaries:
         lines.append(
             "| {runtime} | `{udid}` | {initialState} | {launchesPassed} passed / "
-            "{launchesFailed} failed | {screenshotsPassed} | {logsPassed} |".format(**summary)
+            "{launchesFailed} failed | {screenshotsPassed} | {visualDeltasPassed} passed / "
+            "{visualDeltasFailed} failed | {logsPassed} |".format(**summary)
         )
 
     lines.extend(
@@ -199,8 +217,8 @@ def main() -> None:
             "",
             "## Captures",
             "",
-            "| Runtime | Scenario | Rep | Launch | Screenshot | Unified log | Note |",
-            "|---|---|---:|---|---|---|---|",
+            "| Runtime | Scenario | Rep | Launch | Screenshot | Visible delta | Baseline | Unified log | Note |",
+            "|---|---|---:|---|---|---|---|---|---|",
         ]
     )
     for event in events:
@@ -214,14 +232,21 @@ def main() -> None:
             if event["log_path"]
             else event["logs"]
         )
+        baseline = (
+            f"[baseline]({event['baseline_path']})"
+            if event["baseline_path"]
+            else "unavailable"
+        )
         lines.append(
             "| {runtime} | {scenario} | {repetition} | {launch} | {screenshot} | "
-            "{log} | {note} |".format(
+            "{visual_delta} | {baseline} | {log} | {note} |".format(
                 runtime=markdown_cell(event["runtime"]),
                 scenario=markdown_cell(event["scenario"]),
                 repetition=event["repetition"],
                 launch=event["launch"],
                 screenshot=screenshot,
+                visual_delta=event["visual_delta"],
+                baseline=baseline,
                 log=log,
                 note=markdown_cell(event["note"]),
             )

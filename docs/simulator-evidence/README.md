@@ -1,6 +1,6 @@
 # visionOS Simulator evidence
 
-This directory is the landing zone for bounded, reproducible simulator runs. It is deliberately separate from physical-headset evidence: a passing row here says that a build launched and rendered in a named visionOS Simulator runtime. It does **not** establish headset performance, comfort, tracking fidelity, or interaction quality.
+This directory is the landing zone for bounded, reproducible simulator runs. It is deliberately separate from physical-headset evidence: a passing row here says that a build launched and produced a visible change from an app-terminated baseline in a named visionOS Simulator runtime. It does **not** establish headset performance, comfort, tracking fidelity, or interaction quality.
 
 Generated `runs/` are ignored by Git. Review screenshots and logs for private or machine-specific information before deliberately curating any artifact.
 
@@ -56,13 +56,13 @@ An app version that does not yet consume this contract will still launch and cap
 
 Each run is written under `docs/simulator-evidence/runs/<UTC timestamp>-<pid>/` and contains:
 
-- one quiet Xcode build log per runtime;
+- one quiet Xcode build log and one app-terminated baseline screenshot per runtime;
 - boot and install logs;
-- one launch result, PNG screenshot, and filtered unified log per matrix row;
+- one launch result, PNG screenshot, baseline-delta verdict, and filtered unified log per matrix row;
 - `receipt.json`, containing the exact toolchain, revision, simulator IDs, step statuses, disk accounting, and SHA-256 artifact hashes;
 - `receipt.md`, a compact human-readable matrix with links to every capture.
 
-All builds reuse the repository-local `.derivedData` directory. `--skip-build` may reuse its existing `Debug-xrsimulator/HeveaVision.app`; it fails closed if that product is absent. The harness performs no automatic cleanup, so disk reclamation remains an explicit human decision.
+All builds reuse the repository-local `.derivedData` directory. `--skip-build` may reuse its existing `Debug-xrsimulator/HeveaVision.app`; it fails closed if that product is absent. A screenshot that is byte-identical to its runtime's baseline fails closed even if `simctl launch` returned a PID. The harness performs no automatic cleanup, so disk reclamation remains an explicit human decision.
 
 ## Fixed simulator identities
 

@@ -29,6 +29,8 @@ usage() {
 Usage: Scripts/run-simulator-matrix.sh [options]
 
 Build, install, launch, capture, and receipt a bounded visionOS Simulator matrix.
+Each runtime records an app-terminated baseline and rejects captures that are
+byte-identical to it; a PID alone is never treated as visible-app evidence.
 The script never erases devices, deletes app data, shuts down simulators, or removes
 DerivedData. Generated runs are ignored by Git until deliberately curated.
 
@@ -236,14 +238,15 @@ SUCCESSFUL_LAUNCHES=0
 RECEIPT_READY=0
 
 /bin/mkdir -p "$OUTPUT_DIR"
-printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
   runtime os_version udid initial_state scenario repetition build boot install launch pid \
-  screenshot screenshot_path screenshot_sha256 logs log_path log_sha256 note > "$EVENTS_FILE"
+  screenshot screenshot_path screenshot_sha256 baseline_path baseline_sha256 visual_delta \
+  logs log_path log_sha256 note > "$EVENTS_FILE"
 DEVELOPER_DIR="$DEVELOPER_DIR_PATH" "$XCODEBUILD" -version > "$XCODE_VERSION_FILE" 2>&1
 RECEIPT_READY=1
 
 record_row() {
-  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$@" >> "$EVENTS_FILE"
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$@" >> "$EVENTS_FILE"
 }
 
 record_skipped_runtime() {
@@ -261,7 +264,8 @@ record_skipped_runtime() {
     repetition=1
     while (( repetition <= REPETITIONS )); do
       record_row "$runtime" "$os_version" "$udid" "$initial_state" "$scenario" "$repetition" \
-        "$build_status" "$boot_status" "$install_status" skipped "" skipped "" "" skipped "" "" "$note"
+        "$build_status" "$boot_status" "$install_status" skipped "" skipped "" "" "" "" skipped \
+        skipped "" "" "$note"
       repetition=$(( repetition + 1 ))
     done
   done
@@ -393,13 +397,28 @@ for runtime in "${RUNTIMES[@]}"; do
     continue
   fi
 
+  baseline_rel="$runtime/baseline-no-app.png"
+  baseline_abs="$OUTPUT_DIR/$baseline_rel"
+  baseline_sha=""
+  baseline_status="passed"
+  simctl terminate "$udid" "$BUNDLE_ID" >> "$install_log_abs" 2>&1 || true
+  /bin/sleep 1
+  if ! simctl io "$udid" screenshot --type=png "$baseline_abs" >> "$install_log_abs" 2>&1; then
+    baseline_status="failed"
+    baseline_rel=""
+    OVERALL_FAILED=1
+  else
+    baseline_sha="$($SHA256 -a 256 "$baseline_abs" | /usr/bin/awk '{ print $1 }')"
+  fi
+
   for scenario in "${SCENARIOS[@]}"; do
     repetition=1
     while (( repetition <= REPETITIONS )); do
       if ! require_disk_headroom "before $runtime/$scenario repetition $repetition"; then
         OVERALL_FAILED=1
         record_row "$runtime" "$os_version" "$udid" "$initial_state" "$scenario" "$repetition" \
-          "$build_status" "$boot_status" "$install_status" skipped "" skipped "" "" skipped "" "" "disk guard stopped capture"
+          "$build_status" "$boot_status" "$install_status" skipped "" skipped "" "" "$baseline_rel" \
+          "$baseline_sha" skipped skipped "" "" "disk guard stopped capture"
         repetition=$(( repetition + 1 ))
         continue
       fi
@@ -416,8 +435,13 @@ for runtime in "${RUNTIMES[@]}"; do
       logs_status="passed"
       pid=""
       screenshot_sha=""
+      visual_delta="skipped"
       log_sha=""
       note=""
+
+      if [[ "$baseline_status" != "passed" ]]; then
+        note="prelaunch baseline capture failed; visual delta cannot be verified"
+      fi
 
       if ! SIMCTL_CHILD_HEVEA_AUTOMATION=1 \
         SIMCTL_CHILD_HEVEA_SCENARIO="$scenario" \
@@ -442,6 +466,18 @@ for runtime in "${RUNTIMES[@]}"; do
         note="${note:+$note; }screenshot failed; see $launch_rel"
       else
         screenshot_sha="$($SHA256 -a 256 "$screenshot_abs" | /usr/bin/awk '{ print $1 }')"
+        if [[ "$baseline_status" == "passed" ]]; then
+          if [[ "$screenshot_sha" == "$baseline_sha" ]]; then
+            visual_delta="failed"
+            OVERALL_FAILED=1
+            note="${note:+$note; }capture is byte-identical to the app-terminated baseline; app content is not visible"
+          else
+            visual_delta="passed"
+          fi
+        else
+          visual_delta="failed"
+          OVERALL_FAILED=1
+        fi
       fi
 
       if ! simctl spawn "$udid" log show --last 2m --style compact --info --debug \
@@ -457,7 +493,8 @@ for runtime in "${RUNTIMES[@]}"; do
 
       record_row "$runtime" "$os_version" "$udid" "$initial_state" "$scenario" "$repetition" \
         "$build_status" "$boot_status" "$install_status" "$launch_status" "$pid" \
-        "$screenshot_status" "$screenshot_rel" "$screenshot_sha" "$logs_status" "$log_rel" "$log_sha" "$note"
+        "$screenshot_status" "$screenshot_rel" "$screenshot_sha" "$baseline_rel" "$baseline_sha" \
+        "$visual_delta" "$logs_status" "$log_rel" "$log_sha" "$note"
       repetition=$(( repetition + 1 ))
     done
   done
