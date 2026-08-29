@@ -1,0 +1,21 @@
+# Xcode
+DerivedData/
+.derivedData/
+*.xcuserstate
+xcuserdata/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Generated project and research artifacts
+Research/Generated/
+Research/Upstream/
+artifacts/
+
+# macOS
+.DS_Store
+
+# Local tooling
+.env
+*.log
