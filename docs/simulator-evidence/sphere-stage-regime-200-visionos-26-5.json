@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "kind": "selected-ui-workflow-receipt",
+  "status": "passed",
+  "repositoryRevision": "136a06209d593301fddaa8135ec5bae40c0ee048",
+  "appSourceRevision": "bdb56b834af1eadcc9136ad27d8e7ebf057a9427",
+  "test": "testSphereStageAndRegimeSpamConvergesAfterTwoHundredChanges()",
+  "device": {
+    "name": "Apple Vision Pro",
+    "platform": "visionOS Simulator",
+    "osVersion": "26.5",
+    "osBuild": "23O470",
+    "udid": "820CCDAA-EA00-41FC-8A4A-675701BD9E33"
+  },
+  "result": {
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "requestedChanges": 200,
+    "stageRequests": 100,
+    "regimeRequests": 100,
+    "finalStage": "Family 3",
+    "finalRegime": "Atlas",
+    "addressPreserved": true,
+    "changeLoopSeconds": 122.4232269525528,
+    "testCaseSeconds": 163.39902102947235,
+    "wholeResultSeconds": 166.963
+  },
+  "hashes": {
+    "xcresultSummaryJSON": "e106571a8e291cdfef5e8783a489f40359b85746f0a3adf647965a8ed6bbef65",
+    "xcresultTestsJSON": "4e9977cf5b790e3f8398a002c83bfce5257febe23ec75080ea53377abdacd316",
+    "xcresultTestDetailsJSON": "f54f4f9721428c6dbd7d1ba1fbc08689684ac7e6394efe674a8b129a51725c42",
+    "attachmentManifestJSON": "f9a431c783bc4acab07043ad8da214281e8402f1e0e48e56163563e47afdd8c2",
+    "textReceipt": "ee826fd5320f27ede07047c84f12086ad87671284954b78152adbad111cc4d3c"
+  },
+  "claimBoundary": "This establishes request churn, foreground survival, intrinsic-address preservation, and convergence to the last requested stage and gauge. It does not establish 200 separately completed mesh generations or physical-headset behavior."
+}

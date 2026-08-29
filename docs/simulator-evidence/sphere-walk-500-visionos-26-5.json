@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "kind": "selected-ui-workflow-receipt",
+  "status": "passed",
+  "appSourceRevision": "bdb56b834af1eadcc9136ad27d8e7ebf057a9427",
+  "test": "testImmersiveSphereWalkPadSurvivesFiveHundredRealityViewReanchors()",
+  "device": {
+    "name": "Apple Vision Pro",
+    "platform": "visionOS Simulator",
+    "osVersion": "26.5",
+    "osBuild": "23O470",
+    "udid": "820CCDAA-EA00-41FC-8A4A-675701BD9E33"
+  },
+  "result": {
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "accessibilityTaps": 500,
+    "pattern": [
+      "forward",
+      "right",
+      "left"
+    ],
+    "acknowledgedRealityKitPresentationTransforms": 500,
+    "finalAddressStep": 500,
+    "acknowledgementLoopSeconds": 905.2148829698563,
+    "testCaseSeconds": 934.0711989402771,
+    "wholeResultSeconds": 936.937
+  },
+  "hashes": {
+    "xcresultSummaryJSON": "9d42955b9c9bd9bec12702c4fb00b0c4c7e1eb610860702dbce7652288406924",
+    "xcresultTestsJSON": "4504fc27a56b552d1125daedfc07eb75009def48d4982a18376bd3b3fda80cc7",
+    "xcresultTestDetailsJSON": "e7ccdb394a64ff745331810719412f757f3b41c7de3c9431032b78377d80d215",
+    "attachmentManifestJSON": "3ec3d269931dd6f38cccb2b945966a97ef84a784bce03afdc7952f2b0eac55fe",
+    "textReceipt": "f071673e44592915b893de116d4ab8ffc3465a34b7389eb931ca0b0a47bad3a2"
+  },
+  "claimBoundary": "This establishes 500 acknowledged simulator-side intrinsic-state and RealityKit presentation-transform updates on one installed mesh. It does not establish 500 mesh regenerations or new anchors, physical footsteps, collision behavior, comfort, or physical-headset interaction."
+}
