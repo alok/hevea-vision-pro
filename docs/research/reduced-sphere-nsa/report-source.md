@@ -802,15 +802,10 @@ Then:
 
 1. \(\operatorname{st}(F_\varepsilon(p))=0\) for every standard \(p\).
 2. For every standard \(C^1\) path \(\gamma\),
-   \[
-   {}^\ast L(F_\varepsilon\circ{}^\ast\gamma)=L(h\circ\gamma).
-   \]
+   \({}^\ast L(F_\varepsilon\circ{}^\ast\gamma)=L(h\circ\gamma)\).
 3. Standard part and length do not commute:
-   \[
-   \operatorname{st}({}^\ast L(F_\varepsilon\circ{}^\ast\gamma))=L(\gamma),
-   \qquad
-   L(\operatorname{st}F_\varepsilon\circ\gamma)=0.
-   \]
+   \(\operatorname{st}({}^\ast L(F_\varepsilon\circ{}^\ast\gamma))=L(\gamma)\),
+   while \(L(\operatorname{st}F_\varepsilon\circ\gamma)=0\).
 4. \(dF_\varepsilon\) is not S-continuous at any standard point.
 5. For appreciably separated standard \(p,q\), their ambient separation is
    infinitesimal while their intrinsic separation is appreciable.
