@@ -17,6 +17,9 @@ artifacts/
 # macOS
 .DS_Store
 
+# Curated simulator captures are public documentation artifacts.
+!docs/screenshots/*.png
+
 # Local tooling
 .env
 *.log
