@@ -85,7 +85,11 @@ The app declares a full `ImmersiveSpace` and manages its lifecycle explicitly. I
 
 ### 4.3 Interaction
 
-- Spatial tap selects a surface sample and its parameter coordinates.
+- Spatial tap selects a torus-archive sample and its parameter coordinates.
+- Reduced-sphere address selection is performed through the intrinsic walk,
+  turn, altitude, reset, and named-route controls. Surface tap-to-address is
+  deliberately deferred until a hit can be inverted to a typed source-sphere
+  identity; an ambient nearest-point lookup must never choose adjacency.
 - Sphere walk controls update only the intrinsic address through the
   unit-sphere exponential map; ambient nearest-neighbor queries never choose
   adjacency.
@@ -165,7 +169,8 @@ The app is not considered demonstrated until automated build/tests and repeated 
 8. run deterministic rapid-stage and rapid-overlay stress scenarios;
 9. capture screenshots from stable named scenarios;
 10. repeat on visionOS 26.5 and 27.0 when both runtimes are installed.
-11. exercise at least 500 live immersive address re-anchors and a separate
+11. exercise at least 500 live immersive address re-anchors, acknowledging the
+    RealityKit transform after every intrinsic step, and a separate
     deterministic 1,000-step state run without non-finite or unbounded state.
 
 Build success alone satisfies none of the interaction or visual criteria.

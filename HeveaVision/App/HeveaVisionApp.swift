@@ -9,7 +9,7 @@ struct HeveaVisionApp: App {
       MissionControlView()
         .environment(model)
     }
-    .defaultSize(width: 1_180, height: 780)
+    .defaultSize(width: 1_180, height: 880)
 
     ImmersiveSpace(id: AppModel.immersiveSpaceID) {
       ImmersiveLabView()

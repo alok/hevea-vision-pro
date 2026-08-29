@@ -20,9 +20,10 @@ final class HeveaVisionUITests: XCTestCase {
 
     for identifier in [
       "mission-control",
-      "stage-card",
-      "overlay-card",
-      "research-instrument",
+      "exhibit-switcher",
+      "sphere-stage-card",
+      "sphere-regime-card",
+      "sphere-address-card",
       "immersion-card",
     ] {
       requireElement(identifier)
@@ -30,42 +31,48 @@ final class HeveaVisionUITests: XCTestCase {
 
     for identifier in [
       "toggle-immersive-lab",
-      "stage-shortTorus",
-      "stage-proxyStage1",
-      "stage-proxyStage2",
-      "stage-proxyStage3",
-      "overlay-surface",
-      "overlay-grid",
-      "overlay-metric",
-      "overlay-normals",
-      "overlay-direction",
+      "exhibit-sphere",
+      "exhibit-torus",
+      "sphere-stage-unitSphere",
+      "sphere-stage-shortMap",
+      "sphere-stage-proxyFamily1",
+      "sphere-stage-proxyFamily2",
+      "sphere-stage-proxyFamily3",
+      "sphere-regime-atlas",
+      "sphere-regime-habitat",
+      "sphere-regime-hover",
+      "sphere-regime-interior",
+      "sphere-walk-forward",
+      "sphere-cap-to-equator",
     ] {
       requireHittable(identifier)
     }
 
     attachScreenshot(named: "mission-control-initial")
 
-    let stageCycle: [StageCheckpoint] = [
-      .shortTorus,
-      .proxyStage1,
-      .proxyStage2,
-      .proxyStage3,
-      .proxyStage2,
-      .proxyStage1,
-      .shortTorus,
+    let stageCycle: [SphereStageCheckpoint] = [
+      .unitSphere,
+      .shortMap,
+      .proxyFamily1,
+      .proxyFamily2,
+      .proxyFamily3,
+      .proxyFamily2,
+      .proxyFamily1,
+      .shortMap,
     ]
 
     for checkpoint in stageCycle {
       let button = requireHittable(checkpoint.windowIdentifier)
       button.tap()
-      requireStaticText(checkpoint.visibleTitle)
+      let stageState = requireElement("sphere-window-stage-state")
+      requireLabel(stageState, beginningWith: "Requested · \(checkpoint.visibleTitle)")
     }
 
     attachScreenshot(named: "mission-control-stage-cycle-complete")
   }
 
   func testMissionControlCyclesEveryDiagnosticOverlay() {
-    launch(scenario: "mission-control")
+    launch(scenario: "torus-mission-control")
     requireElement("mission-control")
 
     for checkpoint in OverlayCheckpoint.allCases {
@@ -79,19 +86,22 @@ final class HeveaVisionUITests: XCTestCase {
   func testImmersiveLabCanDismissReopenAndCycleStages() {
     launch(scenario: "mission-control")
     openImmersiveLab()
-    requireImmersiveAccessibilityContract()
+    requireImmersiveAccessibilityContract(exhibit: .sphere)
 
-    // HEVEA_AUTOMATION requests a deterministic surface sample. Waiting for
-    // this readout also proves that asynchronous geometry generation ended.
-    requireStaticText(beginningWith: "Selected sample #", timeout: Timeout.geometry)
+    requireSphereRender(.proxyFamily3)
+    requireSpherePresentation(step: 0, regime: .habitat)
     attachScreenshot(named: "immersive-lab-open")
-    cycleImmersiveStages()
+    cycleImmersiveSphereStages()
+    let destroyedSceneReceipt = requireElement("sphere-render-state").label
 
     dismissImmersiveLab()
     attachScreenshot(named: "mission-control-after-dismiss")
 
     openImmersiveLab()
     requireElement("immersive-controls-hud", timeout: Timeout.immersive)
+    let reopenedSceneReceipt = requireSphereRender(.proxyFamily3).label
+    XCTAssertNotEqual(reopenedSceneReceipt, destroyedSceneReceipt)
+    requireSpherePresentation(step: 0, regime: .habitat)
     attachScreenshot(named: "immersive-lab-reopened")
 
     dismissImmersiveLab()
@@ -121,9 +131,9 @@ final class HeveaVisionUITests: XCTestCase {
     dismissImmersiveLab()
   }
 
-  func testImmersiveStageRailSurvivesTwoHundredRenderedUpdates() {
+  func testImmersiveStageRailSurvivesTwoHundredSelectionUpdates() {
     let updateCount = 200
-    launch(scenario: "mission-control")
+    launch(scenario: "torus-mission-control")
     openImmersiveLab()
     requireStaticText(beginningWith: "Selected sample #", timeout: Timeout.geometry)
 
@@ -149,7 +159,7 @@ final class HeveaVisionUITests: XCTestCase {
       "iterations=\(updateCount) finalStage=\(finalStage.shortTitle) "
       + "elapsedSeconds=\(elapsedSeconds)"
     let attachment = XCTAttachment(string: receipt)
-    attachment.name = "Hevea Vision — 200-update stress receipt"
+    attachment.name = "Hevea Vision — 200 stage-selection stress receipt"
     attachment.lifetime = .keepAlways
     add(attachment)
     attachScreenshot(named: "immersive-stage-stress-200-complete")
@@ -172,5 +182,120 @@ final class HeveaVisionUITests: XCTestCase {
     requireHittable("return-outside", timeout: Timeout.immersive)
     requireHittable("exit-inside-lab", timeout: Timeout.immersive)
     attachScreenshot(named: "immersive-inside-escape-contract")
+  }
+
+  func testSphereRegimeCyclePreservesIntrinsicAddressAndExposesInteriorEscapeControls() {
+    launch(scenario: "sphere-atlas")
+
+    requireSphereRender(.proxyFamily3)
+    requireSpherePresentation(step: 0, regime: .atlas)
+    let state = requireElement("sphere-regime-state", timeout: Timeout.immersive)
+    XCTAssertEqual(state.label, "Gauge · Atlas")
+    let addressToken = requireElement("sphere-address-token-state", timeout: Timeout.geometry)
+    let initialAddressToken = addressToken.label
+    XCTAssertFalse(initialAddressToken.isEmpty)
+
+    for checkpoint in SphereRegimeCheckpoint.allCases {
+      let button = requireHittable(checkpoint.immersiveIdentifier, timeout: Timeout.immersive)
+      XCTAssertTrue(
+        tapWithSpatialRetry(button, until: state, hasLabel: checkpoint.visibleState),
+        "Sphere regime remained '\(state.label)' after selecting \(checkpoint.visibleState)"
+      )
+      requireSpherePresentation(step: 0, regime: checkpoint)
+      XCTAssertEqual(addressToken.label, initialAddressToken)
+      attachScreenshot(named: "sphere-regime-\(checkpoint.screenshotName)")
+    }
+
+    requireElement("inside-escape-hud", timeout: Timeout.immersive)
+    requireHittable("return-habitat", timeout: Timeout.immersive)
+    requireHittable("exit-inside-lab", timeout: Timeout.immersive)
+    // XRSimulator 26.5 reports both controls visible and hittable, but two attempts to activate
+    // return-habitat produced no Presented-Habitat receipt. This test therefore claims
+    // accessibility exposure only. Dedicated return activation remains unverified on simulator
+    // and headset; XCTest terminates the app during teardown.
+    XCTAssertEqual(addressToken.label, initialAddressToken)
+  }
+
+  func testSphereNavigationStressHookReportsExactlyOneThousandIntrinsicSteps() {
+    launch(scenario: "sphere-navigation-stress-1000")
+
+    requireElement("immersive-controls-hud", timeout: Timeout.immersive)
+    requireSphereRender(.proxyFamily3)
+    let addressStep = requireElement("sphere-address-step-state", timeout: Timeout.geometry)
+    requireLabel(addressStep, beginningWith: "Address step #1000", timeout: Timeout.geometry)
+    requireSpherePresentation(step: 1_000, regime: .habitat)
+    XCTAssertEqual(app.state, .runningForeground)
+    attachScreenshot(named: "sphere-navigation-stress-1000-complete")
+    dismissImmersiveLab()
+  }
+
+  func testImmersiveSphereWalkPadSurvivesFiveHundredRealityViewReanchors() {
+    let tapCount = 500
+    launch(scenario: "sphere-habitat")
+    requireSphereRender(.proxyFamily3)
+    let addressStep = requireElement("sphere-address-step-state", timeout: Timeout.geometry)
+    requireLabel(addressStep, beginningWith: "Address step #0", timeout: Timeout.geometry)
+    let presentationState = requireSpherePresentation(step: 0, regime: .habitat)
+
+    let walkButtons = [
+      requireHittable("immersive-sphere-walk-forward", timeout: Timeout.immersive),
+      requireHittable("immersive-sphere-walk-right", timeout: Timeout.immersive),
+      requireHittable("immersive-sphere-walk-left", timeout: Timeout.immersive),
+    ]
+    let startedAt = Date()
+
+    for index in 0..<tapCount {
+      walkButtons[index % walkButtons.count].tap()
+      requireLabel(
+        presentationState,
+        beginningWith: "Presented Habitat · address step #\(index + 1) ·",
+        timeout: Timeout.immersive
+      )
+      if index.isMultiple(of: 50) {
+        XCTAssertEqual(app.state, .runningForeground)
+      }
+    }
+
+    requireLabel(addressStep, beginningWith: "Address step #500", timeout: Timeout.geometry)
+    XCTAssertEqual(app.state, .runningForeground)
+    let elapsedSeconds = Date().timeIntervalSince(startedAt)
+    let receipt =
+      "accessibilityTaps=\(tapCount) pattern=forward,right,left "
+      + "acknowledgedRealityKitTransforms=\(tapCount) "
+      + "finalAddressStep=500 elapsedSeconds=\(elapsedSeconds)"
+    let attachment = XCTAttachment(string: receipt)
+    attachment.name = "Hevea Vision — 500 acknowledged RealityKit transform receipt"
+    attachment.lifetime = .keepAlways
+    add(attachment)
+    attachScreenshot(named: "sphere-walk-pad-reanchor-stress-500-complete")
+
+    dismissImmersiveLab()
+  }
+
+  func testSphereWindowMovementAndResetAreObservable() {
+    launch(scenario: "mission-control")
+    let state = requireElement("sphere-navigation-state")
+    XCTAssertTrue(state.label.contains("steps 0"))
+
+    requireHittable("sphere-walk-forward").tap()
+    let stepped = NSPredicate(format: "label CONTAINS %@", "steps 1")
+    XCTAssertEqual(
+      XCTWaiter.wait(
+        for: [XCTNSPredicateExpectation(predicate: stepped, object: state)],
+        timeout: Timeout.window
+      ),
+      .completed
+    )
+
+    requireHittable("sphere-reset-address").tap()
+    let reset = NSPredicate(format: "label CONTAINS %@", "steps 0")
+    XCTAssertEqual(
+      XCTWaiter.wait(
+        for: [XCTNSPredicateExpectation(predicate: reset, object: state)],
+        timeout: Timeout.window
+      ),
+      .completed
+    )
+    attachScreenshot(named: "sphere-window-reset-deterministic")
   }
 }

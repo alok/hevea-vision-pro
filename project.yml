@@ -54,7 +54,6 @@ targets:
       - path: HeveaVisionTests
     dependencies:
       - target: HeveaVision
-      - package: HeveaCore
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.alok.HeveaVisionTests

@@ -44,19 +44,37 @@ extension HeveaVisionUITests {
     requireHittable("toggle-immersive-lab", timeout: Timeout.immersive)
   }
 
-  func requireImmersiveAccessibilityContract() {
-    for identifier in [
+  enum ImmersiveExhibit {
+    case sphere
+    case torus
+  }
+
+  func requireImmersiveAccessibilityContract(exhibit: ImmersiveExhibit) {
+    var identifiers = [
       "immersive-lab",
       "immersive-stage-hud",
       "immersive-legend-hud",
       "immersive-sample-hud",
       "immersive-controls-hud",
-      "immersive-overlay-menu",
-      "presentation-picker",
-      "section-slider",
       "reset-lab",
       "exit-immersive-lab",
-    ] {
+    ]
+    switch exhibit {
+    case .sphere:
+      identifiers.append(contentsOf: [
+        "sphere-regime-picker",
+        "immersive-sphere-walk-forward",
+        "immersive-sphere-altitude-up",
+        "immersive-sphere-section-toggle",
+      ])
+    case .torus:
+      identifiers.append(contentsOf: [
+        "immersive-overlay-menu",
+        "presentation-picker",
+        "section-slider",
+      ])
+    }
+    for identifier in identifiers {
       requireElement(identifier, timeout: Timeout.immersive)
     }
   }
@@ -67,6 +85,64 @@ extension HeveaVisionUITests {
       button.tap()
       requireStaticText(checkpoint.shortTitle, timeout: Timeout.geometry)
     }
+  }
+
+  func cycleImmersiveSphereStages() {
+    let renderState = requireElement("sphere-render-state", timeout: Timeout.geometry)
+    for checkpoint in SphereStageCheckpoint.allCases {
+      let button = requireHittable(checkpoint.immersiveIdentifier, timeout: Timeout.immersive)
+      button.tap()
+      requireLabel(
+        renderState,
+        beginningWith: "Rendered \(checkpoint.shortTitle) ·",
+        timeout: Timeout.geometry
+      )
+      assertNoGenerationError()
+    }
+  }
+
+  @discardableResult
+  func requireSphereRender(
+    _ checkpoint: SphereStageCheckpoint = .proxyFamily3,
+    timeout: TimeInterval = Timeout.geometry,
+    file: StaticString = #filePath,
+    line: UInt = #line
+  ) -> XCUIElement {
+    let state = requireElement("sphere-render-state", timeout: timeout, file: file, line: line)
+    requireLabel(
+      state,
+      beginningWith: "Rendered \(checkpoint.shortTitle) ·",
+      timeout: timeout,
+      file: file,
+      line: line
+    )
+    assertNoGenerationError(file: file, line: line)
+    return state
+  }
+
+  @discardableResult
+  func requireSpherePresentation(
+    step: Int,
+    regime: SphereRegimeCheckpoint,
+    timeout: TimeInterval = Timeout.geometry,
+    file: StaticString = #filePath,
+    line: UInt = #line
+  ) -> XCUIElement {
+    let state = requireElement(
+      "sphere-presentation-state",
+      timeout: timeout,
+      file: file,
+      line: line
+    )
+    requireLabel(
+      state,
+      beginningWith: "Presented \(regime.displayName) · address step #\(step) ·",
+      timeout: timeout,
+      file: file,
+      line: line
+    )
+    assertNoGenerationError(file: file, line: line)
+    return state
   }
 
   @discardableResult
@@ -143,6 +219,39 @@ extension HeveaVisionUITests {
     return text
   }
 
+  func requireLabel(
+    _ element: XCUIElement,
+    beginningWith prefix: String,
+    timeout: TimeInterval = Timeout.window,
+    file: StaticString = #filePath,
+    line: UInt = #line
+  ) {
+    let predicate = NSPredicate(format: "label BEGINSWITH %@", prefix)
+    let expectation = XCTNSPredicateExpectation(predicate: predicate, object: element)
+    if XCTWaiter.wait(for: [expectation], timeout: timeout) != .completed {
+      attachScreenshot(named: "failure-state-label")
+      XCTFail(
+        "State witness '\(element.identifier)' never began with '\(prefix)'; "
+          + "last label was '\(element.label)'",
+        file: file,
+        line: line
+      )
+    }
+  }
+
+  func assertNoGenerationError(
+    file: StaticString = #filePath,
+    line: UInt = #line
+  ) {
+    let error = app.descendants(matching: .any)
+      .matching(identifier: "generation-error")
+      .firstMatch
+    if error.exists {
+      attachScreenshot(named: "failure-generation-error")
+      XCTFail("Geometry generation reported: \(error.label)", file: file, line: line)
+    }
+  }
+
   @discardableResult
   func requireStaticText(
     beginningWith prefix: String,
@@ -181,6 +290,7 @@ extension HeveaVisionUITests {
     }
     return false
   }
+
 }
 
 enum StageCheckpoint: CaseIterable {
@@ -224,6 +334,86 @@ enum StageCheckpoint: CaseIterable {
     case .proxyStage3: "Proxy Stage 3"
     }
   }
+}
+
+enum SphereStageCheckpoint: CaseIterable {
+  case unitSphere
+  case shortMap
+  case proxyFamily1
+  case proxyFamily2
+  case proxyFamily3
+
+  var windowIdentifier: String {
+    "sphere-stage-\(rawName)"
+  }
+
+  var immersiveIdentifier: String {
+    "immersive-sphere-stage-\(rawName)"
+  }
+
+  var visibleTitle: String {
+    switch self {
+    case .unitSphere: "UPSTREAM BASELINE — Unit sphere"
+    case .shortMap: "REAL-TIME PROXY — Short map"
+    case .proxyFamily1: "REAL-TIME PROXY 1 — First primitive family"
+    case .proxyFamily2: "REAL-TIME PROXY 2 — Second primitive family"
+    case .proxyFamily3: "REAL-TIME PROXY 3 — Third primitive family"
+    }
+  }
+
+  var shortTitle: String {
+    switch self {
+    case .unitSphere: "Unit sphere"
+    case .shortMap: "Short map"
+    case .proxyFamily1: "Family 1"
+    case .proxyFamily2: "Family 2"
+    case .proxyFamily3: "Family 3"
+    }
+  }
+
+  private var rawName: String {
+    switch self {
+    case .unitSphere: "unitSphere"
+    case .shortMap: "shortMap"
+    case .proxyFamily1: "proxyFamily1"
+    case .proxyFamily2: "proxyFamily2"
+    case .proxyFamily3: "proxyFamily3"
+    }
+  }
+}
+
+enum SphereRegimeCheckpoint: CaseIterable {
+  case atlas
+  case habitat
+  case hover
+  case interior
+
+  var immersiveIdentifier: String {
+    "immersive-sphere-regime-\(screenshotName)"
+  }
+
+  var visibleState: String {
+    "Gauge · \(displayName)"
+  }
+
+  var displayName: String {
+    switch self {
+    case .atlas: "Atlas"
+    case .habitat: "Habitat"
+    case .hover: "Hover"
+    case .interior: "Interior"
+    }
+  }
+
+  var screenshotName: String {
+    switch self {
+    case .atlas: "atlas"
+    case .habitat: "habitat"
+    case .hover: "hover"
+    case .interior: "interior"
+    }
+  }
+
 }
 
 enum OverlayCheckpoint: CaseIterable {

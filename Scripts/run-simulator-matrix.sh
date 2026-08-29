@@ -16,7 +16,7 @@ SHA256="/usr/bin/shasum"
 RECEIPT_SCRIPT="$REPO_ROOT/Scripts/simulator_receipt.py"
 
 RUNTIME_SELECTION="all"
-SCENARIO_CSV="mission-control,stage-sweep,metric-heatmap,scale-microscope"
+SCENARIO_CSV="mission-control,sphere-atlas,sphere-habitat,sphere-hover,sphere-interior,sphere-stage-sweep,sphere-navigation-stress-1000"
 REPETITIONS=2
 SETTLE_SECONDS=6
 MIN_FREE_GIB=16
@@ -36,7 +36,7 @@ DerivedData. Generated runs are ignored by Git until deliberately curated.
 
 Options:
   --runtime all|26.5|27.0       Runtime matrix (default: all)
-  --scenarios CSV              Scenario identifiers (default: four canonical scenes)
+  --scenarios CSV              Scenario identifiers (default: seven reduced-sphere scenes)
   --repetitions N              Runs per scenario, 1...10 (default: 2)
   --settle-seconds N           Delay before capture, 1...30 (default: 6)
   --min-free-gib N             Abort before writes below N GiB, 5...100 (default: 16)

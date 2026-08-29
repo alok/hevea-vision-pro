@@ -44,7 +44,7 @@ struct ImmersiveLabView: View {
           .environment(model)
       }
       Attachment(id: Self.insideEscapeAttachmentID) {
-        if model.presentation == .inside {
+        if shouldShowEscapeHUD {
           InsideEscapeHUD()
             .environment(model)
         }
@@ -54,12 +54,19 @@ struct ImmersiveLabView: View {
     .gesture(surfaceDragGesture)
     .gesture(surfaceMagnifyGesture)
     .task(id: generationRequest) {
-      await regenerateSurface()
+      let request = generationRequest
+      await regenerateSurface(for: request)
+    }
+    .task(id: spherePresentationRequest) {
+      guard let request = spherePresentationRequest else { return }
+      applySpherePresentationAndAcknowledge(request)
     }
     .onAppear {
+      model.beginSphereSceneSession()
       model.immersiveSpaceState = .open
     }
     .onDisappear {
+      model.endSphereSceneSession()
       model.immersiveSpaceState = .closed
       openWindow(id: AppModel.mainWindowID)
     }
@@ -70,10 +77,37 @@ struct ImmersiveLabView: View {
 
   private var generationRequest: GenerationRequest {
     GenerationRequest(
-      stage: model.selectedStage,
+      exhibit: model.selectedExhibit,
+      torusStage: model.selectedStage,
+      sphereStage: model.selectedSphereStage,
       overlay: model.selectedOverlay,
       sectionStep: Int((model.sectionAmount * 12).rounded()),
-      revision: model.geometryRevision
+      revision: model.geometryRevision,
+      sphereSceneSessionRevision: model.sphereSceneSessionRevision
+    )
+  }
+
+  private var shouldShowEscapeHUD: Bool {
+    (model.selectedExhibit == .flatTorus && model.presentation == .inside)
+      || (model.selectedExhibit == .reducedSphere && model.selectedSphereRegime == .interior)
+  }
+
+  private var spherePresentationRequest: SpherePresentationRequest? {
+    guard model.selectedExhibit == .reducedSphere,
+      let renderReceipt = model.sphereRenderReceipt
+    else {
+      return nil
+    }
+    return SpherePresentationRequest(
+      requestedStage: model.selectedSphereStage,
+      renderReceipt: renderReceipt,
+      regime: model.selectedSphereRegime,
+      navigation: model.sphereNavigation,
+      navigationRevision: model.sphereNavigationRevision,
+      addressFingerprint: model.sphereAddressToken,
+      poseFingerprint: model.spherePoseToken,
+      scale: model.modelScale,
+      rotation: model.spherePresentationRotation
     )
   }
 
@@ -81,7 +115,9 @@ struct ImmersiveLabView: View {
     SpatialTapGesture()
       .targetedToAnyEntity()
       .onEnded { value in
-        guard value.entity.name == HeveaRealityBridge.surfaceEntityName else { return }
+        guard model.selectedExhibit == .flatTorus,
+          value.entity.name == HeveaRealityBridge.surfaceEntityName
+        else { return }
         let location = value.convert(value.location3D, from: .local, to: value.entity)
         model.selectedSample = scene.selectSurface(
           at: SIMD3(
@@ -96,18 +132,21 @@ struct ImmersiveLabView: View {
     DragGesture()
       .targetedToAnyEntity()
       .onChanged { value in
-        guard value.entity.name == HeveaRealityBridge.surfaceEntityName else { return }
+        guard
+          value.entity.name == HeveaRealityBridge.surfaceEntityName
+            || SphereRealityBridge.isSurfaceEntity(value.entity)
+        else { return }
         let start = dragStartRotation ?? model.modelRotation
         if dragStartRotation == nil {
           dragStartRotation = start
         }
-        model.modelRotation =
+        model.setRotation(
           start
-          + SIMD2(
-            Float(value.translation3D.x) * 0.006,
-            Float(value.translation3D.y) * 0.006
-          )
-        model.modelRotation.y = min(max(model.modelRotation.y, -.pi / 2), .pi / 2)
+            + SIMD2(
+              Float(value.translation3D.x) * 0.006,
+              Float(value.translation3D.y) * 0.006
+            )
+        )
       }
       .onEnded { _ in
         dragStartRotation = nil
@@ -118,7 +157,10 @@ struct ImmersiveLabView: View {
     MagnifyGesture()
       .targetedToAnyEntity()
       .onChanged { value in
-        guard value.entity.name == HeveaRealityBridge.surfaceEntityName else { return }
+        guard
+          value.entity.name == HeveaRealityBridge.surfaceEntityName
+            || SphereRealityBridge.isSurfaceEntity(value.entity)
+        else { return }
         let start = magnifyStartScale ?? model.modelScale
         if magnifyStartScale == nil {
           magnifyStartScale = start
@@ -130,18 +172,41 @@ struct ImmersiveLabView: View {
       }
   }
 
-  private func regenerateSurface() async {
+  private func regenerateSurface(for request: GenerationRequest) async {
+    guard generationRequest == request else { return }
     model.generationError = nil
     do {
-      let snapshot = try await scene.regenerate(
-        stage: model.selectedStage,
-        overlay: model.selectedOverlay,
-        sectionAmount: Double(generationRequest.sectionStep) / 12
-      )
+      switch request.exhibit {
+      case .reducedSphere:
+        let snapshot = try await scene.regenerateSphere(
+          stage: request.sphereStage,
+          sectionAmount: Double(request.sectionStep) / 12
+        )
+        try Task.checkCancellation()
+        _ = model.acknowledgeSphereRender(
+          stage: request.sphereStage,
+          sectionStep: request.sectionStep,
+          geometryRevision: request.revision,
+          sceneSessionRevision: request.sphereSceneSessionRevision,
+          snapshot: snapshot
+        )
+      case .flatTorus:
+        let snapshot = try await scene.regenerate(
+          stage: request.torusStage,
+          overlay: request.overlay,
+          sectionAmount: Double(request.sectionStep) / 12
+        )
+        try Task.checkCancellation()
+        guard generationRequest == request else { return }
+        model.diagnostics = snapshot
+      }
       try Task.checkCancellation()
-      model.diagnostics = snapshot
 
-      if model.automationScenario != nil {
+      let shouldSelectAutomationSample =
+        model.automationScenario != nil
+        && request.exhibit == .flatTorus
+        && generationRequest == request
+      if shouldSelectAutomationSample {
         model.selectedSample = scene.selectDeterministicSample(
           index: model.automationRepetition
         )
@@ -149,17 +214,69 @@ struct ImmersiveLabView: View {
     } catch is CancellationError {
       return
     } catch {
+      guard generationRequest == request else { return }
       model.generationError = String(describing: error)
     }
   }
 
   private func applyPresentation() {
-    scene.applyPresentation(
-      presentation: model.presentation,
-      scale: model.modelScale,
-      rotation: model.modelRotation,
-      showDomainFloor: model.showDomainFloor,
-      showGaussSphere: model.showGaussSphere
+    switch model.selectedExhibit {
+    case .reducedSphere:
+      guard let renderReceipt = model.sphereRenderReceipt else { return }
+      _ = scene.applySpherePresentation(
+        regime: model.selectedSphereRegime,
+        navigation: model.sphereNavigation,
+        stage: renderReceipt.stage,
+        scale: model.modelScale,
+        rotation: model.spherePresentationRotation,
+        showUnitSphereGhost: true
+      )
+    case .flatTorus:
+      scene.applyPresentation(
+        presentation: model.presentation,
+        scale: model.modelScale,
+        rotation: model.modelRotation,
+        showDomainFloor: model.showDomainFloor,
+        showGaussSphere: model.showGaussSphere
+      )
+    }
+  }
+
+  /// Applies the captured intrinsic pose and issues an acknowledgment in one
+  /// main-actor transaction. UI automation waits for this receipt after every
+  /// walk-pad step instead of inferring a RealityKit update from SwiftUI text.
+  private func applySpherePresentationAndAcknowledge(_ request: SpherePresentationRequest) {
+    guard !Task.isCancelled,
+      model.sphereRenderIsCurrent,
+      model.sphereRenderReceipt == request.renderReceipt,
+      request.requestedStage == request.renderReceipt.stage
+    else {
+      return
+    }
+
+    guard
+      scene.applySpherePresentation(
+        regime: request.regime,
+        navigation: request.navigation,
+        stage: request.renderReceipt.stage,
+        scale: request.scale,
+        rotation: request.rotation,
+        showUnitSphereGhost: true
+      )
+    else {
+      model.generationError = "Could not evaluate the requested intrinsic sphere address."
+      return
+    }
+    guard !Task.isCancelled else { return }
+    _ = model.acknowledgeSpherePresentation(
+      stage: request.requestedStage,
+      regime: request.regime,
+      navigationRevision: request.navigationRevision,
+      navigationStepCount: request.navigation.stepCount,
+      addressFingerprint: request.addressFingerprint,
+      poseFingerprint: request.poseFingerprint,
+      renderFingerprint: request.renderReceipt.fingerprint,
+      renderInstallationRevision: request.renderReceipt.installationRevision
     )
   }
 
@@ -215,110 +332,25 @@ struct ImmersiveLabView: View {
 }
 
 private struct GenerationRequest: Hashable {
-  let stage: HeveaStage
+  let exhibit: HeveaExhibit
+  let torusStage: HeveaStage
+  let sphereStage: SphereStage
   let overlay: DiagnosticOverlay
   let sectionStep: Int
   let revision: Int
+  let sphereSceneSessionRevision: UInt64
 }
 
-private struct StageHUD: View {
-  @Environment(AppModel.self) private var model
-  @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
-
-  var body: some View {
-    VStack(alignment: .leading, spacing: 12) {
-      HStack {
-        VStack(alignment: .leading, spacing: 2) {
-          Text("CONSTRUCTION STAGE")
-            .font(.caption2.weight(.heavy))
-            .tracking(1.2)
-            .foregroundStyle(.cyan)
-          Text(model.selectedStage.shortDisplayName)
-            .font(.headline)
-        }
-        Spacer()
-        ClaimBadge(claim: model.selectedStage.claimClass)
-        Button {
-          model.resetLab()
-        } label: {
-          Image(systemName: "arrow.counterclockwise")
-        }
-        .buttonStyle(.bordered)
-        .accessibilityLabel("Reset lab")
-        .accessibilityIdentifier("reset-lab")
-        Button(role: .cancel) {
-          model.immersiveSpaceState = .inTransition
-          Task { await dismissImmersiveSpace() }
-        } label: {
-          Image(systemName: "rectangle.portrait.and.arrow.right")
-        }
-        .buttonStyle(.borderedProminent)
-        .tint(.cyan)
-        .foregroundStyle(.black)
-        .accessibilityLabel("Exit immersive lab")
-        .accessibilityIdentifier("exit-immersive-lab")
-      }
-
-      HStack(spacing: 7) {
-        ForEach(Array(HeveaStage.allCases.enumerated()), id: \.element) { index, stage in
-          Button {
-            model.selectStage(stage)
-          } label: {
-            Text("\(index)")
-              .font(.caption.bold())
-              .frame(width: 31, height: 31)
-              .background(
-                stage == model.selectedStage ? Color.cyan : Color.white.opacity(0.12),
-                in: Circle()
-              )
-              .foregroundStyle(stage == model.selectedStage ? .black : .white)
-          }
-          .buttonStyle(.plain)
-          .accessibilityLabel(stage.displayName)
-          .accessibilityIdentifier("immersive-stage-\(stage.rawValue)")
-        }
-      }
-
-      VStack(alignment: .leading, spacing: 4) {
-        Text("View · \(model.presentation.rawValue)")
-          .font(.caption2)
-          .foregroundStyle(.secondary)
-          .accessibilityIdentifier("presentation-state")
-        HStack(spacing: 4) {
-          ForEach(LabPresentation.allCases) { presentation in
-            Button {
-              model.presentation = presentation
-            } label: {
-              Text(presentation.rawValue)
-                .font(.caption.weight(.semibold))
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 7)
-                .background(
-                  presentation == model.presentation ? Color.cyan : Color.white.opacity(0.08),
-                  in: RoundedRectangle(cornerRadius: 8, style: .continuous)
-                )
-                .foregroundStyle(presentation == model.presentation ? .black : .white)
-            }
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("presentation-\(presentation.rawValue.lowercased())")
-            .accessibilityAddTraits(presentation == model.presentation ? .isSelected : [])
-          }
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier("presentation-picker")
-      }
-
-      Text(model.selectedStage.explanation)
-        .font(.caption)
-        .foregroundStyle(.secondary)
-        .fixedSize(horizontal: false, vertical: true)
-    }
-    .frame(width: 330, alignment: .leading)
-    .padding(17)
-    .glassBackgroundEffect(in: .rect(cornerRadius: 22))
-    .accessibilityElement(children: .contain)
-    .accessibilityIdentifier("immersive-stage-hud")
-  }
+private struct SpherePresentationRequest: Equatable {
+  let requestedStage: SphereStage
+  let renderReceipt: SphereRenderReceipt
+  let regime: SphereRegime
+  let navigation: SphereNavigationState
+  let navigationRevision: Int
+  let addressFingerprint: String
+  let poseFingerprint: String
+  let scale: Float
+  let rotation: SIMD2<Float>
 }
 
 private struct LegendHUD: View {
@@ -326,44 +358,88 @@ private struct LegendHUD: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 11) {
-      HStack {
-        Image(systemName: model.selectedOverlay.systemImage)
-          .foregroundStyle(.cyan)
-        VStack(alignment: .leading, spacing: 1) {
-          Text("VISIBLE EVIDENCE")
-            .font(.caption2.weight(.heavy))
-            .tracking(1.1)
-            .foregroundStyle(.cyan)
-          Text(model.selectedOverlay.rawValue)
-            .font(.headline)
-        }
-      }
-
-      if model.selectedOverlay == .metricResidual || model.selectedOverlay == .normalVariation {
-        HStack(spacing: 0) {
-          ForEach(0..<7, id: \.self) { index in
-            Rectangle()
-              .fill(legendColor(index: index, normal: model.selectedOverlay == .normalVariation))
-              .frame(height: 9)
+      if model.selectedExhibit == .reducedSphere {
+        HStack {
+          Image(systemName: model.selectedSphereRegime.systemImage)
+            .foregroundStyle(.yellow)
+          VStack(alignment: .leading, spacing: 1) {
+            Text("ACTIVE NSA GAUGE")
+              .font(.caption2.weight(.heavy))
+              .tracking(1.1)
+              .foregroundStyle(.yellow)
+            Text(model.selectedSphereRegime.gaugeTitle)
+              .font(.headline)
           }
         }
-        .clipShape(Capsule())
 
-        HStack {
-          Text("lower")
-          Spacer()
-          Text("98th percentile+")
+        HStack(spacing: 14) {
+          Readout(label: "intrinsic diameter", value: "π")
+          Readout(
+            label: "ambient bound",
+            value: (2 * model.sphereDiagnostics.declaredContainingRadius).formatted(
+              .number.precision(.fractionLength(2))
+            )
+          )
+          Readout(
+            label: "ratio",
+            value: model.sphereReductionRatio.formatted(
+              .number.precision(.fractionLength(2))
+            ) + "×"
+          )
         }
-        .font(.caption2)
-        .foregroundStyle(.secondary)
+
+        Text(model.selectedSphereRegime.explanation)
+          .font(.caption)
+          .foregroundStyle(.secondary)
+          .fixedSize(horizontal: false, vertical: true)
+
+        Text(
+          "Global shadow and local walkability are coordinated views, not one fixed physical scale."
+        )
+        .font(.caption2.weight(.semibold))
+        .foregroundStyle(.yellow)
+
+        ClaimBadge(claim: .heveaVisionExperiment)
+      } else {
+        HStack {
+          Image(systemName: model.selectedOverlay.systemImage)
+            .foregroundStyle(.cyan)
+          VStack(alignment: .leading, spacing: 1) {
+            Text("VISIBLE EVIDENCE")
+              .font(.caption2.weight(.heavy))
+              .tracking(1.1)
+              .foregroundStyle(.cyan)
+            Text(model.selectedOverlay.rawValue)
+              .font(.headline)
+          }
+        }
+
+        if model.selectedOverlay == .metricResidual || model.selectedOverlay == .normalVariation {
+          HStack(spacing: 0) {
+            ForEach(0..<7, id: \.self) { index in
+              Rectangle()
+                .fill(legendColor(index: index, normal: model.selectedOverlay == .normalVariation))
+                .frame(height: 9)
+            }
+          }
+          .clipShape(Capsule())
+
+          HStack {
+            Text("lower")
+            Spacer()
+            Text("98th percentile+")
+          }
+          .font(.caption2)
+          .foregroundStyle(.secondary)
+        }
+
+        Text(model.selectedOverlay.explanation)
+          .font(.caption)
+          .foregroundStyle(.secondary)
+          .fixedSize(horizontal: false, vertical: true)
+
+        ClaimBadge(claim: model.currentClaim)
       }
-
-      Text(model.selectedOverlay.explanation)
-        .font(.caption)
-        .foregroundStyle(.secondary)
-        .fixedSize(horizontal: false, vertical: true)
-
-      ClaimBadge(claim: model.currentClaim)
     }
     .frame(width: 330, alignment: .leading)
     .padding(17)
@@ -384,165 +460,5 @@ private struct LegendHUD: View {
     ]
     let normalPalette: [Color] = [.indigo, .purple, .purple, .pink, .orange, .yellow, .white]
     return (normal ? normalPalette : metric)[index]
-  }
-}
-
-private struct SampleHUD: View {
-  @Environment(AppModel.self) private var model
-
-  var body: some View {
-    VStack(alignment: .leading, spacing: 10) {
-      HStack {
-        Image(systemName: "scope")
-          .foregroundStyle(.purple)
-        Text("C1 SCALE MICROSCOPE")
-          .font(.caption2.weight(.heavy))
-          .tracking(1.05)
-          .foregroundStyle(.purple)
-      }
-
-      if let sample = model.selectedSample {
-        Text("Selected sample #\(sample.vertexIndex)")
-          .font(.headline.monospacedDigit())
-
-        HStack(spacing: 14) {
-          Readout(label: "u", value: decimal(sample.u, places: 3))
-          Readout(label: "v", value: decimal(sample.v, places: 3))
-          Readout(
-            label: "ω(p,1)",
-            value: decimal(sample.normalVariation * 180 / .pi, places: 1) + "°"
-          )
-        }
-
-        Readout(
-          label: "metric residual",
-          value: sample.metricResidual.formatted(.number.precision(.significantDigits(3)))
-        )
-      } else if let error = model.generationError {
-        Label(error, systemImage: "exclamationmark.triangle.fill")
-          .font(.caption)
-          .foregroundStyle(.orange)
-      } else {
-        Text("Tap the torus to synchronize one surface normal with its point on the Gauss sphere.")
-          .font(.caption)
-          .foregroundStyle(.secondary)
-          .fixedSize(horizontal: false, vertical: true)
-      }
-
-      Text("Finite mesh only · no limiting-regularity theorem")
-        .font(.caption2.weight(.semibold))
-        .foregroundStyle(.secondary)
-    }
-    .frame(width: 330, alignment: .leading)
-    .padding(17)
-    .glassBackgroundEffect(in: .rect(cornerRadius: 22))
-    .accessibilityElement(children: .contain)
-    .accessibilityIdentifier("immersive-sample-hud")
-  }
-
-  private func decimal(_ value: Double, places: Int) -> String {
-    value.formatted(.number.precision(.fractionLength(places)))
-  }
-}
-
-private struct Readout: View {
-  let label: String
-  let value: String
-
-  var body: some View {
-    VStack(alignment: .leading, spacing: 1) {
-      Text(label)
-        .font(.caption2)
-        .foregroundStyle(.secondary)
-      Text(value)
-        .font(.caption.monospacedDigit().weight(.semibold))
-    }
-  }
-}
-
-private struct LabControlsHUD: View {
-  @Environment(AppModel.self) private var model
-
-  var body: some View {
-    @Bindable var model = model
-
-    HStack(spacing: 15) {
-      Menu {
-        ForEach(DiagnosticOverlay.allCases) { overlay in
-          Button {
-            model.selectOverlay(overlay)
-          } label: {
-            Label(overlay.rawValue, systemImage: overlay.systemImage)
-          }
-        }
-      } label: {
-        Label(model.selectedOverlay.shortLabel, systemImage: model.selectedOverlay.systemImage)
-      }
-      .accessibilityIdentifier("immersive-overlay-menu")
-
-      Divider().frame(height: 34)
-
-      VStack(alignment: .leading, spacing: 2) {
-        Text("Section \(Int(model.sectionAmount * 100))%")
-          .font(.caption2.monospacedDigit())
-          .foregroundStyle(.secondary)
-        Slider(value: $model.sectionAmount, in: 0...0.8, step: 1 / 12)
-          .frame(width: 125)
-          .accessibilityIdentifier("section-slider")
-      }
-
-      Button {
-        model.showDomainFloor.toggle()
-      } label: {
-        Image(systemName: model.showDomainFloor ? "grid.circle.fill" : "grid.circle")
-      }
-      .accessibilityLabel("Toggle parameter domain")
-
-      Button {
-        model.showGaussSphere.toggle()
-      } label: {
-        Image(systemName: model.showGaussSphere ? "circle.hexagongrid.fill" : "circle.hexagongrid")
-      }
-      .accessibilityLabel("Toggle Gauss sphere")
-
-    }
-    .padding(.horizontal, 20)
-    .padding(.vertical, 13)
-    .glassBackgroundEffect(in: .capsule)
-    .accessibilityElement(children: .contain)
-    .accessibilityIdentifier("immersive-controls-hud")
-  }
-}
-
-private struct InsideEscapeHUD: View {
-  @Environment(AppModel.self) private var model
-  @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
-
-  var body: some View {
-    HStack(spacing: 10) {
-      Button {
-        model.presentation = .outside
-      } label: {
-        Label("Return Outside", systemImage: "arrow.backward.circle.fill")
-      }
-      .buttonStyle(.borderedProminent)
-      .tint(.cyan)
-      .foregroundStyle(.black)
-      .accessibilityIdentifier("return-outside")
-
-      Button(role: .cancel) {
-        model.immersiveSpaceState = .inTransition
-        Task { await dismissImmersiveSpace() }
-      } label: {
-        Label("Exit Lab", systemImage: "rectangle.portrait.and.arrow.right")
-      }
-      .buttonStyle(.bordered)
-      .accessibilityIdentifier("exit-inside-lab")
-    }
-    .padding(.horizontal, 16)
-    .padding(.vertical, 11)
-    .glassBackgroundEffect(in: .capsule)
-    .accessibilityElement(children: .contain)
-    .accessibilityIdentifier("inside-escape-hud")
   }
 }

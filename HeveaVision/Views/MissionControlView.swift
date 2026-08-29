@@ -11,93 +11,41 @@ struct MissionControlView: View {
     @Bindable var model = model
 
     ZStack {
-      observatoryBackground
+      MissionControlBackground()
 
       VStack(spacing: 0) {
-        header
+        MissionControlHeader()
           .padding(.horizontal, 34)
           .padding(.top, 28)
           .padding(.bottom, 18)
 
         Divider().opacity(0.22)
 
-        HStack(alignment: .top, spacing: 22) {
-          VStack(spacing: 18) {
-            stageCard
-            overlayCard
-          }
-          .frame(maxWidth: .infinity)
+        if model.selectedExhibit == .reducedSphere {
+          SphereMissionControlPanels(immersionCard: immersionCard)
+            .padding(26)
+        } else {
+          HStack(alignment: .top, spacing: 22) {
+            VStack(spacing: 18) {
+              stageCard
+              overlayCard
+            }
+            .frame(maxWidth: .infinity)
 
-          VStack(spacing: 18) {
-            researchInstrument
-            immersionCard
+            VStack(spacing: 18) {
+              researchInstrument
+              immersionCard
+            }
+            .frame(width: 370)
           }
-          .frame(width: 370)
+          .padding(26)
         }
-        .padding(26)
       }
     }
     .accessibilityElement(children: .contain)
     .accessibilityIdentifier("mission-control")
     .task {
       await openAutomationScenarioIfNeeded()
-    }
-  }
-
-  private var observatoryBackground: some View {
-    ZStack {
-      LinearGradient(
-        colors: [
-          Color(red: 0.025, green: 0.045, blue: 0.09),
-          Color(red: 0.055, green: 0.025, blue: 0.10),
-          Color(red: 0.015, green: 0.085, blue: 0.12),
-        ],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-      )
-
-      Circle()
-        .fill(.cyan.opacity(0.10))
-        .frame(width: 520, height: 520)
-        .blur(radius: 90)
-        .offset(x: -360, y: 250)
-
-      Circle()
-        .fill(.purple.opacity(0.13))
-        .frame(width: 440, height: 440)
-        .blur(radius: 110)
-        .offset(x: 420, y: -280)
-    }
-    .ignoresSafeArea()
-  }
-
-  private var header: some View {
-    HStack(alignment: .center, spacing: 18) {
-      ZStack {
-        RoundedRectangle(cornerRadius: 18, style: .continuous)
-          .fill(.white.opacity(0.08))
-        Image(systemName: "tornado")
-          .font(.system(size: 32, weight: .medium))
-          .foregroundStyle(.cyan)
-      }
-      .frame(width: 62, height: 62)
-      .overlay {
-        RoundedRectangle(cornerRadius: 18, style: .continuous)
-          .strokeBorder(.white.opacity(0.12))
-      }
-
-      VStack(alignment: .leading, spacing: 4) {
-        Text("HEVEA VISION")
-          .font(.system(.title, design: .rounded, weight: .bold))
-          .tracking(1.7)
-        Text("A spatial observatory for convex integration")
-          .font(.subheadline)
-          .foregroundStyle(.secondary)
-      }
-
-      Spacer()
-
-      ClaimBadge(claim: model.currentClaim)
     }
   }
 
@@ -345,6 +293,7 @@ struct MissionControlView: View {
   private func openAutomationScenarioIfNeeded() async {
     guard model.automationScenario != nil,
       model.automationScenario != "mission-control",
+      model.automationScenario != "torus-mission-control",
       !model.automationDidRequestImmersion,
       model.immersiveSpaceState == .closed
     else { return }
@@ -360,7 +309,7 @@ struct MissionControlView: View {
   }
 }
 
-private struct InstrumentCard<Content: View>: View {
+struct InstrumentCard<Content: View>: View {
   let eyebrow: String
   let title: String
   let subtitle: String
@@ -393,7 +342,7 @@ private struct InstrumentCard<Content: View>: View {
   }
 }
 
-private struct DiagnosticValue: View {
+struct DiagnosticValue: View {
   let label: String
   let value: String
   let tint: Color

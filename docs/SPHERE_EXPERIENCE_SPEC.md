@@ -128,7 +128,9 @@ The proxy evaluator maps `q` to the displayed reduced-sphere position and
 frame. In local modes the surface root is rotated so the proxy normal at `q`
 is vertical and translated so that point remains under the visitor. This is a
 mathematical treadmill: traversed intrinsic distance accumulates while
-world-space coordinates stay bounded.
+world-space coordinates stay bounded. Habitat and Hover therefore permit only
+world-up yaw; arbitrary inspection pitch is reserved for Atlas and Interior,
+where no gravity-up local-gauge invariant is claimed.
 
 Simulator and accessibility controls provide discrete north/south/east/west
 steps, heading changes, and a cap-to-equator guided walk. Physical-device
@@ -165,7 +167,13 @@ gesture and comfort claims remain pending until headset testing.
 - optionally show the original unit sphere concentrically;
 - expose reduction radius `r`, intrinsic diameter `pi`, ambient diameter
   `2r`, and the ratio `pi/(2r)`;
-- enable rotation, sectioning, stage changes, and direct address selection.
+- enable rotation, sectioning, stage changes, and direct intrinsic address
+  selection through walk, turn, altitude, reset, and named-route controls.
+
+For v1, a tap on the rendered sphere does not select an address. That feature
+is deferred until a RealityKit hit can be inverted to a typed source-sheet
+identity. Ambient nearest-point selection is explicitly forbidden: folds that
+are close in the containing ball can be far apart on the source sphere.
 
 Regime changes are gauge changes, not claims that the camera traversed the
 rendered distance at one fixed physical scale.
@@ -179,8 +187,9 @@ ratio between intrinsic distance and ambient chord scale.
 
 In nonstandard analysis, transfer permits a positive infinitesimal radius
 `epsilon` and an internal isometric sphere inside `*B_epsilon`. Its positions
-all have the same standard part, even though internal curve lengths remain
-standard and nonzero. Consequently a single standard-part picture cannot be
+all have the same standard part, even though every positive-length standard
+path retains its standard intrinsic length internally. Consequently a single
+standard-part picture cannot be
 both a global collapsed view and a locally walkable world. The app responds
 with two coordinated representations:
 
@@ -226,6 +235,13 @@ allowed.
 - visit all five sphere construction stages;
 - visit all four regimes and return to the identical intrinsic address;
 - run at least `1,000` navigation steps and `200` geometry/regime changes;
+- expose a rendered-stage/revision/fingerprint receipt only after the matching
+  entity is installed; screenshots must wait for that receipt and reject a
+  generation-error witness;
+- serialize and cancel superseded geometry work so stage spam converges to the
+  latest request without accumulating detached generators;
+- expose a presentation receipt only after the matching RealityKit transform
+  is applied, and acknowledge each step in the `500`-step live walk-pad run;
 - cap-to-equator route visibly changes ribbon rank in the correct order;
 - atlas, habitat, hover, and interior named screenshots;
 - clean launch, immersion dismissal/reopen, background/foreground, and reset;

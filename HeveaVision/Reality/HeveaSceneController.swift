@@ -2,31 +2,57 @@ import HeveaCore
 import RealityKit
 import UIKit
 
+private actor HeveaAnalysisPipeline {
+  private var analysisByStage: [String: HeveaAnalysisBundle] = [:]
+
+  func analysis(for stage: HeveaStage) throws -> HeveaAnalysisBundle {
+    try Task.checkCancellation()
+    if let cached = analysisByStage[stage.rawValue] {
+      return cached
+    }
+    let generated = try HeveaAnalysisEngine.generate(stage: stage)
+    analysisByStage[stage.rawValue] = generated
+    try Task.checkCancellation()
+    return generated
+  }
+}
+
+private let heveaAnalysisPipeline = HeveaAnalysisPipeline()
+
 @MainActor
 final class HeveaSceneController {
   let root = Entity()
 
-  private let surfaceAnchor = Entity()
+  let surfaceAnchor = Entity()
   private let surfaceContent = Entity()
   private let selectionContent = Entity()
-  private let gaussAnchor = Entity()
+  let sphereAnchor = Entity()
+  let sphereSurfaceContent = Entity()
+  let sphereGhostContent = Entity()
+  let sphereAddressContent = Entity()
+  let gaussAnchor = Entity()
   private let gaussSamples = Entity()
   private let gaussSelection = Entity()
-  private let domainFloor = Entity()
+  let domainFloor = Entity()
   private var analysis: HeveaAnalysisBundle?
 
   init() {
     root.name = "hevea-immersive-observatory"
     surfaceAnchor.name = "hevea-surface-anchor"
+    sphereAnchor.name = "hevea-reduced-sphere-anchor"
     gaussAnchor.name = "hevea-gauss-sphere"
     domainFloor.name = "hevea-parameter-domain"
 
     surfaceAnchor.addChild(surfaceContent)
     surfaceAnchor.addChild(selectionContent)
+    sphereAnchor.addChild(sphereSurfaceContent)
+    sphereAnchor.addChild(sphereGhostContent)
+    sphereAnchor.addChild(sphereAddressContent)
     gaussAnchor.addChild(gaussSamples)
     gaussAnchor.addChild(gaussSelection)
 
     root.addChild(surfaceAnchor)
+    root.addChild(sphereAnchor)
     root.addChild(gaussAnchor)
     root.addChild(domainFloor)
 
@@ -34,6 +60,7 @@ final class HeveaSceneController {
     installGaussSphere()
     installStarField()
     installLighting()
+    surfaceAnchor.isEnabled = false
   }
 
   func regenerate(
@@ -41,9 +68,7 @@ final class HeveaSceneController {
     overlay: DiagnosticOverlay,
     sectionAmount: Double
   ) async throws -> DiagnosticSnapshot {
-    let generated = try await Task.detached(priority: .userInitiated) {
-      try HeveaAnalysisEngine.generate(stage: stage)
-    }.value
+    let generated = try await heveaAnalysisPipeline.analysis(for: stage)
     try Task.checkCancellation()
 
     let surface = try HeveaRealityBridge.makeSurface(
@@ -51,6 +76,7 @@ final class HeveaSceneController {
       overlay: overlay,
       sectionAmount: sectionAmount
     )
+    try Task.checkCancellation()
     surfaceContent.children.removeAll()
     surfaceContent.addChild(surface)
     selectionContent.children.removeAll()
@@ -67,6 +93,8 @@ final class HeveaSceneController {
     showDomainFloor: Bool,
     showGaussSphere: Bool
   ) {
+    surfaceAnchor.isEnabled = true
+    sphereAnchor.isEnabled = false
     domainFloor.isEnabled = showDomainFloor && presentation == .outside
     gaussAnchor.isEnabled = showGaussSphere && presentation == .outside
 
@@ -265,7 +293,7 @@ final class HeveaSceneController {
     root.addChild(fill)
   }
 
-  private static func segment(
+  static func segment(
     from start: SIMD3<Float>,
     to end: SIMD3<Float>,
     radius: Float,
@@ -282,7 +310,7 @@ final class HeveaSceneController {
     return entity
   }
 
-  private static func unlit(_ color: UIColor) -> UnlitMaterial {
+  static func unlit(_ color: UIColor) -> UnlitMaterial {
     var material = UnlitMaterial()
     material.color = .init(tint: color)
     return material

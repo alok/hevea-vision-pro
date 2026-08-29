@@ -8,16 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		0906766657852539BDE9D935 /* HeveaVisionUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D145E75AC0654C5DE63A28 /* HeveaVisionUITests.swift */; };
+		0FC242CE257DBFC7288AF2AF /* LabHUDControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646BA9FADAFC1437FCB113B7 /* LabHUDControls.swift */; };
+		19470BC1E0A90CAD763957A1 /* SphereRealityBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D635209504AF0DF478DD19B /* SphereRealityBridge.swift */; };
 		1CB0B7EF01BCE2AA6423046E /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9008B4A5A5443E716FEBFF80 /* AppModel.swift */; };
-		4EBF6B456B2CE87F28FD7FC2 /* HeveaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 33D81D99C6FD93B2F213B9CA /* HeveaCore */; };
+		1E4E67E49E6CDC3D83C3171B /* SpherePresentationControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709B75A4CFD83F0089AFBF7A /* SpherePresentationControllerTests.swift */; };
+		36F21E2CF7B08A0E6C13AA09 /* SphereMissionControlPanels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F6B93003FC3EAFFFB8BB4B /* SphereMissionControlPanels.swift */; };
+		427B966EAF8E25FF77FE682B /* MissionControlChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4127CF03DD63E18BDF091072 /* MissionControlChrome.swift */; };
 		550979F60FE917A12CD5FF33 /* HeveaVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C314D340BEC55B1F986733 /* HeveaVisionApp.swift */; };
 		5853195E2E4BD44A80AB4C17 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68D46699233BC2759651F611 /* Assets.xcassets */; };
+		717AC96F545399326F2F73C2 /* HeveaSphereSceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B9699C03BD50C2698A4192E /* HeveaSphereSceneController.swift */; };
 		728BD9071947799E80F4E79C /* HeveaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1FE81AAEC5AB97505D02CDA9 /* HeveaCore */; };
 		7583314D8FFF5A95F3E7081E /* HeveaVisionUITestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38187B0B0FA70D61A12A5A8 /* HeveaVisionUITestHarness.swift */; };
 		863A485481F5939A6E71312D /* HeveaSceneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFD98CB3C0800FC7BE2B873 /* HeveaSceneController.swift */; };
 		A07C7418A126244D2E449A5D /* HeveaRealityBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 609EB8F70D3DB96C65155C8B /* HeveaRealityBridge.swift */; };
+		A812980430992AD529CA59DE /* ConstructionStageHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB497D8E0E31CD7774919EE6 /* ConstructionStageHUD.swift */; };
 		AD2E4AFD987BFE3166B29A1A /* MissionControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63212BD96EAACF3F9AB9F06 /* MissionControlView.swift */; };
 		BD1C76458300EA2DF4200685 /* ImmersiveLabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4260B8E55D7FD0ABC06EC17 /* ImmersiveLabView.swift */; };
+		D9479FC9A13B883CCEDED8DE /* SampleHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D191B92F9998A1E21CB7AB6 /* SampleHUD.swift */; };
+		DE051CF4768620C55E9A0C73 /* SphereReceiptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C91491193E11AAAD0B3E69 /* SphereReceiptTests.swift */; };
 		DFA04168B2F4ADB7298830C3 /* ClaimBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CEDF0E94102ADCA77AFD154 /* ClaimBadge.swift */; };
 		F43FB8F405C7903D0FB0054A /* AppModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4928EDD752FB5B8752B596DD /* AppModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -42,30 +50,31 @@
 /* Begin PBXFileReference section */
 		020F0123F2F3BB3C268B2FCE /* HeveaCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = HeveaCore; path = Packages/HeveaCore; sourceTree = SOURCE_ROOT; };
 		232DF6109F453A4A4A8B93C3 /* HeveaVisionTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HeveaVisionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		28F6B93003FC3EAFFFB8BB4B /* SphereMissionControlPanels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphereMissionControlPanels.swift; sourceTree = "<group>"; };
 		3CEDF0E94102ADCA77AFD154 /* ClaimBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimBadge.swift; sourceTree = "<group>"; };
+		4127CF03DD63E18BDF091072 /* MissionControlChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionControlChrome.swift; sourceTree = "<group>"; };
 		4928EDD752FB5B8752B596DD /* AppModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelTests.swift; sourceTree = "<group>"; };
 		572A4BA3F1FDDD635F571BC3 /* HeveaVisionUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HeveaVisionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D635209504AF0DF478DD19B /* SphereRealityBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphereRealityBridge.swift; sourceTree = "<group>"; };
 		609EB8F70D3DB96C65155C8B /* HeveaRealityBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaRealityBridge.swift; sourceTree = "<group>"; };
+		646BA9FADAFC1437FCB113B7 /* LabHUDControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabHUDControls.swift; sourceTree = "<group>"; };
 		68D46699233BC2759651F611 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		69D145E75AC0654C5DE63A28 /* HeveaVisionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaVisionUITests.swift; sourceTree = "<group>"; };
+		6B9699C03BD50C2698A4192E /* HeveaSphereSceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaSphereSceneController.swift; sourceTree = "<group>"; };
+		709B75A4CFD83F0089AFBF7A /* SpherePresentationControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpherePresentationControllerTests.swift; sourceTree = "<group>"; };
+		70C91491193E11AAAD0B3E69 /* SphereReceiptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SphereReceiptTests.swift; sourceTree = "<group>"; };
 		782B3F01CB82720AF7F3C06D /* HeveaVision.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HeveaVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78C314D340BEC55B1F986733 /* HeveaVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaVisionApp.swift; sourceTree = "<group>"; };
 		9008B4A5A5443E716FEBFF80 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		9D191B92F9998A1E21CB7AB6 /* SampleHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleHUD.swift; sourceTree = "<group>"; };
 		C38187B0B0FA70D61A12A5A8 /* HeveaVisionUITestHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaVisionUITestHarness.swift; sourceTree = "<group>"; };
+		CB497D8E0E31CD7774919EE6 /* ConstructionStageHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructionStageHUD.swift; sourceTree = "<group>"; };
 		EDFD98CB3C0800FC7BE2B873 /* HeveaSceneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeveaSceneController.swift; sourceTree = "<group>"; };
 		F4260B8E55D7FD0ABC06EC17 /* ImmersiveLabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImmersiveLabView.swift; sourceTree = "<group>"; };
 		F63212BD96EAACF3F9AB9F06 /* MissionControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionControlView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		6D39AB8CB715C925613C4521 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4EBF6B456B2CE87F28FD7FC2 /* HeveaCore in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8494C284A0C4B3A2E182AC9D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -99,6 +108,8 @@
 			isa = PBXGroup;
 			children = (
 				4928EDD752FB5B8752B596DD /* AppModelTests.swift */,
+				709B75A4CFD83F0089AFBF7A /* SpherePresentationControllerTests.swift */,
+				70C91491193E11AAAD0B3E69 /* SphereReceiptTests.swift */,
 			);
 			path = HeveaVisionTests;
 			sourceTree = "<group>";
@@ -138,8 +149,13 @@
 			isa = PBXGroup;
 			children = (
 				3CEDF0E94102ADCA77AFD154 /* ClaimBadge.swift */,
+				CB497D8E0E31CD7774919EE6 /* ConstructionStageHUD.swift */,
 				F4260B8E55D7FD0ABC06EC17 /* ImmersiveLabView.swift */,
+				646BA9FADAFC1437FCB113B7 /* LabHUDControls.swift */,
+				4127CF03DD63E18BDF091072 /* MissionControlChrome.swift */,
 				F63212BD96EAACF3F9AB9F06 /* MissionControlView.swift */,
+				9D191B92F9998A1E21CB7AB6 /* SampleHUD.swift */,
+				28F6B93003FC3EAFFFB8BB4B /* SphereMissionControlPanels.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -158,6 +174,8 @@
 			children = (
 				609EB8F70D3DB96C65155C8B /* HeveaRealityBridge.swift */,
 				EDFD98CB3C0800FC7BE2B873 /* HeveaSceneController.swift */,
+				6B9699C03BD50C2698A4192E /* HeveaSphereSceneController.swift */,
+				5D635209504AF0DF478DD19B /* SphereRealityBridge.swift */,
 			);
 			path = Reality;
 			sourceTree = "<group>";
@@ -208,7 +226,6 @@
 			buildConfigurationList = 723BBDBE0D4D6EBABB12ED57 /* Build configuration list for PBXNativeTarget "HeveaVisionTests" */;
 			buildPhases = (
 				153A1B8A08725A3EA5061699 /* Sources */,
-				6D39AB8CB715C925613C4521 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -217,7 +234,6 @@
 			);
 			name = HeveaVisionTests;
 			packageProductDependencies = (
-				33D81D99C6FD93B2F213B9CA /* HeveaCore */,
 			);
 			productName = HeveaVisionTests;
 			productReference = 232DF6109F453A4A4A8B93C3 /* HeveaVisionTests.xctest */;
@@ -278,6 +294,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F43FB8F405C7903D0FB0054A /* AppModelTests.swift in Sources */,
+				1E4E67E49E6CDC3D83C3171B /* SpherePresentationControllerTests.swift in Sources */,
+				DE051CF4768620C55E9A0C73 /* SphereReceiptTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,11 +314,18 @@
 			files = (
 				1CB0B7EF01BCE2AA6423046E /* AppModel.swift in Sources */,
 				DFA04168B2F4ADB7298830C3 /* ClaimBadge.swift in Sources */,
+				A812980430992AD529CA59DE /* ConstructionStageHUD.swift in Sources */,
 				A07C7418A126244D2E449A5D /* HeveaRealityBridge.swift in Sources */,
 				863A485481F5939A6E71312D /* HeveaSceneController.swift in Sources */,
+				717AC96F545399326F2F73C2 /* HeveaSphereSceneController.swift in Sources */,
 				550979F60FE917A12CD5FF33 /* HeveaVisionApp.swift in Sources */,
 				BD1C76458300EA2DF4200685 /* ImmersiveLabView.swift in Sources */,
+				0FC242CE257DBFC7288AF2AF /* LabHUDControls.swift in Sources */,
+				427B966EAF8E25FF77FE682B /* MissionControlChrome.swift in Sources */,
 				AD2E4AFD987BFE3166B29A1A /* MissionControlView.swift in Sources */,
+				D9479FC9A13B883CCEDED8DE /* SampleHUD.swift in Sources */,
+				36F21E2CF7B08A0E6C13AA09 /* SphereMissionControlPanels.swift in Sources */,
+				19470BC1E0A90CAD763957A1 /* SphereRealityBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -611,10 +636,6 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		1FE81AAEC5AB97505D02CDA9 /* HeveaCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = HeveaCore;
-		};
-		33D81D99C6FD93B2F213B9CA /* HeveaCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = HeveaCore;
 		};
