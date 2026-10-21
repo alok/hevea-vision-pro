@@ -1,0 +1,294 @@
+{
+  "source": "Simulator OSLog, com.alok.FareyVision/Lifecycle",
+  "configuration": "Release with ENABLE_TESTABILITY=YES",
+  "metric": "synchronous geometry update wall time, not frame time or hardware performance",
+  "samples": [
+    {
+      "timestamp": "2026-10-21 16:28:42.969329-0700",
+      "session": 1,
+      "edges": 253,
+      "modelEntityGroups": 11,
+      "updateMilliseconds": 19.393
+    },
+    {
+      "timestamp": "2026-10-21 16:28:49.462184-0700",
+      "session": 1,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 2.017
+    },
+    {
+      "timestamp": "2026-10-21 16:28:50.096601-0700",
+      "session": 1,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.7997
+    },
+    {
+      "timestamp": "2026-10-21 16:28:52.196328-0700",
+      "session": 1,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.8983
+    },
+    {
+      "timestamp": "2026-10-21 16:28:53.041753-0700",
+      "session": 1,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.7098
+    },
+    {
+      "timestamp": "2026-10-21 16:28:53.897141-0700",
+      "session": 1,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.9444
+    },
+    {
+      "timestamp": "2026-10-21 16:28:55.581121-0700",
+      "session": 1,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.7063
+    },
+    {
+      "timestamp": "2026-10-21 16:28:57.254240-0700",
+      "session": 1,
+      "edges": 509,
+      "modelEntityGroups": 13,
+      "updateMilliseconds": 12.6163
+    },
+    {
+      "timestamp": "2026-10-21 16:28:58.920316-0700",
+      "session": 1,
+      "edges": 253,
+      "modelEntityGroups": 11,
+      "updateMilliseconds": 10.7829
+    },
+    {
+      "timestamp": "2026-10-21 16:29:06.011712-0700",
+      "session": 2,
+      "edges": 253,
+      "modelEntityGroups": 11,
+      "updateMilliseconds": 14.3222
+    },
+    {
+      "timestamp": "2026-10-21 16:29:14.900425-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 11,
+      "updateMilliseconds": 15.6875
+    },
+    {
+      "timestamp": "2026-10-21 16:29:17.052919-0700",
+      "session": 3,
+      "edges": 509,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 13.0113
+    },
+    {
+      "timestamp": "2026-10-21 16:29:18.516207-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 11,
+      "updateMilliseconds": 9.269
+    },
+    {
+      "timestamp": "2026-10-21 16:29:19.499771-0700",
+      "session": 3,
+      "edges": 125,
+      "modelEntityGroups": 10,
+      "updateMilliseconds": 7.5059
+    },
+    {
+      "timestamp": "2026-10-21 16:29:20.366431-0700",
+      "session": 3,
+      "edges": 61,
+      "modelEntityGroups": 9,
+      "updateMilliseconds": 7.5627
+    },
+    {
+      "timestamp": "2026-10-21 16:29:21.175622-0700",
+      "session": 3,
+      "edges": 29,
+      "modelEntityGroups": 8,
+      "updateMilliseconds": 3.1783
+    },
+    {
+      "timestamp": "2026-10-21 16:29:22.388149-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 11,
+      "updateMilliseconds": 8.307
+    },
+    {
+      "timestamp": "2026-10-21 16:29:23.008266-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.4213
+    },
+    {
+      "timestamp": "2026-10-21 16:29:23.659198-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.5416
+    },
+    {
+      "timestamp": "2026-10-21 16:29:24.291627-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.533
+    },
+    {
+      "timestamp": "2026-10-21 16:29:24.957455-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.5512
+    },
+    {
+      "timestamp": "2026-10-21 16:29:25.557403-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.5152
+    },
+    {
+      "timestamp": "2026-10-21 16:29:26.224266-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.6144
+    },
+    {
+      "timestamp": "2026-10-21 16:29:26.879354-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.6036
+    },
+    {
+      "timestamp": "2026-10-21 16:29:27.507142-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.5262
+    },
+    {
+      "timestamp": "2026-10-21 16:29:28.190338-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.5713
+    },
+    {
+      "timestamp": "2026-10-21 16:29:28.823870-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.5397
+    },
+    {
+      "timestamp": "2026-10-21 16:29:29.457501-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.6462
+    },
+    {
+      "timestamp": "2026-10-21 16:29:30.127220-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 2.5213
+    },
+    {
+      "timestamp": "2026-10-21 16:29:30.793740-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 2.4317
+    },
+    {
+      "timestamp": "2026-10-21 16:29:31.473399-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.4901
+    },
+    {
+      "timestamp": "2026-10-21 16:29:32.143902-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 2.937
+    },
+    {
+      "timestamp": "2026-10-21 16:29:32.778122-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 3.1027
+    },
+    {
+      "timestamp": "2026-10-21 16:29:33.444720-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.6753
+    },
+    {
+      "timestamp": "2026-10-21 16:29:34.110231-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 2.6235
+    },
+    {
+      "timestamp": "2026-10-21 16:29:34.894377-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 2.5598
+    },
+    {
+      "timestamp": "2026-10-21 16:29:35.597487-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 2.0488
+    },
+    {
+      "timestamp": "2026-10-21 16:29:36.257862-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.732
+    },
+    {
+      "timestamp": "2026-10-21 16:29:36.874267-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.6427
+    },
+    {
+      "timestamp": "2026-10-21 16:29:37.490372-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.7779
+    },
+    {
+      "timestamp": "2026-10-21 16:29:38.160378-0700",
+      "session": 3,
+      "edges": 253,
+      "modelEntityGroups": 12,
+      "updateMilliseconds": 1.7405
+    }
+  ]
+}

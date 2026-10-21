@@ -1,0 +1,42 @@
+{
+  "source": "tour-20261021T231736Z.mp4",
+  "creationTimeUTC": "2026-10-21T23:17:37+00:00",
+  "testLog": "simulator-20261021T232015Z.log",
+  "framesSeconds": {
+    "00-sources": 187.288,
+    "01-initial-void": 189.221,
+    "02-LR-selection": 191.874,
+    "03-oblique": 195.253,
+    "04-side": 196.919,
+    "05-maximum-detail": 198.552,
+    "06-reset": 200.396,
+    "07-reentered": 208.968,
+    "08-move-limit": 240.716,
+    "00-entry": 182.036
+  },
+  "clipStartSeconds": 181.436,
+  "clipDurationSeconds": 31.532,
+  "note": "Final complete test suite occurs within this continuous simulator-only recording. Captured with simctl; no desktop content.",
+  "manualCameraInspection": {
+    "recording": "tour-20261021T233115Z.mp4",
+    "temporaryHarnessResult": "Simulator-20261021T233115Z.xcresult: passed; harness source removed after inspection",
+    "frames": [
+      {
+        "file": "10-viewer-left.png",
+        "input": "Escape; A held 250 ms",
+        "savedAtUTC": "2026-10-21T23:31:48.558402+00:00"
+      },
+      {
+        "file": "11-viewer-right.png",
+        "input": "Reset Camera; D held 400 ms",
+        "savedAtUTC": "2026-10-21T23:32:06.957015+00:00"
+      },
+      {
+        "file": "12-viewer-near.png",
+        "input": "Reset Camera; W held 250 ms",
+        "savedAtUTC": "2026-10-21T23:32:20.486149+00:00"
+      }
+    ],
+    "restoredDefaultCamera": true
+  }
+}

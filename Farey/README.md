@@ -4,6 +4,10 @@
 
 A native, stationary, fully immersive visionOS mathematics demo. The focal object is a finite Farey tessellation in the Poincaré disk, surrounded by a black void. `L` and `R` multiply an exact integer matrix, narrow a rational interval, and light the visited geodesics. Undo, Reset, Exit, bounded detail and three static viewpoints are always available.
 
+[Watch the simulator tour](evidence/demo.mp4) · [Test results and screenshots](evidence/README.md)
+
+![The native Farey scene in full immersion](evidence/01-initial-void.png)
+
 ## Run on this Mac
 
 Xcode 27.2 beta 2 and visionOS 27.2 are installed. In Xcode 27, the simulator UI is **Device Hub**, not a separate Simulator app.
@@ -54,6 +58,8 @@ xcodebuild -project FareyVision.xcodeproj -scheme FareyVision \
   -derivedDataPath .derivedData-native -parallel-testing-enabled NO -jobs 3 \
   CODE_SIGNING_ALLOWED=NO test
 ```
+
+For optimized simulator tests, add `-configuration Release ENABLE_TESTABILITY=YES ONLY_ACTIVE_ARCH=YES`; testability is needed by the model test's `@testable` import. The ordinary Release build does not require it.
 
 The parent repository is reused for its working native visionOS/XcodeGen conventions. Existing Hévéa source and research files are unchanged. This target is separately named and bundled. New code follows the repository's GPL-3.0-or-later license.
 

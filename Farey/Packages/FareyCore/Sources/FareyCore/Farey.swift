@@ -87,7 +87,7 @@ public struct FareyEdge: Sendable {
 
 public enum Geometry {
   /// Two reflected Stern–Brocot trees cover both halves of the Farey disk.
-  /// Finite truncation: depth 3...8, at most 1,022 distinct geodesics.
+  /// Finite truncation: depth 3...8, at most 1,021 distinct geodesics.
   public static func tessellation(depth: Int) -> [FareyEdge] {
     let limit = min(8, max(3, depth))
     var edges = [FareyEdge(left: Rational(0, 1), right: Rational(1, 0), depth: 0)]
