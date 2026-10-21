@@ -1,0 +1,514 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1546C25B5B69C6087DFAF0F3 /* FareyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0549EACD6E4122836B758D3 /* FareyUITests.swift */; };
+		5F38C89D70A4B786BB710179 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB734B50E45A64ECE5F3884 /* ModelTests.swift */; };
+		62EABEA463688C29F1F0C0BE /* FareyImmersiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A8C40F1F10750667FF8185 /* FareyImmersiveView.swift */; };
+		73D4D9B3EF25DBEC2BAE6BA1 /* SourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA1AF8E6922227E35ACCFD /* SourcesView.swift */; };
+		D4033446736A8D5EB805F5F7 /* Farey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B144AA0513729F6329CAC4 /* Farey.swift */; };
+		FEF13136B389FB8C703B5E4A /* FareyVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC84E39F327BBA627416B47 /* FareyVisionApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0A9DF57CCA8282911074797A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4496E4267E814C6E8DAC7F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 020EFFDFAF123BE100F91998;
+			remoteInfo = FareyVision;
+		};
+		4414EFE6730199E302411DA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4496E4267E814C6E8DAC7F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 020EFFDFAF123BE100F91998;
+			remoteInfo = FareyVision;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		03A8C40F1F10750667FF8185 /* FareyImmersiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FareyImmersiveView.swift; sourceTree = "<group>"; };
+		0A0BAA4BDFFC63C26E4B3053 /* FareyVisionUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FareyVisionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		409DEA44D4AE7090B139101D /* FareyVisionTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FareyVisionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FB734B50E45A64ECE5F3884 /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		A0549EACD6E4122836B758D3 /* FareyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FareyUITests.swift; sourceTree = "<group>"; };
+		A9CA1AF8E6922227E35ACCFD /* SourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesView.swift; sourceTree = "<group>"; };
+		B0B144AA0513729F6329CAC4 /* Farey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Farey.swift; sourceTree = "<group>"; };
+		CDC84E39F327BBA627416B47 /* FareyVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FareyVisionApp.swift; sourceTree = "<group>"; };
+		DF6032F9B92B99039811F6B0 /* FareyVision.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FareyVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		069C8E03F875DE0E61254464 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DF6032F9B92B99039811F6B0 /* FareyVision.app */,
+				409DEA44D4AE7090B139101D /* FareyVisionTests.xctest */,
+				0A0BAA4BDFFC63C26E4B3053 /* FareyVisionUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		071352647796847DCC9D5A45 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				5FB734B50E45A64ECE5F3884 /* ModelTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		36605A10EDC2A16848ACA790 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				03A8C40F1F10750667FF8185 /* FareyImmersiveView.swift */,
+				CDC84E39F327BBA627416B47 /* FareyVisionApp.swift */,
+				A9CA1AF8E6922227E35ACCFD /* SourcesView.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		B600E098A8BF6E37CA0CBA7B /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				A0549EACD6E4122836B758D3 /* FareyUITests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		BCBCF35E98BDB742EA7DC25E = {
+			isa = PBXGroup;
+			children = (
+				E2E41D581CDCDF727C3D6EFB /* FareyCore */,
+				36605A10EDC2A16848ACA790 /* Sources */,
+				071352647796847DCC9D5A45 /* Tests */,
+				B600E098A8BF6E37CA0CBA7B /* UITests */,
+				069C8E03F875DE0E61254464 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E2E41D581CDCDF727C3D6EFB /* FareyCore */ = {
+			isa = PBXGroup;
+			children = (
+				B0B144AA0513729F6329CAC4 /* Farey.swift */,
+			);
+			name = FareyCore;
+			path = Packages/FareyCore/Sources/FareyCore;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		020EFFDFAF123BE100F91998 /* FareyVision */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 819EF94A1125E09D916E6A05 /* Build configuration list for PBXNativeTarget "FareyVision" */;
+			buildPhases = (
+				42411D53F27F37F29401CDB6 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FareyVision;
+			packageProductDependencies = (
+			);
+			productName = FareyVision;
+			productReference = DF6032F9B92B99039811F6B0 /* FareyVision.app */;
+			productType = "com.apple.product-type.application";
+		};
+		212A926446F0CFF97CE59210 /* FareyVisionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76C0F799E4A64797AB441A8B /* Build configuration list for PBXNativeTarget "FareyVisionTests" */;
+			buildPhases = (
+				72D6A926D44E9ADEE4137E50 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DC71577CE8611EF5B66CFAED /* PBXTargetDependency */,
+			);
+			name = FareyVisionTests;
+			packageProductDependencies = (
+			);
+			productName = FareyVisionTests;
+			productReference = 409DEA44D4AE7090B139101D /* FareyVisionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		659459C1810A35C0AF396D71 /* FareyVisionUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9F6A368B3D4A91C4FFAB1423 /* Build configuration list for PBXNativeTarget "FareyVisionUITests" */;
+			buildPhases = (
+				55580223D2546E905D259891 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				830EA00C3500F3DD887465B8 /* PBXTargetDependency */,
+			);
+			name = FareyVisionUITests;
+			packageProductDependencies = (
+			);
+			productName = FareyVisionUITests;
+			productReference = 0A0BAA4BDFFC63C26E4B3053 /* FareyVisionUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E4496E4267E814C6E8DAC7F6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					659459C1810A35C0AF396D71 = {
+						TestTargetID = 020EFFDFAF123BE100F91998;
+					};
+				};
+			};
+			buildConfigurationList = E24E0EE88ABD9287CFD80CEB /* Build configuration list for PBXProject "FareyVision" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = BCBCF35E98BDB742EA7DC25E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 069C8E03F875DE0E61254464 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				020EFFDFAF123BE100F91998 /* FareyVision */,
+				212A926446F0CFF97CE59210 /* FareyVisionTests */,
+				659459C1810A35C0AF396D71 /* FareyVisionUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		42411D53F27F37F29401CDB6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4033446736A8D5EB805F5F7 /* Farey.swift in Sources */,
+				62EABEA463688C29F1F0C0BE /* FareyImmersiveView.swift in Sources */,
+				FEF13136B389FB8C703B5E4A /* FareyVisionApp.swift in Sources */,
+				73D4D9B3EF25DBEC2BAE6BA1 /* SourcesView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55580223D2546E905D259891 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1546C25B5B69C6087DFAF0F3 /* FareyUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72D6A926D44E9ADEE4137E50 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5F38C89D70A4B786BB710179 /* ModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		830EA00C3500F3DD887465B8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 020EFFDFAF123BE100F91998 /* FareyVision */;
+			targetProxy = 4414EFE6730199E302411DA5 /* PBXContainerItemProxy */;
+		};
+		DC71577CE8611EF5B66CFAED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 020EFFDFAF123BE100F91998 /* FareyVision */;
+			targetProxy = 0A9DF57CCA8282911074797A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		09CA6C454555A75D1C6816EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVisionUITests;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_TARGET_NAME = FareyVision;
+			};
+			name = Debug;
+		};
+		1F4FA787ED34CEB66FD56B6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Release;
+		};
+		2641F63FD854FEE500259C31 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Farey — Into the Infinite";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVision;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+			};
+			name = Debug;
+		};
+		4657653160CF69894A9B214A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVisionUITests;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_TARGET_NAME = FareyVision;
+			};
+			name = Release;
+		};
+		877DD6E38D355A6F85D48AC3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVisionTests;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FareyVision.app/FareyVision";
+			};
+			name = Release;
+		};
+		AF1333F8B899CCBF64041269 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = xros;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				XROS_DEPLOYMENT_TARGET = 26.0;
+			};
+			name = Debug;
+		};
+		D0B5819278E298057F302235 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Farey — Into the Infinite";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVision;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+			};
+			name = Release;
+		};
+		F988FE7F3095776658DE3874 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVisionTests;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FareyVision.app/FareyVision";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		76C0F799E4A64797AB441A8B /* Build configuration list for PBXNativeTarget "FareyVisionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F988FE7F3095776658DE3874 /* Debug */,
+				877DD6E38D355A6F85D48AC3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		819EF94A1125E09D916E6A05 /* Build configuration list for PBXNativeTarget "FareyVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2641F63FD854FEE500259C31 /* Debug */,
+				D0B5819278E298057F302235 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9F6A368B3D4A91C4FFAB1423 /* Build configuration list for PBXNativeTarget "FareyVisionUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				09CA6C454555A75D1C6816EA /* Debug */,
+				4657653160CF69894A9B214A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E24E0EE88ABD9287CFD80CEB /* Build configuration list for PBXProject "FareyVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AF1333F8B899CCBF64041269 /* Debug */,
+				1F4FA787ED34CEB66FD56B6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E4496E4267E814C6E8DAC7F6 /* Project object */;
+}

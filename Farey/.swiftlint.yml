@@ -1,0 +1,22 @@
+included:
+  - Sources
+  - Tests
+  - UITests
+  - Packages/FareyCore/Sources
+  - Packages/FareyCore/Tests
+excluded:
+  - .derivedData
+  - .derivedData-native
+  - .build-core
+disabled_rules:
+  - trailing_comma
+identifier_name:
+  min_length:
+    warning: 1
+    error: 1
+  allowed_symbols: ["_"]
+line_length:
+  warning: 140
+  error: 180
+  ignores_comments: true
+  ignores_urls: true

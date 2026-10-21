@@ -1,2 +1,6 @@
 .build-core/
 *.xcresult/
+!evidence/*.png
+__pycache__/
+*.mp4.sb-*
+tour-*.mp4
