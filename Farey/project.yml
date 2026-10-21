@@ -18,6 +18,10 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.alok.FareyVision
+        DEVELOPMENT_TEAM: 5795ZPYZ2T
+        'CODE_SIGN_STYLE[sdk=xros*]': Manual
+        'CODE_SIGN_IDENTITY[sdk=xros*]': Apple Development
+        'PROVISIONING_PROFILE_SPECIFIER[sdk=xros*]': Lean Calculator Vision Pro 20261008
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: Farey — Into the Infinite
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES

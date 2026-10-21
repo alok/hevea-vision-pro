@@ -68,3 +68,23 @@ The controls use a pushed native window, so the entry window is retained in the 
 See [simulator evidence](evidence/README.md) for checks and captures. To record a new test tour, run `python3 scripts/capture-tests.py`; the script records only the simulator screen. Raw recordings and result bundles are local artifacts, not committed media.
 
 Hardware installation, comfort and performance must be verified separately; simulator results do not establish those claims.
+
+## Existing hardware signing
+
+The device target uses development team `5795ZPYZ2T` and the already-installed wildcard profile **Lean Calculator Vision Pro 20261008** (expires 2027-10-08). Its certificate matches the installed development identity, its wildcard covers `com.alok.FareyVision`, and it includes the paired Vision Pro. No new certificate, app identifier or provisioning profile was created. These device-only settings do not change the unsigned simulator workflow.
+
+A signed Release build and strict signature verification succeeded on 2026-10-21. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
+
+```sh
+xcodebuild -project FareyVision.xcodeproj -scheme FareyVision \
+  -configuration Release -destination 'generic/platform=visionOS' \
+  -derivedDataPath /tmp/FareyVision-device -jobs 3 build
+codesign --verify --deep --strict /tmp/FareyVision-device/Build/Products/Release-xros/FareyVision.app
+```
+
+The paired headset reports visionOS 27.2 and Developer Mode enabled, but the read-only connection check returned **CoreDevice error 10003 / RemotePairing error 1016: device locked, not unlocked recently**. Unlock the headset before installing. No installation or hardware execution has been performed. After unlocking, obtain its identifier with `xcrun devicectl list devices`, then run:
+
+```sh
+xcrun devicectl device install app --device YOUR_VISION_PRO_IDENTIFIER \
+  /tmp/FareyVision-device/Build/Products/Release-xros/FareyVision.app
+```
