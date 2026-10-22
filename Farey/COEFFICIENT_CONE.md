@@ -1,5 +1,7 @@
 # Coefficient space before projection
 
+Current browser addition: [0.11.0 two-root plane and necklace](PAIR_PLANE.md). The historical native and browser baselines below retain their stated version limits.
+
 This guide describes native 0.9.0 and the earlier browser 0.8.0. [Browser 0.9.0](DOUBLE_CONE.md) extends the scene to the full signed lattice, both cone halves and an ambient first-person mode. The original versions open a noncoplanar mathematical object. The previous Farey L/R lattice remains available as a separate view.
 
 The distinction matters: Stange’s L/R slide starts with a **two-dimensional rational-pair lattice**. Its spheres and upright direction plane do not make it a three-dimensional lattice. The talk’s **Starscape / Lattice** sequence starts with integer polynomial coefficients `(a,b,c)` filling three-dimensional space, restricts them to a discriminant cone, then projects their rays to a disk. This update implements that coefficient construction in original code. It does not extrude the old Farey diagram.

@@ -50,6 +50,14 @@
     <p><label><input type="checkbox" id="symmetric-color"> Color lower half too (our extension)</label></p>
     <p><label><input type="checkbox" id="projection"> Project to Klein disk</label></p>
     <form id="coefficient-form"><label>(a,b,c) <input id="coefficient" value="1,-1,2" aria-label="Integer coefficients a, b, c"></label><button>Select</button></form>
+    <p class="hint">Shift-click a second interior point, or enter its coefficients and pair it with the selection.</p>
+    <div class="row"><button id="pair-add" type="button">Pair entered point</button><button id="pair-clear" type="button" hidden>Clear pair</button></div>
+    <p id="pair-status" role="status" hidden></p>
+    <section id="pair-details" aria-label="Selected geodesic plane" hidden>
+      <p id="pair-second" class="formula"></p><p id="pair-equation" class="formula"></p><p id="pair-endpoints" class="formula"></p>
+      <p id="pair-count"></p>
+      <p class="hint">The plane contains both coefficient rays. Its cone intersection gives the two boundary directions; its Klein-disk slice is a geodesic chord. This does not make Euclidean Inhabit motion hyperbolic.</p>
+    </section>
     <p id="status" role="status"></p>
     <details><summary>Exact correspondence</summary>
       <p class="formula">x = −b, y = a+c, z = c−a<br>Δ = b²−4ac = x²+z²−y²</p>

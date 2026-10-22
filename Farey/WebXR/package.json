@@ -1,12 +1,12 @@
 {
   "name": "farey-into-the-infinite",
   "private": true,
-  "version": "0.10.0",
+  "version": "0.11.0",
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
     "start": "python3 serve.py",
-    "test": "node --test camera-planes.test.js appearance.test.js starscape-core.test.js core.test.js xr-support.test.js input.test.js recovery.test.js construction.test.js view.test.js package-smoke.test.js",
+    "test": "node --test pair-plane.test.js camera-planes.test.js appearance.test.js starscape-core.test.js core.test.js xr-support.test.js input.test.js recovery.test.js construction.test.js view.test.js package-smoke.test.js",
     "smoke:package": "node package-smoke.mjs dist",
     "smoke:offline": "python3 smoke-offline.py"
   },

@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "paired": {
+    "selected": [
+      1,
+      0,
+      1
+    ],
+    "second": [
+      1,
+      1,
+      1
+    ],
+    "plane": {
+      "normal": [
+        1,
+        0,
+        -1
+      ],
+      "equation": "2a \u22122c = 0",
+      "endpoints": [
+        {
+          "label": "-1",
+          "value": -1
+        },
+        {
+          "label": "1",
+          "value": 1
+        }
+      ],
+      "firstPrimitive": [
+        1,
+        0,
+        1
+      ],
+      "secondPrimitive": [
+        1,
+        1,
+        1
+      ]
+    },
+    "camera": [
+      2.4,
+      2.9000000000000004,
+      1.4999999999999996
+    ],
+    "quaternion": [
+      -0.1362166426569136,
+      0.23577980007794755,
+      0.033398544765839325,
+      0.9616326998111108
+    ],
+    "inhabited": false,
+    "members": 22,
+    "vertices": 192,
+    "geometries": 11,
+    "calls": 16
+  },
+  "repeatGeometryCount": 6,
+  "errors": [],
+  "actualXRSession": false
+}

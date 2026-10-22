@@ -6,12 +6,14 @@ import { xrAvailability, controllerRay, captureView, restoreView } from './xr-su
 import { TapSelection, nearestToRay } from './input.js';
 import { cameraPlaneLabel } from './camera-planes.js';
 import { coefficientColor, gradientCSS, paletteRange, glyphRadius, glyphScale, outlinePixels } from './appearance.js';
+import { pairPlane, planeSection, coneDirections, necklaceMembers } from './pair-plane.js';
 const $ = id => document.getElementById(id);
 let radius = 6, whole = true, symmetricColor = false, projectionVisible = false;
 let selected = examples[0], points = [], cloudMesh, imageMesh;
 let session = null, savedView = null, startingXR = false;
 let inhabited=false, overviewView=null, lookDrag=null;
 let categories='contrast', glyphKey=null, focusGlyphs=[];
+let secondSelection=null, pairMessage='', pairGlyphs=[];
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ antialias: true }); }
 catch {
@@ -42,6 +44,7 @@ const cloudMaterial = new THREE.MeshBasicMaterial();
 const white = new THREE.MeshBasicMaterial({ color: 0xffffff });
 const imageMaterial = new THREE.MeshBasicMaterial({ color: 0x54e9f5 });
 const selectionMaterial=new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.BackSide});
+const pairMaterial=new THREE.MeshBasicMaterial({color:0xffba6b,side:THREE.BackSide});
 function pointColor(point) {
   return new THREE.Color().setRGB(...coefficientColor(point,symmetricColor,categories),THREE.SRGBColorSpace);
 }
@@ -49,7 +52,7 @@ function disposeChildren(group) {
   for (const object of [...group.children]) {
     group.remove(object);
     if (object.geometry && object.geometry !== sphere) object.geometry.dispose();
-    if (object.material && ![white,imageMaterial,cloudMaterial,selectionMaterial].includes(object.material)) object.material.dispose();
+    if (object.material && ![white,imageMaterial,cloudMaterial,selectionMaterial,pairMaterial].includes(object.material)) object.material.dispose();
     object.dispose?.();
   }
 }
@@ -89,10 +92,45 @@ function rebuild() {
   }
 }
 const origin = new THREE.Mesh(sphere,white); world.add(origin);
+function selectPoint(point,asPair=false) {
+  if(asPair) {
+    const result=pairPlane(selected,point);
+    if(result.error){pairMessage=result.error;$('pair-status').textContent=pairMessage;$('pair-status').hidden=false;return;}
+    secondSelection=[...point];
+  } else {selected=[...point];secondSelection=null;}
+  pairMessage='';update();
+  if(asPair)$('pair-details').scrollIntoView({block:'nearest'});
+}
+function updatePair() {
+  $('pair-status').textContent=pairMessage;$('pair-status').hidden=!pairMessage;
+  $('pair-details').hidden=!secondSelection;$('pair-clear').hidden=!secondSelection;
+  if(!secondSelection)return;
+  const plane=pairPlane(selected,secondSelection), members=necklaceMembers(plane,points);
+  const root=upperRoot(positiveRepresentative(secondSelection));
+  $('pair-second').textContent=`Second point: (${secondSelection.join(', ')}) · Δ = ${discriminant(secondSelection)} · root ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i`;
+  $('pair-equation').textContent=`Plane: ${plane.equation}`;
+  $('pair-endpoints').textContent=`Geodesic endpoints: ${plane.endpoints.map(p=>p.label).join(' and ')}`;
+  const secondVisible=points.some(p=>p.every((x,i)=>x===secondSelection[i]));
+  $('pair-count').textContent=`${members.length} displayed complex-root points lie exactly in this plane (amber rings). Multiples remain separate points.${secondVisible?'':' The second point is hidden by this filter/crop.'}`;
+  const ring=new THREE.InstancedMesh(sphere,pairMaterial,members.length);
+  focus.add(ring);pairGlyphs.push({mesh:ring,points:members});
+  const boundary=planeSection(plane.normal,radius).map(p=>physical(p).toArray()), vertices=[];
+  for(let i=1;i<boundary.length;i++)vertices.push(0,0,0,...boundary[i-1],...boundary[i]);
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));
+  const sheet=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({color:0xffba6b,transparent:true,opacity:0.045,side:THREE.DoubleSide,depthWrite:false}));sheet.name='pair-plane';focus.add(sheet);
+  focus.add(lines([boundary],0xffba6b,0.35));
+  const directions=coneDirections(plane);
+  focus.add(lines(directions.map(p=>[p.map(x=>-radius*scale*x),p.map(x=>radius*scale*x)]),0xffba6b,0.7));
+  if(points.some(p=>p.every((x,i)=>x===secondSelection[i]))) {
+    const marker=new THREE.Mesh(sphere,pairMaterial);marker.position.copy(physical(vector(secondSelection)));
+    focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels});
+  }
+  if(projectionVisible)focus.add(lines([directions.map(p=>p.map(x=>height*scale*x))],0xffba6b,0.9));
+}
 function update() {
   points.forEach((p,i)=>cloudMesh.setColorAt(i,pointColor(p)));
   cloudMesh.instanceColor.needsUpdate=true;
-  disposeChildren(focus);focusGlyphs=[];glyphKey=null; disk.visible=projectionVisible; cone.visible=$('cone').checked;
+  disposeChildren(focus);focusGlyphs=[];pairGlyphs=[];glyphKey=null; disk.visible=projectionVisible; cone.visible=$('cone').checked;
   const inCloud=points.some(p=>p.every((x,i)=>x===selected[i]));
   if(inCloud) {
     focus.add(lines([[[0,0,0],physical(vector(selected)).toArray()]],0xbacbd6,0.35));
@@ -110,6 +148,7 @@ function update() {
   $('coefficient').value=selected.join(',');$('projection').checked=projectionVisible;
   $('status').textContent=`${points.length} integer triples · radius ${radius}${inCloud?'':' · selected point hidden by this filter/crop'}`;
   $('inhabit').disabled=!inCloud&&!inhabited;
+  updatePair();
   renderer.domElement.setAttribute('aria-description',`Selected coefficient point ${selected.join(', ')}. ${kind(selected)} region. ${points.length} points. Both cone halves ${cone.visible?'shown':'hidden'}.`);
   const [lo,hi]=paletteRange, reach=Math.max(0,...points.map(p=>-discriminant(p)));
   $('palette-bar').style.background=gradientCSS();
@@ -131,6 +170,15 @@ function updateGlyphSizes(){
     matrix.makeScale(size,size,size);matrix.setPosition(tempLocal);cloudMesh.setMatrixAt(i,matrix);
   });
   cloudMesh.instanceMatrix.needsUpdate=true;
+  for(const item of pairGlyphs) {
+    item.points.forEach((p,i)=>{
+      tempLocal.copy(physical(vector(p)));
+      tempWorld.copy(tempLocal).applyMatrix4(world.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
+      const size=session?1.2:glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,0.65);
+      matrix.makeScale(size,size,size);matrix.setPosition(tempLocal);item.mesh.setMatrixAt(i,matrix);
+    });
+    item.mesh.instanceMatrix.needsUpdate=true;item.mesh.computeBoundingSphere();
+  }
   for(const item of [{mesh:origin,extra:0},...focusGlyphs]){
     tempWorld.copy(item.mesh.position).applyMatrix4(world.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
     item.mesh.scale.setScalar(session?(item.extra?1.4:1):glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,item.extra));
@@ -170,7 +218,7 @@ $('inhabit').onclick=()=>inhabited?leaveInhabit():enterInhabit();
 for(const button of document.querySelectorAll('[data-move]'))button.onclick=()=>{moveEye(button.dataset.move);renderer.domElement.focus({preventScroll:true});};
 function resetView(){controls.target.copy(world.position);camera.position.copy(world.position).add(new THREE.Vector3(2.4,1.5,4.6).multiplyScalar(Math.max(1,radius/8)));controls.update();}
 function resize(){if(session)return;const r=$('viewport').getBoundingClientRect();if(r.width<=0||r.height<=0)return;camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setSize(r.width,r.height);render();}
-$('next').onclick=()=>{const sequence=[...examples,[-1,1,-2],[1,2,1],[1,3,1]];const i=sequence.findIndex(p=>p.every((x,j)=>x===selected[j]));selected=sequence[(i+1)%sequence.length];update();};
+$('next').onclick=()=>{const sequence=[...examples,[-1,1,-2],[1,2,1],[1,3,1]];const i=sequence.findIndex(p=>p.every((x,j)=>x===selected[j]));selectPoint(sequence[(i+1)%sequence.length]);};
 $('palette').onchange=()=>{categories=$('palette').value;update();};
 $('projection').onchange=()=>{projectionVisible=$('projection').checked;update();};
 $('cone').onchange=update;
@@ -178,23 +226,26 @@ $('whole').onchange=()=>{whole=$('whole').checked;rebuild();update();};
 $('symmetric-color').onchange=()=>{symmetricColor=$('symmetric-color').checked;update();};
 $('radius').onchange=()=>{radius=Number($('radius').value);rebuild();if(!inhabited)resetView();update();};
 $('view').onclick=()=>{camera.position.sub(controls.target).applyAxisAngle(new THREE.Vector3(0,1,0),Math.PI/3).add(controls.target);controls.update();};
-$('reset').onclick=()=>{leaveInhabit();selected=examples[0];radius=6;whole=true;symmetricColor=false;projectionVisible=false;$('radius').value='6';$('whole').checked=true;$('cone').checked=true;$('symmetric-color').checked=false;rebuild();resetView();update();};
-$('coefficient-form').onsubmit=event=>{
-  event.preventDefault();const parts=$('coefficient').value.split(',').map(s=>s.trim()),next=parts.map(Number);
+$('reset').onclick=()=>{leaveInhabit();selected=examples[0];secondSelection=null;pairMessage='';radius=6;whole=true;symmetricColor=false;projectionVisible=false;$('radius').value='6';$('whole').checked=true;$('cone').checked=true;$('symmetric-color').checked=false;rebuild();resetView();update();};
+function selectEntered(asPair=false) {
+  const parts=$('coefficient').value.split(',').map(s=>s.trim()),next=parts.map(Number);
   if(parts.length!==3||parts.some(s=>!/^[-+]?\d+$/.test(s))||!coefficientLattice(radius).some(p=>p.every((x,i)=>x===next[i]))) {
     $('status').textContent='Choose a nonzero integer triple inside the current coefficient ball. The current selection is unchanged.';return;
   }
-  selected=next;update();
-};
+  selectPoint(next,asPair);
+}
+$('coefficient-form').onsubmit=event=>{event.preventDefault();selectEntered();};
+$('pair-add').onclick=()=>selectEntered(true);
+$('pair-clear').onclick=()=>{secondSelection=null;pairMessage='';update();$('pair-add').focus({preventScroll:true});};
 const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2(),tap=new TapSelection();
-function pickPoint(ray,maxAngle){
+function pickPoint(ray,maxAngle,asPair=false){
   world.updateMatrixWorld(true);
   const centers=points.map(p=>tempLocal.copy(physical(vector(p))).applyMatrix4(world.matrixWorld).toArray());
   const i=nearestToRay(ray.origin.toArray(),ray.direction.toArray(),centers,maxAngle,session?0:camera.near);
-  if(i>=0){selected=points[i];update();}
+  if(i>=0)selectPoint(points[i],asPair);
 }
 // Desktop clicks select the nearest center within about 10 CSS pixels of the pointer.
-function selectAt(event){const r=renderer.domElement.getBoundingClientRect();pointer.set(2*(event.clientX-r.left)/r.width-1,1-2*(event.clientY-r.top)/r.height);raycaster.setFromCamera(pointer,camera);pickPoint(raycaster.ray,10*2*Math.tan(camera.fov*Math.PI/360)/(r.height*camera.zoom));}
+function selectAt(event){const r=renderer.domElement.getBoundingClientRect();pointer.set(2*(event.clientX-r.left)/r.width-1,1-2*(event.clientY-r.top)/r.height);raycaster.setFromCamera(pointer,camera);pickPoint(raycaster.ray,10*2*Math.tan(camera.fov*Math.PI/360)/(r.height*camera.zoom),event.shiftKey);}
 renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);if(inhabited){lookDrag={x:e.clientX,y:e.clientY};renderer.domElement.setPointerCapture(e.pointerId);}});renderer.domElement.addEventListener('pointermove',e=>{
   tap.move(e);if(!inhabited||!lookDrag)return;
   const rotation=new THREE.Euler().setFromQuaternion(camera.quaternion,'YXZ');

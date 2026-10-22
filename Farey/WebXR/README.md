@@ -1,8 +1,10 @@
 # Browser companion — coefficient cone and Farey L/R
 
-Version 0.10.0 opens the **signed 3D coefficient lattice and double cone** at `index.html`. The previous rational-pair lattice remains at `farey.html`; the two pages link to one another. See [the coefficient-cone guide](../COEFFICIENT_CONE.md) for exact coordinates, projection, source provenance and current evidence. No real WebXR session or headset execution has been verified.
+Version 0.11.0 opens the **signed 3D coefficient lattice and double cone** at `index.html`. The previous rational-pair lattice remains at `farey.html`; the two pages link to one another. See [the coefficient-cone guide](../COEFFICIENT_CONE.md) for exact coordinates, projection, source provenance and current evidence. No real WebXR session or headset execution has been verified.
 
 For the new scene: orbit the double cone, select a coefficient point, vary the radius or toggle the whole lattice. **Inhabit** enters the cloud; drag to look, W/A/S/D and Q/E move in ordinary Euclidean coefficient space. **Return to overview** restores the previous camera. Projection is off by default. The optional lower-half coloring is explicitly our extension. Invalid coefficient entries preserve the current state. Reload starts the coefficient scene at its default example. The Farey page retains its per-tab saved rational state.
+
+Pair two interior points with **Shift-click** or **Pair entered point** to reveal their coefficient plane, its boundary endpoints and highlighted lattice members. Try `1,0,1` then `1,1,1`: the plane is `2a − 2c = 0`, endpoints `−1` and `1`. See [the exact construction and source limits](../PAIR_PLANE.md).
 
 The following earlier walkthroughs apply to **farey.html**. Their historical simulator/Safari evidence does not establish testing of the new coefficient scene.
 

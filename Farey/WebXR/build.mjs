@@ -14,7 +14,7 @@ let license = resolve(root, 'LICENSE');
 try { await access(license); } catch { license = resolve(root, '../../LICENSE'); }
 await rm(destination, { recursive: true, force: true });
 await mkdir(resolve(destination, 'vendor/addons/controls'), { recursive: true });
-const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css', 'starscape.js', 'starscape-core.js', 'appearance.js', 'camera-planes.js'];
+const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css', 'starscape.js', 'starscape-core.js', 'appearance.js', 'camera-planes.js', 'pair-plane.js'];
 for (const name of files) await copyFile(resolve(root, name), resolve(destination, name));
 const hash = content => createHash('sha256').update(content).digest('hex');
 const assetHash = async name => hash(await readFile(resolve(destination, name)));
@@ -27,7 +27,7 @@ for (const name of ['core.js', 'xr-support.js', 'input.js', 'recovery.js', 'cons
 }
 await writeFile(resolve(destination, 'app.js'), app);
 let starscape = await readFile(resolve(destination, 'starscape.js'), 'utf8');
-for (const name of ['starscape-core.js', 'xr-support.js', 'input.js', 'appearance.js', 'camera-planes.js']) starscape = starscape.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
+for (const name of ['starscape-core.js', 'xr-support.js', 'input.js', 'appearance.js', 'camera-planes.js', 'pair-plane.js']) starscape = starscape.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
 await writeFile(resolve(destination, 'starscape.js'), starscape);
 const html = (await readFile(resolve(root, 'index.html'), 'utf8'))
   .replace('./node_modules/three/build/three.module.js', './vendor/three.module.js')
@@ -62,6 +62,9 @@ https://katestange.net/talks/math-exploration/
 https://www.katestange.net/code/
 https://www.katestange.net/starscape-lattice/
 https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html
+Two-root planes follow the coefficient-space construction in
+Algebraic Number Starscapes, Harriss, Stange and Trettel:
+https://arxiv.org/abs/2008.07655
 Underlying geodesic coding: Caroline Series, The Modular Surface and
 Continued Fractions (1985), https://doi.org/10.1112/jlms/s2-31.1.69
 Convergent definitions: https://dlmf.nist.gov/1.12.ii
@@ -74,7 +77,7 @@ Three.js ${dependency.version} is included under MIT; see vendor/THREE-LICENSE.t
 files.push('index.html', 'farey.html', 'COPYING.txt', 'SOURCE.txt', 'README.txt', 'serve.py', 'vendor/three.module.js', 'vendor/three.core.js', 'vendor/addons/controls/OrbitControls.js', 'vendor/THREE-LICENSE.txt');
 await mkdir(resolve(destination, 'source'), { recursive: true });
 const sources = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css', 'index.html',
-  'starscape.js', 'starscape-core.js', 'starscape-core.test.js', 'appearance.js', 'appearance.test.js', 'camera-planes.js', 'camera-planes.test.js', 'farey.html', 'build.mjs', 'package.json', 'package-lock.json', 'serve.py', 'PACKAGE_README.txt', 'package-smoke.mjs', 'smoke-offline.py', 'offline-checks.js',
+  'starscape.js', 'starscape-core.js', 'starscape-core.test.js', 'appearance.js', 'appearance.test.js', 'camera-planes.js', 'camera-planes.test.js', 'pair-plane.js', 'pair-plane.test.js', 'farey.html', 'build.mjs', 'package.json', 'package-lock.json', 'serve.py', 'PACKAGE_README.txt', 'package-smoke.mjs', 'smoke-offline.py', 'offline-checks.js',
   'core.test.js', 'xr-support.test.js', 'input.test.js', 'recovery.test.js', 'construction.test.js', 'view.test.js', 'package-smoke.test.js'];
 for (const name of sources) {
   await copyFile(resolve(root, name), resolve(destination, 'source', name));
