@@ -15,6 +15,11 @@
     input[type="checkbox"] { width: auto; }
     #palette-legend { font-size:12px;color:#b8c9d2;margin:12px 0; }
     #palette-bar { height:9px;border-radius:3px;margin-top:5px; }
+    #debug-toggle { position:fixed; top:12px; right:12px; z-index:5; font-size:12px; padding:4px 8px; }
+    #debug { position:fixed; top:44px; right:12px; z-index:5; width:420px; max-height:70svh; overflow:auto; background:#0d1820ee; border:1px solid #2b3d48; border-radius:8px; padding:10px 12px; font-size:12px; }
+    #debug dl { display:grid; grid-template-columns:auto auto; gap:2px 10px; margin:0; }
+    #debug dt { color:#9fb2bd; } #debug dd { margin:0; font:12px ui-monospace,monospace; text-align:right; }
+    #debug-close { float:right; padding:0 6px; }
     #category-key { display:flex;gap:12px;margin-top:6px; }
     #category-key i { display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px; }
     #palette-ticks { display:flex;justify-content:space-between;font:11px ui-monospace,monospace; }
@@ -29,6 +34,13 @@
 <body>
   <noscript><p class="startup-error">JavaScript is needed for the spatial scene. <a href="https://www.katestange.net/starscape-lattice/">See Katherine Stange’s original viewer.</a></p></noscript>
   <main id="viewport" aria-label="Three-dimensional coefficient lattice and its projection"></main>
+  <button id="debug-toggle" aria-expanded="false" aria-controls="debug">☰ Debug</button>
+  <section id="debug" role="dialog" aria-label="Debug counts and performance" hidden>
+    <p><strong>Debug</strong> <button id="debug-close" aria-label="Close debug">×</button></p>
+    <dl id="debug-rows"></dl>
+    <p><button id="debug-frames">Measure 60 frames</button></p>
+    <p class="hint">Exact = counted from the lattice. Measured = this browser, last frame or last action. Estimated = computed from array sizes. Desktop browser only; not a headset measurement.</p>
+  </section>
   <header><p class="eyebrow">INTO THE INFINITE · COEFFICIENT SPACE IN THREE DIMENSIONS</p>
     <h1>The double cone</h1>
     <p class="credit">Inspired by <strong>Katherine Stange</strong> · <a href="https://katestange.net/talks/math-exploration/">Original talk ↗</a> · <a href="https://www.katestange.net/starscape-lattice/">Original 3D viewer ↗</a></p>

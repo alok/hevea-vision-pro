@@ -191,7 +191,7 @@ function update() {
   const root=representative?upperRoot(representative):null;
   $('root-state').textContent=root?`Upper root: ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i${kind(selected)==='lower'?' · sign-flipped representative':''}`:kind(selected)==='null'?(selected[0]===0?'Boundary: double root at infinity':'Boundary: repeated real root'):'Exterior: real roots (outside the Klein disk)';
   $('coefficient').value=selected.join(',');$('projection').checked=projectionVisible;
-  $('status').textContent=`${lattice.count.toLocaleString()} distinct integer triples · radius ${radius}${inCloud?'':' · selected point hidden by this filter/crop'}`;
+  $('status').textContent=inCloud?'':'The selected point is hidden by this filter or crop.';
   $('inhabit').disabled=!inCloud&&!inhabited;
   updatePair();
   renderer.domElement.setAttribute('aria-description',`Selected coefficient point ${selected.join(', ')}. ${kind(selected)} region. ${lattice.count} points. Both cone halves ${cone.visible?'shown':'hidden'}.`);
@@ -230,7 +230,39 @@ function updateGlyphSizes(){
     item.mesh.scale.setScalar(session?(item.extra?1.4:1):glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,item.extra,item.point?radiusFactor(item.point):1));
   }
 }
-function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();renderer.render(scene,camera);}}
+function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();renderer.render(scene,camera);if(!$('debug').hidden)showDebug();}}
+// Debug overlay: closed by default; reads only counters that already exist, and only while open.
+let frameMeasure=null;
+function showDebug(){
+  const info=renderer.info.render, attributes=cloudMesh.geometry.attributes, ms=x=>x===undefined?'—':`${x.toFixed(1)} ms`;
+  const bytes=lattice.abc.byteLength+lattice.xyz.byteLength+attributes.color.array.byteLength+attributes.aFactor.array.byteLength;
+  const gl=renderer.getContext(),ext=gl.getExtension('WEBGL_debug_renderer_info');
+  const rows=[
+    ['Distinct lattice points (exact)',lattice.count.toLocaleString()],
+    ['Bound (exact)',`b²+2a²+2c² ≤ ${radius}²${whole?'':', a>0, Δ<0'}`],
+    ['GL point primitives (measured, last frame)',info.points.toLocaleString()],
+    ['Triangles (measured, last frame)',info.triangles.toLocaleString()],
+    ['Draw calls (measured, last frame)',info.calls],
+    ['Enumerate lattice (measured CPU)',ms(timings.enumerate)],
+    ['Fill point buffers (measured CPU)',ms(timings.attributes)],
+    ['Recolor (measured CPU)',ms(timings.colors)],
+    ['Size factors (measured CPU)',ms(timings.factors)],
+    ['Klein images (measured CPU)',ms(timings.images)],
+    ['Last click pick (measured CPU)',ms(timings.pick)],
+    ['Lattice + point buffers (estimated)',`${(bytes/1048576).toFixed(1)} MB`],
+    ['JS heap (measured, Chrome only)',performance.memory?`${(performance.memory.usedJSHeapSize/1048576).toFixed(0)} MB`:'unavailable'],
+    ['Frame interval, 60 frames (measured, vsync-capped)',frameMeasure??'not measured'],
+    ['GL renderer',ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)],
+  ];
+  $('debug-rows').replaceChildren(...rows.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return [dt,dd];}));
+}
+$('debug-toggle').onclick=()=>{const open=$('debug').hidden;$('debug').hidden=!open;$('debug-toggle').setAttribute('aria-expanded',String(open));if(open)render();};
+$('debug-close').onclick=()=>{$('debug').hidden=true;$('debug-toggle').setAttribute('aria-expanded','false');$('debug-toggle').focus();};
+$('debug-frames').onclick=()=>{
+  const times=[];let last=performance.now();
+  const step=now=>{times.push(now-last);last=now;render();if(times.length<60)requestAnimationFrame(step);else{times.sort((a,b)=>a-b);frameMeasure=`median ${times[30].toFixed(1)} ms · p90 ${times[54].toFixed(1)} ms`;showDebug();}};
+  requestAnimationFrame(step);
+};
 
 const eyeAtOrigin=()=>inhabited&&camera.position.distanceTo(world.position)<1e-9;
 function showLocation() {
