@@ -1,0 +1,20 @@
+{
+  "api": "XCUIElement.tap()",
+  "requestedEntity": "Projected direction 3/5",
+  "testExitCode": 65,
+  "testPassed": false,
+  "hardware": false,
+  "permissionChanges": false,
+  "frame": "(0.0, 0.0, 50.0, 50.0)",
+  "errors": [
+    "/tmp/farey-build-yk7z9ora/UITests/DirectTapDiagnostic.swift:13: error: -[FareyVisionUITests.FareyUITests testSystemComputedSphereTap] : Failed to received invalid activation point transform (nil) from Accessibility."
+  ],
+  "documentedRoutes": [
+    "https://developer.apple.com/documentation/xcuiautomation/xcuielement/tap()",
+    "https://developer.apple.com/documentation/xcuiautomation/xcuicoordinate",
+    "https://developer.apple.com/documentation/realitykit/accessibilityevents/activate"
+  ],
+  "previousCoordinateRoute": "Failed: invalid activation point transform (nil)",
+  "temporaryFixtureRemoved": true,
+  "systemReportCollection": "Stopped only the lingering simctl diagnose collector after the test failure was recorded; xcodebuild finalized with exit 65."
+}

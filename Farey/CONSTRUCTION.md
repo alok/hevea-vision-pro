@@ -1,6 +1,6 @@
 # Optional boundary-to-lattice construction
 
-Native 0.7 and browser 0.6 add a manually advanced explanation inspired by [Katherine Stange's staged L/R and lattice viewer](https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html). The ordinary stationary lattice remains the default. Stange's code and media are not bundled; this is an independent implementation. The underlying L/R coding remains credited to [Caroline Series (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
+Introduced in native 0.7 and browser 0.6; the current versions are native 0.8 / browser 0.7.0 ([integration check](INTEGRATION_08.md)). These versions add a manually advanced explanation inspired by [Katherine Stange's staged L/R and lattice viewer](https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html). The ordinary stationary lattice remains the default. Stange's code and media are not bundled; this is an independent implementation. The underlying L/R coding remains credited to [Caroline Series (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 
 Choose **Construct** in native controls or **Construct this direction** in the browser. Next and Back traverse four stages:
 
@@ -23,7 +23,7 @@ Stange's original viewer leaves the lattice points fixed while its camera rises 
 
 The displayed q=1 segment and lattice have finite bounds. A boundary value beyond the segment, or an inspected integer point beyond the grid, is explicitly reported and is not clamped to the edge. Axis points remain boundaries; the selectable rational domain is unchanged.
 
-## Verification and limits
+## Initial verification and limits
 
 The [construction evidence](evidence/construction/) records browser source/static checks, native results and screenshots. Core tests verify ray incidence, scalar-multiple agreement and the absence of a finite q=1 intersection for infinity. Interaction checks cover stages, Stop, Restart, Done, unchanged state, returning to the linked disk, mobile layout, Reduce Motion emulation and graphics-loss recovery. Native Reduce Motion logic is exercised at the model boundary; this work does not change the user's system settings.
 

@@ -33,8 +33,8 @@ import XCTest
     XCTAssertTrue(button.wait(for: \.isEnabled, toEqual: true, timeout: 20))
     button.tap()
     require("word-state")
-    let rendered = NSPredicate(
-      format: "label CONTAINS %@ OR label CONTAINS %@", "lattice points", "Farey edges")
+    let rendered = NSPredicate(format: "label CONTAINS %@ OR label CONTAINS %@ OR label CONTAINS %@",
+      "lattice points", "Farey edges", "projected direction dots")
     expectation(for: rendered, evaluatedWith: require("render-receipt"))
     waitForExpectations(timeout: 20)
   }

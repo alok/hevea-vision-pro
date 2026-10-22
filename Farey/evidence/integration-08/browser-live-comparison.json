@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "name": "source",
+      "url": "http://127.0.0.1:8080/",
+      "word": "Start",
+      "fraction": "0/1 < 1/1 < \u221e",
+      "preview": "Preview: 13/14",
+      "confirmed": "13/14"
+    },
+    {
+      "name": "static",
+      "url": "http://127.0.0.1:8081/",
+      "word": "Start",
+      "fraction": "0/1 < 1/1 < \u221e",
+      "preview": "Preview: 13/14",
+      "confirmed": "13/14"
+    }
+  ],
+  "pixelIdentical": true,
+  "headless": true,
+  "actualXRSession": false
+}

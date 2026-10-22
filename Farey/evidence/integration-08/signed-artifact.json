@@ -1,0 +1,10 @@
+{
+  "version": "0.8",
+  "build": "10",
+  "configuration": "Release-xros",
+  "strictSignatureVerifiedNow": true,
+  "executableSHA256": "0c84a3a895385993f91cef8aa47e58ef8993883300b1eb9cd0cd924d2daa2bc6",
+  "applicationSourceCommit": "665e54fb6839563ba9ead173e21a720cea10648d",
+  "existingSigningMaterialOnly": true,
+  "hardwareExecution": false
+}

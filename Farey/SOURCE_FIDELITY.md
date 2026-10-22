@@ -1,6 +1,6 @@
 # Source-fidelity audit — 22 October 2026
 
-Native 0.7.1 / browser 0.6.1. This is an independent, finite teaching demo inspired by **Katherine Stange**. It is not her software, her complete visualization collection, or a mathematical proof.
+This historical audit covers native 0.7.1 / browser 0.6.1. See [the integration check](INTEGRATION_08.md) for the current build and [projected-selection follow-up](PROJECTED_SELECTION.md) for the completed crowding audit. This is an independent, finite teaching demo inspired by **Katherine Stange**. It is not her software, her complete visualization collection, or a mathematical proof.
 
 ## What was inspected
 

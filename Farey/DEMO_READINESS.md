@@ -1,4 +1,6 @@
-# Demo readiness — native 0.6.1 / browser 0.5.1
+# Historical release audit — native 0.6.1 / browser 0.5.1
+
+This records an earlier release. For the current native 0.8 / browser 0.7.0 state, see [the integration check](INTEGRATION_08.md). Its captures and test counts are not presented as current.
 
 Audited on 2026-10-22. This is an original, finite spatial illustration inspired by **[Katherine Stange](https://katestange.net/talks/math-exploration/)** and her [visualization catalog](https://www.katestange.net/code/), with [Caroline Series's L/R coding](https://doi.org/10.1112/jlms/s2-31.1.69). No Stange code or media is bundled. Application code remains GPL-3.0-or-later; Three.js is MIT-licensed.
 
@@ -47,7 +49,7 @@ playwright-cli run-code --filename spotlight-checks.js
 playwright-cli run-code --filename recovery-checks.js
 ```
 
-The [full native result](evidence/release-audit/native-full-summary.json), [current 3D showcase](evidence/release-audit/native-showcase.png), and checked-in [audit evidence](evidence/release-audit/) record the environment and precise scope. Performance values depend on the machine and concurrent load.
+The [full native result](evidence/release-audit/native-full-summary.json), [0.6.1 showcase](evidence/release-audit/native-showcase.png), and checked-in [audit evidence](evidence/release-audit/) record the environment and precise scope. Performance values depend on the machine and concurrent load.
 
 ## Next bounded acceptance work
 

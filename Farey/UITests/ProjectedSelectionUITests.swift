@@ -1,6 +1,38 @@
 import XCTest
 
 extension FareyUITests {
+  func testFreshLaunchChooserAndForegroundRendering() {
+    app = XCUIApplication()
+    app.terminate()
+    Self.launched = false
+    launch()
+    XCTAssertTrue(require("entry-credit").label.contains("Katherine Stange"))
+    capture("48-fresh-entry")
+    enter()
+    XCTAssertEqual(require("word-state").label, "Start")
+    require("construction-start").tap()
+    require("projected-open").tap()
+    require("projected-previous").tap()
+    XCTAssertEqual(require("projected-preview").label, "Preview: 11/12")
+    capture("49-chooser-idle-start", holdFor: 3)
+    XCTAssertEqual(require("projected-preview").label, "Preview: 11/12")
+    capture("50-chooser-idle-end")
+    XCUIDevice.shared.press(.home)
+    app.activate()
+    if element("enter-void").isHittable { enter() }
+    if element("projected-cancel").isHittable { require("projected-cancel").tap() }
+    XCTAssertEqual(require("word-state").label, "Start")
+    XCTAssertTrue(require("render-receipt").label.contains("projected direction dots"))
+    require("projected-open").tap()
+    require("projected-previous").tap()
+    require("projected-confirm").tap()
+    XCTAssertTrue(require("fraction-state").label.contains("11/12"))
+    capture("51-chooser-foreground")
+    require("construction-close").tap()
+    require("reset").tap()
+    exit()
+  }
+
   func testProjectedPreviewSelectionAndCancel() {
     launch()
     enter()

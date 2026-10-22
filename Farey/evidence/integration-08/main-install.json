@@ -1,0 +1,18 @@
+{
+  "version": "0.8",
+  "build": "10",
+  "mainSimulator": "D2ECE520-ED92-4A38-A990-AE65431DF562",
+  "applicationSourceCommit": "665e54fb6839563ba9ead173e21a720cea10648d",
+  "restoredState": {
+    "target": "3/5",
+    "word": "RLR",
+    "grid": 12,
+    "viewpoint": "Left",
+    "point": {
+      "q": 5,
+      "p": 3
+    }
+  },
+  "finalPassiveVersionVerified": true,
+  "finalPassiveScreenshotSHA256": "634b3b235cb6a1e1f44ec8b51e55b61642421d8b3c6e34e6666ebc7bb684c7b5"
+}

@@ -1,6 +1,6 @@
 # Farey — Into the Infinite
 
-[Crowded projected selection](PROJECTED_SELECTION.md) — native 0.8 / browser 0.7.0. [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
+[Current integration check](INTEGRATION_08.md) — native 0.8 / browser 0.7.0. [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
 
 **Inspired by [Katherine Stange’s mathematical visualizations](https://www.katestange.net/code/) and her [Illustrating Mathematics for Math 2.0 talk](https://katestange.net/talks/math-exploration/).** Underlying L/R geodesic coding: [Caroline Series (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 

@@ -1,0 +1,15 @@
+{
+  "previousVersion": "0.7.1 (9)",
+  "word": "RLR",
+  "target": "3/5",
+  "inspectedPoint": {
+    "q": 5,
+    "p": 3
+  },
+  "grid": 12,
+  "viewpoint": "Left",
+  "representation": "integer lattice",
+  "construction": null,
+  "spotlight": null,
+  "source": "main simulator screenshot before installation"
+}

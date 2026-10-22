@@ -1,0 +1,27 @@
+{
+  "packageVersion": "0.7.0",
+  "artifactFiles": 14,
+  "allArtifactHashesValid": true,
+  "sourceEquivalentAfterCacheURLNormalization": {
+    "app.js": true,
+    "core.js": true,
+    "xr-support.js": true,
+    "input.js": true,
+    "recovery.js": true,
+    "construction.js": true,
+    "style.css": true,
+    "index.html": true
+  },
+  "applicationSourceCommit": "665e54fb6839563ba9ead173e21a720cea10648d",
+  "servedContentMatchesLocalFiles": {
+    "8080/index.html": true,
+    "8080/app.js": true,
+    "8080/core.js": true,
+    "8080/style.css": true,
+    "8081/index.html": true,
+    "8081/app.js": true,
+    "8081/core.js": true,
+    "8081/style.css": true
+  },
+  "servedSourcePackageVersion": "0.7.0"
+}

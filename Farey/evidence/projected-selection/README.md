@@ -1,6 +1,6 @@
 # Projected selection evidence
 
-Native 0.8 (build 10) / browser 0.7.0. See [the explanation and limitations](../../PROJECTED_SELECTION.md).
+Native 0.8 (build 10) / browser 0.7.0. These are feature-level checks; see the [full integration results](../../INTEGRATION_08.md) for the subsequent complete suite. See [the explanation and limitations](../../PROJECTED_SELECTION.md).
 
 - [Native preview](42-native-projected-preview.png) and [confirmed 13/14 selection](43-native-projected-selected.png).
 - Browser preview on [desktop](browser-preview.png), [phone](browser-preview-phone.png) and [landscape](browser-preview-landscape.png).

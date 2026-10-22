@@ -1,0 +1,16 @@
+{
+  "dimensions": [
+    3840,
+    2160
+  ],
+  "changedColorChannels": 404,
+  "totalColorChannels": 24883200,
+  "meanAbsoluteDifferenceOutOf255": 1.623585390946502e-05,
+  "differenceBounds": [
+    1589,
+    771,
+    1817,
+    831
+  ],
+  "stateUnchangedDuringIdle": true
+}

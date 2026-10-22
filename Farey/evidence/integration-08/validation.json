@@ -1,0 +1,39 @@
+{
+  "applicationVersion": "0.8",
+  "build": "10",
+  "applicationSourceCommit": "665e54fb6839563ba9ead173e21a720cea10648d",
+  "browserVersion": "0.7.0",
+  "nativeFullSuite": {
+    "passed": 27,
+    "failed": 0
+  },
+  "mainFreshChooserForegroundTest": {
+    "passed": 1,
+    "failed": 0
+  },
+  "swiftCoreTests": {
+    "passed": 27,
+    "failed": 0
+  },
+  "javascriptTests": {
+    "passed": 26,
+    "failed": 0
+  },
+  "browserSourceStaticMatch": true,
+  "hardwareExecution": false,
+  "actualWebXRSession": false,
+  "foregroundVisualDiagnostic": {
+    "passed": 1,
+    "failed": 0,
+    "fullLossAfterSettlingReproduced": false,
+    "immediateFrameReliabilityVerified": false
+  },
+  "directSphereTapDiagnostic": {
+    "passed": false,
+    "reason": "Received invalid activation point transform (nil) from Accessibility"
+  },
+  "swiftlintStrict": {
+    "violations": 0,
+    "cacheDisabled": true
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "Packages/FareyCore/Sources/FareyCore/ApproximantSpotlight.swift": "53b99da97d8289d575c390de87b60bc6db34df49e9bb36a3cda308f7d9818abd",
+  "Packages/FareyCore/Sources/FareyCore/BoundaryConstruction.swift": "c4bff3a4364f120cdfa174963120dc6db21302b05f4c45703dc0a2ad32a7687b",
+  "Packages/FareyCore/Sources/FareyCore/ContinuedFraction.swift": "5b8fffbec1381bc97f78ea3eb6cde5e31c71b6a12be24bc15adb7a4acb6b1d0e",
+  "Packages/FareyCore/Sources/FareyCore/Farey.swift": "937a2389f5d14137c7c75638a86f12f298a9ec0e7910c4b6bb707601762baf3c",
+  "Packages/FareyCore/Sources/FareyCore/FractionEntry.swift": "58dbaa32814de081e2668c327dc3cb8aab154a51fe0e7cecf0fb134c7976bc14",
+  "Packages/FareyCore/Sources/FareyCore/PointInspection.swift": "d1206d08bab3162bd7d2ce318b0d14a559b3a001c3e3e9f22f4a0815c2c379fb",
+  "Packages/FareyCore/Sources/FareyCore/ProjectedSelection.swift": "1d665c22194e67119ad90fb3ddbc0f5bf97b1ef0c6585dc3efb82c3407adcee6",
+  "Sources/ConstructionControls.swift": "1f01bf53e1f71e2913f29515e7e4d584a9194b28cd931c9071a1842a088bf51a",
+  "Sources/ContinuedFractionView.swift": "a8d66b1f1a912ac17a98690da6edbc38149e262057d7fb9bbe9a9e1bacbacdc8",
+  "Sources/ControlsView.swift": "21488b9f8429505c789dd148d321cc400ae0fd6da5eb89bf95883841e45a255c",
+  "Sources/FareyImmersiveView.swift": "a227e534dad6330a087648b87d106de9574a17a50d4ad76b8404a1ebfbd0eeee",
+  "Sources/FareyVisionApp.swift": "acffbe1ce1b04d70f928db9a1c72336ae614db3e1af3df69815798c97dcbabc9",
+  "Sources/FractionEntryView.swift": "8967678bfe775eb3ef29ecc1a8c76f156bfa8a86337131bccbc6813f7bb2c645",
+  "Sources/LatticeRenderer.swift": "5f6105cd1622ea18f5f3e2cfb30f82dc1cae999d075f1658023402d129a79d37",
+  "Sources/LessonView.swift": "81761ec7d5aea5ac3aee1ec0013287d6d1749a402e39f33d00b905c4e379f76a",
+  "Sources/PointInspectionView.swift": "c1a5c4ceabd3b5d934a6107782145d7e8cfbc2a7b15db484ac5fea51329472cb",
+  "Sources/ProjectedSelectionView.swift": "16fb2d0c6d40b9c7f4edda7524034fb2bdc3359d1958f1b4e1c01f887ebe507b",
+  "Sources/SourcesView.swift": "f1eae9024cd1534a8e8ab8dc96e4f80f2d028fdb67618f2ec02a1d94c68c1255",
+  "Sources/SpotlightReadout.swift": "924594163f0bdc9d781d3b48ee5f2e5f3f448f2e8a40d49ff6df47a7f138004c",
+  "project.yml": "b2b1ec2ed2db26dfd424e095315a385676a5c38b850f22913d7928183ba40137"
+}

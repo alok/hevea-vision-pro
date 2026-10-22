@@ -1,8 +1,8 @@
-# Factual demonstration outline
+# Historical demonstration recordings
 
-This is supporting evidence for a blog discussion, not drafted testimony or claims about audience reactions.
+These recordings show native 0.6.1 / browser 0.5.1. They predate the staged construction and projected-selection chooser. See [the integration check](INTEGRATION_08.md) for current native 0.8 / browser 0.7.0 evidence. This is supporting evidence for a blog discussion, not drafted testimony or audience-reaction claims.
 
-## Current recordings
+## Recorded versions
 
 Open the [local playback page](evidence/demo-package/playback.html), or open either MP4 directly. The video files are local delivery artifacts and are intentionally excluded from Git; the screenshots, capture helpers and verification records are committed.
 
@@ -40,7 +40,7 @@ Native full immersion is demonstrated in a simulator. No physical-headset instal
 
 On 2026-10-22, the [live source viewer](https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html) accepted a click on 3/5 and showed its Tessellation, Dots, Lattice and Labels stages. Its rational number-line view becomes a view of lattice spheres, then an elevated view of the same direction plane, and finally a labelled overhead lattice. The final view includes signed rational labels. Reference screenshots remain in `/tmp`, outside the repository.
 
-The substantive gap is the missing construction between representations. Native currently switches between a Poincaré disk and lattice; the browser starts directly in the lattice. A useful next increment is an optional, manually advanced **boundary-to-lattice explanation** preserving one selected rational and point across stages. It should explain the projective correspondence and keep camera movement opt-in. This is a source-fidelity/teaching improvement, not a defect in the current bounded rational arithmetic. Extending the selectable signed domain is separate work.
+At the time of these recordings, the transition between the disk and lattice was missing. The later [optional construction](CONSTRUCTION.md) and [projected-selection chooser](PROJECTED_SELECTION.md) address that teaching sequence. The recordings above have not been replaced with footage of those features. Extending the selectable signed domain remains separate work.
 
 ## Reproduce capture
 

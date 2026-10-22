@@ -10,7 +10,7 @@ At grid 14, the projected centers for 3/5 and 8/13 are only `0.25 × (8/13 − 3
 
 The committed 0.7.1 / browser 0.6.1 baseline was tested with real browser mouse input aimed at the live projected center of 3/5. Fifteen cases combined offsets −4, −2, 0, +2, +4 CSS pixels with the default view, front view, and a closer front view. Fourteen selected another fraction. The test exposed existing camera/mesh matrices read-only to obtain coordinates; it did not replace hit testing. A separate center click at 13/14 selected the enlarged 1/1 sphere.
 
-Native rendering tests confirm the same overlapping center geometry. A direct simulator coordinate tap was attempted on an exposed RealityKit accessibility entity. Xcode returned a placeholder frame `(0,0,50,50)` and failed with `Received invalid activation point transform (nil) from Accessibility`. That attempt is not evidence of successful spatial input. Native controls provide a separately tested alternative.
+Native rendering tests confirm the same overlapping center geometry. A direct simulator coordinate tap was attempted on an exposed RealityKit accessibility entity. Xcode returned a placeholder frame `(0,0,50,50)` and failed with `Received invalid activation point transform (nil) from Accessibility`. A subsequent [integration diagnostic](INTEGRATION_08.md) using the documented `XCUIElement.tap()` API failed with the same error. These attempts are not evidence of successful spatial input. Native controls provide a separately tested alternative.
 
 ## Interaction
 

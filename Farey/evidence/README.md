@@ -1,20 +1,26 @@
+# Current integration — native 0.8 / browser 0.7.0
+
+[Integration results](../INTEGRATION_08.md) · [Current main showcase](integration-08/main-08-restored.png) · [Current chooser](integration-08/49-chooser-idle-start.png).
+
+All sections below are historical, versioned records. Their screenshots and recordings are not substitutes for the current integration evidence.
+
 # Optional construction: native 0.7 / browser 0.6
 
 [Construction and mathematical boundaries](../CONSTRUCTION.md) · [Native boundary chart](construction/31-boundary-chart.png) · [Native lattice reveal](construction/32-construction-lattice.png). The ordinary stationary scene remains the default; interpolation is opt-in and is not a hyperbolic map.
 
-# Current demonstration package
+# Historical demonstration package — native 0.6.1 / browser 0.5.1
 
 [Outline and scope](../DEMONSTRATION_OUTLINE.md) · [Local playback](demo-package/playback.html) · [Video hashes/versions](demo-package/manifest.json). The two compact MP4s remain local delivery artifacts and are excluded from Git; representative app screenshots and capture helpers are included.
 
 # Native 0.6.1 / browser 0.5.1 release audit
 
-[Readiness checklist](../DEMO_READINESS.md) · [Current 3D showcase](release-audit/native-showcase.png) · [Full native result](release-audit/native-full-summary.json) · [Maximum-depth native disk](release-audit/native-maximum-path.png) · [Browser resize failure before](release-audit/browser-resize-before.png) · [Recovered scene after](release-audit/browser-resize-after.png) · [Numerical probe](release-audit/geodesics-after.json)
+[Readiness checklist](../DEMO_READINESS.md) · [Recorded 0.6.1 showcase](release-audit/native-showcase.png) · [Full native result](release-audit/native-full-summary.json) · [Maximum-depth native disk](release-audit/native-maximum-path.png) · [Browser resize failure before](release-audit/browser-resize-before.png) · [Recovered scene after](release-audit/browser-resize-after.png) · [Numerical probe](release-audit/geodesics-after.json)
 
 The numerical probe covers 1,004 depth-24 histories. The native test repeats Home, app activation and immersive re-entry three times with the exact fraction preserved. Browser source/static evidence includes actual context-loss recovery, malformed saved state, zero-size resize recovery and tab background/foreground. CPU timing records are desktop measurements, not XR frame-rate evidence. Full verification and precise remaining boundaries are in the readiness checklist.
 
 # Native 0.6 / browser 0.5: a separate approximant spotlight
 
-[Native spotlight](spotlight/native-spotlight.png) · [Linked disk](spotlight/native-disk.png) · [Outside-grid case](spotlight/native-outside-grid.png) · [Browser](spotlight/browser-spotlight.png) · [Phone context](spotlight/phone-spotlight.png) · [Validation](spotlight/validation.json) · [Full native results](spotlight/simulator-summary.json) · [Final fresh walkthrough](spotlight/fresh-walkthrough-summary.json) · [Current showcase](spotlight/showcase.png)
+[Native spotlight](spotlight/native-spotlight.png) · [Linked disk](spotlight/native-disk.png) · [Outside-grid case](spotlight/native-outside-grid.png) · [Browser](spotlight/browser-spotlight.png) · [Phone context](spotlight/phone-spotlight.png) · [Validation](spotlight/validation.json) · [Full native results](spotlight/simulator-summary.json) · [Final fresh walkthrough](spotlight/fresh-walkthrough-summary.json) · [Recorded 0.6 showcase](spotlight/showcase.png)
 
 An approximant row controls a separate spotlight. Double white rings locate it; the target rational, inspected integer point and lesson prediction are unchanged. The spotlight survives view changes and reclassification when its row remains, and clears on target changes, Reset, or removal of the row. Points outside the finite grid retain their coordinates and receive an explicit message. A boundary row such as 0/1 can be spotlighted without becoming the positive target.
 
@@ -26,7 +32,7 @@ Twenty core tests, sixteen native model/UI regression tests, and twenty-two Java
 
 # Native 0.5 / browser 0.4: convergents and intermediate mediants
 
-[Native canonical form](convergents/native-canonical.png) · [Native alternate form](convergents/native-alternate.png) · [Linked disk](convergents/native-disk.png) · [Browser canonical form](convergents/browser-canonical.png) · [Browser alternate form](convergents/browser-alternate.png) · [Validation](convergents/validation.json) · [Simulator results](convergents/simulator-summary.json) · [Current showcase](convergents/showcase.png)
+[Native canonical form](convergents/native-canonical.png) · [Native alternate form](convergents/native-alternate.png) · [Linked disk](convergents/native-disk.png) · [Browser canonical form](convergents/browser-canonical.png) · [Browser alternate form](convergents/browser-alternate.png) · [Validation](convergents/validation.json) · [Simulator results](convergents/simulator-summary.json) · [Recorded 0.6 showcase](convergents/showcase.png)
 
 Convergents are truncations of the chosen finite simple continued fraction. The default canonical form ends in at least 2, except for an integer. Replacing the final term `a` by `a−1, 1` preserves the rational but can change its convergent list. For `3/5`, the visited `2/3` is intermediate under `[0;1,1,2]` and a convergent under `[0;1,1,1,1]`. Gold rings mark convergents and gray rings mark other visited L/R mediants. The `0/1` boundary is listed when it is a convergent; it remains non-selectable. Neither representation identifies lattice distances with hyperbolic distances.
 
@@ -40,7 +46,7 @@ Definitions and recurrence were checked against [DLMF §1.12(ii)](https://dlmf.n
 
 # Native 0.4 / browser 0.3: points and primitive directions
 
-[Native inspector](point-inspection/native-multiple.png) · [Linked disk](point-inspection/native-disk.png) · [Browser inspector](point-inspection/browser-multiple.png) · [Simulator results](point-inspection/simulator-summary.json) · [Cross-platform comparison](point-inspection/parity.json) · [Validation](point-inspection/validation.json) · [Current showcase](point-inspection/showcase.png)
+[Native inspector](point-inspection/native-multiple.png) · [Linked disk](point-inspection/native-disk.png) · [Browser inspector](point-inspection/browser-multiple.png) · [Simulator results](point-inspection/simulator-summary.json) · [Cross-platform comparison](point-inspection/parity.json) · [Validation](point-inspection/validation.json) · [Recorded 0.6 showcase](point-inspection/showcase.png)
 
 The selected integer point remains distinct from its reduced direction: `(10,6) = 2 × (5,3)` represents `6/10 = 3/5`, with exact L/R word `RLR`. Both apps explain the gcd and primitive vector. The native disk retains the same point inspection while showing the reduced rational's boundary point and green geodesic. The finite upright plane now extends to the grid boundary. White marks a non-primitive inspected point and orange marks the primitive mediant. Grid changes never move the inspected coordinates to the edge.
 
