@@ -1,0 +1,100 @@
+{
+  "passed": true,
+  "cases": 56451,
+  "accepted": 49176,
+  "maxComponent": 121393,
+  "digest": "ee0af2667466e895ccff0417e3ede75a9e954b3acdf9d25aad002ca457b1d32a",
+  "oracle": "BigInt Euclidean path, matrix product, reversed continued-fraction evaluation",
+  "native": {
+    "accepted": 49176,
+    "cases": 56451,
+    "checkedEndpointPairs": 74575,
+    "collapsedFloatExamples": [
+      {
+        "edge": "762,487|1657,1059",
+        "first": [
+          0.9075277600135973,
+          0.41999210088369837
+        ],
+        "roundedCenter": [
+          0.90752774477005,
+          0.4199920892715454
+        ],
+        "sampleIndex": 0,
+        "second": [
+          0.9075277266332665,
+          0.4199920867238846
+        ]
+      },
+      {
+        "edge": "762,487|2419,1546",
+        "first": [
+          0.9075277600135973,
+          0.41999210088369837
+        ],
+        "roundedCenter": [
+          0.90752774477005,
+          0.4199920892715454
+        ],
+        "sampleIndex": 0,
+        "second": [
+          0.9075277371482803,
+          0.41999209118431485
+        ]
+      },
+      {
+        "edge": "3181,2033|2419,1546",
+        "first": [
+          0.9075275139718704,
+          0.41999263253542524
+        ],
+        "roundedCenter": [
+          0.907527506351471,
+          0.4199926257133484
+        ],
+        "sampleIndex": 0,
+        "second": [
+          0.9075275084945454,
+          0.4199926302119603
+        ]
+      },
+      {
+        "edge": "3181,2033|5600,3579",
+        "first": [
+          0.9075275139718704,
+          0.41999263253542524
+        ],
+        "roundedCenter": [
+          0.907527506351471,
+          0.4199926257133484
+        ],
+        "sampleIndex": 0,
+        "second": [
+          0.9075275116058616,
+          0.4199926315317714
+        ]
+      },
+      {
+        "edge": "8781,5612|5600,3579",
+        "first": [
+          0.9075274926207756,
+          0.41999267867124557
+        ],
+        "roundedCenter": [
+          0.907527506351471,
+          0.41999268531799316
+        ],
+        "sampleIndex": 0,
+        "second": [
+          0.9075274917636666,
+          0.41999267830766246
+        ]
+      }
+    ],
+    "digest": "ee0af2667466e895ccff0417e3ede75a9e954b3acdf9d25aad002ca457b1d32a",
+    "edgesWithCollapsedFloatCenters": 23634,
+    "maxComponent": 121393,
+    "maxOrthogonalResidual": 2.220446049250313e-16,
+    "passed": true
+  }
+}
