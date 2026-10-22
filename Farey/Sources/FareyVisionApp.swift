@@ -7,8 +7,8 @@ import SwiftUI
 #endif
 
 @MainActor @Observable final class GalleryModel {
-  var state = FareyState() { didSet { constructionMoving = false } }
-  var depth = 6
+  var state = FareyState() { didSet { constructionMoving = false; projectedSelection = nil } }
+  var depth = 6 { didSet { projectedSelection = nil } }
   var viewpoint = 0
   var latticeMode = true
   var immersionOpen = false
@@ -24,7 +24,8 @@ import SwiftUI
   var lesson: LessonProgress?
   var alternateCF = false
   var spotlight = ApproximantSpotlight()
-  var constructionStage: ConstructionStage?
+  var constructionStage: ConstructionStage? { didSet { projectedSelection = nil } }
+  var projectedSelection: ProjectedSelection?
   var animateConstruction = false
   var constructionMoving = false
   func spotlightPoint(_ point: Rational) {
@@ -95,6 +96,7 @@ import SwiftUI
     revision += 1
   }
   func changeView() {
+    projectedSelection = nil
     constructionMoving = false
     viewpoint = (viewpoint + 1) % 3
     revision += 1

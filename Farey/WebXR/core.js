@@ -88,3 +88,19 @@ export class ApproximantSpotlight {
       || !state.cfPoints(alternate).some(p => p.rational.p === this.rational.p && p.rational.q === this.rational.q)) this.clear();
   }
 }
+
+export class ProjectedSelection {
+  static near(point, bound) {
+    const points = grid(bound).filter(p => p.p > 0 && p.q > 0 && primitive(p))
+      .sort((a, b) => a.p * b.q - b.p * a.q);
+    const index = points.findIndex(p => p.p === point.p && p.q === point.q);
+    return index < 0 ? null : new ProjectedSelection(points, index);
+  }
+  constructor(points, index) { this.points = points; this.index = index; }
+  get point() { return this.points[this.index]; }
+  get canGoBack() { return this.index > 0; }
+  get canGoForward() { return this.index + 1 < this.points.length; }
+  move(delta) {
+    if (Number.isInteger(delta)) this.index = Math.min(this.points.length - 1, Math.max(0, this.index + delta));
+  }
+}

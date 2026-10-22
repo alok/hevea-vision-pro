@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { ApproximantSpotlight, FareyState, continuedFraction, fraction, grid, onRay, position, primitive } from './core.js';
+import { ApproximantSpotlight, FareyState, ProjectedSelection, continuedFraction, fraction, grid, onRay, position, primitive } from './core.js';
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
 import { TapSelection, visibleIntersections } from './input.js';
 import { readSelection, writeSelection } from './recovery.js';
@@ -13,6 +13,7 @@ const spotlight = new ApproximantSpotlight();
 const construction = new ConstructionWalkthrough();
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let constructionFrame = null;
+let projectedPick = null;
 const savedSelection = readSelection();
 for (const turn of savedSelection?.word ?? '') state.step(turn);
 if (savedSelection?.point) state.select(savedSelection.point.p, savedSelection.point.q);
@@ -88,9 +89,10 @@ function makeText(text, width, height, background = '#142b38') {
   ctx.font = `${Math.floor(height * 0.42)}px system-ui`; ctx.fillText(text, width / 2, height / 2);
   return new THREE.CanvasTexture(canvas);
 }
-function panelButton(text, x, action) {
+function panelButton(text, x, action, parent = vrPanel, refresh = true) {
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(0.145, 0.08), new THREE.MeshBasicMaterial({ map: makeText(text, 256, 128) }));
-  mesh.position.set(x, 0, 0); mesh.userData.action = action; vrPanel.add(mesh); vrTargets.push(mesh);
+  mesh.position.set(x, 0, 0); mesh.userData.action = action; mesh.userData.refresh = refresh;
+  parent.add(mesh); vrTargets.push(mesh);
 }
 panelButton('L', -0.4, () => state.step('L'));
 panelButton('R', -0.24, () => state.step('R'));
@@ -104,6 +106,13 @@ const vrCredit = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.08), new THREE.Me
 vrCredit.position.y = -0.1; vrPanel.add(vrCredit);
 const vrCFLegend = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.06), new THREE.MeshBasicMaterial({ map: makeText('Gold: convergents · gray: intermediate mediants', 1800, 128, '#080f16') }));
 vrCFLegend.position.y = 0.19; vrPanel.add(vrCFLegend);
+const vrPickPanel = new THREE.Group(); vrPickPanel.position.y = -0.33; vrPanel.add(vrPickPanel);
+panelButton('Previous', -0.27, () => moveProjectedPick(-1), vrPickPanel, false);
+panelButton('Select', -0.09, confirmProjectedPick, vrPickPanel, false);
+panelButton('Next', 0.09, () => moveProjectedPick(1), vrPickPanel, false);
+panelButton('Cancel', 0.27, cancelProjectedPick, vrPickPanel, false);
+const vrPickLabel = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.09), new THREE.MeshBasicMaterial({ map: makeText('', 1800, 128) }));
+vrPickLabel.position.y = 0.1; vrPickPanel.add(vrPickLabel);
 
 function disposeGroup(group) {
   while (group.children.length) {
@@ -142,6 +151,7 @@ function rebuildGrid() {
   axisLabels[1].position.fromArray(position({ p: bound, q: 0 })).y += 0.14;
 }
 function update({ animateConstruction = false } = {}) {
+  projectedPick = null; renderProjectedPick();
   stopConstructionAnimation();
   disposeGroup(selection);
   spotlight.reconcile(state, alternateCF);
@@ -248,6 +258,44 @@ function update({ animateConstruction = false } = {}) {
   if (animateConstruction && construction.stage === 2 && !reducedMotion.matches) animateLatticeReveal();
   render();
 }
+function renderProjectedPick() {
+  $('projected-choice').hidden = !projectedPick;
+  document.body.classList.toggle('choosing', !!projectedPick);
+  vrPickPanel.visible = !!projectedPick;
+  for (const child of vrPickPanel.children) child.visible = !!projectedPick;
+  if (!projectedPick) return;
+  const point = projectedPick.point;
+  $('projected-preview').textContent = `Preview: ${fraction(point)}`;
+  $('projected-point').textContent = `Primitive point (q,p) = (${point.q},${point.p}) · ${projectedPick.index + 1} of ${projectedPick.points.length}`;
+  $('projected-current').textContent = `Current target ${fraction(state.mediant)} and inspected (${state.inspection.point.q},${state.inspection.point.p}) stay unchanged until Select.`;
+  $('projected-previous').disabled = !projectedPick.canGoBack;
+  $('projected-next').disabled = !projectedPick.canGoForward;
+  $('projected-confirm').textContent = `Select ${fraction(point)}`;
+  vrPickLabel.material.map.dispose();
+  vrPickLabel.material.map = makeText(`Preview ${fraction(point)} · Select to apply · target ${fraction(state.mediant)}`, 1800, 128);
+}
+function beginProjectedPick(point) {
+  projectedPick = ProjectedSelection.near(point, bound);
+  $('hover').hidden = true;
+  renderProjectedPick(); render();
+  if (projectedPick && !session) $('projected-preview').focus({ preventScroll: true });
+}
+function moveProjectedPick(delta) { projectedPick?.move(delta); renderProjectedPick(); render(); }
+function confirmProjectedPick() {
+  if (!projectedPick) return;
+  const point = projectedPick.point;
+  if (state.select(point.p, point.q)) lesson = null;
+  update();
+  if (!session) renderer.domElement.focus({ preventScroll: true });
+}
+function cancelProjectedPick() {
+  projectedPick = null; renderProjectedPick(); render();
+  if (!session) renderer.domElement.focus({ preventScroll: true });
+}
+$('projected-previous').onclick = () => moveProjectedPick(-1);
+$('projected-next').onclick = () => moveProjectedPick(1);
+$('projected-confirm').onclick = confirmProjectedPick;
+$('projected-cancel').onclick = cancelProjectedPick;
 function describeScene(moving = false) {
   const m = state.mediant, inspection = state.inspection, phase = construction.stage ?? 3;
   const spoken = value => value.q === 0 ? 'infinity' : `${value.p} over ${value.q}`;
@@ -273,7 +321,7 @@ function describeScene(moving = false) {
   $('geometry-description').textContent = description;
   $('receipt').textContent = receipt;
   $('geometry-hint').textContent = phase < 2
-    ? 'Dots mark directions at q=1; their positions need not be integer coordinates.'
+    ? 'Dots overlap at q=1. Tap to preview, adjust with Previous/Next, then Select. Their positions need not be integer coordinates.'
     : moving ? 'The illustration follows the same rays; points reach integer coordinates at the end.'
       : phase === 2 ? 'The green line marks the selected ray. The plane appears in the next step.'
         : 'Cyan + purple = orange mediant. The green plane contains its integer multiples.';
@@ -460,8 +508,13 @@ function setPointer(event) {
 function activate(hits) {
   if (!hits.length) return;
   const { object } = hits[0];
-  if (object.userData.action) object.userData.action();
+  if (object.userData.action) {
+    object.userData.action();
+    if (object.userData.refresh) update();
+    return;
+  }
   else if (object.userData.point?.p > 0 && object.userData.point?.q > 0) {
+    if (construction.stage !== null && construction.stage < 2) { beginProjectedPick(object.userData.point); return; }
     if (state.select(object.userData.point.p, object.userData.point.q)) lesson = null;
   }
   update();

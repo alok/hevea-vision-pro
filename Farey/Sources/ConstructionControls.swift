@@ -23,6 +23,7 @@ extension GalleryModel {
     revision += 1
   }
   func stopConstruction() {
+    projectedSelection = nil
     constructionMoving = false
     revision += 1
   }
@@ -50,6 +51,10 @@ struct ConstructionControls: View {
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   var body: some View {
     HStack(spacing: 10) {
+      if (model.constructionStage?.rawValue ?? 3) < 2 {
+        Button("Pick p/q") { model.chooseProjectedDirection() }
+          .accessibilityIdentifier("projected-open")
+      }
       Button("Back") { model.moveConstruction(-1, reduceMotion: reduceMotion) }
         .disabled(model.constructionStage == .boundary).accessibilityIdentifier("construction-back")
       Button("Next") { model.moveConstruction(1, reduceMotion: reduceMotion) }

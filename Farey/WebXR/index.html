@@ -49,6 +49,14 @@
       <label><input type="checkbox" id="construction-motion"> <span id="construction-motion-label">Animate lattice reveal</span></label>
       <p>q=1 is a projective chart of directions, not the Poincaré disk. Steps never move the camera. <a href="https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html">Stange's staged demonstration ↗</a></p>
     </section>
+    <section id="projected-choice" aria-label="Choose a projected direction" hidden>
+      <strong>Choose a projected direction</strong>
+      <p>Dots overlap here. Preview a fraction, then select it. Previous and Next follow exact fraction order.</p>
+      <p id="projected-preview" tabindex="-1" role="status"></p>
+      <p id="projected-point"></p><p id="projected-current"></p>
+      <div class="row"><button id="projected-previous">Previous fraction</button><button id="projected-next">Next fraction</button></div>
+      <div class="row"><button id="projected-confirm">Select preview</button><button id="projected-cancel">Cancel preview</button></div>
+    </section>
     <details id="point-inspection"><summary id="point-equation"></summary><p id="point-detail"></p></details>
     <details id="cf-inspector">
       <summary id="cf-summary">Continued fraction</summary>

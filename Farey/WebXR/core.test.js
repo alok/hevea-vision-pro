@@ -109,3 +109,19 @@ test('spotlight is separate from target and inspection, and reconciles row ident
   spotlight.reconcile(state, true); assert.deepEqual(spotlight.rational, { p: 13, q: 17 });
   spotlight.clear(); assert.equal(spotlight.rational, null);
 });
+
+test('projected preview navigates exact adjacent primitive directions without changing the target', async () => {
+  const { ProjectedSelection } = await import('./core.js');
+  const state = new FareyState(); state.select(6, 10); const before = JSON.stringify(state);
+  const pick = ProjectedSelection.near({p:3,q:5},14);
+  assert.equal(pick.points.length,127);
+  pick.move(-1); assert.deepEqual(pick.point,{p:7,q:12});
+  pick.move(2); assert.deepEqual(pick.point,{p:8,q:13});
+  assert.equal(JSON.stringify(state),before);
+  pick.move(-1000); assert.deepEqual(pick.point,{p:1,q:14}); assert.equal(pick.canGoBack,false);
+  pick.move(1000); assert.deepEqual(pick.point,{p:14,q:1}); assert.equal(pick.canGoForward,false);
+  for(const point of [{p:0,q:1},{p:1,q:0},{p:6,q:10},{p:15,q:1}]) assert.equal(ProjectedSelection.near(point,14),null);
+  for(let i=1;i<pick.points.length;i++) {
+    const a=pick.points[i-1],b=pick.points[i]; assert.ok(a.p*b.q<b.p*a.q);
+  }
+});

@@ -9,7 +9,7 @@ Choose **Construct** in native controls or **Construct this direction** in the b
 3. **Integer lattice:** the finite integer points return to their original positions. The camera remains fixed.
 4. **Direction plane:** the upright plane and ordinary annotations reappear.
 
-The target fraction, inspected integer point, L/R path, continued-fraction choice, spotlight and lesson prediction remain unchanged. Done restores the previous representation and camera placement; native can start from the disk and return to it. The full app Reset closes the construction. Restart resets only the construction to its first stage and turns off animation.
+The target fraction, inspected integer point, L/R path, continued-fraction choice, spotlight and lesson prediction remain unchanged while stepping through the construction. Projected dots overlap: tapping one now opens a [preview and explicit selection](PROJECTED_SELECTION.md), also available through native **Pick p/q**. Preview and Cancel preserve the current state; Select explicitly chooses the shown primitive point. Done restores the previous representation and camera placement; native can start from the disk and return to it. The full app Reset closes the construction. Restart resets only the construction to its first stage and turns off animation.
 
 **Animate reveal** is off by default and affects only the transition from Direction to Integer lattice. Reduce Motion disables it. **Stop** ends the animation and settles immediately at the integer-lattice endpoint; it does not leave fractional coordinates frozen as apparent lattice points. Changing the mathematical state also ends the current animation. Browser backgrounding or graphics loss settles the transition before repainting.
 

@@ -1,0 +1,13 @@
+{
+  "attempted": "XCUICoordinate tap at the center of a RealityKit projected entity",
+  "result": "failed to synthesize event",
+  "reportedFrame": [
+    0,
+    0,
+    50,
+    50
+  ],
+  "error": "Received invalid activation point transform (nil) from Accessibility",
+  "realSpatialTapVerified": false,
+  "alternative": "native Pick p/q buttons, preview and explicit Select"
+}

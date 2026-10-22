@@ -1,6 +1,6 @@
 # Farey lattice — browser and WebXR companion
 
-[Source-fidelity audit](../SOURCE_FIDELITY.md) — browser 0.6.1. [Optional boundary-to-lattice construction](../CONSTRUCTION.md). [Previous release audit](../DEMO_READINESS.md).
+[Crowded projected selection](../PROJECTED_SELECTION.md) — browser 0.7.0. [Source-fidelity audit](../SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](../CONSTRUCTION.md). [Previous release audit](../DEMO_READINESS.md).
 
 An original Three.js implementation of the same integer lattice and L/R state as the native visionOS app. Inspired by **[Katherine Stange](https://katestange.net/talks/math-exploration/)** and her [visualization catalog](https://www.katestange.net/code/), with underlying [Caroline Series L/R geodesic coding (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 

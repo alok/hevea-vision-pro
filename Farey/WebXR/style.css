@@ -32,6 +32,10 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px s
 #construction { font-size: 12px; border-top: 1px solid #345; margin-top: 10px; padding-top: 10px; }
 #construction input { width: auto; }
 #construction .row { margin-bottom: 8px; }
+#projected-choice { font-size: 12px; border-top: 1px solid #345; margin-top: 10px; padding-top: 10px; }
+#projected-choice .row { margin-bottom: 8px; }
+#projected-preview { color: #80dfea; font-size: 22px; margin: 8px 0; }
+.choosing #construction { display: none; }
 .controls:has(#construction:not([hidden])) { width: min(480px, calc(100% - 48px)); }
 #lesson .row { margin-top: 8px; }
 #lesson p { color: #c1d3dd; }

@@ -1,0 +1,128 @@
+{
+  "baselineCommit": "ca51099",
+  "instrumentation": "read-only exposure of live Three.js matrices, no behavior changes",
+  "grid": 14,
+  "data": [
+    {
+      "view": "default",
+      "zoom": 1,
+      "dx": -4,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "7/13"
+    },
+    {
+      "view": "default",
+      "zoom": 1,
+      "dx": -2,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "5/9"
+    },
+    {
+      "view": "default",
+      "zoom": 1,
+      "dx": 0,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "3/5"
+    },
+    {
+      "view": "default",
+      "zoom": 1,
+      "dx": 2,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "7/11"
+    },
+    {
+      "view": "default",
+      "zoom": 1,
+      "dx": 4,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "2/3"
+    },
+    {
+      "view": "front",
+      "zoom": 1,
+      "dx": -4,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "5/12"
+    },
+    {
+      "view": "front",
+      "zoom": 1,
+      "dx": -2,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "5/11"
+    },
+    {
+      "view": "front",
+      "zoom": 1,
+      "dx": 0,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "1/2"
+    },
+    {
+      "view": "front",
+      "zoom": 1,
+      "dx": 2,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "7/13"
+    },
+    {
+      "view": "front",
+      "zoom": 1,
+      "dx": 4,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "7/12"
+    },
+    {
+      "view": "front",
+      "zoom": 2,
+      "dx": -4,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "6/13"
+    },
+    {
+      "view": "front",
+      "zoom": 2,
+      "dx": -2,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "6/13"
+    },
+    {
+      "view": "front",
+      "zoom": 2,
+      "dx": 0,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "1/2"
+    },
+    {
+      "view": "front",
+      "zoom": 2,
+      "dx": 2,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "1/2"
+    },
+    {
+      "view": "front",
+      "zoom": 2,
+      "dx": 4,
+      "canvasHit": true,
+      "intended": "3/5",
+      "selected": "7/13"
+    }
+  ],
+  "mismatches": 14
+}

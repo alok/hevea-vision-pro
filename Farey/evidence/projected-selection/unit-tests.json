@@ -1,0 +1,15 @@
+{
+  "swiftCore": {
+    "passed": 27,
+    "failed": 0
+  },
+  "javascript": {
+    "passed": 26,
+    "failed": 0
+  },
+  "nativeRegression": {
+    "passed": 18,
+    "failed": 0,
+    "scope": "14 model/renderer tests and four simulator UI scenarios"
+  }
+}

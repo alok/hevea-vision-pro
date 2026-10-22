@@ -16,7 +16,7 @@ import SwiftUI
       content.add(renderer.root)
       content.add(lattice.root)
       activation = content.subscribe(to: AccessibilityEvents.Activate.self) { [model] event in
-        if let point = Self.latticePoint(for: event.entity) { model.select(point) }
+        if let point = Self.latticePoint(for: event.entity) { model.activatePoint(point) }
       }
       for rational in LatticeRenderer.landmarks {
         if let label = attachments.entity(for: "lattice-\(rational.p)-\(rational.q)") {
@@ -96,7 +96,7 @@ import SwiftUI
     }
     .gesture(
       SpatialTapGesture().targetedToAnyEntity().onEnded { value in
-        if let point = Self.latticePoint(for: value.entity) { model.select(point) }
+        if let point = Self.latticePoint(for: value.entity) { model.activatePoint(point) }
       }
     )
     .onAppear {
@@ -104,6 +104,7 @@ import SwiftUI
       model.error = nil
     }
     .onDisappear {
+      model.projectedSelection = nil
       model.stopConstruction()
       activation?.cancel()
       activation = nil

@@ -4,6 +4,16 @@ import XCTest
 @testable import FareyVision
 
 @MainActor final class LatticeRendererTests: XCTestCase {
+  func testDenseProjectedNeighborsOverlapAtTheDefaultPhysicalScale() throws {
+    let renderer = LatticeRenderer()
+    _ = try renderer.render(state: FareyState(), bound: 14, viewpoint: 0, construction: .boundary)
+    let a = try XCTUnwrap(renderer.root.findEntity(named: "rational:3:5"))
+    let b = try XCTUnwrap(renderer.root.findEntity(named: "rational:8:13"))
+    let separation = simd_distance(a.position, b.position)
+    XCTAssertEqual(separation, 0.25 * (8.0 / 13.0 - 3.0 / 5.0), accuracy: 1e-6)
+    XCTAssertLessThan(separation, 0.072) // Two unscaled displayed sphere radii.
+    XCTAssertTrue(a.isEnabled && b.isEnabled)
+  }
   func testProjectedMarkersDescribeTheirChartPositionAndRetainIntegerIdentity() throws {
     let renderer = LatticeRenderer()
     var state = FareyState()

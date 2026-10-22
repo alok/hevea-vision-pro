@@ -151,6 +151,10 @@ struct ControlsView: View {
     .glassBackgroundEffect()
     .accessibilityElement(children: .contain)
     .sheet(isPresented: $showSources) { SourcesView() }
+    .popover(isPresented: Binding(
+      get: { model.projectedSelection != nil },
+      set: { if !$0 { model.projectedSelection = nil } }
+    )) { ProjectedSelectionView() }
 
   }
 }
