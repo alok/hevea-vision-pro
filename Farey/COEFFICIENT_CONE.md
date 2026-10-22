@@ -74,3 +74,5 @@ The earlier performance audit was paused at the user’s priority correction, an
 A useful next step is the Lorentz-plane bridge from the current Farey interval into coefficient space. For neighboring endpoints p/q and r/s, the form `(q t−p)(s t−r)` has coefficients `(qs,−(ps+qr),pr)` and discriminant `(ps−qr)²=1. Its Lorentz-orthogonal plane cuts the cone in the corresponding rational geodesic. This is a planned, separately testable link; the current software does not yet draw it.
 
 Physical-headset interaction, immersive WebXR consent and GPU performance need their own authorized runtime checks. No upload or public deployment is included in this increment.
+
+The final native regression run completed with **36/36 tests passing**, no failures or skips. Its disposable simulator was removed. The main simulator retained native 0.9.0 and the verified source-matching app binary.

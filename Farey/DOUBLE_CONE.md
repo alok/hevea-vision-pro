@@ -35,3 +35,5 @@ These are desktop-browser checks. Immersive WebXR sessions, physical headset inp
 Three consequential mismatches drove this change: the missing signed half of the coefficient scene; an overview-only camera with no way to inhabit it; and navigation that needed explicit keyboard focus and stable camera state while changing parameters. The implemented journey is open → inspect categories → Inhabit → move/look → change radius → return → reset. Checks cover immediate keyboard focus, fixed-eye look, no camera jump on an inside radius change, and exact restoration of the overview.
 
 The source and this demo share the coefficient equations and sign categories. Their finite crops, cone extent, framing and color interpolation differ as described above; screenshots at similar viewport sizes are not presented as pixel-identical reconstructions. No extra UI installation or OS permission change was needed.
+
+The browser 0.9.0 checkpoint is commit `cbaeeed` on `codex/farey-void-demo`; its local package is `WebXR/output/Farey-WebXR-0.9.0.zip`. Native 0.9.0 passed its complete 36-test simulator suite independently of the newer browser-only features.

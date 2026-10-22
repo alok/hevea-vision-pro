@@ -10,7 +10,7 @@ Native 0.9.0 (12), browser 0.8.0. These are captures of our original implementat
 - `browser-validation.json`: source/image positions, distinct view positions, actual sphere-click result, state checks, context recovery and mocked unsupported-graphics fallback.
 - `coefficient-subpath.json`: the new scene loaded from `/dist/`, selected a scalar multiple and made no external requests.
 - `legacy-browser-validation.json`, `legacy-package-offline.json`: preserved Farey L/R page and packaged offline checks.
-- `focused-native-tests.json`: the 2-test tilted-scene simulator walkthrough. The complete suite is recorded separately when finished.
+- `focused-native-tests.json`: the 2-test tilted-scene simulator walkthrough. The complete suite is `full-native-tests.json`: 36 passed, none skipped or failed.
 - `provenance.json`: public-source hashes; original reference media was not redistributed.
 - `package-validation.json`, `package-zip.json`: exact local package identity. No public deployment or upload occurred.
 
