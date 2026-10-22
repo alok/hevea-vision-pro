@@ -1,0 +1,92 @@
+{
+  "version": "0.12.0",
+  "static": {
+    "passed": true,
+    "payloadFiles": 73,
+    "runtimeScripts": 19,
+    "runtimeModules": 18,
+    "manifestSHA256": "ed7e52d229e2538742335f8484145ac790245373b3af3431c6f95d2c22c68c1d"
+  },
+  "browser": {
+    "passed": true,
+    "browser": "156.0.8078.48",
+    "path": "/Farey-WebXR-0.12.0/farey.html",
+    "freshProfile": true,
+    "savedPointAndGridRestored": true,
+    "malformedStorageRejected": true,
+    "loadedPageWorksWithBrowserOffline": true,
+    "offlineReloadError": "page.reload: net::ERR_INTERNET_DISCONNECTED",
+    "layouts": [
+      {
+        "width": 390,
+        "height": 844,
+        "scrollWidth": 390,
+        "sceneWidth": 390,
+        "sceneHeight": 244.296875,
+        "inputFontSize": 16
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "scrollWidth": 844,
+        "sceneWidth": 443.765625,
+        "sceneHeight": 254.203125,
+        "inputFontSize": 16
+      }
+    ],
+    "unavailableWebGL": "mocked context creation failure",
+    "missingModulesExplained": [
+      "app.js",
+      "view.js"
+    ],
+    "javaScriptDisabledExplained": true,
+    "expectedErrors": [
+      "WebGL unavailable"
+    ],
+    "xrStatus": "No immersive VR device is available in this browser. Desktop exploration is available.",
+    "runtimeRequests": 95,
+    "externalRequests": [],
+    "badResponses": [],
+    "errors": [],
+    "actualXRSession": false
+  },
+  "coefficient": {
+    "passed": true,
+    "browser": "156.0.8078.48",
+    "primaryLoadedPageWorksOffline": true,
+    "moduleFailureExplained": true,
+    "webGLFailure": "mocked context creation failure",
+    "noJSExplained": true,
+    "temporaryCoefficientStateNotPersisted": true,
+    "layouts": [
+      {
+        "width": 390,
+        "height": 844,
+        "scrollWidth": 390,
+        "sceneWidth": 390,
+        "sceneHeight": 318.890625
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "scrollWidth": 844,
+        "sceneWidth": 452,
+        "sceneHeight": 234
+      }
+    ],
+    "externalRequests": [],
+    "errors": [],
+    "actualXRSession": false
+  },
+  "checksFromDocumentedStandaloneServer": [
+    "starscape",
+    "pair",
+    "debug"
+  ],
+  "unitTests": {
+    "passed": 66,
+    "failed": 0
+  },
+  "capturedFrom": "independently unpacked 0.12.0 ZIP, headless desktop Chromium",
+  "actualXRSession": false
+}

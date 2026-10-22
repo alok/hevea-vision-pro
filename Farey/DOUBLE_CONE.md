@@ -1,39 +1,67 @@
-# Browser-first double cone and Inhabit
+# Browser-first coefficient space
 
-Browser 0.9.0 extends the earlier upper-cone scene. Native 0.9.0 still has the upper-cone projection view documented in [COEFFICIENT_CONE.md](COEFFICIENT_CONE.md); it does not yet have this signed-lattice or Inhabit mode.
+Browser **0.12.0** is the current desktop demo. Native **0.9.0** retains the upper-cone projection view in [COEFFICIENT_CONE.md](COEFFICIENT_CONE.md); the dense signed lattice, Origin and newer cutting-plane controls are browser features.
 
-## What is visible
+## Open and explore
 
-The browser starts in a stationary oblique overview of the **signed integer coefficient lattice** and both halves of `b²−4ac=0`. The display coordinates remain `(-b,a+c,c−a)`, so the round cone is `x²+z²=y²`. Points satisfy `x²+y²+z²≤R²`, with the zero triple omitted. They are transformed integer triples, not arbitrary integer points in display coordinates.
+Unpack `WebXR/output/Farey-WebXR-0.12.0.zip`, open a terminal in the unpacked folder and run `python3 serve.py --port 8080`. Open `http://127.0.0.1:8080/`. All runtime assets are local. This loopback address only serves the computer running the command; it is not a published link or a headset-accessible deployment.
 
-At default radius 6 there are 480 points: 55 in each cone interior, 24 on the null cone and 346 outside. Radius 12 caps the set at 3,608 points. Instanced meshes render the source cloud; the measured default/max overview used 10 draw calls. This is a geometry count, not a GPU frame-rate or headset-performance measurement.
+The initial view is a stationary, oblique overview of a genuinely noncoplanar integer coefficient lattice and both halves of the discriminant cone. Drag to orbit, scroll to zoom and click to inspect. **Inhabit** enters near the selected point; **Overview** restores the saved camera. **Origin** places the eye exactly at the apex. Look up/Level/Look down, drag to look, and W/A/S/D plus Q/E or the onscreen buttons move explicitly. **Reset** restores the initial scene. There is no automatic motion.
 
-The color categories follow Stange’s reference: positive interior colored by the actual discriminant, negative interior gray, exterior blue and null forms gold. **Color lower half too** is explicitly our extension. Since browser 0.10.0 the upper palette uses the source’s six dark-theme anchors with OKLab interpolation over her fixed logarithmic |Δ| range 3–240. The default **Contrast** categories are our choice: the null color is ivory instead of gold, because the gold anchor is also an interior color, and exterior blue is slightly deepened; **Stange reference** restores gold, blue and gray. Her viewer derives its category colors from OKLCH lightness and chroma, and those exact values are not verified here. Points are flat unlit discs with exact centers. Dot size follows the causes in her viewer: perspective and a fixed star radius (nonprimitive upper stars 0.72×, upper stars on a selected plane 1.35×), overview fog, and in Origin her eye-at-origin radius ∝ |Δ|^¼/√(a+c), so apparent size there is 1/√|Δ| times a Klein-position factor. Ours: radii above 2.5 px grow only as the cube root, capped at 9 px; below 1 px a dot keeps 1 px and dims; at the origin off-cone points stay visible. A click selects the nearest center within about 10 pixels. Our symmetric cone height and origin-centered finite crop also differ from the reference’s asymmetric framing. These presentation choices are not attributed to her as exact behavior.
+This is ambient Euclidean coefficient-space navigation. It does not implement the source's SL₂ action or intrinsic hyperbolic navigation. The camera origin is a valid viewing location. The zero polynomial is omitted from the lattice: it has no unique associated root/projective point, and radial projection there is undefined.
 
-**Whole coefficient lattice** switches between the signed ball and its positive interior. **Show double cone** controls the surface. **Project to Klein disk** is off initially, avoiding an extra plane in the overview. Negative interior forms are sign-flipped before projection to the positive screen: a polynomial and its negative have the same roots. Exterior forms have real roots and do not enter this Klein disk. Null forms lie on the discriminant boundary; when `a=0`, the repeated root is at infinity in homogeneous coordinates.
+## Exact mathematical object
 
-## Inhabit
+Each point is an integer triple `(a,b,c)` for `at²+bt+c`. Our display basis is
 
-**Inhabit** moves the eye near the selected visible coefficient point. Drag to look, W/A/S/D to move, Q/E to move down/up; onscreen buttons perform the same discrete translations. The readout shows Euclidean display coordinates and the camera orientation as ordered rotation angles in the oriented display planes ZX (e_z∧e_x), YZ (e_y∧e_z) and XY (e_x∧e_y), with C = R_ZX R_YZ R_XY (Three.js Euler YXZ). **Return to overview** restores the previous camera and target. **Reset** restores the default crop, colors, selection and overview.
+```
+(X,Y,Z) = (−b, a+c, c−a)
+Δ = b²−4ac = X²+Z²−Y²
+```
 
-This is ambient Euclidean navigation in three-dimensional coefficient space. It is not intrinsic hyperbolic navigation, a Flatland simulation, or a claim that Euclidean distances equal hyperbolic distances. Entering is an explicit action; there is no automatic motion. Changing the crop while inside does not move the eye.
+The finite crop is `X²+Y²+Z² ≤ R²`, excluding zero. Transformed lattice points obey `Y ≡ Z (mod 2)`; they are not all of Z³. The upper and lower interiors have Δ<0; the null cone has Δ=0; the exterior has Δ>0. Opposite nonzero triples represent the same roots/projective class, while retaining different ambient locations.
 
-## Comparison and provenance
+**Project to Klein disk** explicitly adds the slice and radial correspondence. Interior forms map to `u=−b/(a+c), v=(c−a)/(a+c)`. Negative forms are sign-flipped to the positive representative before radial projection onto the positive screen. The upper-half-plane root is `(-b+i√(4ac−b²))/(2a)` for a>0. Exterior forms are not complex-root stars in this disk. The separate Farey L/R page has a different, intrinsically planar rational-pair lattice.
 
-The live reference is [Stange’s whole-lattice scene](https://katestange.net/starscape-lattice/#lm=1&c=1&sc=0&p=0&cp=1). Its [talk](https://katestange.net/talks/math-exploration/#/starscape-cone) and [Starscape / Lattice viewer](https://www.katestange.net/starscape-lattice/) explain the coefficient-to-root map. Research background is [Harriss, Stange and Trettel, *Algebraic Number Starscapes*](https://arxiv.org/abs/2008.07655). The separate Farey L/R page retains the Caroline Series citation. No reference code or media is bundled.
+## Cutting planes
 
-Our browser supports orbit, selection, crop, cone/whole-lattice visibility, optional projection and Inhabit. It does not yet implement Stange’s full SL₂ action, discriminant shells, general geodesic planes, or continuous Klein–Poincaré–half-plane morph. Those are distinct future work, not claims of this release.
+Select an exterior point to use its coefficients `(A,B,C)` as a Lorentz normal. Or select two distinct interior projective directions with Shift-click or **Pair entered point**. The plane is
 
-## Verification
+```
+−2Ca + Bb − 2Ac = 0
+```
 
-`WebXR/starscape-checks.js` exercises actual point clicking, all color categories, the maximum crop, upper-only filtering, negative-form projection, entering the cloud, button/keyboard translations, fixed-eye mouse look, parallax and exact overview return. It also exercises real `WEBGL_lose_context` loss/recovery and portrait/landscape layouts. The core tests check the signed coefficient set, sign pairing and shared projections. See [evidence](evidence/double-cone/).
+It cuts the cone in null directions corresponding to roots of `At²+Bt+C`. An amber sheet, exact-member rings and optional disk chord make this correspondence visible. The pair `(1,0,1)` and `(1,1,1)` gives `2a−2c=0` and endpoints −1,+1. An independently clicked source example `(1,8,−1)` gives `2a+8b−2c=0` and endpoints `−4±√17`.
 
-These are desktop-browser checks. Immersive WebXR sessions, physical headset input, GPU frame rate, touch behavior while inhabiting and screen-reader speech remain unverified. Tracking consent, uploads and public deployment remain outside this completed work.
+Optional fading away from the selected plane uses normalized **Euclidean display-space distance**, with a nonzero opacity floor. It is a viewing aid, not a projective invariant or intrinsic hyperbolic distance. Turn it off to recover ordinary opacity. Transparency uses an approximate depth treatment without per-point sorting; a rigorous overlapping-point occlusion audit remains open.
 
-## Bounded design review
+## Color and glyphs
 
-Three consequential mismatches drove this change: the missing signed half of the coefficient scene; an overview-only camera with no way to inhabit it; and navigation that needed explicit keyboard focus and stable camera state while changing parameters. The implemented journey is open → inspect categories → Inhabit → move/look → change radius → return → reset. Checks cover immediate keyboard focus, fixed-eye look, no camera jump on an inside radius change, and exact restoration of the overview.
+The default **Viridis** maps the actual triple's `|Δ|` by `clamp(log(|Δ|/3)/log(240/3),0,1)` into Viridis positions 0.2–1. Skipping its darkest fifth keeps tiny dots visible on black. Values above 240 saturate. The null, exterior and lower-interior categories use separate swatches. **Stange anchors** uses her six verified anchors and OKLab interpolation; category hues are approximations, not a pixel-identical reproduction. **Color lower half too** is our explicit extension.
 
-The source and this demo share the coefficient equations and sign categories. Their finite crops, cone extent, framing and color interpolation differ as described above; screenshots at similar viewport sizes are not presented as pixel-identical reconstructions. No extra UI installation or OS permission change was needed.
+Primitive/nonprimitive factors, perspective, overview fog and the source eye-at-origin radius `∝ |Δ|¼/√(a+c)` inform dot size. Apparent size along a fixed ray decreases as `1/√|Δ|` after the position factor is fixed. Our display limits are intentional: below 1 CSS pixel a dot stays one pixel and dims; radius above 2.5 px grows as a cube root and is capped at 9 px. Exact centers are unchanged. Click picking selects the closest center within an angular threshold; overlapping points can remain ambiguous.
 
-The browser 0.9.0 checkpoint is commit `cbaeeed` on `codex/farey-void-demo`; its local package is `WebXR/output/Farey-WebXR-0.9.0.zip`. Native 0.9.0 passed its complete 36-test simulator suite independently of the newer browser-only features.
+Viridis data is CC0, credited to Nathaniel J. Smith, Stefan van der Walt and Eric Firing. Normal, protan and deutan simulations test category/ramp separation in OKLab; this is a numerical check, not assistive-technology or human accessibility validation. Tritanopia and very dense clouds need further assessment.
+
+## Density and measured limits
+
+One GPU point batch renders exact unique triples without sampling or duplication:
+
+| Radius | Points | Crop change wall time | Pick time | Chrome JS heap |
+| --- | ---: | ---: | ---: | ---: |
+| 12 | 3,608 | 17 ms | 0.8 ms | 19.9 MB |
+| 24 | 28,832 | 13 ms | 2.1 ms | 17.4 MB |
+| 48 | 231,348 | 36 ms | 12.2 ms | 30.1 MB |
+| 96 | 1,852,484 | 186 ms | 41.5 ms | 130.4 MB |
+
+These one-run desktop Chrome observations used ANGLE Metal on Apple M4 Max. The overview submitted 10 draw calls and 592 triangles plus the point primitives. Median requestAnimationFrame intervals were 16.7 ms, which reflects browser/vsync scheduling and does **not** establish GPU headroom, headset FPS or comfort. Heap excludes GPU/driver/process memory. At high density overlapping glyphs form a cloud and large discriminants saturate at yellow. Use a smaller crop, Inhabit or star size for inspection.
+
+**Debug** starts closed. It distinguishes submitted point primitives, triangles, draw calls, CPU timing, array estimates and JS heap. Its optional 60-interval measurement cancels on close; Escape closes Debug without changing view mode. There is no continuous stats collection while closed.
+
+## Provenance and evidence boundaries
+
+Compare [Stange's whole-lattice scene](https://katestange.net/starscape-lattice/#lm=1&c=1&sc=0&p=0&cp=1), [talk](https://katestange.net/talks/math-exploration/#/starscape-cone), and [Harriss, Stange and Trettel, *Algebraic Number Starscapes*](https://arxiv.org/abs/2008.07655). Our basis differs from her `(b,a+c,a−c)` by a rigid half-turn around the vertical axis. Our symmetric cone extent, origin-centered crop, bounded glyph sizes, palette and Euclidean navigation are independent presentation choices. No Stange code, meshes or media are bundled. Attribution is not a software license or endorsement. Caroline Series' [1985 paper](https://doi.org/10.1112/jlms/s2-31.1.69) remains credited for the separate L/R geodesic coding.
+
+`npm test` exercises exact counts, parity, cone/ray maps, sign pairs, plane endpoints, finite continued fractions, input, recovery and package integrity. `starscape-checks.js`, `pair-checks.js` and `debug-checks.js` exercise the actual local artifact in isolated desktop Chromium. The original native 0.9.0 passed 36 simulator UI tests independently of these browser additions.
+
+Browser WebXR code requests `immersive-vr` with local-floor support and renders using Three.js XR camera/controller paths. **An actual immersive session, stereo frames, tracking and physical headset controls are still unverified.** Ordinary desktop 3D and native simulator tests are separate evidence. Installed browser-emulator testing is pending; no runtime consent or security settings were changed for this release. Physical-device signing/install, public hosting and private video uploads remain separate steps.

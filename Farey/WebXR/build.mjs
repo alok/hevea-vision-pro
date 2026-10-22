@@ -73,11 +73,14 @@ No Stange code, media or meshes are bundled. Attribution does not imply
 permission to redistribute her code or an endorsement. This is a finite
 independent lattice illustration, not her separate hyperboloid visualization.
 Three.js ${dependency.version} is included under MIT; see vendor/THREE-LICENSE.txt.
+Viridis data by Nathaniel J. Smith, Stefan van der Walt and Eric Firing
+is CC0: https://github.com/BIDS/colormap/blob/master/colormaps.py
+See VIRIDIS-LICENSE.txt. The default uses its 0.2-1 interval for tiny dots.
 `);
 files.push('index.html', 'farey.html', 'COPYING.txt', 'SOURCE.txt', 'README.txt', 'serve.py', 'vendor/three.module.js', 'vendor/three.core.js', 'vendor/addons/controls/OrbitControls.js', 'vendor/THREE-LICENSE.txt');
 await mkdir(resolve(destination, 'source'), { recursive: true });
 const sources = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css', 'index.html',
-  'starscape.js', 'starscape-core.js', 'starscape-core.test.js', 'appearance.js', 'appearance.test.js', 'camera-planes.js', 'camera-planes.test.js', 'pair-plane.js', 'pair-plane.test.js', 'lattice.js', 'lattice.test.js', 'point-cloud.js', 'viridis.js', 'VIRIDIS-LICENSE.txt', 'farey.html', 'build.mjs', 'package.json', 'package-lock.json', 'serve.py', 'PACKAGE_README.txt', 'package-smoke.mjs', 'smoke-offline.py', 'offline-checks.js',
+  'starscape.js', 'starscape-core.js', 'starscape-core.test.js', 'appearance.js', 'appearance.test.js', 'camera-planes.js', 'camera-planes.test.js', 'pair-plane.js', 'pair-plane.test.js', 'lattice.js', 'lattice.test.js', 'point-cloud.js', 'viridis.js', 'VIRIDIS-LICENSE.txt', 'debug-checks.js', 'coefficient-package-checks.js', 'starscape-checks.js', 'pair-checks.js', 'farey.html', 'build.mjs', 'package.json', 'package-lock.json', 'serve.py', 'PACKAGE_README.txt', 'package-smoke.mjs', 'smoke-offline.py', 'offline-checks.js',
   'core.test.js', 'xr-support.test.js', 'input.test.js', 'recovery.test.js', 'construction.test.js', 'view.test.js', 'package-smoke.test.js'];
 for (const name of sources) {
   await copyFile(resolve(root, name), resolve(destination, 'source', name));

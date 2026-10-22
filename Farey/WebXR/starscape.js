@@ -23,6 +23,7 @@ catch {
   $('fatal').hidden = false;
   $('fatal').textContent = 'WebGL is unavailable. The source links and mathematical explanation remain available.';
   document.querySelectorAll('.controls button, .controls input, .controls select').forEach(c => { c.disabled = true; });
+  $('debug-toggle').disabled = true;
   $('xr').textContent = 'VR unavailable without WebGL';
   throw Error('WebGL unavailable');
 }
@@ -232,8 +233,9 @@ function updateGlyphSizes(){
 }
 function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();renderer.render(scene,camera);if(!$('debug').hidden)showDebug();}}
 // Debug overlay: closed by default; reads only counters that already exist, and only while open.
-let frameMeasure=null;
+let frameMeasure=null, frameRequest=null;
 function showDebug(){
+  if($('debug').hidden)return;
   const info=renderer.info.render, attributes=cloudMesh.geometry.attributes, ms=x=>x===undefined?'—':`${x.toFixed(1)} ms`;
   const bytes=lattice.abc.byteLength+lattice.xyz.byteLength+attributes.color.array.byteLength+attributes.aFactor.array.byteLength;
   const gl=renderer.getContext(),ext=gl.getExtension('WEBGL_debug_renderer_info');
@@ -256,12 +258,25 @@ function showDebug(){
   ];
   $('debug-rows').replaceChildren(...rows.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return [dt,dd];}));
 }
-$('debug-toggle').onclick=()=>{const open=$('debug').hidden;$('debug').hidden=!open;$('debug-toggle').setAttribute('aria-expanded',String(open));if(open)render();};
-$('debug-close').onclick=()=>{$('debug').hidden=true;$('debug-toggle').setAttribute('aria-expanded','false');$('debug-toggle').focus();};
+function closeDebug(){
+  if(frameRequest!==null)cancelAnimationFrame(frameRequest);
+  frameRequest=null;$('debug-frames').disabled=false;
+  $('debug').hidden=true;$('debug-toggle').setAttribute('aria-expanded','false');$('debug-toggle').focus();
+}
+$('debug-toggle').onclick=()=>{if(!$('debug').hidden){closeDebug();return;}$('debug').hidden=false;$('debug-toggle').setAttribute('aria-expanded','true');render();};
+$('debug-close').onclick=closeDebug;
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!$('debug').hidden){event.preventDefault();event.stopPropagation();closeDebug();}},true);
 $('debug-frames').onclick=()=>{
+  if(frameRequest!==null||$('debug').hidden)return;
+  $('debug-frames').disabled=true;
   const times=[];let last=performance.now();
-  const step=now=>{times.push(now-last);last=now;render();if(times.length<60)requestAnimationFrame(step);else{times.sort((a,b)=>a-b);frameMeasure=`median ${times[30].toFixed(1)} ms · p90 ${times[54].toFixed(1)} ms`;showDebug();}};
-  requestAnimationFrame(step);
+  const step=now=>{
+    frameRequest=null;if($('debug').hidden)return;
+    times.push(now-last);last=now;render();
+    if(times.length<60)frameRequest=requestAnimationFrame(step);
+    else{times.sort((a,b)=>a-b);frameMeasure=`median ${times[30].toFixed(1)} ms · p90 ${times[54].toFixed(1)} ms`;$('debug-frames').disabled=false;showDebug();}
+  };
+  frameRequest=requestAnimationFrame(step);
 };
 
 const eyeAtOrigin=()=>inhabited&&camera.position.distanceTo(world.position)<1e-9;

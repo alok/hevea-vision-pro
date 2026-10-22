@@ -65,8 +65,14 @@ def main():
         browser, _ = json.JSONDecoder().raw_decode(raw.split(marker, 1)[1])
         if browser.get('passed') is not True:
             raise RuntimeError(f'Browser check failed: {browser}')
+        coefficient_raw = run([*cli, f'-s={session}', 'run-code', '--filename', str(root / 'coefficient-package-checks.js')], 'coefficient-browser')
+        if marker not in coefficient_raw:
+            raise RuntimeError('Coefficient browser did not return a result')
+        coefficient, _ = json.JSONDecoder().raw_decode(coefficient_raw.split(marker, 1)[1])
+        if coefficient.get('passed') is not True:
+            raise RuntimeError(f'Coefficient browser check failed: {coefficient}')
         result = {'artifact': str(artifact), 'version': json.loads((artifact / 'source/package.json').read_text())['version'],
-                  'static': static, 'browser': browser}
+                  'static': static, 'browser': browser, 'coefficient': coefficient}
         (output / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
         for name in ['offline-desktop.png', 'offline-mobile-390.png', 'offline-mobile-844.png', 'offline-no-webgl.png', 'offline-no-module.png', 'offline-no-js.png']:
             shutil.copy2(root / 'output/playwright' / name, output / name)

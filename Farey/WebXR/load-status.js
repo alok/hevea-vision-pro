@@ -7,5 +7,7 @@ addEventListener('error', event => {
   message.hidden = false;
   message.textContent = 'The spatial view could not load. Reload this page. If you downloaded the package, keep its files together and start it with python3 serve.py instead of opening index.html directly.';
   document.querySelectorAll('.controls button, .controls input, .controls select').forEach(control => { control.disabled = true; });
+  const debug = document.getElementById('debug-toggle');
+  if (debug) debug.disabled = true;
   document.getElementById('xr').textContent = 'VR unavailable while the view cannot load';
 }, true);
