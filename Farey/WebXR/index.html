@@ -27,10 +27,19 @@
       <label>Grid <select id="bound"><option>6</option><option>8</option><option>10</option><option selected>12</option><option>14</option></select></label>
       <form id="select-form"><label>p/q <input id="rational" value="3/5" aria-label="Positive rational p/q" pattern="[0-9]+/[0-9]+" required></label><button>Select</button></form>
       <button id="view">Front view</button>
+      <button id="learn">Learn a move</button>
     </div>
     <p id="matrix"></p><p id="receipt" role="status"></p>
+    <section id="lesson" aria-label="Worked Farey moves" hidden>
+      <strong id="lesson-question"></strong>
+      <div id="lesson-choices" class="row"></div>
+      <p id="lesson-explanation" role="status"></p>
+      <div class="row"><button id="lesson-apply" disabled>Apply L</button><button id="lesson-next" hidden>Predict R next</button><button id="lesson-restart">Restart lesson</button><button id="lesson-close">Close lesson</button></div>
+      <a href="https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html">Katherine Stange’s original L/R and lattice demonstration ↗</a>
+    </section>
     <p class="hint">Drag to orbit · scroll to zoom · right-drag to pan · click a sphere to select.<br>Cyan + purple = orange mediant. The green plane contains its integer multiples.</p>
     <details><summary>Mathematics & sources</summary>
+      <p id="xr-status" role="status"></p>
       <p>Each sphere is an integer pair (q,p). The fraction p/q is its direction. Neighbor vectors form a unit-area parallelogram; adding them gives their mediant. The finite green plane stands perpendicular to the lattice through that direction.</p>
       <p>This is original code inspired by Stange’s L/R lattice viewer, not a copy of her source or a reconstruction of her separate hyperboloid. Our word displays M(1); append R to send M(∞) to the same fraction.</p>
       <p>Underlying geodesic coding: <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series (1985) ↗</a>. Independent prototype by Alok Singh. No endorsement implied. Finite geometry; no forced camera motion.</p>

@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FareyState, fraction, grid, onRay, position, primitive } from './core.js';
+import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
 
 const $ = id => document.getElementById(id);
 const state = new FareyState();
@@ -43,7 +44,12 @@ const origin = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xfff
 origin.scale.setScalar(1.5); lattice.add(origin);
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
-let bound = 12, points = [], gridLines, session = null, startingXR = false;
+let bound = 12, points = [], gridLines, session = null, startingXR = false, desktopView;
+let lesson = null;
+const lessonSteps = [
+  { turn: 'L', choices: ['1/3', '2/3', '3/2'] },
+  { turn: 'R', choices: ['3/4', '3/5', '2/5'] }
+];
 const vrPanel = new THREE.Group();
 vrPanel.position.set(0, 1.15, -1.15);
 vrPanel.visible = false;
@@ -140,8 +146,52 @@ function update() {
   $('undo').disabled = !state.word;
   vrLabel.material.map.dispose();
   vrLabel.material.map = makeText(`${state.word || 'Start'}   ${fraction(state.left)} < ${fraction(m)} < ${fraction(state.right)}`, 1600, 160);
+  if (lesson && lesson.word !== state.word) lesson = null;
+  renderLesson();
   render();
 }
+function startLesson() {
+  reset(); state.select(1, 2);
+  lesson = { step: 0, phase: 'predict', guess: null, word: state.word };
+  update();
+}
+function renderLesson() {
+  $('lesson').hidden = !lesson;
+  if (!lesson) return;
+  const step = lessonSteps[lesson.step];
+  const predicting = lesson.phase === 'predict';
+  $('lesson-question').textContent = predicting
+    ? `Selected: ${fraction(state.mediant)}. After ${step.turn}, which rational will be selected?`
+    : `Selected after ${step.turn}: ${fraction(state.mediant)}`;
+  $('lesson-choices').replaceChildren();
+  if (predicting) for (const choice of step.choices) {
+    const button = document.createElement('button'); button.textContent = choice;
+    button.setAttribute('aria-pressed', String(lesson.guess === choice));
+    button.onclick = () => { lesson.guess = choice; renderLesson(); };
+    $('lesson-choices').append(button);
+  }
+  $('lesson-apply').hidden = !predicting;
+  $('lesson-apply').disabled = !lesson.guess;
+  $('lesson-apply').textContent = `Apply ${step.turn}`;
+  $('lesson-next').hidden = predicting || lesson.step === 1;
+  $('lesson-explanation').textContent = predicting
+    ? `${step.turn} replaces the ${step.turn === 'L' ? 'lower' : 'upper'} endpoint with the current mediant. Make a prediction, then apply the actual move.`
+    : lesson.explanation;
+}
+$('learn').onclick = startLesson;
+$('lesson-restart').onclick = startLesson;
+$('lesson-close').onclick = () => { lesson = null; renderLesson(); };
+$('lesson-next').onclick = () => { lesson = { step: 1, phase: 'predict', guess: null, word: state.word }; renderLesson(); };
+$('lesson-apply').onclick = () => {
+  if (!lesson || !lesson.guess || lesson.phase !== 'predict') return;
+  const turn = lessonSteps[lesson.step].turn;
+  const old = fraction(turn === 'L' ? state.left : state.right), middle = fraction(state.mediant);
+  state.step(turn);
+  const m = state.mediant, a = state.left, b = state.right;
+  lesson.explanation = `${lesson.guess === fraction(m) ? 'Your prediction matched.' : `You predicted ${lesson.guess}; the selected fraction is ${fraction(m)}.`} ${turn} replaced ${old} with ${middle}. The new neighbors are ${fraction(a)} and ${fraction(b)}. Their lattice vectors add: (${a.q},${a.p}) + (${b.q},${b.p}) = (${m.q},${m.p}), so the mediant is ${fraction(m)}.`;
+  lesson.phase = 'explain'; lesson.word = state.word;
+  update();
+};
 function reset() {
   state.reset(); bound = 12; $('bound').value = '12'; rebuildGrid();
   if (!session) { camera.position.set(3.3, 3.1, 2.1); controls.target.set(0, 1.75, -3.2); controls.update(); }
@@ -179,8 +229,7 @@ for (let i = 0; i < 2; i++) {
   const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(0, 0, -1)]), new THREE.LineBasicMaterial({ color: 0x80dfea }));
   line.scale.z = 6; controller.add(line); scene.add(controller);
   controller.addEventListener('select', () => {
-    raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-    raycaster.ray.direction.set(0, 0, -1).transformDirection(controller.matrixWorld);
+    controllerRay(controller, raycaster);
     activate(raycaster.intersectObjects([...vrTargets, ...points]));
   });
 }
@@ -200,12 +249,15 @@ controls.addEventListener('change', render);
 window.addEventListener('resize', resize);
 renderer.xr.addEventListener('sessionend', () => {
   session = null; startingXR = false; vrPanel.visible = false; controls.enabled = true;
+  if (desktopView) restoreView(desktopView, camera, controls);
+  desktopView = null;
   document.body.classList.remove('immersive'); $('xr').textContent = 'Enter VR'; $('xr').disabled = false;
   renderer.setAnimationLoop(null); resize();
 });
 $('xr').onclick = async () => {
   if (startingXR || session) return;
   startingXR = true; $('xr').disabled = true;
+  desktopView = captureView(camera, controls);
   try {
     session = await navigator.xr.requestSession('immersive-vr', { optionalFeatures: ['local-floor', 'bounded-floor'] });
     await renderer.xr.setSession(session);
@@ -217,10 +269,10 @@ $('xr').onclick = async () => {
   }
 };
 async function checkXR() {
-  try {
-    const supported = !!navigator.xr && await navigator.xr.isSessionSupported('immersive-vr');
-    $('xr').disabled = !supported; $('xr').textContent = supported ? 'Enter VR' : 'VR unavailable here';
-    $('xr').title = supported ? 'Enter a full immersive VR session' : 'Requires a compatible WebXR headset browser and HTTPS or localhost.';
-  } catch { $('xr').textContent = 'VR unavailable here'; }
+  const availability = await xrAvailability(navigator.xr, isSecureContext);
+  $('xr').disabled = !availability.supported;
+  $('xr').textContent = availability.supported ? 'Enter VR' : 'VR unavailable here';
+  $('xr').title = availability.message;
+  $('xr-status').textContent = availability.message;
 }
 rebuildGrid(); update(); resize(); checkXR();

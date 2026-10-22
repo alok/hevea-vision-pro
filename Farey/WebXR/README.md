@@ -21,10 +21,16 @@ The **Enter VR** button becomes available only when `isSessionSupported('immersi
 
 WebXR needs a compatible headset browser and a secure context. A headset cannot access the Mac's loopback address directly. Use an already-trusted HTTPS development host or an independently authorized deployment for headset testing. This work does not provision a certificate, change network permissions, or publish a site.
 
-**Verified here:** Chromium desktop rendering and real mouse orbit, L/R/Undo/Reset, rational selection (including 6/10 → 3/5), maximum grid, 24-step limit and recovery. This Mac's Chromium reports `immersive-vr` unsupported. **Not verified:** Quest/Meta Browser, a physical Vision Pro browser, controller/hand interaction in an actual XR session, device frame rate or comfort. The native simulator is separate evidence, not a WebXR headset test.
+**Verified here:** Chromium desktop rendering and real mouse orbit, L/R/Undo/Reset, rational selection (including 6/10 → 3/5), maximum grid, 24-step limit and recovery. Eight automated tests cover mathematics, unsupported/error paths, transient input pose updates, and desktop camera restoration. This Mac's Chromium reports `immersive-vr` unsupported. A separate visionOS 27.2 simulator Safari reported support, but its welcome screen and an XCTest `kAXErrorAPIDisabled` prevented the entry action. No XR session or frame was observed. **Not verified:** Quest/Meta Browser, a physical Vision Pro browser, controller/hand interaction in an actual XR session, device frame rate or comfort. The native simulator is separate evidence, not a WebXR headset test.
 
 ## Mathematical correspondence and provenance
 
 Each point is (q,p), uniformly scaled and rigidly rotated into the scene. The green plane is perpendicular to the lattice and passes through its origin and the selected direction. Cyan and purple vectors are Farey neighbors; their orange sum is the mediant. Sphere sizes, colors, finite plane height and placement are presentation choices. The app word represents M(1); appending R puts the same rational in M(∞), matching the endpoint convention seen in Stange's talk viewer.
 
 No Stange JavaScript, media or meshes are bundled. This is an independent implementation of the lattice construction, not her separate hyperboloid visualization or a reproduction of an infinite fractal. Application code is GPL-3.0-or-later under the parent repository license. Three.js is a separate MIT-licensed dependency; its license is installed at `node_modules/three/LICENSE`.
+
+`npm run build` prepares a self-contained static artifact. See the [deployment plan](DEPLOYMENT_PLAN.md); no public deployment has been made.
+
+## Worked path
+
+Choose **Learn a move** to begin at 1/2. Predict the result of L, apply the actual operation, and compare the selected 2/3 point with the vector equation. Continue with R to reach 3/5. The explanation is computed from the same exact state as the lattice. Undo or another manual selection closes a stale lesson; Reset restores the ordinary starting state. This is a teaching interaction, not a claim of measured educational efficacy.

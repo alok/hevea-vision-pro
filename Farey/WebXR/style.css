@@ -21,6 +21,12 @@ button:disabled { opacity: .45; cursor: default; }
 button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #87e9fc; outline-offset: 3px; }
 .cyan { background: #176576; } .purple { background: #684d97; }
 .secondary { margin-top: 10px; font-size: 13px; }
+#lesson { border-top: 1px solid #345; padding-top: 10px; margin-top: 10px; font-size: 13px; }
+#lesson .row { margin-top: 8px; }
+#lesson p { color: #c1d3dd; }
+#lesson button[aria-pressed="true"] { background: #326879; }
+.controls { max-height: calc(100vh - 165px); overflow-y: auto; }
+.controls:has(#lesson:not([hidden])) { width: min(480px, calc(100% - 48px)); }
 form { display: flex; gap: 7px; align-items: center; } input { width: 76px; padding: 5px; } select { padding: 5px; }
 #matrix { font: 12px ui-monospace, monospace; color: #adc1cf; margin: 14px 0 6px; }
 #receipt, .hint, details { color: #9cabb7; font-size: 12px; margin: 6px 0 0; }

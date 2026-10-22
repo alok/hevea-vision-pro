@@ -1,0 +1,19 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "disabled": true,
+  "reason": "No immersive VR device is available in this browser. Desktop exploration is available.",
+  "fraction": "1/2 < 3/5 < 2/3",
+  "artifactManifest": {
+    "COPYING.txt": "7190da7e65538198da782335faa64ff26d7d13997df620e4bb296a4a936949d9",
+    "SOURCE.txt": "ad019833b73833a18fc715c5dc221b11f2c3b8925741dd1077c88749219911c4",
+    "app.js": "80083e7de522235a200999c7fa88d00c0aa28a68504c22470c34ff319948fa8d",
+    "core.js": "2f89f0c201a8512b721964cfcbffe4367932511e7868c94ae02a6c0bd774d2bf",
+    "index.html": "d1fefb8ee2811a1a36064725201f93e02a3295161b24b281ddec1ef670fc8656",
+    "style.css": "9d1db77775508bc789b8bd00f558d79ae5d79cbbf3809575926b77e8fc9f9140",
+    "vendor/THREE-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+    "vendor/addons/controls/OrbitControls.js": "b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c",
+    "vendor/three.core.js": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20",
+    "vendor/three.module.js": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a",
+    "xr-support.js": "f3776e7e2e1d975f3f3957685f8b6506a6efea291d33b84de1f95276464bd67e"
+  }
+}

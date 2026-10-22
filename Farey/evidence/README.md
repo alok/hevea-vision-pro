@@ -12,7 +12,7 @@
 
 The video is a real simulator-screen excerpt from the passing run, with entry/exit transitions. No desktop, private recording or Stange media is included. Some automatic screenshot requests lagged the test markers; only visually checked captures are published above, with captions based on their visible state. Raw recordings, uncurated captures and result bundles remain local.
 
-**Browser companion:** [3/5 scene](webxr/farey-webxr-final.png), [mouse orbit](webxr/farey-webxr-orbit.png), [sphere selection](webxr/farey-webxr-point-selected.png), [validation record](webxr/validation.json). Four JavaScript math tests passed. Real browser interactions verified the 24-step limit, Undo recovery, invalid-input rejection, grid cap, 6/10 → 3/5 selection and a mouse click selecting (q,p)=(3,2). Chromium's console was clean after the final change. It reported immersive VR unsupported, so no actual WebXR headset session was tested.
+**Browser companion:** [3/5 scene](webxr/farey-webxr-final.png), [mouse orbit](webxr/farey-webxr-orbit.png), [sphere selection](webxr/farey-webxr-point-selected.png), [validation record](webxr/validation.json). Eight JavaScript tests passed, including unsupported/error paths, transient input poses and camera restoration. Real browser interactions verified the 24-step limit, Undo recovery, invalid-input rejection, grid cap, 6/10 → 3/5 selection and a mouse click selecting (q,p)=(3,2). Chromium's console was clean after the final change. It reported immersive VR unsupported, so no actual WebXR headset session was tested.
 
 [Launch instructions](../README.md#run-on-this-mac) · [Browser instructions](../WebXR/README.md) · [Guest-post evidence guide](../GUEST_POST_EVIDENCE.md)
 
@@ -58,3 +58,13 @@ XCTest's `XCUIScreen.screenshot()` reports “Manual screenshots are not support
 The simulator exercised front, oblique and side **object views**, plus independent left/right/forward camera translation using Device Hub's documented A/D/W controls. Reset Camera restored the default. A temporary local XCTest harness held the immersive scene open during this inspection, then reset and exited; it is not part of the shipped test suite. Device Hub's coordinate-input bridge intermittently returned `noWindowsAvailable`; keyboard navigation and native XCTest interactions supplied working alternatives.
 
 No physical-headset execution, hand/eye gesture, comfort, frame-rate or battery claim is made. A signed device-target Release build and strict signature verification passed using the existing wildcard profile and installed development certificate; see [hardware signing](../README.md#existing-hardware-signing). The headset is paired and Developer Mode is enabled, but read-only access was blocked because it is locked (CoreDevice 10003 / RemotePairing 1016). No hardware deployment was attempted. Geometry is capped at 509 background edges in the app, sampled with 32 segments and six-sided tubes, and grouped into at most 13 geometry model entities. No per-frame geometry generation runs.
+
+## Additional Safari WebXR probe
+
+[Probe record](webxr/safari-probe.json): an isolated visionOS 27.2 Safari reported secure context, WebXR exposed, and immersive VR supported. The actual entry action was blocked by Safari’s first-run welcome and XCTest `kAXErrorAPIDisabled`. No session, stereo frame, or XR interaction was observed. No permissions or security settings were changed. The temporary simulator was shut down and removed; the native showcase remained on its original simulator.
+
+## Worked browser path and static build
+
+[Apply L](webxr/farey-lesson-L.png) and [apply R](webxr/farey-lesson-R.png) show a real browser walkthrough, with [recorded assertions](webxr/lesson-validation.json). A wrong prediction still permits applying the exact move and reading its result. The same state drives the lattice, matrix, selected fraction and vector explanation. Undo or manual state changes close a stale lesson. Reset was verified. No educational efficacy or Lean backing is claimed.
+
+The [static build validation](webxr/static-validation.json) records a locally tested deployment artifact and file hashes. The build loaded using only local assets and its console was clean. [Unsupported-VR fallback](webxr/farey-static-fallback.png) remains usable. See the [deployment plan](../WebXR/DEPLOYMENT_PLAN.md); no site was published.
