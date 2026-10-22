@@ -18,6 +18,7 @@ a { color: #80dfea; text-underline-offset: 3px; }
 .controls { position: absolute; bottom: 22px; left: 24px; width: min(670px, calc(100% - 48px)); padding: 18px 20px; background: #0d1620ed; border: 1px solid #263743; border-radius: 16px; box-shadow: 0 16px 50px #0008; }
 .state, .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .state { justify-content: space-between; font-family: ui-monospace, monospace; margin-bottom: 12px; }
+.selection-head { position: sticky; top: -1px; z-index: 3; background: #0d1620; padding: 1px 0 8px; }
 #word { max-width: 45%; overflow-wrap: anywhere; }
 #fraction { color: #ffb05d; font-size: 17px; }
 button, select, input { font: inherit; border: 1px solid #3c5362; border-radius: 8px; color: #eef8ff; background: #172a37; padding: 8px 13px; }
@@ -42,7 +43,12 @@ summary { cursor: pointer; color: #8bd7e3; }
 #cf-inspector li { font-family: ui-monospace, monospace; }
 #cf-inspector .convergent { color: #ffd54f; }
 #cf-inspector .intermediate { color: #b0b9c3; }
-#cf-inspector[open] { max-height: 280px; }
+#cf-path button { color: inherit; width: 100%; text-align: left; padding: 4px 6px; background: transparent; border-color: transparent; }
+#cf-path button[aria-pressed="true"] { border-color: white; }
+#spotlight-readout { color: white; font-size: 12px; margin-top: 8px; }
+#spotlight-readout button { padding: 4px 7px; font-size: 12px; }
+#cf-inspector[open] { max-height: none; overflow: visible; }
+#cf-path { max-height: 170px; overflow-y: auto; margin: 8px 0; padding-left: 28px; }
 details p { max-width: 60ch; } details[open] { max-height: 200px; overflow-y: auto; }
 #fatal { position: absolute; top: 160px; left: 32px; right: 32px; background: #452526; padding: 20px; }
 #hover { position: fixed; pointer-events: none; background: #11232fec; border: 1px solid #5a8099; border-radius: 7px; padding: 5px 10px; font: 13px ui-monospace, monospace; }

@@ -1,3 +1,15 @@
+# Native 0.6 / browser 0.5: a separate approximant spotlight
+
+[Native spotlight](spotlight/native-spotlight.png) · [Linked disk](spotlight/native-disk.png) · [Outside-grid case](spotlight/native-outside-grid.png) · [Browser](spotlight/browser-spotlight.png) · [Phone context](spotlight/phone-spotlight.png) · [Validation](spotlight/validation.json) · [Full native results](spotlight/simulator-summary.json) · [Final fresh walkthrough](spotlight/fresh-walkthrough-summary.json) · [Current showcase](spotlight/showcase.png)
+
+An approximant row controls a separate spotlight. Double white rings locate it; the target rational, inspected integer point and lesson prediction are unchanged. The spotlight survives view changes and reclassification when its row remains, and clears on target changes, Reset, or removal of the row. Points outside the finite grid retain their coordinates and receive an explicit message. A boundary row such as 0/1 can be spotlighted without becoming the positive target.
+
+Fresh-start walkthroughs cover the lesson, reducible input, convergent/intermediate rows, expansion changes, target changes, Undo/Reset, out-of-grid handling and responsive layouts. The review exposed two visibility problems: native row selection could leave its marker behind the popover, and phone scrolling could hide the spotlight's context. Native selection now dismisses the picker; the browser keeps target and spotlight context together and scrolls the row list independently. These are UI changes, not camera moves.
+
+The browser source and static artifact passed the [fresh walkthrough](spotlight/browser-static.json), alongside existing CF, point, keyboard/lesson and graphics-recovery regressions. An instrumented local copy checked [200 spotlight changes](spotlight/browser-resources.json): geometry count peaked at 17 from a 16-geometry baseline and returned to 16 after clearing; textures stayed at 2 and programs at 6. The camera pose was unchanged. This is a controlled resource check, not a headset/FPS measurement.
+
+Twenty core tests, sixteen native model/UI regression tests, and twenty-two JavaScript tests passed. Final presentation changes passed the complete fresh native walkthrough again. The native fresh walkthrough is recorded with separate full-suite and final focused results. Physical headset execution and genuine WebXR sessions remain unverified; tracking consent and public deployment remain pending. No new signing assets or permissions were added.
+
 # Native 0.5 / browser 0.4: convergents and intermediate mediants
 
 [Native canonical form](convergents/native-canonical.png) · [Native alternate form](convergents/native-alternate.png) · [Linked disk](convergents/native-disk.png) · [Browser canonical form](convergents/browser-canonical.png) · [Browser alternate form](convergents/browser-alternate.png) · [Validation](convergents/validation.json) · [Simulator results](convergents/simulator-summary.json) · [Current showcase](convergents/showcase.png)

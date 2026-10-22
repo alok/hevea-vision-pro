@@ -63,6 +63,33 @@ import XCTest
     model.reset()
     XCTAssertFalse(model.alternateCF)
   }
+  func testSpotlightPreservesLessonAndReportsAnOutsideGridPoint() throws {
+    let model = GalleryModel()
+    model.startLesson()
+    model.predictLesson(Rational(2, 3))
+    let state = model.state
+    let lesson = model.lesson
+    model.spotlightPoint(Rational(1, 1))
+    XCTAssertEqual(model.state, state)
+    XCTAssertEqual(model.lesson, lesson)
+    model.applyLessonStep()
+    XCTAssertNil(model.spotlight.rational)
+    try model.enterFraction("13/17")
+    model.spotlightPoint(Rational(13, 17))
+    model.changeDepth(-100)
+    XCTAssertTrue(model.spotlightStatus.contains("Outside grid 6"))
+    XCTAssertEqual(model.spotlight.rational, Rational(13, 17))
+    XCTAssertThrowsError(try model.enterFraction("1/0"))
+    XCTAssertEqual(model.spotlight.rational, Rational(13, 17))
+    model.toggleSpace()
+    XCTAssertFalse(model.spotlightStatus.contains("Outside grid"))
+    model.undo()
+    XCTAssertNil(model.spotlight.rational)
+    model.reset()
+    model.spotlightPoint(Rational(1, 1))
+    model.reset()
+    XCTAssertNil(model.spotlight.rational)
+  }
   func testWorkedPathUsesExactStateAndRejectsMissingPrediction() {
     let model = GalleryModel()
     model.startLesson()

@@ -76,7 +76,9 @@ import SwiftUI
     return position(p: Float(rational.p) * scale, q: Float(rational.q) * scale)
   }
 
-  func render(state: FareyState, bound: Int, viewpoint: Int, alternateCF: Bool = false) throws -> String {
+  func render(
+    state: FareyState, bound: Int, viewpoint: Int, alternateCF: Bool = false, spotlight: Rational? = nil
+  ) throws -> String {
     let start = ContinuousClock.now
     if bound != previousBound { try rebuildBase(bound: bound) }
     for (rational, label) in landmarkLabels {
@@ -86,6 +88,7 @@ import SwiftUI
     selection.children.removeAll()
     updatePointColors(for: state)
     try addCFRings(state.cfPoints(alternate: alternateCF), bound: bound)
+    if let spotlight, spotlight.p <= bound, spotlight.q <= bound { try addSpotlight(spotlight) }
     let end = planeEndpoint(state.mediant, bound: bound)
     let height: SIMD3<Float> = [0, 0.65, 0]
     var descriptor = MeshDescriptor(name: "Exact rational direction plane")
@@ -267,6 +270,19 @@ import SwiftUI
 }
 
 extension LatticeRenderer {
+  private func addSpotlight(_ point: Rational) throws {
+    let center = position(point) + [0, 0.025, 0]
+    var paths: [[SIMD3<Float>]] = []
+    for radius in [Float(0.10), 0.135] {
+      let ring = (0...24).map { index in
+        let angle = Float(index) * 2 * .pi / 24
+        return center + SIMD3<Float>(cos(angle) * radius, 0, sin(angle) * radius)
+      }
+      paths += zip(ring, ring.dropFirst()).map { [$0, $1] }
+    }
+    selection.addChild(try lines(paths, radius: 0.0035, color: .white))
+  }
+
   private func addCFRings(_ points: [CFPoint], bound: Int) throws {
     for convergent in [true, false] {
       var paths: [[SIMD3<Float>]] = []

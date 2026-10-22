@@ -23,13 +23,20 @@ import SwiftUI
   var revision = 0
   var lesson: LessonProgress?
   var alternateCF = false
+  var spotlight = ApproximantSpotlight()
+  func spotlightPoint(_ point: Rational) {
+    if spotlight.focus(point, in: state, alternate: alternateCF) { revision += 1 }
+  }
+  func clearSpotlight() { spotlight.clear(); revision += 1 }
   func setAlternateCF(_ value: Bool) {
     guard value != alternateCF else { return }
     alternateCF = value
+    spotlight.reconcile(with: state, alternate: value)
     revision += 1
   }
   func step(_ turn: Turn) {
     if state.step(turn) {
+      spotlight.reconcile(with: state, alternate: alternateCF)
       lesson = nil
       revision += 1
     }
@@ -37,10 +44,12 @@ import SwiftUI
   func undo() {
     lesson = nil
     state.undo()
+    spotlight.reconcile(with: state, alternate: alternateCF)
     revision += 1
   }
   func reset() {
     alternateCF = false
+    spotlight.clear()
     lesson = nil
     state.reset()
     depth = 6
@@ -50,6 +59,7 @@ import SwiftUI
   }
   func select(_ point: LatticePoint) {
     if state.select(point.rational) {
+      spotlight.reconcile(with: state, alternate: alternateCF)
       lesson = nil
       revision += 1
     }
@@ -57,6 +67,7 @@ import SwiftUI
   @discardableResult func enterFraction(_ text: String) throws -> FractionEntry {
     let entry = try FractionEntry(text)
     state = entry.state
+    spotlight.reconcile(with: state, alternate: alternateCF)
     lesson = nil
     revision += 1
     return entry
@@ -68,6 +79,7 @@ import SwiftUI
   func preset() {
     lesson = nil
     state.select(Rational(3, 5))
+    spotlight.reconcile(with: state, alternate: alternateCF)
     revision += 1
   }
   func changeDepth(_ delta: Int) {
@@ -97,6 +109,7 @@ import SwiftUI
     let old = turn == .l ? state.left : state.right
     let middle = state.mediant
     guard state.step(turn) else { return }
+    spotlight.reconcile(with: state, alternate: alternateCF)
     let left = state.left
     let right = state.right
     let result = state.mediant
@@ -127,7 +140,7 @@ import SwiftUI
     Window("Farey controls", id: "controls") {
       ControlsWindowView().environment(model)
     }
-    .defaultSize(width: 760, height: 310)
+    .defaultSize(width: 760, height: 360)
     .defaultWindowPlacement { _, _ in WindowPlacement(.utilityPanel) }
     .windowStyle(.plain)
     .persistentSystemOverlays(.hidden)
@@ -281,6 +294,7 @@ struct ControlsView: View {
         .lineLimit(1).minimumScaleFactor(0.5).layoutPriority(1)
         .accessibilityIdentifier("fraction-state")
       }
+      .fixedSize(horizontal: false, vertical: true)
       HStack(spacing: 12) {
         Button("L") { model.step(.l) }.disabled(!model.state.canStep).tint(.cyan)
           .accessibilityIdentifier("step-L")
@@ -362,6 +376,7 @@ struct ControlsView: View {
             .popover(isPresented: $showContinuedFraction, arrowEdge: .bottom) { ContinuedFractionView() }
         }
       }
+      if model.spotlight.rational != nil { SpotlightReadout() }
       Text(
         "M = \(model.state.matrixLabel)    det M = \(model.state.determinant)    •    \(model.state.word.count)/24 moves"
       )

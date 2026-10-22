@@ -78,11 +78,11 @@ import SwiftUI
         if model.latticeMode {
           model.renderReceipt = try lattice.render(
             state: model.state, bound: model.depth * 2,
-            viewpoint: model.viewpoint, alternateCF: model.alternateCF)
+            viewpoint: model.viewpoint, alternateCF: model.alternateCF, spotlight: model.spotlight.rational)
         } else {
           model.renderReceipt = try renderer.render(
             state: model.state, depth: model.depth, viewpoint: model.viewpoint,
-            alternateCF: model.alternateCF)
+            alternateCF: model.alternateCF, spotlight: model.spotlight.rational)
         }
         model.record("Rendered session \(model.immersionSession): \(model.renderReceipt)")
       } catch { model.renderReceipt = "Geometry error: \(error.localizedDescription)" }
@@ -133,7 +133,9 @@ import SwiftUI
     root.addChild(base)
     root.addChild(selection)
   }
-  func render(state: FareyState, depth: Int, viewpoint: Int, alternateCF: Bool = false) throws -> String {
+  func render(
+    state: FareyState, depth: Int, viewpoint: Int, alternateCF: Bool = false, spotlight: Rational? = nil
+  ) throws -> String {
     let start = ContinuousClock.now
     var vertices = 0
     if previousDepth != depth {
@@ -169,6 +171,7 @@ import SwiftUI
         materials: [UnlitMaterial(color: UIColor.systemGreen)]))
     try addHistory(state)
     try addCFRings(state, alternate: alternateCF)
+    if let spotlight { try addSpotlight(spotlight) }
     for rational in [state.left, state.right, state.mediant] {
       let point = rational.diskPoint
       let dot = ModelEntity(
@@ -202,6 +205,18 @@ import SwiftUI
         ]))
       }
     }
+  }
+
+  private func addSpotlight(_ rational: Rational) throws {
+    let center = rational.diskPoint
+    let circles = [0.04, 0.055].map { radius in
+      (0...32).map { index in
+        let angle = Double(index) * 2 * .pi / 32
+        return Point2(center.x + cos(angle) * radius, center.y + sin(angle) * radius)
+      }
+    }
+    let mesh = try tubeMesh(lines: circles, radius: 0.003)
+    selection.addChild(ModelEntity(mesh: mesh.0, materials: [UnlitMaterial(color: .white)]))
   }
 
   private func addHistory(_ state: FareyState) throws {

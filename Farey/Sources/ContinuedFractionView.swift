@@ -24,16 +24,31 @@ struct ContinuedFractionView: View {
         ScrollView {
           VStack(spacing: 7) {
             ForEach(points, id: \.rational) { point in
-              HStack {
-                Text(point.rational.description).monospaced()
-                if point.rational.p == 0 { Text("boundary").foregroundStyle(.secondary) }
-                Spacer()
-                Text(point.label).foregroundStyle(point.isConvergent ? Color.yellow : Color.secondary)
-                  .accessibilityIdentifier("cf-kind-\(point.rational.p)-\(point.rational.q)")
-              }
+              Button {
+                model.spotlightPoint(point.rational)
+                dismiss()
+              } label: {
+                HStack {
+                  Text(point.rational.description).monospaced()
+                  if point.rational.p == 0 { Text("boundary").foregroundStyle(.secondary) }
+                  Spacer()
+                  Text(point.label).foregroundStyle(point.isConvergent ? Color.yellow : Color.secondary)
+                  if point.rational == model.spotlight.rational { Image(systemName: "scope") }
+                }.contentShape(Rectangle())
+              }.buttonStyle(.plain)
+                .accessibilityLabel("\(point.rational): \(point.label)")
+                .accessibilityHint("Spotlight this approximant without changing the target")
+                .accessibilityIdentifier("cf-kind-\(point.rational.p)-\(point.rational.q)")
             }
           }
-        }.frame(height: min(CGFloat(points.count) * 30, 210))
+        }.frame(height: min(CGFloat(points.count) * 30, 210)).accessibilityIdentifier("cf-list")
+        SpotlightReadout()
+        Text("Tap a row to spotlight it and return to the scene. Reopen this panel to compare another row.")
+          .font(.caption).foregroundStyle(.secondary)
+        if let point = model.state.inspection?.point {
+          Text("Inspected lattice point stays (\(point.q), \(point.p)). Double white rings mark the spotlight.")
+            .font(.caption).foregroundStyle(.secondary)
+        }
         Text("Gold rings: convergents. Gray rings: other mediants visited by this L/R path. "
           + "Rings mark primitive lattice points and the matching disk boundary points.")
           .font(.caption).foregroundStyle(.secondary)

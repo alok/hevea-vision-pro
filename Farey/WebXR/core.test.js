@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { FareyState, continuedFraction, grid, inspectPoint, onRay, position, primitive } from './core.js';
+import { ApproximantSpotlight, FareyState, continuedFraction, grid, inspectPoint, onRay, position, primitive } from './core.js';
 
 test('L/R convention, mediant and unimodular basis', () => {
   const s = new FareyState();
@@ -92,4 +92,20 @@ test('both finite expansions end at the rational and agree with the endpoint L/R
     }
   }
   for (const [p, q] of [[0, 1], [1, 0], [-1, 2]]) assert.equal(continuedFraction({ p, q }), null);
+});
+test('spotlight is separate from target and inspection, and reconciles row identity', () => {
+  const state = new FareyState(), spotlight = new ApproximantSpotlight();
+  state.select(6, 10); const before = JSON.stringify(state);
+  assert.ok(spotlight.focus({ p: 2, q: 3 }, state));
+  spotlight.reconcile(state, true);
+  assert.deepEqual(spotlight.rational, { p: 2, q: 3 }); assert.equal(JSON.stringify(state), before);
+  assert.equal(spotlight.focus({ p: 7, q: 11 }, state), false);
+  assert.deepEqual(spotlight.rational, { p: 2, q: 3 });
+  assert.ok(spotlight.focus({ p: 1, q: 2 }, state));
+  state.step('L'); spotlight.reconcile(state); assert.equal(spotlight.rational, null);
+  state.reset(); assert.ok(spotlight.focus({ p: 0, q: 1 }, state, true));
+  spotlight.reconcile(state); assert.equal(spotlight.rational, null);
+  state.select(13, 17); assert.ok(spotlight.focus({ p: 13, q: 17 }, state));
+  spotlight.reconcile(state, true); assert.deepEqual(spotlight.rational, { p: 13, q: 17 });
+  spotlight.clear(); assert.equal(spotlight.rational, null);
 });

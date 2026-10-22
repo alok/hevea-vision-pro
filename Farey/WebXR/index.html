@@ -24,7 +24,10 @@
     <p class="credit">Inspired by <strong>Katherine Stange</strong> · <a href="https://katestange.net/talks/math-exploration/">Original talk ↗</a> · <a href="https://www.katestange.net/code/">Visualizations ↗</a></p>
   </header>
   <section class="controls" aria-label="Farey controls">
-    <div class="state" aria-live="polite"><span id="word">Start</span><strong id="fraction">0/1 &lt; 1/1 &lt; ∞</strong></div>
+    <div class="selection-head">
+      <div class="state" aria-live="polite"><span id="word">Start</span><strong id="fraction">0/1 &lt; 1/1 &lt; ∞</strong></div>
+      <div id="spotlight-readout" hidden><span id="spotlight-status" role="status"></span> <button id="clear-spotlight">Clear spotlight</button></div>
+    </div>
     <div class="row">
       <button id="left" class="cyan" aria-describedby="left-help">L</button><button id="right" class="purple" aria-describedby="right-help">R</button>
       <button id="undo">Undo</button><button id="reset">Reset</button>
@@ -41,11 +44,15 @@
     <details id="cf-inspector">
       <summary id="cf-summary">Continued fraction</summary>
       <label><input type="checkbox" id="cf-alternate"> Use equivalent finite form ending in 1</label>
-      <p>Convergents are truncations of the chosen expansion. Canonical form ends in at least 2, except for an integer. The other form replaces the last term a with a−1, 1.</p>
-      <p>Gold rings mark convergents; gray rings mark other mediants visited by this L/R path. Rings mark primitive lattice points.</p>
+      <p>Choose a row to locate it with double white rings. The target and inspected point stay fixed.</p>
       <ol id="cf-path"></ol>
-      <p id="cf-convention"></p>
-      <p><a href="https://dlmf.nist.gov/1.12.ii">Convergent definition ↗</a> · <a href="https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html">Stange’s demonstration ↗</a></p>
+      <details id="cf-explanation">
+        <summary>Definition and conventions</summary>
+        <p>Convergents are truncations of the chosen expansion. Canonical form ends in at least 2, except for an integer. The other form replaces the last term a with a−1, 1.</p>
+        <p>Gold rings mark convergents; gray rings mark other visited mediants. Rings mark primitive lattice points. Changing the target or removing a row clears its spotlight; the camera stays still.</p>
+        <p id="cf-convention"></p>
+        <p><a href="https://dlmf.nist.gov/1.12.ii">Convergent definition ↗</a> · <a href="https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html">Stange’s demonstration ↗</a></p>
+      </details>
     </details>
     <p id="receipt" role="status"></p>
     <p id="geometry-description" class="sr-only"></p>

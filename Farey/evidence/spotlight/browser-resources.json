@@ -1,0 +1,28 @@
+{
+  "before": {
+    "geometries": 16,
+    "textures": 2,
+    "programs": 6
+  },
+  "peak": {
+    "geometries": 17,
+    "textures": 2,
+    "programs": 6
+  },
+  "highlighted": {
+    "geometries": 16,
+    "textures": 2,
+    "programs": 6
+  },
+  "after": {
+    "geometries": 16,
+    "textures": 2,
+    "programs": 6
+  },
+  "spotlightChanges": 200,
+  "cameraUnchanged": true,
+  "input": "programmatic DOM clicks",
+  "instrumentation": "temporary local copy exposes counters only",
+  "fpsMeasured": false,
+  "actualXRSession": false
+}

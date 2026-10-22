@@ -75,3 +75,16 @@ export class FareyState {
     return true;
   }
 }
+export class ApproximantSpotlight {
+  constructor() { this.clear(); }
+  clear() { this.rational = null; this.target = null; }
+  focus(rational, state, alternate = false) {
+    if (!state.cfPoints(alternate).some(p => p.rational.p === rational.p && p.rational.q === rational.q)) return false;
+    this.rational = { ...rational }; this.target = state.mediant; return true;
+  }
+  reconcile(state, alternate = false) {
+    if (!this.rational) return;
+    if (this.target.p !== state.mediant.p || this.target.q !== state.mediant.q
+      || !state.cfPoints(alternate).some(p => p.rational.p === this.rational.p && p.rational.q === this.rational.q)) this.clear();
+  }
+}

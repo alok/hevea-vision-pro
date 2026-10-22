@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "actualPointerRaycast": {
+    "fraction": "6/10",
+    "x": 744.1509033337472,
+    "y": 268.05473162358254
+  },
+  "canonicalWord": "RLR",
+  "reloadPreservedMultiple": true,
+  "invalidInputPreservedMultiple": true,
+  "gridAndInputBoundaries": true,
+  "undoResetLessonClearIdentity": true,
+  "layouts": [
+    {
+      "width": 390,
+      "height": 844,
+      "sceneHeight": 305,
+      "overflow": false
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "sceneHeight": 301,
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "sceneHeight": 1000,
+      "overflow": false
+    }
+  ],
+  "pageErrors": [],
+  "actualXRSession": false
+}

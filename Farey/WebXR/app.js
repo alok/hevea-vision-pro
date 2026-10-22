@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { FareyState, continuedFraction, fraction, grid, onRay, position, primitive } from './core.js';
+import { ApproximantSpotlight, FareyState, continuedFraction, fraction, grid, onRay, position, primitive } from './core.js';
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
 import { TapSelection } from './input.js';
 import { readSelection, writeSelection } from './recovery.js';
 
 const $ = id => document.getElementById(id);
 const state = new FareyState();
+const spotlight = new ApproximantSpotlight();
 const savedSelection = readSelection();
 for (const turn of savedSelection?.word ?? '') state.step(turn);
 if (savedSelection?.point) state.select(savedSelection.point.p, savedSelection.point.q);
@@ -137,6 +138,7 @@ function rebuildGrid() {
 }
 function update() {
   disposeGroup(selection);
+  spotlight.reconcile(state, alternateCF);
   const m = state.mediant;
   const cf = continuedFraction(m, alternateCF), cfPoints = state.cfPoints(alternateCF);
   for (const isConvergent of [true, false]) {
@@ -154,6 +156,16 @@ function update() {
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
       selection.add(new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ color: isConvergent ? 0xffd54f : 0xb0b9c3 })));
     }
+  }
+  if (spotlight.rational && spotlight.rational.p <= bound && spotlight.rational.q <= bound) {
+    const center = position(spotlight.rational), vertices = [];
+    for (const radius of [0.10, 0.135]) for (let i = 0; i < 24; i++) for (const step of [i, i + 1]) {
+      const angle = step * Math.PI * 2 / 24;
+      vertices.push(center[0] + radius * Math.cos(angle), 0.025, center[2] + radius * Math.sin(angle));
+    }
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    selection.add(new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ color: 0xffffff })));
   }
   for (const mesh of points) {
     const point = mesh.userData.point;
@@ -189,10 +201,28 @@ function update() {
   $('cf-alternate').checked = alternateCF;
   $('cf-path').replaceChildren(...cfPoints.map(point => {
     const item = document.createElement('li');
-    item.textContent = `${fraction(point.rational)}${point.rational.p === 0 ? ' (boundary)' : ''}: ${point.isConvergent ? 'Convergent' : 'Intermediate mediant'}`;
+    const button = document.createElement('button');
+    const label = fraction(point.rational);
+    button.textContent = `${label}${point.rational.p === 0 ? ' (boundary)' : ''}: ${point.isConvergent ? 'Convergent' : 'Intermediate mediant'}`;
+    button.dataset.cfFraction = label;
+    button.setAttribute('aria-label', `Spotlight ${label}: ${point.isConvergent ? 'Convergent' : 'Intermediate mediant'}`);
+    button.setAttribute('aria-pressed', String(!!spotlight.rational && fraction(spotlight.rational) === label));
+    button.onclick = () => {
+      spotlight.focus(point.rational, state, alternateCF); update();
+      $('cf-path').querySelector(`[data-cf-fraction="${label}"]`)?.focus({ preventScroll: true });
+    };
+    item.append(button);
     item.className = point.isConvergent ? 'convergent' : 'intermediate';
     item.dataset.fraction = fraction(point.rational); return item;
   }));
+  $('spotlight-readout').hidden = !spotlight.rational;
+  if (spotlight.rational) {
+    const p = spotlight.rational;
+    const kind = cfPoints.find(row => row.rational.p === p.p && row.rational.q === p.q)?.isConvergent ? 'convergent' : 'intermediate mediant';
+    $('spotlight-status').textContent = `Spotlight ${fraction(p)}: ${kind}. Target ${fraction(m)} unchanged.`
+      + ` Inspected (${inspection.point.q}, ${inspection.point.p}) unchanged.`
+      + (p.p > bound || p.q > bound ? ` Outside grid ${bound}; coordinates are retained.` : ' Double white rings locate it.');
+  }
   $('cf-convention').textContent = `For ${fraction(m)}, the app word ${state.word || '(empty)'} gives M(1). Appending R gives the endpoint word ${state.word}R for M(∞). The expansion choice changes labels, not this state.`;
   const inspectedInside = inspection.point.p <= bound && inspection.point.q <= bound;
   $('point-detail').textContent = `${inspection.reduction}. Divide both coordinates by ${inspection.divisor} to obtain the primitive vector. Positive multiples share the same ray and upright green plane. White marks the inspected point when it differs from the orange primitive point. ${inspectedInside ? '' : 'The inspected point is beyond this finite grid; its coordinates have not been moved to the edge. '}L/R follows the reduced fraction, not the distance from the origin. Axis points 0 and ∞ are boundaries and do not replace this positive selection.`;
@@ -266,6 +296,7 @@ $('lesson-apply').onclick = () => {
 };
 function reset() {
   alternateCF = false;
+  spotlight.clear();
   state.reset(); bound = 12; $('bound').value = '12'; rebuildGrid();
   if (!session) { camera.position.set(3.3, 3.1, 2.1); controls.target.set(0, 1.75, -3.2); aspectFit = 1; fitAspect(); controls.update(); }
 }
@@ -359,6 +390,7 @@ $('select-form').onsubmit = e => {
 };
 $('reload-graphics').onclick = () => location.reload();
 $('cf-alternate').onchange = () => { alternateCF = $('cf-alternate').checked; update(); };
+$('clear-spotlight').onclick = () => { spotlight.clear(); update(); };
 renderer.domElement.addEventListener('webglcontextlost', event => {
   event.preventDefault(); graphicsLost = true; controls.enabled = false;
   renderer.domElement.style.visibility = 'hidden';

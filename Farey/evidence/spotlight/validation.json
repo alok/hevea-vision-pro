@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-22",
+  "nativeVersion": "0.6",
+  "browserVersion": "0.5.0",
+  "coreTestsPassed": 20,
+  "nativeRegressionTestsPassed": 16,
+  "finalFreshLaunchUITestsPassed": 1,
+  "javascriptTestsPassed": 22,
+  "nativeValidationSequence": "Full regression suite passed; final presentation fixes then passed the complete fresh-launch walkthrough again.",
+  "browserValidation": "Fresh source and static walkthroughs passed; target, inspected point and lesson prediction preserved.",
+  "spotlightCases": [
+    "convergent",
+    "intermediate mediant",
+    "boundary 0/1",
+    "expansion toggle",
+    "target change",
+    "undo",
+    "reset",
+    "outside visible grid",
+    "lattice/disk switch",
+    "immersive exit/re-entry"
+  ],
+  "holisticFixes": [
+    "Native row selection closes the popover so it cannot cover the marker.",
+    "Native target header resists compression and controls have more vertical room.",
+    "Browser target and spotlight context stays visible while the independently scrollable rows move."
+  ],
+  "resourceStress": "200 programmatic spotlight changes; 16 baseline geometries, 17 peak, returned to 16. Textures 2, programs 6; camera pose unchanged.",
+  "nativeBuilds": "Clean Debug simulator and signed Release device builds passed using existing signing assets.",
+  "mainSimulator": "Native 0.6 build 6 running at 3/5 in Left view; idle screenshot retained all overlays.",
+  "captureLimit": "Some later frames from the background test simulator omitted compositor layers. Curated screenshots are complete early frames from the passing walkthrough. The original simulator was separately checked after idle.",
+  "staticFileHashesVerified": 13,
+  "hardwareExecution": false,
+  "actualWebXRSession": false,
+  "newGrantsOrSigningAssets": false,
+  "publicDeployment": false
+}
