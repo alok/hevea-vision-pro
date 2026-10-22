@@ -1,3 +1,13 @@
+# Browser 0.2.3: context-loss and reload recovery
+
+[Before the fix](webxr/context-before-fix.png) · [Visible paused state](webxr/context-paused.png) · [Automatically restored geometry](webxr/context-restored.png) · [Validation record](webxr/recovery-023-validation.json)
+
+The previous build stayed blank after the browser restored a lost WebGL context, until another interaction forced a render. It also discarded the current rational and grid on reload. The revised app repaints on restoration, keeps L/R usable while graphics are paused, and restores the exact L/R word and grid from validated per-tab storage. Reload resets the camera and closes the lesson; Reset explicitly replaces the saved state.
+
+Source and static artifacts each passed three loss/restoration cycles using the actual `WEBGL_lose_context` extension. The browser-generated events were trusted, and the unchanged 3D region matched pixel-for-pixel after restoration. The reload button preserved 5/8 and grid 14 after an L move during loss. The ordinary static-artifact workflow passed afterward. Sixteen JavaScript tests passed, including corrupt/unavailable storage and bounds checks. Initial WebGL-creation failure was tested separately with an explicit mock: it showed an error, disabled unusable controls and retained reference links.
+
+This is controlled browser-context recovery evidence, not physical GPU-failure, hardware or XR-session recovery. Native 0.2 remains unchanged.
+
 # Browser 0.2.2: gesture separation and accessible controls
 
 [Landscape scene](webxr/landscape-022.png) · [Actual Safari landscape](webxr/safari-landscape.png) · [Safari after a drag](webxr/safari-landscape-drag.png)

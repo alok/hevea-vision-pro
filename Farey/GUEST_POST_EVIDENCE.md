@@ -15,7 +15,7 @@ Credit **Katherine Stange** prominently, next to links to her [talk](https://kat
 
 ## Claims supported by this work
 
-Seven Swift math tests, eight native model/UI tests, and thirteen JavaScript tests passed. The revised native lesson popover also passed its focused UI test. Native UI tests exercised entry, exit, repeated re-entry, L/R, Undo, Reset, bounds and linked representation selection. Browser checks exercised orbit, sphere hit-testing, fraction entry, bounds and recovery. The latest native device-target Release build passed strict signature verification using existing signing material.
+Seven Swift math tests, eight native model/UI tests, and sixteen JavaScript tests passed. The revised native lesson popover also passed its focused UI test. Native UI tests exercised entry, exit, repeated re-entry, L/R, Undo, Reset, bounds and linked representation selection. Browser checks exercised orbit, sphere hit-testing, fraction entry, bounds and recovery. The latest native device-target Release build passed strict signature verification using existing signing material.
 
 ## Claims to leave open
 
@@ -32,3 +32,5 @@ Version 0.2 adds [native lesson evidence](evidence/spatial/lesson-R.png), [actua
 Browser 0.2.1 was also exercised in **actual Mobile Safari on an iPhone simulator**: [L](evidence/webxr/mobile-safari-L.png), [R](evidence/webxr/mobile-safari-R.png), Undo and Reset all agreed with the same exact state. Phone controls no longer cover the lattice during the lesson, and keyboard focus remains usable. The [browser regression record](evidence/webxr/browser-021-validation.json) includes the static artifact and asset hash checks. This adds mobile-browser evidence; it does not establish physical-phone or immersive-headset behavior.
 
 Browser 0.2.2 separates single-tap selection from gestures and keeps the lattice visible in landscape. [Actual simulator Safari before and after a drag](evidence/webxr/safari-landscape-validation.json) preserves the same rational while changing the view. Pinch and two-finger pan were tested with Chromium protocol-generated events. Accessibility-tree descriptions and keyboard controls passed; screen-reader speech, physical-device gestures and immersive WebXR remain unverified.
+
+Browser 0.2.3 recovers from controlled WebGL context loss without requiring another mathematical move. The visible fallback preserves access to exact controls, and reload restores the saved L/R word and finite grid. The evidence distinguishes browser-generated loss/restoration events from the separately mocked initial-WebGL failure. This does not establish physical GPU failure recovery or XR-session recovery.

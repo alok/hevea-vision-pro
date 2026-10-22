@@ -21,7 +21,7 @@ The **Enter VR** button becomes available only when `isSessionSupported('immersi
 
 WebXR needs a compatible headset browser and a secure context. A headset cannot access the Mac's loopback address directly. Use an already-trusted HTTPS development host or an independently authorized deployment for headset testing. This work does not provision a certificate, change network permissions, or publish a site.
 
-**Verified here:** Safari 27.0.1 completed the worked 1/2 → L → 2/3 → R → 3/5 path with a clean page console. Portrait Chromium at 390 × 844 shows a fitted lattice and legible controls. Chromium desktop rendering and real mouse orbit, L/R/Undo/Reset, rational selection (including 6/10 → 3/5), maximum grid, 24-step limit and recovery. Thirteen automated tests cover mathematics, unsupported/error paths, transient input pose updates, desktop camera restoration, and separation of taps from multi-pointer gestures. This Mac's Chromium reports `immersive-vr` unsupported. A separate visionOS 27.2 simulator Safari reported support and received an actual click requesting immersive VR. Safari displayed a runtime prompt to allow tracking the device’s position and head movements. That permission was left ungranted and the isolated Safari process was closed. No XR session or frame was observed. A mocked pending-request/denial test verified duplicate-entry prevention, continued desktop interaction, and recovery; it is not XR runtime evidence. **Not verified:** Quest/Meta Browser, a physical Vision Pro browser, controller/hand interaction in an actual XR session, device frame rate or comfort. The native simulator is separate evidence, not a WebXR headset test.
+**Verified here:** Safari 27.0.1 completed the worked 1/2 → L → 2/3 → R → 3/5 path with a clean page console. Portrait Chromium at 390 × 844 shows a fitted lattice and legible controls. Chromium desktop rendering and real mouse orbit, L/R/Undo/Reset, rational selection (including 6/10 → 3/5), maximum grid, 24-step limit and recovery. Sixteen automated tests cover mathematics, unsupported/error paths, transient input pose updates, desktop camera restoration, and separation of taps from multi-pointer gestures. This Mac's Chromium reports `immersive-vr` unsupported. A separate visionOS 27.2 simulator Safari reported support and received an actual click requesting immersive VR. Safari displayed a runtime prompt to allow tracking the device’s position and head movements. That permission was left ungranted and the isolated Safari process was closed. No XR session or frame was observed. A mocked pending-request/denial test verified duplicate-entry prevention, continued desktop interaction, and recovery; it is not XR runtime evidence. **Not verified:** Quest/Meta Browser, a physical Vision Pro browser, controller/hand interaction in an actual XR session, device frame rate or comfort. The native simulator is separate evidence, not a WebXR headset test.
 
 ## Mathematical correspondence and provenance
 
@@ -51,3 +51,16 @@ This uses a separately installed Playwright CLI; it is not a runtime dependency.
 One-finger drags rotate. Two-finger gestures pan and pinch to zoom; only a single primary tap selects a sphere. Once the scene has keyboard focus, arrow keys pan, Shift + arrows rotate, plus/minus zoom, and Home restores the front view. The fraction field remains an alternative to pointing at a small sphere.
 
 The canvas exposes a named image with the selected rational, its vector, and its neighbors as an accessible description. L/R buttons describe which endpoint changes. Automated checks inspect this semantic structure and keyboard focus; no VoiceOver or other screen-reader speech session has been run. Chromium protocol-generated touch tests are labeled synthetic and are separate from the recorded iOS simulator Safari checks.
+
+## Graphics and reload recovery
+
+If WebGL is lost, a visible notice replaces the invalid canvas while the exact mathematics controls remain usable. When the browser restores the context, the scene repaints automatically. The Reload page fallback preserves the L/R word and grid through validated per-tab session storage. Reload starts with the default camera and a closed lesson panel; Reset replaces the saved selection with the initial state. If storage is unavailable, the notice says the current selection may not survive reload.
+
+The repeatable recovery check uses the browser’s actual `WEBGL_lose_context` extension, not hand-dispatched context events:
+
+```sh
+playwright-cli open http://127.0.0.1:8080/
+playwright-cli run-code "$(cat recovery-checks.js)"
+```
+
+Source and static artifacts passed three loss/restoration cycles, with matching restored 3D-region pixels, usable L/R during loss, and exact selection/grid recovery through the reload button. This is a controlled browser-level loss, not a physical GPU crash or an XR-session recovery test. Initial context-creation failure was tested separately by explicitly mocking unavailable WebGL; reference links remain available and unusable controls are disabled.

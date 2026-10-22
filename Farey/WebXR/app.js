@@ -4,9 +4,12 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FareyState, fraction, grid, onRay, position, primitive } from './core.js';
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
 import { TapSelection } from './input.js';
+import { readSelection, writeSelection } from './recovery.js';
 
 const $ = id => document.getElementById(id);
 const state = new FareyState();
+const savedSelection = readSelection();
+for (const turn of savedSelection?.word ?? '') state.step(turn);
 const colors = { base: 0x267ac9, muted: 0x254354, left: 0x54e9f5, right: 0xb18aee, selected: 0xffa140, ray: 0x58e896 };
 let renderer;
 try {
@@ -14,6 +17,7 @@ try {
 } catch {
   $('fatal').hidden = false;
   $('fatal').textContent = 'A WebGL-capable browser is needed to draw the lattice. The mathematics and native visionOS version remain available in the repository.';
+  document.querySelectorAll('.controls button, .controls input, .controls select').forEach(control => { control.disabled = true; });
   throw new Error('WebGL unavailable');
 }
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -50,7 +54,9 @@ const origin = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xfff
 origin.scale.setScalar(1.5); lattice.add(origin);
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
-let bound = 12, points = [], gridLines, session = null, startingXR = false, desktopView, aspectFit = 1;
+let bound = savedSelection?.grid ?? 12, points = [], gridLines, session = null, startingXR = false, desktopView, aspectFit = 1;
+let graphicsLost = false;
+$('bound').value = String(bound);
 let lesson = null;
 const lessonSteps = [
   { turn: 'L', choices: ['1/3', '2/3', '3/2'] },
@@ -152,8 +158,12 @@ function update() {
   }
   $('word').textContent = state.word || 'Start';
   $('fraction').textContent = `${fraction(state.left)} < ${fraction(m)} < ${fraction(state.right)}`;
+  $('rational').value = fraction(m);
   $('matrix').textContent = `M = [${state.right.p} ${state.left.p}; ${state.right.q} ${state.left.q}] · det M = ${state.determinant} · ${state.word.length}/24 moves`;
   $('vector-state').textContent = `Selected primitive vector (q,p) = (${m.q},${m.p})`;
+  const saved = writeSelection(state.word, bound);
+  $('graphics-message').textContent = `Your exact selection is ${fraction(m)}, with grid ${bound}. `
+    + (saved ? 'Reloading will keep this selection.' : 'Tab storage is unavailable; this selection may not survive a reload.');
   const spoken = value => value.q === 0 ? 'infinity' : `${value.p} over ${value.q}`;
   $('geometry-description').textContent = `Finite integer lattice. Selected fraction ${spoken(m)}, direction vector (${m.q}, ${m.p}). Neighbors ${spoken(state.left)} and ${spoken(state.right)}. Their vectors add to the selected vector. The green plane contains its integer multiples.`;
   $('receipt').textContent = `${points.length} lattice points · ${points.filter(p => onRay(p.userData.point, m)).length} on this ray${inside ? '' : ' · primitive point beyond the finite grid'}`;
@@ -223,7 +233,7 @@ function reset() {
   state.reset(); bound = 12; $('bound').value = '12'; rebuildGrid();
   if (!session) { camera.position.set(3.3, 3.1, 2.1); controls.target.set(0, 1.75, -3.2); aspectFit = 1; fitAspect(); controls.update(); }
 }
-function render() { renderer.render(scene, camera); }
+function render() { if (!graphicsLost) renderer.render(scene, camera); }
 function fitAspect() {
   const next = Math.max(1, 0.85 / camera.aspect);
   camera.position.sub(controls.target).multiplyScalar(next / aspectFit).add(controls.target);
@@ -275,7 +285,7 @@ renderer.domElement.addEventListener('pointerup', e => {
 });
 renderer.domElement.addEventListener('pointercancel', e => tap.cancel(e));
 renderer.domElement.addEventListener('keydown', e => {
-  if (session) return;
+  if (session || graphicsLost) return;
   if (e.key === 'Home') { e.preventDefault(); $('view').click(); }
   if (['+', '=', '-'].includes(e.key)) {
     e.preventDefault();
@@ -309,20 +319,39 @@ $('select-form').onsubmit = e => {
   if (state.select(p, q)) update();
   else $('receipt').textContent = 'Choose positive integers up to 1000 with a path of at most 24 moves.';
 };
+$('reload-graphics').onclick = () => location.reload();
+renderer.domElement.addEventListener('webglcontextlost', event => {
+  event.preventDefault(); graphicsLost = true; controls.enabled = false;
+  renderer.domElement.style.visibility = 'hidden';
+  renderer.domElement.tabIndex = -1;
+  renderer.domElement.setAttribute('aria-disabled', 'true');
+  $('graphics-notice').hidden = false; $('hover').hidden = true; $('xr').disabled = true;
+  renderer.setAnimationLoop(null);
+  session?.end().catch(() => {});
+});
+renderer.domElement.addEventListener('webglcontextrestored', () => {
+  graphicsLost = false; controls.enabled = !session;
+  renderer.domElement.tabIndex = 0;
+  renderer.domElement.removeAttribute('aria-disabled');
+  requestAnimationFrame(() => {
+    resize(); renderer.domElement.style.visibility = ''; $('graphics-notice').hidden = true;
+  });
+  checkXR();
+});
 controls.addEventListener('change', render);
 window.addEventListener('resize', resize);
 const layoutObserver = new ResizeObserver(resize);
 layoutObserver.observe(document.querySelector('header'));
 layoutObserver.observe(document.querySelector('.controls'));
 renderer.xr.addEventListener('sessionend', () => {
-  session = null; startingXR = false; vrPanel.visible = false; controls.enabled = true;
+  session = null; startingXR = false; vrPanel.visible = false; controls.enabled = !graphicsLost;
   if (desktopView) restoreView(desktopView, camera, controls);
   desktopView = null;
-  document.body.classList.remove('immersive'); $('xr').textContent = 'Enter VR'; $('xr').disabled = false;
+  document.body.classList.remove('immersive'); $('xr').textContent = 'Enter VR'; $('xr').disabled = graphicsLost;
   renderer.setAnimationLoop(null); resize();
 });
 $('xr').onclick = async () => {
-  if (startingXR || session) return;
+  if (startingXR || session || graphicsLost) return;
   startingXR = true; $('xr').disabled = true;
   $('xr').textContent = 'Waiting for VR…';
   desktopView = captureView(camera, controls);
@@ -336,7 +365,7 @@ $('xr').onclick = async () => {
     renderer.setAnimationLoop(render);
   } catch (error) {
     await session?.end().catch(() => {}); session = null; startingXR = false;
-    $('xr').disabled = false; $('xr').textContent = 'Enter VR';
+    $('xr').disabled = graphicsLost; $('xr').textContent = 'Enter VR';
     $('receipt').textContent = 'VR entry was cancelled or unavailable. The desktop view is still ready.';
   } finally {
     clearTimeout(waiting);
@@ -344,7 +373,7 @@ $('xr').onclick = async () => {
 };
 async function checkXR() {
   const availability = await xrAvailability(navigator.xr, isSecureContext);
-  $('xr').disabled = !availability.supported;
+  $('xr').disabled = !availability.supported || graphicsLost;
   $('xr').textContent = availability.supported ? 'Enter VR' : 'VR unavailable here';
   $('xr').title = availability.message;
   $('xr-status').textContent = availability.message;

@@ -1,0 +1,156 @@
+{
+  "version": "0.2.3",
+  "date": "2026-10-22",
+  "runtime": "Chromium WebGL in local Playwright session",
+  "nodeTestsPassed": 16,
+  "beforeFix": {
+    "events": [
+      {
+        "type": "webglcontextlost",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextrestored",
+        "trusted": true
+      }
+    ],
+    "lossNoticeVisible": false,
+    "blankAfterRestore": true,
+    "restoredMatchesOriginal": false,
+    "interactionRepainted": true,
+    "fractionAfterReload": "0/1 < 1/1 < ∞",
+    "gridAfterReload": "12"
+  },
+  "sourceRecovery": {
+    "browserGeneratedEvents": [
+      {
+        "type": "webglcontextlost",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextrestored",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextlost",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextrestored",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextlost",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextrestored",
+        "trusted": true
+      }
+    ],
+    "cycles": 3,
+    "matchingFrames": [
+      true,
+      true
+    ],
+    "controlsWorkedDuringLoss": true,
+    "reloadButtonPreservedSelectionAndGrid": true,
+    "resetReplacedSavedState": true,
+    "mockedContext": false,
+    "hardwareFailureSimulated": true,
+    "actualXRSession": false
+  },
+  "staticRecovery": {
+    "browserGeneratedEvents": [
+      {
+        "type": "webglcontextlost",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextrestored",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextlost",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextrestored",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextlost",
+        "trusted": true
+      },
+      {
+        "type": "webglcontextrestored",
+        "trusted": true
+      }
+    ],
+    "cycles": 3,
+    "matchingFrames": [
+      true,
+      true
+    ],
+    "controlsWorkedDuringLoss": true,
+    "reloadButtonPreservedSelectionAndGrid": true,
+    "resetReplacedSavedState": true,
+    "mockedContext": false,
+    "hardwareFailureSimulated": true,
+    "actualXRSession": false
+  },
+  "staticWorkflow": {
+    "passed": true,
+    "keyboardScene": true,
+    "keyboardLesson": true,
+    "layout": {
+      "scene": {
+        "x": 0,
+        "y": 130.09375,
+        "width": 390,
+        "height": 382.90625,
+        "top": 130.09375,
+        "right": 390,
+        "bottom": 513,
+        "left": 0
+      },
+      "controls": {
+        "x": 12,
+        "y": 525,
+        "width": 366,
+        "height": 307,
+        "top": 525,
+        "right": 378,
+        "bottom": 832,
+        "left": 12
+      }
+    },
+    "limitAndRecovery": true,
+    "reducibleSelection": true,
+    "invalidSelectionRejected": true,
+    "portraitLandscapeReset": true,
+    "pageErrors": []
+  },
+  "initialWebGLFailure": {
+    "mockedContextCreation": true,
+    "fatalVisible": true,
+    "buttonsDisabled": true,
+    "referenceLinkVisible": true
+  },
+  "artifactManifest": {
+    "COPYING.txt": "7190da7e65538198da782335faa64ff26d7d13997df620e4bb296a4a936949d9",
+    "SOURCE.txt": "ad019833b73833a18fc715c5dc221b11f2c3b8925741dd1077c88749219911c4",
+    "app.js": "2ea130be76d099c7b52afda3c5943421985fd27320e4439e42a41eeb9a0692fc",
+    "core.js": "2f89f0c201a8512b721964cfcbffe4367932511e7868c94ae02a6c0bd774d2bf",
+    "index.html": "bf68a9cf8e26861bf2767b7752c10d490824551e8da142d0da0b105949d1f0d3",
+    "input.js": "b3f06e45fcc5e6b42a7f01f7cd24008af68c0025b2a0b6a537ff29a354d5ffe8",
+    "recovery.js": "41139c48ca3c02a8e50eaed73a0677420c459094bedd1dfb3b5f626ce3480b6d",
+    "style.css": "d5931be767ede088d996835132aec0323bed9dec549b9db441904159ddeffa08",
+    "vendor/THREE-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+    "vendor/addons/controls/OrbitControls.js": "b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c",
+    "vendor/three.core.js": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20",
+    "vendor/three.module.js": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a",
+    "xr-support.js": "f3776e7e2e1d975f3f3957685f8b6506a6efea291d33b84de1f95276464bd67e"
+  },
+  "scope": "Context loss/restoration was triggered through the actual WEBGL_lose_context extension. Browser events were trusted. This simulates a loss, not a physical GPU fault or an XR session. Initial context-creation failure was explicitly mocked. Frame comparisons exclude overlaid controls."
+}

@@ -12,6 +12,7 @@ async (page) => {
   await page.reload();
   await page.setViewportSize({width:390,height:844});
   const button=name=>page.getByRole('button',{name,exact:true});
+  await button('Reset').click();
   assert.equal(await page.locator('canvas').getAttribute('role'),'img');
   assert.equal(await page.locator('canvas').getAttribute('tabindex'),'0');
   assert.equal(await button('L').getAttribute('aria-describedby'),'left-help');
@@ -58,6 +59,7 @@ async (page) => {
   assert.match(await page.locator('#receipt').textContent(),/^224 lattice points/);
   await page.locator('#rational').fill('6/10'); await button('Select').click();
   assert.equal(await page.locator('#fraction').textContent(),'1/2 < 3/5 < 2/3');
+  assert.equal(await page.locator('#rational').inputValue(),'3/5');
   await page.locator('#rational').fill('1/1000'); await button('Select').click();
   assert.equal(await page.locator('#fraction').textContent(),'1/2 < 3/5 < 2/3');
   assert.match(await page.locator('#receipt').textContent(),/Choose positive integers/);

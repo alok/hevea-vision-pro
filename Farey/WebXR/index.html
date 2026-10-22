@@ -9,7 +9,14 @@
   <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
 </head>
 <body>
-  <main id="viewport" aria-label="Interactive three-dimensional integer lattice"></main>
+  <main id="viewport" aria-label="Interactive three-dimensional integer lattice">
+    <section id="graphics-notice" class="graphics-notice" role="status" hidden>
+      <strong>3D graphics paused</strong>
+      <p id="graphics-message"></p>
+      <p>Waiting for the browser to restore graphics. The mathematics controls still work.</p>
+      <button id="reload-graphics">Reload page</button>
+    </section>
+  </main>
   <div id="hover" aria-hidden="true" hidden></div>
   <header>
     <p class="eyebrow">INTO THE INFINITE · A SPATIAL MATHEMATICS STUDY</p>
