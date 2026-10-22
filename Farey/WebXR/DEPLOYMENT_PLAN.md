@@ -10,10 +10,13 @@ From `Farey/WebXR`, run:
 npm ci --ignore-scripts
 npm test
 npm run build
+npm run smoke:package
 python3 serve.py --port 8081 --directory dist
 ```
 
-The build copies only application files, the required Three.js modules, GPL text, MIT dependency license and source link into `dist/`. It rewrites the import map to use those local modules and adds content hashes to app, stylesheet and application-module URLs. `manifest.json` gives SHA-256 hashes for the thirteen payload files. Tests, node_modules, reference images, private context and native recordings are excluded. No bundler, remote CDN, API key, runtime API or server function is needed.
+The build copies application files, the required Three.js modules, a loopback Python server, launch instructions, GPL text, MIT dependency license and exact authored source/build inputs into `dist/`. It rewrites the import map to use local modules and adds content hashes to app, stylesheet and application-module URLs. `manifest.json` gives SHA-256 hashes for every payload file; `npm run smoke:package` checks the exact inventory and runtime imports. Only the explicitly listed source and focused test files are packaged. Installed node_modules, reference images, private context and native recordings are excluded. No bundler, remote CDN, API key, runtime API or server function is needed.
+
+The folder supports local use without internet through `python3 dist/serve.py`. Opening `index.html` directly is unsupported because ES modules require HTTP. Browser-level offline mode blocks fresh localhost loads too; an already loaded page continues to work. The artifact does not install a service worker. The [offline audit](../OFFLINE_PACKAGE.md) records root/subdirectory loading, clean profiles and mobile checks. Playwright CLI is an optional external test tool, not a runtime dependency.
 
 ## Publication settings once a destination is authorized
 

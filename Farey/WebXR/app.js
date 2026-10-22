@@ -24,6 +24,8 @@ try {
 } catch {
   $('fatal').hidden = false;
   $('fatal').textContent = 'A WebGL-capable browser is needed to draw the lattice. The mathematics and native visionOS version remain available in the repository.';
+  $('xr').textContent = 'VR unavailable without WebGL';
+  $('xr-status').textContent = 'Graphics initialization failed. Source references remain available below.';
   document.querySelectorAll('.controls button, .controls input, .controls select').forEach(control => { control.disabled = true; });
   throw new Error('WebGL unavailable');
 }

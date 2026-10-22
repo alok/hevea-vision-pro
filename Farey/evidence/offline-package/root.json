@@ -1,0 +1,73 @@
+{
+  "artifact": "Farey/WebXR/dist",
+  "version": "0.7.1",
+  "static": {
+    "passed": true,
+    "payloadFiles": 39,
+    "runtimeModules": 9,
+    "manifestSHA256": "3be28d8aa09ae5c7f460562b1ca0900d641a1d4bf456c0165be2ae7a83d30ef0"
+  },
+  "browser": {
+    "passed": true,
+    "browser": "155.0.8059.86",
+    "origin": "http://127.0.0.1:64549",
+    "path": "/",
+    "freshProfile": true,
+    "savedPointAndGridRestored": true,
+    "malformedStorageRejected": true,
+    "loadedPageWorksWithBrowserOffline": true,
+    "offlineReloadError": "page.reload: net::ERR_INTERNET_DISCONNECTED",
+    "layouts": [
+      {
+        "width": 390,
+        "height": 844,
+        "scrollWidth": 390,
+        "sceneWidth": 390,
+        "sceneHeight": 284.796875
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "scrollWidth": 844,
+        "sceneWidth": 443.765625,
+        "sceneHeight": 300.703125
+      }
+    ],
+    "unavailableWebGL": "mocked context creation failure",
+    "expectedErrors": [
+      "WebGL unavailable"
+    ],
+    "xrStatus": "No immersive VR device is available in this browser. Desktop exploration is available.",
+    "runtimeRequests": 67,
+    "uniqueRuntimePaths": [
+      "/",
+      "/style.css",
+      "/app.js",
+      "/vendor/three.module.js",
+      "/vendor/addons/controls/OrbitControls.js",
+      "/core.js",
+      "/xr-support.js",
+      "/input.js",
+      "/recovery.js",
+      "/construction.js",
+      "/vendor/three.core.js"
+    ],
+    "externalRequests": [],
+    "badResponses": [],
+    "mimeTypes": {
+      "/": "text/html",
+      "/style.css": "text/css",
+      "/app.js": "text/javascript",
+      "/vendor/addons/controls/OrbitControls.js": "text/javascript",
+      "/core.js": "text/javascript",
+      "/input.js": "text/javascript",
+      "/xr-support.js": "text/javascript",
+      "/recovery.js": "text/javascript",
+      "/construction.js": "text/javascript",
+      "/vendor/three.module.js": "text/javascript",
+      "/vendor/three.core.js": "text/javascript"
+    },
+    "errors": [],
+    "actualXRSession": false
+  }
+}

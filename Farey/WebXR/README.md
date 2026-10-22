@@ -1,6 +1,6 @@
 # Farey lattice — browser and WebXR companion
 
-[Current integration check](../INTEGRATION_08.md) — browser 0.7.0. [Crowded projected selection](../PROJECTED_SELECTION.md). [Source-fidelity audit](../SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](../CONSTRUCTION.md). [Previous release audit](../DEMO_READINESS.md).
+[Offline package audit](../OFFLINE_PACKAGE.md) — browser 0.7.1. [Native integration check](../INTEGRATION_08.md). [Crowded projected selection](../PROJECTED_SELECTION.md). [Source-fidelity audit](../SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](../CONSTRUCTION.md). [Previous release audit](../DEMO_READINESS.md).
 
 An original Three.js implementation of the same integer lattice and L/R state as the native visionOS app. Inspired by **[Katherine Stange](https://katestange.net/talks/math-exploration/)** and her [visualization catalog](https://www.katestange.net/code/), with underlying [Caroline Series L/R geodesic coding (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 
@@ -39,7 +39,9 @@ Each point is (q,p), uniformly scaled and rigidly rotated into the scene. The gr
 
 No Stange JavaScript, media or meshes are bundled. This is an independent implementation of the lattice construction, not her separate hyperboloid visualization or a reproduction of an infinite fractal. Application code is GPL-3.0-or-later under the parent repository license. Three.js is a separate MIT-licensed dependency; its license is installed at `node_modules/three/LICENSE`.
 
-`npm run build` prepares a self-contained static artifact. See the [deployment plan](DEPLOYMENT_PLAN.md); no public deployment has been made.
+`npm run build` prepares a static artifact with a local Python server, launch instructions, exact authored sources, build inputs and license notices. It runs without internet once installed, with localhost requests still available. A fully offline browser setting also blocks localhost reloads; there is no service worker/cache installation. Do not open `index.html` as a file URL. See the [package audit](../OFFLINE_PACKAGE.md) and [deployment plan](DEPLOYMENT_PLAN.md); no public deployment has been made.
+
+`npm run smoke:package` verifies the complete hash manifest and resolves the local runtime module graph. With Playwright CLI and its browser already installed, `npm run smoke:offline` builds the artifact, serves it on an automatically chosen loopback port, opens isolated headless profiles and checks offline interaction, state recovery, mobile layout and unsupported graphics/XR. It closes only its own browser/server. It never installs tools, requests an XR session or changes permissions. Results and screenshots go to `output/playwright/offline-package/`. Use `python3 smoke-offline.py --help` for an existing artifact, root URL or explicit CLI path.
 
 ## Worked path
 

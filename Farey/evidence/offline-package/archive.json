@@ -1,0 +1,12 @@
+{
+  "archive": "Farey/WebXR/output/Farey-WebXR-0.7.1.zip",
+  "bytes": 493665,
+  "sha256": "95b026db8f2e80c5d00e2ba1059dc408add7cbbc1657559f48040e958dbfc4eb",
+  "extractedPayloadVerified": {
+    "passed": true,
+    "payloadFiles": 39,
+    "runtimeModules": 9,
+    "manifestSHA256": "3be28d8aa09ae5c7f460562b1ca0900d641a1d4bf456c0165be2ae7a83d30ef0"
+  },
+  "privateRecordingsIncluded": false
+}
