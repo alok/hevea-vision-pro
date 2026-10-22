@@ -11,12 +11,12 @@ const dependency = JSON.parse(await readFile(resolve(vendor, 'package.json'), 'u
 if (dependency.version !== '0.180.0') throw Error('Run npm ci: Three.js 0.180.0 is required.');
 await rm(destination, { recursive: true, force: true });
 await mkdir(resolve(destination, 'vendor/addons/controls'), { recursive: true });
-const files = ['app.js', 'core.js', 'xr-support.js', 'style.css'];
+const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'style.css'];
 for (const name of files) await copyFile(resolve(root, name), resolve(destination, name));
 const hash = content => createHash('sha256').update(content).digest('hex');
 const assetHash = async name => hash(await readFile(resolve(destination, name)));
 let app = await readFile(resolve(destination, 'app.js'), 'utf8');
-for (const name of ['core.js', 'xr-support.js']) {
+for (const name of ['core.js', 'xr-support.js', 'input.js']) {
   app = app.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
 }
 await writeFile(resolve(destination, 'app.js'), app);

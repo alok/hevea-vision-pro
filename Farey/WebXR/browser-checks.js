@@ -12,6 +12,22 @@ async (page) => {
   await page.reload();
   await page.setViewportSize({width:390,height:844});
   const button=name=>page.getByRole('button',{name,exact:true});
+  assert.equal(await page.locator('canvas').getAttribute('role'),'img');
+  assert.equal(await page.locator('canvas').getAttribute('tabindex'),'0');
+  assert.equal(await button('L').getAttribute('aria-describedby'),'left-help');
+  const canvas = page.locator('canvas');
+  await canvas.focus();
+  let frame = await canvas.screenshot();
+  for (const key of ['ArrowRight', 'Shift+ArrowUp', '+']) {
+    await canvas.press(key);
+    const next = await canvas.screenshot();
+    assert.ok(!frame.equals(next)); frame = next;
+  }
+  await canvas.press('Home');
+  assert.equal(await page.locator('#fraction').textContent(),'0/1 < 1/1 < ∞');
+  await page.locator('#rational').focus(); frame = await canvas.screenshot();
+  await page.keyboard.press('ArrowRight');
+  assert.ok(frame.equals(await canvas.screenshot()));
   await button('Learn a move').click();
   await button('2/3').focus(); await page.keyboard.press('Space');
   assert.equal(await page.evaluate(()=>document.activeElement.textContent),'2/3');
@@ -23,6 +39,7 @@ async (page) => {
   await page.keyboard.press('Enter'); await page.keyboard.press('Tab'); await page.keyboard.press('Space');
   await page.keyboard.press('Tab'); await page.keyboard.press('Tab'); await page.keyboard.press('Enter');
   assert.equal(await page.locator('#fraction').textContent(),'1/2 < 3/5 < 2/3');
+  assert.match(await page.locator('#geometry-description').textContent(),/Selected fraction 3 over 5/);
   assert.equal(await page.evaluate(()=>document.activeElement.textContent),'Close lesson');
   const layout=await page.evaluate(()=>({scene:document.getElementById('viewport').getBoundingClientRect().toJSON(),controls:document.querySelector('.controls').getBoundingClientRect().toJSON()}));
   assert.ok(layout.scene.height>200); assert.ok(layout.scene.bottom<=layout.controls.top);
@@ -48,7 +65,8 @@ async (page) => {
     await page.setViewportSize(size);await button('Reset').click();
     assert.equal(await page.locator('#fraction').textContent(),'0/1 < 1/1 < ∞');
     assert.ok(await page.evaluate(()=>document.getElementById('viewport').clientHeight>0));
+    if(size.height < 500) assert.ok(await page.evaluate(()=>document.getElementById('viewport').getBoundingClientRect().left>document.querySelector('.controls').getBoundingClientRect().right));
   }
   assert.deepEqual(errors,[]);
-  return {passed:true,keyboardLesson:true,layout,limitAndRecovery:true,reducibleSelection:true,invalidSelectionRejected:true,portraitLandscapeReset:true,pageErrors:errors};
+  return {passed:true,keyboardScene:true,keyboardLesson:true,layout,limitAndRecovery:true,reducibleSelection:true,invalidSelectionRejected:true,portraitLandscapeReset:true,pageErrors:errors};
 }

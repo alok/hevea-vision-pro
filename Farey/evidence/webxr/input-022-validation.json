@@ -1,0 +1,149 @@
+{
+  "version": "0.2.2",
+  "date": "2026-10-22",
+  "nodeTestsPassed": 13,
+  "sourceWorkflow": {
+    "passed": true,
+    "keyboardLesson": true,
+    "layout": {
+      "scene": {
+        "x": 0,
+        "y": 130.09375,
+        "width": 390,
+        "height": 382.90625,
+        "top": 130.09375,
+        "right": 390,
+        "bottom": 513,
+        "left": 0
+      },
+      "controls": {
+        "x": 12,
+        "y": 525,
+        "width": 366,
+        "height": 307,
+        "top": 525,
+        "right": 378,
+        "bottom": 832,
+        "left": 12
+      }
+    },
+    "limitAndRecovery": true,
+    "reducibleSelection": true,
+    "invalidSelectionRejected": true,
+    "portraitLandscapeReset": true,
+    "pageErrors": []
+  },
+  "staticWorkflow": {
+    "passed": true,
+    "keyboardScene": true,
+    "keyboardLesson": true,
+    "layout": {
+      "scene": {
+        "x": 0,
+        "y": 130.09375,
+        "width": 390,
+        "height": 382.90625,
+        "top": 130.09375,
+        "right": 390,
+        "bottom": 513,
+        "left": 0
+      },
+      "controls": {
+        "x": 12,
+        "y": 525,
+        "width": 366,
+        "height": 307,
+        "top": 525,
+        "right": 378,
+        "bottom": 832,
+        "left": 12
+      }
+    },
+    "limitAndRecovery": true,
+    "reducibleSelection": true,
+    "invalidSelectionRejected": true,
+    "portraitLandscapeReset": true,
+    "pageErrors": []
+  },
+  "browserProtocolGestures": {
+    "syntheticTouch": true,
+    "physicalDevice": false,
+    "twoFingerTapPreservesSelection": true,
+    "singleTapSelects": true,
+    "pan": {
+      "before": [
+        0,
+        1.7499999999999998,
+        -3.2
+      ],
+      "after": [
+        -0.36700894192645717,
+        2.008992829556039,
+        -3.0374548701025184
+      ]
+    },
+    "pinchDistance": 3.193841730580902,
+    "oneFingerOrbit": true,
+    "keyboardPan": true,
+    "keyboardOrbit": true,
+    "keyboardZoom": true,
+    "inputDoesNotMoveCamera": true,
+    "layout": {
+      "scene": {
+        "x": 388.234375,
+        "y": 77.296875,
+        "width": 443.765625,
+        "height": 300.703125,
+        "top": 77.296875,
+        "right": 832,
+        "bottom": 378,
+        "left": 388.234375
+      },
+      "controls": {
+        "x": 12,
+        "y": 100,
+        "width": 364.234375,
+        "height": 278,
+        "top": 100,
+        "right": 376.234375,
+        "bottom": 378,
+        "left": 12
+      }
+    },
+    "accessibleImage": {
+      "name": "Interactive Farey lattice",
+      "description": "Finite integer lattice. Selected fraction 3 over 5, direction vector (5, 3). Neighbors 1 over 2 and 2 over 3. Their vectors add to the selected vector. The green plane contains its integer multiples. One finger rotates; two fingers pan or pinch to zoom. With the scene focused, arrow keys pan, Shift and arrow keys rotate, plus and minus zoom, and Home restores the front view. Use the fraction field to select any supported direction without pointing at a sphere."
+    },
+    "leftButtonDescription": "Replace the lower endpoint with the current mediant."
+  },
+  "resourceCounts": {
+    "before": {
+      "geometries": 14,
+      "textures": 2,
+      "programs": 6
+    },
+    "after": {
+      "geometries": 14,
+      "textures": 2,
+      "programs": 6
+    },
+    "steps": 200
+  },
+  "screenReaderSpeechTested": false,
+  "actualXRSession": false,
+  "physicalDeviceTested": false,
+  "artifactManifest": {
+    "COPYING.txt": "7190da7e65538198da782335faa64ff26d7d13997df620e4bb296a4a936949d9",
+    "SOURCE.txt": "ad019833b73833a18fc715c5dc221b11f2c3b8925741dd1077c88749219911c4",
+    "app.js": "7b3181140838b46217ddf1711522ef18d385b9d6fe51fdd024957711e4b0ba7c",
+    "core.js": "2f89f0c201a8512b721964cfcbffe4367932511e7868c94ae02a6c0bd774d2bf",
+    "index.html": "5de5e8c7e41f9b5b13e2d753cc9d3ebe89ffebe28555858712d8227474cb6beb",
+    "input.js": "b3f06e45fcc5e6b42a7f01f7cd24008af68c0025b2a0b6a537ff29a354d5ffe8",
+    "style.css": "0ce70a251b9681dae068a992487bc33f180da7e41b5efff977331c54b2f64bcf",
+    "vendor/THREE-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+    "vendor/addons/controls/OrbitControls.js": "b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c",
+    "vendor/three.core.js": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20",
+    "vendor/three.module.js": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a",
+    "xr-support.js": "f3776e7e2e1d975f3f3957685f8b6506a6efea291d33b84de1f95276464bd67e"
+  }
+}

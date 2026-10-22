@@ -1,0 +1,69 @@
+{
+  "version": "0.2.2",
+  "runtime": "iOS 27.2 (24B5089g), iPhone 17e simulator, Mobile Safari",
+  "input": "Real one-finger drag via Device Hub mouse events, guarded by Accessibility foreground identity.",
+  "before": {
+    "fraction": "0/1 < 1/1 < ∞",
+    "word": "",
+    "lesson": false,
+    "viewport": {
+      "width": 750,
+      "height": 280
+    },
+    "gl": {
+      "geometries": 14,
+      "textures": 2
+    },
+    "camera": [
+      3.3000000000000003,
+      3.1000000000000005,
+      2.1000000000000005
+    ],
+    "target": [
+      0,
+      1.7499999999999998,
+      -3.2
+    ],
+    "quaternion": [
+      -0.10218053805622358,
+      0.27330981468390175,
+      0.029211140347571534,
+      0.9560374428439434
+    ],
+    "time": 1792675181.255332
+  },
+  "after": {
+    "fraction": "0/1 < 1/1 < ∞",
+    "word": "",
+    "lesson": false,
+    "viewport": {
+      "width": 750,
+      "height": 280
+    },
+    "gl": {
+      "geometries": 14,
+      "textures": 2
+    },
+    "camera": [
+      -1.9570475163803511,
+      7.567356066777808,
+      -1.4305838785201
+    ],
+    "target": [
+      0,
+      1.7499999999999993,
+      -3.2
+    ],
+    "quaternion": [
+      -0.4951294937627249,
+      -0.34109325430034376,
+      -0.21983763422756272,
+      0.7682275644978493
+    ],
+    "time": 1792675270.302716
+  },
+  "result": "Camera moved while the exact selected fraction remained 1/1.",
+  "physicalDeviceTested": false,
+  "actualXRSession": false,
+  "note": "Pinch and two-finger pan are verified separately with Chromium protocol-generated touch events, not this Safari run."
+}

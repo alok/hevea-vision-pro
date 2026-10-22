@@ -10,7 +10,7 @@
 </head>
 <body>
   <main id="viewport" aria-label="Interactive three-dimensional integer lattice"></main>
-  <output id="hover" hidden></output>
+  <div id="hover" aria-hidden="true" hidden></div>
   <header>
     <p class="eyebrow">INTO THE INFINITE · A SPATIAL MATHEMATICS STUDY</p>
     <h1>The Farey lattice</h1>
@@ -19,7 +19,7 @@
   <section class="controls" aria-label="Farey controls">
     <div class="state" aria-live="polite"><span id="word">Start</span><strong id="fraction">0/1 &lt; 1/1 &lt; ∞</strong></div>
     <div class="row">
-      <button id="left" class="cyan">L</button><button id="right" class="purple">R</button>
+      <button id="left" class="cyan" aria-describedby="left-help">L</button><button id="right" class="purple" aria-describedby="right-help">R</button>
       <button id="undo">Undo</button><button id="reset">Reset</button>
       <button id="example">3/5 example</button><button id="xr" disabled>Checking WebXR…</button>
     </div>
@@ -30,6 +30,10 @@
       <button id="learn">Learn a move</button>
     </div>
     <p id="matrix"></p><p id="vector-state"></p><p id="receipt" role="status"></p>
+    <p id="geometry-description" class="sr-only"></p>
+    <p id="left-help" class="sr-only">Replace the lower endpoint with the current mediant.</p>
+    <p id="right-help" class="sr-only">Replace the upper endpoint with the current mediant.</p>
+    <p id="view-help" class="sr-only">One finger rotates; two fingers pan or pinch to zoom. With the scene focused, arrow keys pan, Shift and arrow keys rotate, plus and minus zoom, and Home restores the front view. Use the fraction field to select any supported direction without pointing at a sphere.</p>
     <section id="lesson" aria-label="Worked Farey moves" hidden>
       <strong id="lesson-question"></strong>
       <div id="lesson-choices" class="row"></div>
@@ -37,7 +41,7 @@
       <div class="row"><button id="lesson-apply" disabled>Apply L</button><button id="lesson-next" hidden>Predict R next</button><button id="lesson-restart">Restart lesson</button><button id="lesson-close">Close lesson</button></div>
       <a href="https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html">Katherine Stange’s original L/R and lattice demonstration ↗</a>
     </section>
-    <p class="hint">Drag to orbit · scroll to zoom · right-drag to pan · click a sphere to select.<br>Cyan + purple = orange mediant. The green plane contains its integer multiples.</p>
+    <p class="hint">Drag to orbit · scroll to zoom · right-drag to pan · click a sphere to select.<br>Focus the scene for keyboard controls: arrows pan, Shift + arrows rotate, +/− zoom, Home restores the view.<br>Cyan + purple = orange mediant. The green plane contains its integer multiples.</p>
     <details><summary>Mathematics & sources</summary>
       <p id="xr-status" role="status"></p>
       <p>Each sphere is an integer pair (q,p). The fraction p/q is its direction. Neighbor vectors form a unit-area parallelogram; adding them gives their mediant. The finite green plane stands perpendicular to the lattice through that direction.</p>

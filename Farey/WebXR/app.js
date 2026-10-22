@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FareyState, fraction, grid, onRay, position, primitive } from './core.js';
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
+import { TapSelection } from './input.js';
 
 const $ = id => document.getElementById(id);
 const state = new FareyState();
@@ -19,6 +20,10 @@ renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.xr.enabled = true;
 renderer.xr.setReferenceSpaceType('local-floor');
 $('viewport').append(renderer.domElement);
+renderer.domElement.tabIndex = 0;
+renderer.domElement.setAttribute('role', 'img');
+renderer.domElement.setAttribute('aria-label', 'Interactive Farey lattice');
+renderer.domElement.setAttribute('aria-describedby', 'geometry-description view-help');
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
 const camera = new THREE.PerspectiveCamera(48, 1, 0.05, 60);
@@ -28,6 +33,7 @@ controls.target.set(0, 1.75, -3.2);
 controls.minDistance = 1.2;
 controls.maxDistance = 14;
 controls.enableDamping = false;
+controls.listenToKeyEvents(renderer.domElement);
 controls.update();
 scene.add(new THREE.HemisphereLight(0xc9e8ff, 0x31404a, 2.3));
 const light = new THREE.DirectionalLight(0xffffff, 3);
@@ -148,6 +154,8 @@ function update() {
   $('fraction').textContent = `${fraction(state.left)} < ${fraction(m)} < ${fraction(state.right)}`;
   $('matrix').textContent = `M = [${state.right.p} ${state.left.p}; ${state.right.q} ${state.left.q}] · det M = ${state.determinant} · ${state.word.length}/24 moves`;
   $('vector-state').textContent = `Selected primitive vector (q,p) = (${m.q},${m.p})`;
+  const spoken = value => value.q === 0 ? 'infinity' : `${value.p} over ${value.q}`;
+  $('geometry-description').textContent = `Finite integer lattice. Selected fraction ${spoken(m)}, direction vector (${m.q}, ${m.p}). Neighbors ${spoken(state.left)} and ${spoken(state.right)}. Their vectors add to the selected vector. The green plane contains its integer multiples.`;
   $('receipt').textContent = `${points.length} lattice points · ${points.filter(p => onRay(p.userData.point, m)).length} on this ray${inside ? '' : ' · primitive point beyond the finite grid'}`;
   $('left').disabled = $('right').disabled = state.word.length >= 24;
   $('undo').disabled = !state.word;
@@ -225,9 +233,10 @@ function fitAspect() {
 function resize() {
   if (session) return;
   const viewport = $('viewport');
+  const landscape = matchMedia('(max-height: 500px) and (orientation: landscape)').matches;
   const phone = matchMedia('(max-width: 700px)').matches;
-  viewport.style.top = phone ? `${document.querySelector('header').getBoundingClientRect().bottom + 12}px` : '0';
-  viewport.style.bottom = phone ? `${innerHeight - document.querySelector('.controls').getBoundingClientRect().top + 12}px` : '0';
+  viewport.style.top = phone || landscape ? `${document.querySelector('header').getBoundingClientRect().bottom + 12}px` : '0';
+  viewport.style.bottom = landscape ? '12px' : phone ? `${innerHeight - document.querySelector('.controls').getBoundingClientRect().top + 12}px` : '0';
   const width = viewport.clientWidth, height = Math.max(1, viewport.clientHeight);
   camera.aspect = width / height;
   fitAspect();
@@ -244,9 +253,10 @@ function activate(hits) {
   else if (object.userData.point?.p > 0 && object.userData.point?.q > 0) state.select(object.userData.point.p, object.userData.point.q);
   update();
 }
-let down;
-renderer.domElement.addEventListener('pointerdown', e => { down = [e.clientX, e.clientY]; });
+const tap = new TapSelection();
+renderer.domElement.addEventListener('pointerdown', e => tap.begin(e));
 renderer.domElement.addEventListener('pointermove', e => {
+  tap.move(e);
   if (session || e.buttons) { $('hover').hidden = true; return; }
   setPointer(e);
   raycaster.setFromCamera(pointer, camera);
@@ -259,9 +269,21 @@ renderer.domElement.addEventListener('pointermove', e => {
 });
 renderer.domElement.addEventListener('pointerleave', () => { $('hover').hidden = true; });
 renderer.domElement.addEventListener('pointerup', e => {
-  if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5 || session) return;
+  if (!tap.end(e) || session) return;
   setPointer(e);
   raycaster.setFromCamera(pointer, camera); activate(raycaster.intersectObjects(points));
+});
+renderer.domElement.addEventListener('pointercancel', e => tap.cancel(e));
+renderer.domElement.addEventListener('keydown', e => {
+  if (session) return;
+  if (e.key === 'Home') { e.preventDefault(); $('view').click(); }
+  if (['+', '=', '-'].includes(e.key)) {
+    e.preventDefault();
+    const distance = camera.position.distanceTo(controls.target);
+    const next = THREE.MathUtils.clamp(distance * (e.key === '-' ? 1.1 : 1 / 1.1), controls.minDistance, controls.maxDistance);
+    camera.position.sub(controls.target).multiplyScalar(next / distance).add(controls.target);
+    controls.update(); render();
+  }
 });
 for (let i = 0; i < 2; i++) {
   const controller = renderer.xr.getController(i);

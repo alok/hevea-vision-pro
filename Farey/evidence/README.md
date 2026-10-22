@@ -1,3 +1,13 @@
+# Browser 0.2.2: gesture separation and accessible controls
+
+[Landscape scene](webxr/landscape-022.png) · [Actual Safari landscape](webxr/safari-landscape.png) · [Safari after a drag](webxr/safari-landscape-drag.png)
+
+Thirteen JavaScript tests passed, including five regressions for single taps, multiple pointers, drags returning to their start, cancelled gestures and secondary mouse buttons. The [integration record](webxr/input-022-validation.json) separates Chromium protocol-generated touch gestures from physical input. Those tests verified pinch zoom, two-finger pan, one-finger orbit, single-tap selection, keyboard pan/rotate/zoom/Home, and that typing in the fraction field does not move the camera. Source and built-artifact lesson/bounds workflows passed. Renderer counts remained at 14 geometries, 2 textures and 6 programs after 200 further moves.
+
+A [real landscape Safari drag on the iPhone simulator](webxr/safari-landscape-validation.json) changed the camera without changing the selected fraction. The lattice and controls occupy separate landscape regions. No physical phone or headset was used.
+
+The rendered accessibility tree exposes the canvas as a named image with the selected rational and vector description, and gives L/R their endpoint-action descriptions. Keyboard focus and semantic structure were tested; **screen-reader speech was not tested**. No OS accessibility setting or XR permission was changed. The public guide continues to distinguish implementation, simulator evidence, synthetic touch events, actual XR sessions and mathematical proof.
+
 # Browser 0.2.1: usable mobile lesson and reliable refresh
 
 Actual iPhone 17e simulator Safari on iOS 27.2 completed [L](webxr/mobile-safari-L.png), [R](webxr/mobile-safari-R.png), Undo and [Reset](webxr/mobile-safari-reset.png). The [record](webxr/mobile-safari-validation.json) contains the selected states after real Device Hub taps. The lattice remains visible above the lesson controls. This is a mobile browser simulator test, not a physical phone or WebXR headset test.
