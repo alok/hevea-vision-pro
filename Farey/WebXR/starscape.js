@@ -11,7 +11,8 @@ const $ = id => document.getElementById(id);
 let radius = 6, whole = true, symmetricColor = false, projectionVisible = false;
 let selected = examples[0], points = [], cloudMesh, imageMesh;
 let session = null, savedView = null, startingXR = false;
-let inhabited=false, overviewView=null, lookDrag=null;
+let inhabited=false, overviewView=null, lookDrag=null, look={yaw:0,pitch:0};
+const overviewFov=45, originFov=100;
 let categories='contrast', glyphKey=null, focusGlyphs=[];
 let secondSelection=null, pairMessage='', pairGlyphs=[];
 let renderer;
@@ -179,6 +180,7 @@ function updateGlyphSizes(){
     });
     item.mesh.instanceMatrix.needsUpdate=true;item.mesh.computeBoundingSphere();
   }
+  origin.visible=!eyeAtOrigin();
   for(const item of [{mesh:origin,extra:0},...focusGlyphs]){
     tempWorld.copy(item.mesh.position).applyMatrix4(world.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
     item.mesh.scale.setScalar(session?(item.extra?1.4:1):glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,item.extra));
@@ -186,35 +188,55 @@ function updateGlyphSizes(){
 }
 function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();renderer.render(scene,camera);}}
 
+const eyeAtOrigin=()=>inhabited&&camera.position.distanceTo(world.position)<1e-9;
 function showLocation() {
   if(!inhabited)return;
   const p=camera.position.clone().sub(world.position).divideScalar(scale);
   $('location').textContent=`Eye (x,y,z): ${p.toArray().map(x=>x.toFixed(2)).join(', ')} · ${cameraPlaneLabel(camera.quaternion)}`;
+  $('origin-note').hidden=!eyeAtOrigin();
+  $('origin').setAttribute('aria-pressed',String(eyeAtOrigin()));
 }
-function enterInhabit() {
-  overviewView=captureView(camera,controls); inhabited=true; controls.enabled=false;
-  camera.position.copy(world.position).add(physical(vector(selected))).add(new THREE.Vector3(0.10,0.12,0.10));
-  const aim=world.position.clone();aim.y=camera.position.y;camera.lookAt(aim);
+// Explicit yaw/pitch avoid re-deriving angles from a quaternion at the poles, so the eye can look exactly along ±Y.
+function applyLook(){
+  camera.quaternion.setFromEuler(new THREE.Euler(look.pitch,look.yaw,0,'YXZ'));
   controls.target.copy(camera.position).add(camera.getWorldDirection(new THREE.Vector3()));
-  camera.near=0.008;camera.updateProjectionMatrix();
+  showLocation();render();
+}
+function beginEgocentric(){
+  if(!inhabited)overviewView=captureView(camera,controls);
+  inhabited=true;controls.enabled=false;camera.near=0.008;
   $('navigation').hidden=false;$('inhabit').textContent='Return to overview';$('view').disabled=true;
   renderer.domElement.focus({preventScroll:true});
-  showLocation();render();
+}
+function enterInhabit() {
+  beginEgocentric();camera.fov=overviewFov;camera.updateProjectionMatrix();
+  camera.position.copy(world.position).add(physical(vector(selected))).add(new THREE.Vector3(0.10,0.12,0.10));
+  const aim=world.position.clone();aim.y=camera.position.y;camera.lookAt(aim);
+  const e=new THREE.Euler().setFromQuaternion(camera.quaternion,'YXZ');look={yaw:e.y,pitch:e.x};applyLook();
+}
+// The coordinate origin is the zero form: an ambient viewpoint, not a polynomial. Every line of sight from it is
+// one projective class, and looking along +Y the perspective image of the upper nappe is the Klein disk.
+function enterOrigin() {
+  beginEgocentric();camera.fov=originFov;camera.updateProjectionMatrix();
+  camera.position.copy(world.position);look={yaw:0,pitch:Math.PI/2};applyLook();
 }
 function leaveInhabit() {
   if(!inhabited)return;
-  inhabited=false;controls.enabled=true;camera.near=0.05;camera.updateProjectionMatrix();
+  inhabited=false;controls.enabled=true;camera.near=0.05;camera.fov=overviewFov;camera.updateProjectionMatrix();
   if(overviewView)restoreView(overviewView,camera,controls);overviewView=null;
-  $('navigation').hidden=true;$('inhabit').textContent='Inhabit';$('view').disabled=false;render();
+  $('navigation').hidden=true;$('inhabit').textContent='Inhabit';$('view').disabled=false;
+  $('origin').setAttribute('aria-pressed','false');render();
 }
 function moveEye(direction) {
   if(!inhabited)return;
   const forward=camera.getWorldDirection(new THREE.Vector3());
-  const right=new THREE.Vector3().crossVectors(forward,camera.up).normalize();
+  const right=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion);
   const delta=direction==='forward'?forward:direction==='back'?forward.negate():direction==='right'?right:direction==='left'?right.negate():new THREE.Vector3(0,direction==='up'?1:-1,0);
   delta.multiplyScalar(0.12);camera.position.add(delta);controls.target.add(delta);showLocation();render();
 }
 $('inhabit').onclick=()=>inhabited?leaveInhabit():enterInhabit();
+$('origin').onclick=()=>eyeAtOrigin()?leaveInhabit():enterOrigin();
+for(const button of document.querySelectorAll('[data-look]'))button.onclick=()=>{look.pitch={up:Math.PI/2,level:0,down:-Math.PI/2}[button.dataset.look];applyLook();renderer.domElement.focus({preventScroll:true});};
 for(const button of document.querySelectorAll('[data-move]'))button.onclick=()=>{moveEye(button.dataset.move);renderer.domElement.focus({preventScroll:true});};
 function resetView(){controls.target.copy(world.position);camera.position.copy(world.position).add(new THREE.Vector3(2.4,1.5,4.6).multiplyScalar(Math.max(1,radius/8)));controls.update();}
 function resize(){if(session)return;const r=$('viewport').getBoundingClientRect();if(r.width<=0||r.height<=0)return;camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setSize(r.width,r.height);render();}
@@ -248,12 +270,9 @@ function pickPoint(ray,maxAngle,asPair=false){
 function selectAt(event){const r=renderer.domElement.getBoundingClientRect();pointer.set(2*(event.clientX-r.left)/r.width-1,1-2*(event.clientY-r.top)/r.height);raycaster.setFromCamera(pointer,camera);pickPoint(raycaster.ray,10*2*Math.tan(camera.fov*Math.PI/360)/(r.height*camera.zoom),event.shiftKey);}
 renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);if(inhabited){lookDrag={x:e.clientX,y:e.clientY};renderer.domElement.setPointerCapture(e.pointerId);}});renderer.domElement.addEventListener('pointermove',e=>{
   tap.move(e);if(!inhabited||!lookDrag)return;
-  const rotation=new THREE.Euler().setFromQuaternion(camera.quaternion,'YXZ');
-  rotation.y-=(e.clientX-lookDrag.x)*0.004;
-  rotation.x=THREE.MathUtils.clamp(rotation.x-(e.clientY-lookDrag.y)*0.004,-1.45,1.45);
-  camera.quaternion.setFromEuler(rotation);
-  controls.target.copy(camera.position).add(camera.getWorldDirection(new THREE.Vector3()));
-  lookDrag={x:e.clientX,y:e.clientY};showLocation();render();
+  look.yaw-=(e.clientX-lookDrag.x)*0.004;
+  look.pitch=THREE.MathUtils.clamp(look.pitch-(e.clientY-lookDrag.y)*0.004,-Math.PI/2,Math.PI/2);
+  lookDrag={x:e.clientX,y:e.clientY};applyLook();
 });renderer.domElement.addEventListener('pointerup',e=>{lookDrag=null;if(tap.end(e)&&!session)selectAt(e);});renderer.domElement.addEventListener('pointercancel',e=>{lookDrag=null;tap.cancel(e);});
 renderer.domElement.addEventListener('keydown',e=>{const move={w:'forward',s:'back',a:'left',d:'right',q:'down',e:'up'}[e.key.toLowerCase()];if(inhabited&&move){e.preventDefault();moveEye(move);return;}if(e.key==='Escape'&&inhabited){leaveInhabit();return;}if(e.key==='Home'){e.preventDefault();leaveInhabit();resetView();}if(['+','=','-'].includes(e.key)){e.preventDefault();if(inhabited){moveEye(e.key==='-'?'back':'forward');return;}const d=camera.position.distanceTo(controls.target),n=THREE.MathUtils.clamp(d*(e.key==='-'?1.1:1/1.1),1,20);camera.position.sub(controls.target).multiplyScalar(n/d).add(controls.target);controls.update();}});
 controls.addEventListener('change',render);window.addEventListener('resize',resize);new ResizeObserver(resize).observe($('viewport'));
