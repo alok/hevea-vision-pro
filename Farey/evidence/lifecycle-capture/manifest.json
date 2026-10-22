@@ -1,0 +1,131 @@
+{
+  "runtimeSourceCommit": "665e54fb6839563ba9ead173e21a720cea10648d",
+  "initialRepositoryCommit": "f78c99e6f8db16ca9a816a7929a78e3c3f03f983",
+  "applicationVersion": "0.8",
+  "build": "10",
+  "nativeScreenshotAPIDimensions": [
+    1,
+    1
+  ],
+  "sampleMethod": "nonblack luma >=12 in normalized ROI x=.25..85 y=.15..45 at 4 fps; exploratory, not a visual correctness oracle",
+  "baselineBlankRunsSeconds": [
+    [
+      8.75,
+      9.25
+    ],
+    [
+      16.25,
+      16.5
+    ],
+    [
+      19.5,
+      20.0
+    ],
+    [
+      29.5,
+      30.0
+    ],
+    [
+      35.5,
+      36.0
+    ],
+    [
+      50.0,
+      55.25
+    ],
+    [
+      57.25,
+      60.75
+    ],
+    [
+      66.0,
+      66.75
+    ],
+    [
+      73.25,
+      74.0
+    ]
+  ],
+  "videoOnlyBlankRunsSeconds": [
+    [
+      10.0,
+      10.5
+    ],
+    [
+      17.25,
+      17.5
+    ],
+    [
+      20.5,
+      21.0
+    ],
+    [
+      30.0,
+      30.5
+    ],
+    [
+      36.0,
+      36.5
+    ],
+    [
+      47.5,
+      47.75
+    ],
+    [
+      50.5,
+      51.0
+    ],
+    [
+      60.25,
+      61.0
+    ],
+    [
+      66.0,
+      66.75
+    ],
+    [
+      73.25,
+      73.75
+    ]
+  ],
+  "videoSamplesPerSecond": 4,
+  "sourceVideos": {
+    "baseline": {
+      "localPath": "/tmp/farey-lifecycle-baseline/baseline.mov",
+      "sha256": "a917e8109b6a090841007f1401c6239eef9b36a004a0f1816af4ff53080e91d7",
+      "bytes": 122068902,
+      "uploaded": false
+    },
+    "videoOnly": {
+      "localPath": "/tmp/farey-lifecycle-video-only/baseline.mov",
+      "sha256": "f8c3d92a02c26a28eac3f75995a3b6efb191199d0bfa8b02a697546ec0808eed",
+      "bytes": 137648500,
+      "uploaded": false
+    },
+    "readOnlyProbe": {
+      "localPath": "/tmp/farey-lifecycle-probe2/probe.mov",
+      "sha256": "dfef25bfb681ed3e07a06f4ffc7cc6d724c6e5237f7959ed2e3040f46ff9468d",
+      "bytes": 139892008,
+      "uploaded": false
+    }
+  },
+  "screenshots": {
+    "full-confirmed.png": "c12a62a902b361a3b761263e0e00e94a3461620fc9a67703a149347f2f899796",
+    "full-foreground.png": "866fb7f82c29e5922d160afda8e736b571c262d7d57085ae503ea9665bd82c06",
+    "full-reentered-idle.png": "1728886bbccd04c6e06b51909e53c3bef6b006726eab90c7e276791e774378bb",
+    "late-confirmed.png": "3b56351ba033b2a0105566b0e8a5fd09f176f7b9c78d516eed7c23f8d759f949",
+    "partial-composite.png": "52e4759ed4c8aa4472c56edfb546da1d373b42e76956193d72382a359cb51c4a",
+    "synchronized-confirmed.png": "ce862a309d44dbb652a31fda99bf805191377c18a00d0c1b41805302cddb9370",
+    "video-only-confirmed.png": "98f9c6fa939a8c6e0fd533550e0e81bbb4b6d8ee752cd8e810d82fe299fb11f2",
+    "video-only-foreground.png": "dbdb7b14d41b062c57e0bbbcde93ab90cfe6678b2a6293b76fcfb76afa030173",
+    "video-tour-oblique.png": "8c8bb3d08377458bf714f84734f0732ff11da8f3ee8c7695b1d11d4ac278ffdc",
+    "video-with-stills.png": "8dcb1c052890ff3e55fbc9df875af6e8f1d9d86492e94ccaed01cb04d1517087"
+  },
+  "nativeScreenshotAPICount": 21,
+  "nativeScreenshotAPISizes": [
+    [
+      1,
+      1
+    ]
+  ]
+}

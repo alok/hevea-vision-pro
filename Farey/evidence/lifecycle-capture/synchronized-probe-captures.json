@@ -1,0 +1,191 @@
+[
+  {
+    "name": "entry",
+    "time": "1792686102.644506",
+    "id": "91A8B3F1-7B75-45BE-8849-EC09A0F7F7C7",
+    "started": 1792686102.6482298,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686102.969432
+  },
+  {
+    "name": "c0-lattice",
+    "id": "093820B3-2EB9-459D-992D-624A05A5B98E",
+    "time": "1792686109.016498",
+    "started": 1792686109.050696,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686109.2681541
+  },
+  {
+    "time": "1792686110.1139169",
+    "name": "c0-boundary",
+    "id": "18196FEB-3DE9-4857-A172-0766DD451BE5",
+    "started": 1792686110.1212852,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686110.577021
+  },
+  {
+    "name": "c0-preview",
+    "id": "826C904E-3EAF-42E0-816D-1CA39A9A5A31",
+    "time": "1792686112.89627",
+    "started": 1792686112.925813,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686113.18907
+  },
+  {
+    "time": "1792686118.596212",
+    "id": "DF61C7A0-F2DE-4EFC-A959-023126147127",
+    "name": "c0-foreground",
+    "started": 1792686118.611962,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686118.839178
+  },
+  {
+    "time": "1792686124.984076",
+    "name": "c0-confirmed",
+    "id": "FA6BA539-6487-45E8-B402-C926FD9F2E23",
+    "started": 1792686125.009114,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686125.2289941
+  },
+  {
+    "name": "c0-viewpoint",
+    "id": "BA5A0713-1F6C-43A1-98CB-F31275303C8E",
+    "time": "1792686126.130797",
+    "started": 1792686126.154748,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686126.366486
+  },
+  {
+    "name": "c0-returned-lattice",
+    "time": "1792686127.26186",
+    "id": "8A71FE78-C095-44A7-AD88-5DEFF2DDDFF3",
+    "started": 1792686127.299094,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686127.525185
+  },
+  {
+    "time": "1792686131.9089699",
+    "id": "90F63694-35A3-4E83-99BB-24F996C9B440",
+    "name": "c0-exited",
+    "started": 1792686131.911992,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686132.286548
+  },
+  {
+    "time": "1792686137.016556",
+    "name": "c0-reentered",
+    "id": "AEAD99F6-969A-4F84-85A7-AF9E9D7E8BA2",
+    "started": 1792686137.118368,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686137.3057148
+  },
+  {
+    "name": "c0-idle",
+    "id": "683C0B4D-905D-4E34-89B5-2447EA6228BC",
+    "time": "1792686140.367433",
+    "started": 1792686140.387763,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686140.626693
+  },
+  {
+    "name": "c1-lattice",
+    "time": "1792686142.325149",
+    "id": "A431E1FD-22FA-472A-9DFC-3F21F7A2FD87",
+    "started": 1792686142.380725,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686142.9531069
+  },
+  {
+    "time": "1792686143.827488",
+    "id": "5C2901E5-F9E3-4A96-8BBD-866FCC3AB125",
+    "name": "c1-boundary",
+    "started": 1792686143.853,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686144.0391948
+  },
+  {
+    "time": "1792686146.350934",
+    "name": "c1-preview",
+    "id": "8C216455-A74D-459A-BABE-1A82400604F2",
+    "started": 1792686146.387279,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686146.6056662
+  },
+  {
+    "time": "1792686153.4620929",
+    "id": "B4D4ABD0-44EF-4B14-8298-84871B645DE7",
+    "name": "c1-foreground",
+    "started": 1792686153.565336,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686153.737914
+  },
+  {
+    "name": "c1-confirmed",
+    "id": "C008BEE8-34A6-483B-96CE-637B5D56E4C7",
+    "time": "1792686160.07813",
+    "started": 1792686160.1014369,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686160.28922
+  },
+  {
+    "time": "1792686161.129014",
+    "id": "A450425B-1E97-4FD3-85A2-8BD7F21035D2",
+    "name": "c1-viewpoint",
+    "started": 1792686161.1672142,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686161.3623118
+  },
+  {
+    "id": "169A63B8-19A4-44DA-A077-706D30D5236E",
+    "name": "c1-returned-lattice",
+    "time": "1792686162.215249",
+    "started": 1792686162.217078,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686162.5502331
+  },
+  {
+    "time": "1792686166.907614",
+    "id": "F1B1218F-3925-438C-A653-68E645B80597",
+    "name": "c1-exited",
+    "started": 1792686166.920489,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686167.218378
+  },
+  {
+    "name": "c1-reentered",
+    "id": "53201645-10B3-4063-A50C-221246C2C500",
+    "time": "1792686171.923207",
+    "started": 1792686171.980884,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686172.2514172
+  },
+  {
+    "time": "1792686175.269219",
+    "id": "E016B7A2-0A3F-45E8-BBD8-36A76D42AB72",
+    "name": "c1-idle",
+    "started": 1792686175.3011909,
+    "exit": 0,
+    "error": null,
+    "finished": 1792686175.5473652
+  }
+]

@@ -1,84 +1,93 @@
 #!/usr/bin/env python3
-"""Run native UI tests while recording only the simulator display."""
-import datetime
+"""Run native tests with synchronized screenshots in a disposable simulator."""
+import argparse
+import json
 import os
 from pathlib import Path
 import signal
 import subprocess
-import sys
-import time
+import tempfile
 
-root = Path(__file__).resolve().parent.parent
-os.chdir(root)
-env = dict(os.environ, PATH="/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin")
-udid = env.get("SIMULATOR_UDID", "D2ECE520-ED92-4A38-A990-AE65431DF562")
-stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-evidence = root / "evidence"
-evidence.mkdir(exist_ok=True)
-command = ["xcodebuild", "-project", "FareyVision.xcodeproj", "-scheme", "FareyVision",
-           "-destination", f"platform=visionOS Simulator,id={udid}",
-           "-derivedDataPath", ".derivedData-native", "-parallel-testing-enabled", "NO",
-           "-jobs", "3", "-resultBundlePath", str(evidence / f"Simulator-{stamp}.xcresult"),
-           "CODE_SIGNING_ALLOWED=NO", "test", *sys.argv[1:]]
-video = evidence / f"tour-{stamp}.mp4"
-record_log_path = evidence / f"record-{stamp}.log"
-record_log = record_log_path.open("w")
-recorder = subprocess.Popen(["xcrun", "simctl", "io", udid, "recordVideo", "--codec=h264", str(video)],
-                            env=env, stdout=record_log, stderr=subprocess.STDOUT)
-process = None
-result = 1
-recording_ready = False
+from capture_coordinator import CaptureCoordinator, enable_capture
 
-def timeout_handler(signum, frame):
-    raise TimeoutError("Simulator test run exceeded five minutes")
 
-signal.signal(signal.SIGALRM, timeout_handler)
-signal.alarm(300)
-try:
-    # A busy or unavailable recorder must not be reported as a saved video.
-    for _ in range(150):
-        if "Recording started" in record_log_path.read_text():
-            recording_ready = True
-            break
-        if recorder.poll() is not None:
-            raise RuntimeError(record_log_path.read_text().strip())
-        time.sleep(0.1)
-    if not recording_ready:
-        raise RuntimeError("The simulator recorder did not become ready within 15 seconds")
-    with (evidence / f"simulator-{stamp}.log").open("w") as log:
-        process = subprocess.Popen(command, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, start_new_session=True)
-        for line in process.stdout:
-            log.write(line)
-            log.flush()
-            if any(token in line for token in ["Test Case", "TEST SUCCEEDED", "TEST FAILED", "error:", "FAREY_CAPTURE"]):
-                print(line, end="", flush=True)
-            if "Test Suite 'Selected tests' failed" in line or "Test Suite 'All tests' failed" in line:
-                break
-        else:
-            result = process.wait()
-except (TimeoutError, RuntimeError) as error:
-    print(error, flush=True)
-    result = 124
-finally:
-    signal.alarm(0)
-    if process is not None and process.poll() is None:
-        os.killpg(process.pid, signal.SIGTERM)
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--simulator", help="Use an existing simulator instead of creating one")
+    parser.add_argument("--output", type=Path, help="A new output directory")
+    parser.add_argument("--only-testing", action="append", default=[])
+    args = parser.parse_args()
+    source = Path(__file__).resolve().parent.parent
+    os.environ["PATH"] = "/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin"
+    output = args.output.resolve() if args.output else Path(tempfile.mkdtemp(prefix="farey-capture-"))
+    output.mkdir(parents=True, exist_ok=True)
+    if any(output.iterdir()):
+        raise SystemExit("Choose a new output directory; existing evidence is not overwritten")
+    build = Path(subprocess.check_output(
+        ["python3", str(source / "scripts/prepare-local-build.py")], text=True).strip())
+    simulator = args.simulator or subprocess.check_output(
+        ["xcrun", "simctl", "create", "Farey Capture Check",
+         "com.apple.CoreSimulator.SimDeviceType.Apple-Vision-Pro-4K",
+         "com.apple.CoreSimulator.SimRuntime.xrOS-27-2"], text=True).strip()
+    state = {"buildRoot": str(build), "simulator": simulator, "screenshotsSynchronized": True}
+    coordinator = None
+    process = None
+    try:
+        if not args.simulator:
+            subprocess.run(["xcrun", "simctl", "boot", simulator], check=True)
+        subprocess.run(["xcrun", "simctl", "bootstatus", simulator, "-b"], check=True)
+        common = ["xcodebuild", "-project", str(build / "FareyVision.xcodeproj"),
+                  "-scheme", "FareyVision", "-destination", "platform=visionOS Simulator,id=" + simulator,
+                  "-derivedDataPath", str(build / "DerivedData"), "-jobs", "2",
+                  "-parallel-testing-enabled", "NO", "CODE_SIGNING_ALLOWED=NO"]
+        with (output / "build.log").open("w") as log:
+            subprocess.run(common + ["build-for-testing"], stdout=log, stderr=subprocess.STDOUT, check=True)
+        candidates = list((build / "DerivedData/Build/Products").glob("*.xctestrun"))
+        if len(candidates) != 1:
+            raise RuntimeError("Expected one generated .xctestrun file")
+        configured = candidates[0].parent / "Captured.xctestrun"
+        enable_capture(candidates[0], configured)
+        coordinator = CaptureCoordinator(simulator, output / "screenshots")
+        coordinator.start()
+        result = output / "Tests.xcresult"
+        command = ["xcodebuild", "test-without-building", "-xctestrun", str(configured),
+                   "-destination", "platform=visionOS Simulator,id=" + simulator,
+                   "-parallel-testing-enabled", "NO", "-jobs", "2",
+                   "-collect-test-diagnostics", "never", "-resultBundlePath", str(result)]
+        command += ["-only-testing:" + target for target in args.only_testing]
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                   text=True, start_new_session=True)
+        with (output / "test.log").open("w") as log:
+            for line in process.stdout:
+                log.write(line)
+                log.flush()
+                if "Test Case" in line or "error:" in line or "** TEST" in line:
+                    print(line.rstrip(), flush=True)
+        state["testExit"] = process.wait()
+        completed_coordinator, coordinator = coordinator, None
+        completed_coordinator.stop()
+        with (output / "test-summary.json").open("w") as summary:
+            subprocess.run(["xcrun", "xcresulttool", "get", "test-results", "summary", "--path", str(result)],
+                           stdout=summary, check=True)
+        print("Evidence: " + str(output), flush=True)
+        return state["testExit"]
+    finally:
         try:
-            process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            os.killpg(process.pid, signal.SIGKILL)
-    if recorder.poll() is None:
-        recorder.send_signal(signal.SIGINT)
-        try:
-            recorder.wait(timeout=120)
-        except subprocess.TimeoutExpired:
-            # Killing simctl during finalization can orphan the render-server recording.
-            print(f"Recording is still finalizing (PID {recorder.pid}); wait for it before recording again.", flush=True)
-            result = 1
-    record_log.close()
-if recording_ready and recorder.poll() == 0 and video.exists() and video.stat().st_size > 0:
-    print(f"Simulator recording: {video}", flush=True)
-else:
-    print(f"No completed recording. Inspect {record_log_path}", flush=True)
-    result = 1
-sys.exit(result)
+            if process is not None and process.poll() is None:
+                os.killpg(process.pid, signal.SIGTERM)
+                try:
+                    process.wait(timeout=15)
+                except subprocess.TimeoutExpired:
+                    os.killpg(process.pid, signal.SIGKILL)
+                    process.wait()
+            if coordinator is not None:
+                coordinator.stop()
+        finally:
+            (output / "run.json").write_text(json.dumps(state, indent=2) + "\n")
+            if not args.simulator:
+                subprocess.run(["xcrun", "simctl", "shutdown", simulator], check=False)
+                subprocess.run(["xcrun", "simctl", "delete", simulator], check=False)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

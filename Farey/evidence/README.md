@@ -1,3 +1,7 @@
+# Lifecycle capture audit — native 0.8
+
+[Findings and reproduction](../LIFECYCLE_CAPTURE_AUDIT.md) · [Evidence](lifecycle-capture/README.md).
+
 # Current integration — native 0.8 / browser 0.7.0
 
 [Integration results](../INTEGRATION_08.md) · [Current main showcase](integration-08/main-08-restored.png) · [Current chooser](integration-08/49-chooser-idle-start.png).
@@ -149,7 +153,7 @@ Environment: Xcode 27.2 beta 2 (27B5028f), visionOS simulator 27.2 (24N5093f), A
 | [24-move limit](08-move-limit.png) | Full fraction remains legible, determinant 1, L/R disabled |
 | [Viewer left](10-viewer-left.png), [viewer right](11-viewer-right.png), [closer](12-viewer-near.png) | Independent camera translation, intact world-space geometry and readable controls |
 
-[Frame manifest](frame-manifest.json) records timestamps in the raw simulator recording. The final passing suite occurred within a continuous simulator-only recording that was finalized after a simulator restart. The curated clip and PNGs are from that suite, not reconstructed mockups. Raw movies, logs and `.xcresult` bundles remain local and are excluded from Git. Reproduce using `scripts/test-simulator.sh` or `scripts/capture-tests.py`.
+[Frame manifest](frame-manifest.json) records timestamps in the raw simulator recording. The final passing suite occurred within a continuous simulator-only recording that was finalized after a simulator restart. The curated clip and PNGs are from that suite, not reconstructed mockups. Raw movies, logs and `.xcresult` bundles remain local and are excluded from Git. These are historical outputs. Current tools separate video from still images and synchronize still acquisition; see the [capture audit](../LIFECYCLE_CAPTURE_AUDIT.md). Older log-triggered frame labels do not establish exact transition timing.
 
 ## Fixes found through simulation
 

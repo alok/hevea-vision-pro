@@ -1,0 +1,38 @@
+{
+  "nativeSuite": {
+    "passed": 28,
+    "failed": 0
+  },
+  "configurationTests": {
+    "passed": 3
+  },
+  "captureCount": 62,
+  "allCaptureCommandsSucceeded": true,
+  "runtimeVersion": "0.8",
+  "runtimeBuild": "10",
+  "runtimeSourceChanged": false,
+  "simulator": "visionOS 27.2",
+  "hardwareTested": false,
+  "actualWebXRSession": false,
+  "captureCompositorCauseResolved": false,
+  "exportedLifecycleAttachments": {
+    "images": 21,
+    "pixelSizes": [
+      [
+        3840,
+        2160
+      ]
+    ]
+  },
+  "videoTour": {
+    "passed": 1,
+    "failed": 0,
+    "stillImagesRequested": false
+  },
+  "mainShowcasePreserved": {
+    "version": "0.8",
+    "build": "10",
+    "target": "3/5",
+    "viewpoint": "Left"
+  }
+}

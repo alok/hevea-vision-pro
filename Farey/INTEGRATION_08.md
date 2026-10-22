@@ -1,5 +1,7 @@
 # Current integration check — native 0.8 / browser 0.7.0
 
+The subsequent [lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) investigates the visual uncertainty below and corrects screenshot synchronization. This page retains the earlier measurements.
+
 The application implementation is commit `665e54fb6839563ba9ead173e21a720cea10648d`. This integration pass adds regression coverage and corrects stale evidence labels; it does not add mathematical features. Native display name: **Farey — Into the Infinite**, bundle `com.alok.FareyVision`, build **10**.
 
 ## Main simulator

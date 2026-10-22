@@ -1,0 +1,186 @@
+[
+  {
+    "name": "entry",
+    "markerAt": 1792685820.111769,
+    "readAt": 1792685820.116727,
+    "captureFinishedAt": 1792685820.4334269,
+    "readLagSeconds": 0.004958152770996094,
+    "finishedAfterMarkerSeconds": 0.3216578960418701
+  },
+  {
+    "name": "c0-lattice",
+    "markerAt": 1792685826.595168,
+    "readAt": 1792685826.596224,
+    "captureFinishedAt": 1792685826.8531651,
+    "readLagSeconds": 0.0010559558868408203,
+    "finishedAfterMarkerSeconds": 0.2579970359802246
+  },
+  {
+    "name": "c0-boundary",
+    "markerAt": 1792685827.41117,
+    "readAt": 1792685827.412679,
+    "captureFinishedAt": 1792685837.651316,
+    "readLagSeconds": 0.001508951187133789,
+    "finishedAfterMarkerSeconds": 10.240145921707153
+  },
+  {
+    "name": "c0-preview",
+    "markerAt": 1792685829.544578,
+    "readAt": 1792685837.6514719,
+    "captureFinishedAt": 1792685843.496195,
+    "readLagSeconds": 8.10689377784729,
+    "finishedAfterMarkerSeconds": 13.951617002487183
+  },
+  {
+    "name": "c0-home",
+    "markerAt": 1792685830.009145,
+    "readAt": 1792685843.496511,
+    "captureFinishedAt": null,
+    "readLagSeconds": 13.487365961074829,
+    "finishedAfterMarkerSeconds": 13.487365961074829
+  },
+  {
+    "name": "c0-foreground",
+    "markerAt": 1792685834.978717,
+    "readAt": 1792685843.496617,
+    "captureFinishedAt": 1792685844.541376,
+    "readLagSeconds": 8.517899990081787,
+    "finishedAfterMarkerSeconds": 9.56265902519226
+  },
+  {
+    "name": "c0-confirmed",
+    "markerAt": 1792685841.24673,
+    "readAt": 1792685844.542912,
+    "captureFinishedAt": 1792685845.126794,
+    "readLagSeconds": 3.2961819171905518,
+    "finishedAfterMarkerSeconds": 3.880064010620117
+  },
+  {
+    "name": "c0-viewpoint",
+    "markerAt": 1792685842.102793,
+    "readAt": 1792685845.127251,
+    "captureFinishedAt": 1792685846.719604,
+    "readLagSeconds": 3.0244579315185547,
+    "finishedAfterMarkerSeconds": 4.616811037063599
+  },
+  {
+    "name": "c0-returned-lattice",
+    "markerAt": 1792685843.011137,
+    "readAt": 1792685846.719826,
+    "captureFinishedAt": 1792685847.1332328,
+    "readLagSeconds": 3.708688974380493,
+    "finishedAfterMarkerSeconds": 4.122095823287964
+  },
+  {
+    "name": "c0-exited",
+    "markerAt": 1792685847.386563,
+    "readAt": 1792685847.386684,
+    "captureFinishedAt": 1792685850.530782,
+    "readLagSeconds": 0.00012087821960449219,
+    "finishedAfterMarkerSeconds": 3.144218921661377
+  },
+  {
+    "name": "c0-reentered",
+    "markerAt": 1792685852.315827,
+    "readAt": 1792685852.3161962,
+    "captureFinishedAt": 1792685853.7769542,
+    "readLagSeconds": 0.0003693103790283203,
+    "finishedAfterMarkerSeconds": 1.4611272811889648
+  },
+  {
+    "name": "c0-idle",
+    "markerAt": 1792685855.323145,
+    "readAt": 1792685855.325061,
+    "captureFinishedAt": 1792685862.5996318,
+    "readLagSeconds": 0.0019161701202392578,
+    "finishedAfterMarkerSeconds": 7.276486873626709
+  },
+  {
+    "name": "c1-lattice",
+    "markerAt": 1792685856.983783,
+    "readAt": 1792685862.6002119,
+    "captureFinishedAt": 1792685862.929373,
+    "readLagSeconds": 5.616428852081299,
+    "finishedAfterMarkerSeconds": 5.945590019226074
+  },
+  {
+    "name": "c1-boundary",
+    "markerAt": 1792685857.848216,
+    "readAt": 1792685862.929489,
+    "captureFinishedAt": 1792685863.1258922,
+    "readLagSeconds": 5.081272840499878,
+    "finishedAfterMarkerSeconds": 5.277676105499268
+  },
+  {
+    "name": "c1-preview",
+    "markerAt": 1792685860.094695,
+    "readAt": 1792685863.1260428,
+    "captureFinishedAt": 1792685863.718795,
+    "readLagSeconds": 3.0313477516174316,
+    "finishedAfterMarkerSeconds": 3.6240999698638916
+  },
+  {
+    "name": "c1-home",
+    "markerAt": 1792685860.564525,
+    "readAt": 1792685863.718932,
+    "captureFinishedAt": null,
+    "readLagSeconds": 3.154407024383545,
+    "finishedAfterMarkerSeconds": 3.154407024383545
+  },
+  {
+    "name": "c1-foreground",
+    "markerAt": 1792685865.685111,
+    "readAt": 1792685865.685759,
+    "captureFinishedAt": 1792685866.204221,
+    "readLagSeconds": 0.0006480216979980469,
+    "finishedAfterMarkerSeconds": 0.5191099643707275
+  },
+  {
+    "name": "c1-confirmed",
+    "markerAt": 1792685871.960572,
+    "readAt": 1792685871.962264,
+    "captureFinishedAt": 1792685878.719465,
+    "readLagSeconds": 0.001692056655883789,
+    "finishedAfterMarkerSeconds": 6.758893013000488
+  },
+  {
+    "name": "c1-viewpoint",
+    "markerAt": 1792685872.797098,
+    "readAt": 1792685878.7199318,
+    "captureFinishedAt": 1792685879.033785,
+    "readLagSeconds": 5.9228339195251465,
+    "finishedAfterMarkerSeconds": 6.236687183380127
+  },
+  {
+    "name": "c1-returned-lattice",
+    "markerAt": 1792685873.697789,
+    "readAt": 1792685879.0338922,
+    "captureFinishedAt": 1792685879.550088,
+    "readLagSeconds": 5.336103200912476,
+    "finishedAfterMarkerSeconds": 5.852298974990845
+  },
+  {
+    "name": "c1-exited",
+    "markerAt": 1792685878.107413,
+    "readAt": 1792685879.550265,
+    "captureFinishedAt": 1792685879.9196632,
+    "readLagSeconds": 1.4428520202636719,
+    "finishedAfterMarkerSeconds": 1.8122501373291016
+  },
+  {
+    "name": "c1-reentered",
+    "markerAt": 1792685882.888361,
+    "readAt": 1792685882.888566,
+    "captureFinishedAt": 1792685883.137162,
+    "readLagSeconds": 0.00020503997802734375,
+    "finishedAfterMarkerSeconds": 0.24880099296569824
+  },
+  {
+    "name": "c1-idle",
+    "markerAt": 1792685885.897298,
+    "readAt": 1792685885.8976908,
+    "captureFinishedAt": 1792685886.118449,
+    "readLagSeconds": 0.00039267539978027344,
+    "finishedAfterMarkerSeconds": 0.22115087509155273
+  }
+]

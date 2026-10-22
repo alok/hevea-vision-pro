@@ -42,7 +42,7 @@ On 2026-10-22, the [live source viewer](https://katestange.net/talks/math-explor
 
 At the time of these recordings, the transition between the disk and lattice was missing. The later [optional construction](CONSTRUCTION.md) and [projected-selection chooser](PROJECTED_SELECTION.md) address that teaching sequence. The recordings above have not been replaced with footage of those features. Extending the selectable signed domain remains separate work.
 
-## Reproduce capture
+## Repeat the procedure on the current version
 
 From `Farey`, with the existing Xcode/visionOS runtime:
 
@@ -55,7 +55,7 @@ ffmpeg -i /tmp/farey-demo-new/native-raw.mp4 \
   /tmp/farey-demo-new/native-demo.mp4
 ```
 
-The helper appends `scripts/demo-tour.swift` only to a temporary build's existing UI-test source. It creates a disposable simulator, starts recording after the entry window appears, asserts the demonstrated states, then removes that simulator. It refuses to overwrite an existing raw video and does not modify ordinary app/test sources.
+The helper appends `scripts/demo-tour.swift` only to a temporary build's existing UI-test source. It creates a disposable simulator, starts recording before test execution, asserts the demonstrated states, then removes that simulator. It refuses to overwrite an existing raw video and does not modify ordinary app/test sources. Current video runs request no still images; use the separate [synchronized capture tool](LIFECYCLE_CAPTURE_AUDIT.md) for those. This command records the current checkout, not the historical versions above.
 
 For the browser, start `npm start` in `WebXR`, then use the existing Playwright CLI from the same working directory:
 

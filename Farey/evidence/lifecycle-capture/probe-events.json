@@ -1,0 +1,998 @@
+[
+  {
+    "timestamp": "2026-10-22 09:21:44.571977-0700",
+    "event": "Open requested session 1"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:44.906092-0700",
+    "event": "PROBE task session=1 open=false disk=9625240273295552873 lattice=6943441589821689961"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:44.906184-0700",
+    "event": "Immersive view appeared session 1"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:44.906821-0700",
+    "event": "PROBE make disk=9625240273295552873 lattice=6943441589821689961"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:44.910832-0700",
+    "event": "PROBE made disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:44.913239-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:44.917637-0700",
+    "event": "Open completed session 1"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:45.032658-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:45.033632-0700",
+    "event": "PROBE task session=1 open=true disk=9625240273295552873 lattice=6943441589821689961"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:45.091059-0700",
+    "event": "Rendered session 1: 168 lattice points \u00b7 12 on the rational ray \u00b7 0.057118 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:45.275590-0700",
+    "event": "PROBE frame session=1 revision=0 open=true stage=nil word=Start id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:45.370826-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:45.409586-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:45.781869-0700",
+    "event": "PROBE frame session=1 revision=0 open=true stage=nil word=Start id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:46.287513-0700",
+    "event": "PROBE frame session=1 revision=0 open=true stage=nil word=Start id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:46.798564-0700",
+    "event": "PROBE frame session=1 revision=0 open=true stage=nil word=Start id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:47.304271-0700",
+    "event": "PROBE frame session=1 revision=0 open=true stage=nil word=Start id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:47.815318-0700",
+    "event": "PROBE frame session=1 revision=0 open=true stage=nil word=Start id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:47.836146-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:47.836375-0700",
+    "event": "PROBE task session=1 open=true disk=9625240273295552873 lattice=6943441589821689961"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:47.846469-0700",
+    "event": "Rendered session 1: 168 lattice points \u00b7 12 on the rational ray \u00b7 0.009961917 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:48.322469-0700",
+    "event": "PROBE frame session=1 revision=2 open=true stage=nil word=Start id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:48.821896-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:48.822074-0700",
+    "event": "PROBE task session=1 open=true disk=9625240273295552873 lattice=6943441589821689961"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:48.830034-0700",
+    "event": "Rendered session 1: 168 lattice points \u00b7 2 on the rational ray \u00b7 0.007839 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:48.847448-0700",
+    "event": "PROBE frame session=1 revision=3 open=true stage=nil word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:49.354663-0700",
+    "event": "PROBE frame session=1 revision=3 open=true stage=nil word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:49.865386-0700",
+    "event": "PROBE frame session=1 revision=3 open=true stage=nil word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:49.934360-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:49.934559-0700",
+    "event": "PROBE task session=1 open=true disk=9625240273295552873 lattice=6943441589821689961"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:49.946905-0700",
+    "event": "Rendered session 1: 92 projected direction dots \u00b7 q = 1 \u00b7 source grid: 168 points"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:50.380347-0700",
+    "event": "PROBE frame session=1 revision=4 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:50.881892-0700",
+    "event": "PROBE frame session=1 revision=4 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:51.388021-0700",
+    "event": "PROBE frame session=1 revision=4 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:51.898758-0700",
+    "event": "PROBE frame session=1 revision=4 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:52.404166-0700",
+    "event": "PROBE frame session=1 revision=4 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:52.915276-0700",
+    "event": "PROBE frame session=1 revision=4 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:53.420900-0700",
+    "event": "PROBE frame session=1 revision=4 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:53.478630-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:53.488447-0700",
+    "event": "PROBE phase=inactive session=1"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:53.763163-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:53.764700-0700",
+    "event": "PROBE phase=background session=1"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:53.931941-0700",
+    "event": "PROBE frame session=1 revision=4 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=9625240273295552873,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=6943441589821689961,scene=true,active=false,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=12530902699551315227,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1691839994301661008),active=false,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:54.245847-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:54.249294-0700",
+    "event": "PROBE update disk=9625240273295552873 lattice=6943441589821689961 title=Optional(1691839994301661008)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:54.249518-0700",
+    "event": "Immersive view disappeared session 1"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.538555-0700",
+    "event": "Open requested session 2"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.720179-0700",
+    "event": "PROBE task session=2 open=false disk=11306619221284864328 lattice=7178637745813819346"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.720291-0700",
+    "event": "Immersive view appeared session 2"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.720353-0700",
+    "event": "PROBE make disk=11306619221284864328 lattice=7178637745813819346"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.720480-0700",
+    "event": "PROBE made disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.720815-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.724635-0700",
+    "event": "Open completed session 2"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.744826-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.745896-0700",
+    "event": "PROBE task session=2 open=true disk=11306619221284864328 lattice=7178637745813819346"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.763296-0700",
+    "event": "Rendered session 2: 92 projected direction dots \u00b7 q = 1 \u00b7 source grid: 168 points"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:56.873018-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:57.013668-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:57.198627-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:57.704154-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:58.215269-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:58.720905-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:59.265799-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:21:59.765312-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:00.270807-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:00.781941-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:01.287568-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:01.941304-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:02.448668-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:02.954710-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:03.489158-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:03.971835-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:04.481977-0700",
+    "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:04.654156-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:04.654324-0700",
+    "event": "PROBE task session=2 open=true disk=11306619221284864328 lattice=7178637745813819346"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:04.666213-0700",
+    "event": "Rendered session 2: 92 projected direction dots \u00b7 q = 1 \u00b7 source grid: 168 points"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:04.992339-0700",
+    "event": "PROBE frame session=2 revision=6 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:05.498643-0700",
+    "event": "PROBE frame session=2 revision=6 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:05.936442-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:05.936687-0700",
+    "event": "PROBE task session=2 open=true disk=11306619221284864328 lattice=7178637745813819346"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:05.945048-0700",
+    "event": "Rendered session 2: 92 projected direction dots \u00b7 q = 1 \u00b7 source grid: 168 points"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:06.005372-0700",
+    "event": "PROBE frame session=2 revision=7 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:06.515957-0700",
+    "event": "PROBE frame session=2 revision=7 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:07.021469-0700",
+    "event": "PROBE frame session=2 revision=7 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:07.077764-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:07.078154-0700",
+    "event": "PROBE task session=2 open=true disk=11306619221284864328 lattice=7178637745813819346"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:07.090523-0700",
+    "event": "Rendered session 2: 168 lattice points \u00b7 1 on the rational ray \u00b7 0.012270541 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:07.532033-0700",
+    "event": "PROBE frame session=2 revision=8 open=true stage=nil word=RLRRL id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.037589-0700",
+    "event": "PROBE frame session=2 revision=8 open=true stage=nil word=RLRRL id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.255358-0700",
+    "event": "Close requested session 2"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.271751-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.290591-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.292486-0700",
+    "event": "PROBE phase=inactive session=2"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.549106-0700",
+    "event": "PROBE frame session=2 revision=8 open=true stage=nil word=RLRRL id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.700679-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.702233-0700",
+    "event": "PROBE phase=background session=2"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.722978-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.724945-0700",
+    "event": "PROBE update disk=11306619221284864328 lattice=7178637745813819346 title=Optional(755882846593169314)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:08.727433-0700",
+    "event": "Close completed session 2"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:09.671844-0700",
+    "event": "Immersive view disappeared session 2"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:13.838560-0700",
+    "event": "Open requested session 3"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:13.993604-0700",
+    "event": "PROBE task session=3 open=false disk=5504870607523318986 lattice=154321138850709850"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:13.993690-0700",
+    "event": "Immersive view appeared session 3"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:13.993746-0700",
+    "event": "PROBE make disk=5504870607523318986 lattice=154321138850709850"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:13.993875-0700",
+    "event": "PROBE made disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:13.994147-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:13.999050-0700",
+    "event": "Open completed session 3"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:14.019738-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:14.020097-0700",
+    "event": "PROBE task session=3 open=true disk=5504870607523318986 lattice=154321138850709850"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:14.046480-0700",
+    "event": "Rendered session 3: 168 lattice points \u00b7 1 on the rational ray \u00b7 0.026289 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:14.155081-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:14.589450-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:14.601349-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:15.098645-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:15.640390-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:16.115376-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:16.620959-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:17.131994-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:17.637554-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:18.148746-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:18.654264-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:19.165398-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:19.670977-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:20.181996-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:20.690810-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:21.198648-0700",
+    "event": "PROBE frame session=3 revision=9 open=true stage=nil word=RLRRL id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:21.296758-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:21.296933-0700",
+    "event": "PROBE task session=3 open=true disk=5504870607523318986 lattice=154321138850709850"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:21.312164-0700",
+    "event": "Rendered session 3: 168 lattice points \u00b7 12 on the rational ray \u00b7 0.015070541 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:21.724793-0700",
+    "event": "PROBE frame session=3 revision=11 open=true stage=nil word=Start id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:22.137492-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:22.137695-0700",
+    "event": "PROBE task session=3 open=true disk=5504870607523318986 lattice=154321138850709850"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:22.146141-0700",
+    "event": "Rendered session 3: 168 lattice points \u00b7 2 on the rational ray \u00b7 0.008296375 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:22.231995-0700",
+    "event": "PROBE frame session=3 revision=12 open=true stage=nil word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:22.738922-0700",
+    "event": "PROBE frame session=3 revision=12 open=true stage=nil word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:23.272603-0700",
+    "event": "PROBE frame session=3 revision=12 open=true stage=nil word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:23.646226-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:23.646529-0700",
+    "event": "PROBE task session=3 open=true disk=5504870607523318986 lattice=154321138850709850"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:23.653749-0700",
+    "event": "Rendered session 3: 92 projected direction dots \u00b7 q = 1 \u00b7 source grid: 168 points"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:23.782012-0700",
+    "event": "PROBE frame session=3 revision=13 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:24.300772-0700",
+    "event": "PROBE frame session=3 revision=13 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:24.798698-0700",
+    "event": "PROBE frame session=3 revision=13 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:25.305529-0700",
+    "event": "PROBE frame session=3 revision=13 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:25.827337-0700",
+    "event": "PROBE frame session=3 revision=13 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:26.327224-0700",
+    "event": "PROBE frame session=3 revision=13 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:26.831998-0700",
+    "event": "PROBE frame session=3 revision=13 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:26.909513-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:26.911474-0700",
+    "event": "PROBE phase=inactive session=3"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:27.191604-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:27.193515-0700",
+    "event": "PROBE phase=background session=3"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:27.337563-0700",
+    "event": "PROBE frame session=3 revision=13 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=5504870607523318986,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=154321138850709850,scene=true,active=false,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=342585366896276298,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(12187024347530446426),active=false,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:27.686141-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:27.687921-0700",
+    "event": "PROBE update disk=5504870607523318986 lattice=154321138850709850 title=Optional(12187024347530446426)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:27.712057-0700",
+    "event": "Immersive view disappeared session 3"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.089832-0700",
+    "event": "Open requested session 4"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.244802-0700",
+    "event": "PROBE task session=4 open=false disk=7532704041953664323 lattice=16729878355637343989"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.244906-0700",
+    "event": "Immersive view appeared session 4"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.244975-0700",
+    "event": "PROBE make disk=7532704041953664323 lattice=16729878355637343989"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.245161-0700",
+    "event": "PROBE made disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.245445-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.251052-0700",
+    "event": "Open completed session 4"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.271870-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.272217-0700",
+    "event": "PROBE task session=4 open=true disk=7532704041953664323 lattice=16729878355637343989"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.298047-0700",
+    "event": "Rendered session 4: 92 projected direction dots \u00b7 q = 1 \u00b7 source grid: 168 points"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.417184-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.886769-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:30.898476-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:31.398666-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:31.933920-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:32.432204-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:32.937648-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:33.448670-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:34.127789-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:34.632063-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:35.462702-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:35.648700-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:36.154269-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:36.822108-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:37.331994-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:37.838154-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:38.348712-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:38.854314-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:39.378226-0700",
+    "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:39.734875-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:39.738716-0700",
+    "event": "PROBE task session=4 open=true disk=7532704041953664323 lattice=16729878355637343989"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:39.745198-0700",
+    "event": "Rendered session 4: 92 projected direction dots \u00b7 q = 1 \u00b7 source grid: 168 points"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:39.882019-0700",
+    "event": "PROBE frame session=4 revision=15 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:40.390790-0700",
+    "event": "PROBE frame session=4 revision=15 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:40.898778-0700",
+    "event": "PROBE frame session=4 revision=15 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:40.937153-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:40.937361-0700",
+    "event": "PROBE task session=4 open=true disk=7532704041953664323 lattice=16729878355637343989"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:40.943717-0700",
+    "event": "Rendered session 4: 92 projected direction dots \u00b7 q = 1 \u00b7 source grid: 168 points"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:41.408798-0700",
+    "event": "PROBE frame session=4 revision=16 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:41.915425-0700",
+    "event": "PROBE frame session=4 revision=16 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:42.027176-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:42.027378-0700",
+    "event": "PROBE task session=4 open=true disk=7532704041953664323 lattice=16729878355637343989"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:42.036769-0700",
+    "event": "Rendered session 4: 168 lattice points \u00b7 1 on the rational ray \u00b7 0.009297041 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:42.421463-0700",
+    "event": "PROBE frame session=4 revision=17 open=true stage=nil word=RLRRL id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:42.932064-0700",
+    "event": "PROBE frame session=4 revision=17 open=true stage=nil word=RLRRL id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:43.271329-0700",
+    "event": "Close requested session 4"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:43.292010-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:43.294053-0700",
+    "event": "PROBE phase=inactive session=4"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:43.438274-0700",
+    "event": "PROBE frame session=4 revision=17 open=true stage=nil word=RLRRL id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:43.719216-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:43.721034-0700",
+    "event": "PROBE phase=background session=4"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:43.747232-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:43.748766-0700",
+    "event": "PROBE update disk=7532704041953664323 lattice=16729878355637343989 title=Optional(1525426757309133646)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:43.751035-0700",
+    "event": "Close completed session 4"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:44.767730-0700",
+    "event": "Immersive view disappeared session 4"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:48.771904-0700",
+    "event": "Open requested session 5"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:48.929507-0700",
+    "event": "PROBE task session=5 open=false disk=13915394023077861972 lattice=5494825962392431007"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:48.929595-0700",
+    "event": "Immersive view appeared session 5"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:48.929669-0700",
+    "event": "PROBE make disk=13915394023077861972 lattice=5494825962392431007"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:48.929787-0700",
+    "event": "PROBE made disk=13915394023077861972 lattice=5494825962392431007 title=Optional(13840091408127903497)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:48.930062-0700",
+    "event": "PROBE update disk=13915394023077861972 lattice=5494825962392431007 title=Optional(13840091408127903497)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:48.935778-0700",
+    "event": "Open completed session 5"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:48.957021-0700",
+    "event": "PROBE update disk=13915394023077861972 lattice=5494825962392431007 title=Optional(13840091408127903497)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:48.957367-0700",
+    "event": "PROBE task session=5 open=true disk=13915394023077861972 lattice=5494825962392431007"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:48.988429-0700",
+    "event": "Rendered session 5: 168 lattice points \u00b7 1 on the rational ray \u00b7 0.030978542 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:49.099555-0700",
+    "event": "PROBE update disk=13915394023077861972 lattice=5494825962392431007 title=Optional(13840091408127903497)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:49.546002-0700",
+    "event": "PROBE update disk=13915394023077861972 lattice=5494825962392431007 title=Optional(13840091408127903497)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:49.556936-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:50.065353-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:50.579715-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:51.082063-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:51.587841-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:52.098745-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:52.604405-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:53.115500-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:53.621141-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:54.132118-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:54.637848-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:55.148800-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:55.666093-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:56.165494-0700",
+    "event": "PROBE frame session=5 revision=18 open=true stage=nil word=RLRRL id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.45, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:56.205403-0700",
+    "event": "PROBE update disk=13915394023077861972 lattice=5494825962392431007 title=Optional(13840091408127903497)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:56.205670-0700",
+    "event": "PROBE task session=5 open=true disk=13915394023077861972 lattice=5494825962392431007"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:56.220117-0700",
+    "event": "Rendered session 5: 168 lattice points \u00b7 12 on the rational ray \u00b7 0.014317916 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:56.671452-0700",
+    "event": "PROBE frame session=5 revision=20 open=true stage=nil word=Start id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:57.071025-0700",
+    "event": "Close requested session 5"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:57.091840-0700",
+    "event": "PROBE update disk=13915394023077861972 lattice=5494825962392431007 title=Optional(13840091408127903497)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:57.093644-0700",
+    "event": "PROBE phase=inactive session=5"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:57.182080-0700",
+    "event": "PROBE frame session=5 revision=20 open=true stage=nil word=Start id=13915394023077861972,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=5494825962392431007,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=5838442394521178786,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(13840091408127903497),active=true,scene=true"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:57.514061-0700",
+    "event": "PROBE update disk=13915394023077861972 lattice=5494825962392431007 title=Optional(13840091408127903497)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:57.515967-0700",
+    "event": "PROBE phase=background session=5"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:57.541152-0700",
+    "event": "PROBE update disk=13915394023077861972 lattice=5494825962392431007 title=Optional(13840091408127903497)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:57.543025-0700",
+    "event": "PROBE update disk=13915394023077861972 lattice=5494825962392431007 title=Optional(13840091408127903497)"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:57.545270-0700",
+    "event": "Close completed session 5"
+  },
+  {
+    "timestamp": "2026-10-22 09:22:58.483559-0700",
+    "event": "Immersive view disappeared session 5"
+  }
+]

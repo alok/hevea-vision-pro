@@ -1,0 +1,38 @@
+{
+  "sampledFrames": 108,
+  "makeRootPairs": 5,
+  "renderTaskRootPairs": 5,
+  "allRenderTaskPairsWereAttached": true,
+  "captureSamples": [
+    {
+      "name": "c0-foreground",
+      "captureStarted": 1792686118.611962,
+      "captureFinished": 1792686118.839178,
+      "nearestFrameDeltaSeconds": 0.10894298553466797,
+      "frame": {
+        "timestamp": "2026-10-22 09:21:58.720905-0700",
+        "event": "PROBE frame session=2 revision=5 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=11306619221284864328,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=7178637745813819346,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=17370317872440601515,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(755882846593169314),active=true,scene=true"
+      }
+    },
+    {
+      "name": "c1-foreground",
+      "captureStarted": 1792686153.565336,
+      "captureFinished": 1792686153.737914,
+      "nearestFrameDeltaSeconds": -0.11666607856750488,
+      "frame": {
+        "timestamp": "2026-10-22 09:22:33.448670-0700",
+        "event": "PROBE frame session=4 revision=14 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLR id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+      }
+    },
+    {
+      "name": "c1-confirmed",
+      "captureStarted": 1792686160.1014369,
+      "captureFinished": 1792686160.28922,
+      "nearestFrameDeltaSeconds": -0.21941781044006348,
+      "frame": {
+        "timestamp": "2026-10-22 09:22:39.882019-0700",
+        "event": "PROBE frame session=4 revision=15 open=true stage=Optional(FareyVision.ConstructionStage.boundary) word=RLRRL id=7532704041953664323,scene=true,active=false,enabled=false,children=2,position=SIMD3<Float>(0.0, 1.8, -3.3) | id=16729878355637343989,scene=true,active=true,enabled=true,children=10,position=SIMD3<Float>(0.0, 1.8, -2.1) | id=11848982377901381479,scene=true,active=false,enabled=false,children=4,position=SIMD3<Float>(0.0, 0.0, 0.0) title=Optional(1525426757309133646),active=true,scene=true"
+      }
+    }
+  ]
+}

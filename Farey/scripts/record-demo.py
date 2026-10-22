@@ -2,11 +2,13 @@
 """Record an asserted app-only tour in a disposable visionOS simulator."""
 import argparse
 import json
-from pathlib import Path
+import datetime
 import re
+from pathlib import Path
 import signal
 import subprocess
 import time
+
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--output", type=Path, help="New capture directory; existing raw video is never overwritten")
@@ -24,7 +26,6 @@ sim = subprocess.check_output(["xcrun", "simctl", "create", "Farey Demo Recordin
     "com.apple.CoreSimulator.SimRuntime.xrOS-27-2"], text=True).strip()
 state = {"buildRoot": str(root), "simulator": sim, "markers": []}
 recorder = None
-started = None
 record_log = None
 process = None
 try:
@@ -35,45 +36,42 @@ try:
         "CODE_SIGNING_ALLOWED=NO"]
     with (output / "native-build.log").open("w") as log:
         subprocess.run(common + ["build-for-testing"], stdout=log, stderr=subprocess.STDOUT, check=True)
-    command = common + ["-only-testing:FareyVisionUITests/FareyUITests/testRecordedDemonstration",
-        "-resultBundlePath", str(root / "Demo.xcresult"), "test-without-building"]
+    record_log = (output / "native-record.log").open("w")
+    state["recordingCommandAt"] = time.time()
+    recorder = subprocess.Popen(["xcrun", "simctl", "io", sim, "recordVideo",
+        "--codec=h264", str(output / "native-raw.mp4")], stdout=record_log, stderr=subprocess.STDOUT)
+    for _ in range(150):
+        if "Recording started" in (output / "native-record.log").read_text():
+            break
+        if recorder.poll() is not None:
+            raise RuntimeError("Simulator recorder exited before capture")
+        time.sleep(0.1)
+    else:
+        raise RuntimeError("Simulator recorder did not become ready")
+    command = common + ["test-without-building", "-collect-test-diagnostics", "never",
+        "-only-testing:FareyVisionUITests/FareyUITests/testRecordedDemonstration",
+        "-resultBundlePath", str(root / "Demo.xcresult")]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
     with (output / "native-test.log").open("w") as log:
         for line in process.stdout:
             log.write(line)
             log.flush()
-            match = re.search(r"FAREY_CAPTURE:(demo-[A-Za-z0-9-]+)", line)
-            if match:
-                name = match[1]
-                if name == "demo-start-credit":
-                    record_log = (output / "native-record.log").open("w")
-                    recorder = subprocess.Popen(["xcrun", "simctl", "io", sim, "recordVideo",
-                        "--codec=h264", str(output / "native-raw.mp4")], stdout=record_log, stderr=subprocess.STDOUT)
-                    for _ in range(100):
-                        if "Recording started" in (output / "native-record.log").read_text():
-                            break
-                        if recorder.poll() is not None:
-                            raise RuntimeError("Simulator recorder exited before capture")
-                        time.sleep(0.1)
-                    else:
-                        raise RuntimeError("Simulator recorder did not become ready")
-                    started = time.monotonic()
-                if started is not None:
-                    state["markers"].append({"name": name, "seconds": round(time.monotonic() - started, 2)})
-                    if name == "demo-stop":
-                        recorder.send_signal(signal.SIGINT)
-                        recorder.wait(timeout=40)
-                    else:
-                        time.sleep(0.8)
-                        subprocess.run(["xcrun", "simctl", "io", sim, "screenshot", str(output / (name + ".png"))],
-                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=True)
-                print("Captured " + name, flush=True)
-            elif "Test Case" in line or "** TEST" in line or "error:" in line:
+            marker = re.search(r"FAREY_CAPTURE:(demo-[A-Za-z0-9-]+)", line)
+            timestamp = re.match(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d+[-+]\d{4})", line)
+            if marker and timestamp:
+                marker_time = datetime.datetime.strptime(timestamp[1], "%Y-%m-%d %H:%M:%S.%f%z").timestamp()
+                state["markers"].append({"name": marker[1], "markerAt": marker_time,
+                    "seconds": round(marker_time - state["recordingCommandAt"], 3)})
+            if "FAREY_CAPTURE:" in line or "Test Case" in line or "** TEST" in line or "error:" in line:
                 print(line.rstrip(), flush=True)
     state["testExit"] = process.wait()
+    state["stillImagesRequested"] = False
+    state["videoTimeReference"] = "Native marker timestamp relative to host recording command; first-frame alignment is approximate"
     state["resultBundle"] = str(root / "Demo.xcresult")
     if state["testExit"] != 0:
         raise RuntimeError("Recorded native walkthrough failed")
+    recorder.send_signal(signal.SIGINT)
+    recorder.wait(timeout=40)
     if recorder is None or recorder.returncode != 0 or not (output / "native-raw.mp4").stat().st_size:
         raise RuntimeError("No completed simulator recording")
 finally:

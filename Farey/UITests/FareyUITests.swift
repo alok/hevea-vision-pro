@@ -24,10 +24,6 @@ import XCTest
     }
     return e
   }
-  func capture(_ name: String, holdFor seconds: TimeInterval = 1) {
-    NSLog("FAREY_CAPTURE:%@", name)
-    Thread.sleep(forTimeInterval: seconds)
-  }
   func enter() {
     let button = require("enter-void")
     XCTAssertTrue(button.wait(for: \.isEnabled, toEqual: true, timeout: 20))

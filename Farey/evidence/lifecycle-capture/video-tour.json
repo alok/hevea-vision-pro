@@ -1,0 +1,92 @@
+{
+  "buildRoot": "/tmp/farey-build-wsk4eowc",
+  "simulator": "4DBB80BF-7B4D-4831-A2A0-A0746B800B8B",
+  "markers": [
+    {
+      "name": "demo-start-credit",
+      "markerAt": 1792687239.183502,
+      "seconds": 19.228
+    },
+    {
+      "name": "demo-lattice",
+      "markerAt": 1792687247.88506,
+      "seconds": 27.93
+    },
+    {
+      "name": "demo-lesson-L",
+      "markerAt": 1792687253.922028,
+      "seconds": 33.967
+    },
+    {
+      "name": "demo-lesson-R",
+      "markerAt": 1792687260.458225,
+      "seconds": 40.503
+    },
+    {
+      "name": "demo-point-reduction",
+      "markerAt": 1792687268.407287,
+      "seconds": 48.452
+    },
+    {
+      "name": "demo-oblique",
+      "markerAt": 1792687275.155334,
+      "seconds": 55.2
+    },
+    {
+      "name": "demo-canonical",
+      "markerAt": 1792687280.945056,
+      "seconds": 60.99
+    },
+    {
+      "name": "demo-intermediate-spotlight",
+      "markerAt": 1792687286.911559,
+      "seconds": 66.956
+    },
+    {
+      "name": "demo-alternate",
+      "markerAt": 1792687294.006895,
+      "seconds": 74.052
+    },
+    {
+      "name": "demo-linked-disk",
+      "markerAt": 1792687301.506904,
+      "seconds": 81.552
+    },
+    {
+      "name": "demo-exit",
+      "markerAt": 1792687309.968733,
+      "seconds": 90.013
+    },
+    {
+      "name": "demo-reentered",
+      "markerAt": 1792687317.308788,
+      "seconds": 97.354
+    },
+    {
+      "name": "demo-stop",
+      "markerAt": 1792687321.313863,
+      "seconds": 101.359
+    }
+  ],
+  "recordingCommandAt": 1792687219.955243,
+  "testExit": 0,
+  "stillImagesRequested": false,
+  "videoTimeReference": "Native marker timestamp relative to host recording command; first-frame alignment is approximate",
+  "resultBundle": "/tmp/farey-build-wsk4eowc/Demo.xcresult",
+  "appVersion": "0.8",
+  "appBuild": "10",
+  "rawSHA256": "abc608e64ce3a1193dc8f5d4d01f0da13156dbfc2588675829e2623faf70b303",
+  "uploaded": false,
+  "videoOnly": true,
+  "compactVideo": {
+    "localPath": "/tmp/farey-lifecycle-video-demo/native-demo-trimmed.mp4",
+    "sha256": "0a716170dd4c1342289a2e7532004180c1b6c1c72f13498a6bc86460b87a6ef1",
+    "bytes": 1210545,
+    "durationSeconds": 86,
+    "width": 1920,
+    "height": 1080,
+    "playbackFPS": 24,
+    "trimStartSeconds": 18,
+    "decodedWithoutErrors": true
+  }
+}

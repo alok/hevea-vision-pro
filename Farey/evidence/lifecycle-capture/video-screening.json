@@ -1,0 +1,57 @@
+{
+  "baseline": {
+    "markerAbsenceIntervals": [
+      [
+        0.0,
+        9.75
+      ],
+      [
+        15.5,
+        20.0
+      ],
+      [
+        29.5,
+        36.0
+      ],
+      [
+        46.0,
+        66.75
+      ],
+      [
+        73.25,
+        77.5
+      ]
+    ],
+    "sampleCount": 310
+  },
+  "video-only": {
+    "markerAbsenceIntervals": [
+      [
+        0.0,
+        10.75
+      ],
+      [
+        16.5,
+        21.0
+      ],
+      [
+        30.0,
+        36.5
+      ],
+      [
+        46.5,
+        51.0
+      ],
+      [
+        60.25,
+        66.75
+      ],
+      [
+        73.25,
+        77.75
+      ]
+    ],
+    "sampleCount": 311
+  },
+  "method": "4 Hz downscaled video; blue-dominant pixels in fixed right-hand marker region x=.64..88, y=.15..34; <5 pixels flags an absent sample. This avoids the center popover and is a screening measurement, not a complete visibility oracle."
+}

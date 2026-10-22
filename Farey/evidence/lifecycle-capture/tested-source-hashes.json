@@ -1,0 +1,21 @@
+{
+  "Sources/ConstructionControls.swift": "1f01bf53e1f71e2913f29515e7e4d584a9194b28cd931c9071a1842a088bf51a",
+  "Sources/ContinuedFractionView.swift": "a8d66b1f1a912ac17a98690da6edbc38149e262057d7fb9bbe9a9e1bacbacdc8",
+  "Sources/ControlsView.swift": "21488b9f8429505c789dd148d321cc400ae0fd6da5eb89bf95883841e45a255c",
+  "Sources/FareyImmersiveView.swift": "a227e534dad6330a087648b87d106de9574a17a50d4ad76b8404a1ebfbd0eeee",
+  "Sources/FareyVisionApp.swift": "acffbe1ce1b04d70f928db9a1c72336ae614db3e1af3df69815798c97dcbabc9",
+  "Sources/FractionEntryView.swift": "8967678bfe775eb3ef29ecc1a8c76f156bfa8a86337131bccbc6813f7bb2c645",
+  "Sources/LatticeRenderer.swift": "5f6105cd1622ea18f5f3e2cfb30f82dc1cae999d075f1658023402d129a79d37",
+  "Sources/LessonView.swift": "81761ec7d5aea5ac3aee1ec0013287d6d1749a402e39f33d00b905c4e379f76a",
+  "Sources/PointInspectionView.swift": "c1a5c4ceabd3b5d934a6107782145d7e8cfbc2a7b15db484ac5fea51329472cb",
+  "Sources/ProjectedSelectionView.swift": "16fb2d0c6d40b9c7f4edda7524034fb2bdc3359d1958f1b4e1c01f887ebe507b",
+  "Sources/SourcesView.swift": "f1eae9024cd1534a8e8ab8dc96e4f80f2d028fdb67618f2ec02a1d94c68c1255",
+  "Sources/SpotlightReadout.swift": "924594163f0bdc9d781d3b48ee5f2e5f3f448f2e8a40d49ff6df47a7f138004c",
+  "UITests/FareyUITests.swift": "db9a725eac4378c16ee0b5f99056a5f4fbf6e42cf9842603dda2ff3b296234d1",
+  "UITests/LifecycleUITests.swift": "22e0ef2d02a7e8bb5253c90c94da3b417f7f99f21b711806eca76bae13af327b",
+  "UITests/ProjectedSelectionUITests.swift": "366863bdb434d92c8610c7de1d6fc50cbc46ca70e53242fecf42e7ae70e5b663",
+  "UITests/SimulatorCapture.swift": "5a949b3d1d7a81ad1cbdecb725cd266c314ca3412f8e550886a7d5e19bb9a4f0",
+  "Tests/LatticeRendererTests.swift": "aacd1fe50ad8e12262bebdef185ed46d564b8888d71c3ca9685fa34389a4faa0",
+  "Tests/ModelTests.swift": "c34dc117358dfd734c6d42c17de345fc476e9d3980aa716ab0ac88a10d263d7e",
+  "Tests/ProjectedSelectionModelTests.swift": "26d5b495a4e80d82cc775c96dc4a2329aebd44b7b6c8f12a38f2e90d7f127310"
+}
