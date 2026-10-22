@@ -38,6 +38,17 @@ export function pairPlane(first,second) {
   // The normal polynomial n satisfies B_n(p) = n_b b − 2n_a c − 2n_c a = 0.
   const dual=([a,b,c])=>[-2n*c,b,-2n*a], raw=cross(dual(p),dual(q));
   if(raw.every(x=>x===0n))return {error:'These triples have the same primitive direction and root. Choose a different root.'};
+  const plane=planeFromNormal(raw);
+  if(plane.error)return plane;
+  return {...plane,firstPrimitive:primitive(p).map(Number),secondPrimitive:primitive(q).map(Number)};
+}
+
+// Lorentz-orthogonal plane of a normal n = (A,B,C) with Δ_n > 0: −2C·a + B·b − 2A·c = 0. Its geodesic
+// endpoints are the real roots of A t² + B t + C. Selecting an exterior triple in Stange's viewer uses
+// that triple as n; a pair of interior stars uses the cross product of their duals.
+export function planeFromNormal(normalInput) {
+  const raw=normalInput.map(BigInt);
+  if(raw.every(x=>x===0n))return {error:'The zero triple has no plane.'};
   const n=primitive(raw), [a,b,c]=n, delta=b*b-4n*a*c;
   if(delta<=0n)return {error:'These directions do not define a real geodesic.'};
   if(n.some(x=>x>BigInt(Number.MAX_SAFE_INTEGER)||x<-BigInt(Number.MAX_SAFE_INTEGER))||delta>BigInt(Number.MAX_SAFE_INTEGER))return {error:'This pair is too large for the finite renderer.'};
@@ -46,13 +57,21 @@ export function pairPlane(first,second) {
   else {
     const root=squareRoot(delta), exact=root*root===delta;
     endpoints=[-1n,1n].map(sign=>({
-      label:exact?rational(-b+sign*root,2n*a):`(${-b}${sign<0n?' − ':' + '}√${delta})/${2n*a}`,
+      label:exact?rational(-b+sign*root,2n*a):surd(-b,sign,delta,2n*a),
       value:(-Number(b)+Number(sign)*Math.sqrt(Number(delta)))/(2*Number(a))
     }));
   }
   const normal=n.map(Number);
-  return {normal,equation:planeEquation(normal),endpoints,
-    firstPrimitive:primitive(p).map(Number),secondPrimitive:primitive(q).map(Number)};
+  return {normal,equation:planeEquation(normal),endpoints};
+}
+// (p ± √d)/q with d = s²·r (r squarefree) written as (p' ± s'√r)/q' in lowest terms, e.g. −4 + √17.
+function surd(p,sign,d,q){
+  let s=1n,r=d;
+  for(let f=2n;f*f<=r;f++)while(r%(f*f)===0n){r/=f*f;s*=f;}
+  const g=gcd(gcd(p,s),q), sg=q<0n?-1n:1n;p=p/g*sg;s=s/g;q=q/g*sg;
+  const radical=`${s===1n?'':s}√${r}`, head=p===0n?(sign<0n?'−':''):`${p}`.replace('-','−')+(sign<0n?' − ':' + ');
+  const body=`${head}${radical}`;
+  return q===1n?body:`(${body})/${q}`;
 }
 
 export function inPairPlane(normal,point) {

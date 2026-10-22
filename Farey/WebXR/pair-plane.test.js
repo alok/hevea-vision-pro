@@ -26,7 +26,7 @@ test('vertical geodesic includes infinity and irrational endpoints stay explicit
   const p=pairPlane([1,0,1],[1,0,4]);
   assert.deepEqual(p.endpoints.map(x=>x.label),['0','∞']);
   const q=pairPlane([1,0,1],[2,1,1]);
-  assert.deepEqual(q.normal,[1,-2,-1]);assert.ok(q.endpoints.every(x=>x.label.includes('√8')));
+  assert.deepEqual(q.normal,[1,-2,-1]);assert.deepEqual(q.endpoints.map(x=>x.label),['1 − √2','1 + √2']);
 });
 
 test('sampled distinct complex-root directions determine real planes containing both points',()=>{
@@ -46,4 +46,17 @@ test('sampled distinct complex-root directions determine real planes containing 
 test('necklace membership is exact and excludes off-cone points in the same plane',()=>{
   const pair=pairPlane([1,0,1],[1,1,1]);
   assert.deepEqual(necklaceMembers(pair,[[1,0,1],[2,2,2],[-1,0,-1],[1,3,1],[1,2,1],[1,0,2]]),[[1,0,1],[2,2,2],[-1,0,-1]]);
+});
+
+test('an exterior triple is its own Lorentz normal, as in Stange\'s viewer', async () => {
+  const { planeFromNormal } = await import('./pair-plane.js');
+  const plane = planeFromNormal([1, 8, -1]);
+  assert.deepEqual(plane.normal, [1, 8, -1]);
+  assert.equal(plane.equation, '2a +8b −2c = 0');
+  assert.deepEqual(plane.endpoints.map(e => e.label), ['−4 − √17', '−4 + √17']);
+  assert.ok(Math.abs(plane.endpoints[1].value - (-4 + Math.sqrt(17))) < 1e-12);
+  assert.deepEqual(planeFromNormal([-2, -16, 2]).normal, [1, 8, -1]);
+  assert.ok(planeFromNormal([1, 2, 1]).error && planeFromNormal([1, 0, 1]).error && planeFromNormal([0, 0, 0]).error);
+  assert.deepEqual(planeFromNormal([2, 0, -6]).endpoints.map(e => e.label), ['−√3', '√3']);
+  assert.deepEqual(planeFromNormal([2, 2, -1]).endpoints.map(e => e.label), ['(−1 − √3)/2', '(−1 + √3)/2']);
 });

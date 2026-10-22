@@ -8,7 +8,7 @@ import { cameraPlaneLabel } from './camera-planes.js';
 import { coefficientColor, gradientCSS, paletteRange, glyphRadius, glyphScale, outlinePixels, sourceRadiusFactor, drawnPixels } from './appearance.js';
 import { enumerateLattice, inBall, isUpper, tripleAt, latticeRadii, ballCount } from './lattice.js';
 import { pointCloudMaterial, pointCloud, fillColors, fillFactors } from './point-cloud.js';
-import { pairPlane, planeSection, coneDirections, inPairPlane } from './pair-plane.js';
+import { pairPlane, planeFromNormal, planeSection, coneDirections, inPairPlane } from './pair-plane.js';
 const $ = id => document.getElementById(id);
 let radius = 6, whole = true, symmetricColor = false, projectionVisible = false;
 let selected = examples[0], lattice = null, cloudMesh, imageMesh;
@@ -134,17 +134,26 @@ function selectPoint(point,asPair=false) {
   pairMessage='';update();
   if(asPair)$('pair-details').scrollIntoView({block:'nearest'});
 }
+// As in Stange's viewer: two interior stars span a plane, and a selected exterior triple is a plane's normal.
+function currentPlane(){
+  if(secondSelection)return pairPlane(selected,secondSelection);
+  if(kind(selected)==='exterior'){const plane=planeFromNormal(selected);if(!plane.error)return plane;}
+  return null;
+}
 function updatePair() {
   $('pair-status').textContent=pairMessage;$('pair-status').hidden=!pairMessage;
-  $('pair-details').hidden=!secondSelection;$('pair-clear').hidden=!secondSelection;
-  if(!secondSelection)return;
-  const plane=pairPlane(selected,secondSelection), members=planeInteriorMembers(plane.normal);
+  const plane=currentPlane();
+  $('pair-details').hidden=!plane;$('pair-clear').hidden=!secondSelection;
+  if(!plane){refreshFactors('');return;}
+  const members=planeInteriorMembers(plane.normal);
   planeMembers=new Set(members.map(p=>p.join()));refreshFactors(plane.normal.join());
-  const root=upperRoot(positiveRepresentative(secondSelection));
-  $('pair-second').textContent=`Second point: (${secondSelection.join(', ')}) · Δ = ${discriminant(secondSelection)} · root ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i`;
+  if(secondSelection){
+    const root=upperRoot(positiveRepresentative(secondSelection));
+    $('pair-second').textContent=`Second point: (${secondSelection.join(', ')}) · Δ = ${discriminant(secondSelection)} · root ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i`;
+  } else $('pair-second').textContent=`Cutting plane with normal (${plane.normal.join(', ')}): the plane Lorentz-orthogonal to the selected exterior triple.`;
   $('pair-equation').textContent=`Plane: ${plane.equation}`;
   $('pair-endpoints').textContent=`Geodesic endpoints: ${plane.endpoints.map(p=>p.label).join(' and ')}`;
-  const secondVisible=shown(secondSelection);
+  const secondVisible=!secondSelection||shown(secondSelection);
   $('pair-count').textContent=`${members.length} displayed complex-root points lie exactly in this plane (amber rings). Multiples remain separate points.${secondVisible?'':' The second point is hidden by this filter/crop.'}`;
   const ring=new THREE.InstancedMesh(sphere,pairMaterial,members.length);
   focus.add(ring);pairGlyphs.push({mesh:ring,points:members});
@@ -155,7 +164,7 @@ function updatePair() {
   focus.add(lines([boundary],0xffba6b,0.35));
   const directions=coneDirections(plane);
   focus.add(lines(directions.map(p=>[p.map(x=>-radius*scale*x),p.map(x=>radius*scale*x)]),0xffba6b,0.7));
-  if(secondVisible) {
+  if(secondSelection&&secondVisible) {
     const marker=new THREE.Mesh(sphere,pairMaterial);marker.position.copy(physical(vector(secondSelection)));
     focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels,point:secondSelection});
   }
@@ -181,7 +190,7 @@ function update() {
   $('coefficient').value=selected.join(',');$('projection').checked=projectionVisible;
   $('status').textContent=`${lattice.count.toLocaleString()} distinct integer triples · radius ${radius}${inCloud?'':' · selected point hidden by this filter/crop'}`;
   $('inhabit').disabled=!inCloud&&!inhabited;
-  updatePair();if(!secondSelection)refreshFactors('');
+  updatePair();
   renderer.domElement.setAttribute('aria-description',`Selected coefficient point ${selected.join(', ')}. ${kind(selected)} region. ${lattice.count} points. Both cone halves ${cone.visible?'shown':'hidden'}.`);
   const [lo,hi]=paletteRange, reach=lattice.maxInterior;
   $('palette-bar').style.background=gradientCSS();
