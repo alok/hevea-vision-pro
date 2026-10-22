@@ -1,0 +1,18 @@
+{
+  "nativeVersion": "0.3",
+  "date": "2026-10-22",
+  "coreTestsPassed": 10,
+  "nativeTestsPassed": 10,
+  "focusedEntryUITestsPassed": 1,
+  "browserParityInputs": 907,
+  "parityDifferences": 0,
+  "strictSwiftLint": "passed",
+  "debugSimulatorBuild": "passed",
+  "releaseDeviceBuild": "passed",
+  "strictCodeSignature": "passed using existing signing assets",
+  "hardwareInstallOrExecution": false,
+  "domain": "Positive numerator and denominator at most 1000 before reduction, path at most 24 moves",
+  "preservation": "Invalid entries preserve the exact interval, current lesson, representation and revision. Valid entries rebuild their L/R history and dismiss stale lesson state.",
+  "installedSimulatorVersion": "0.3",
+  "showcase": "Running on original Apple Vision Pro simulator at 3/5, Left view"
+}

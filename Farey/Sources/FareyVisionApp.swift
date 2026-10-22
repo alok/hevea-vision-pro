@@ -47,6 +47,13 @@ import SwiftUI
       revision += 1
     }
   }
+  @discardableResult func enterFraction(_ text: String) throws -> FractionEntry {
+    let entry = try FractionEntry(text)
+    state = entry.state
+    lesson = nil
+    revision += 1
+    return entry
+  }
   func toggleSpace() {
     latticeMode.toggle()
     revision += 1
@@ -251,6 +258,7 @@ struct ControlsView: View {
   @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
   @State private var showSources = false
   @State private var showLesson = false
+  @State private var showFractionEntry = false
   var body: some View {
     VStack(spacing: 12) {
       HStack(alignment: .firstTextBaseline) {
@@ -293,7 +301,7 @@ struct ControlsView: View {
         }.disabled(model.transitioning).accessibilityIdentifier("exit-void")
       }
       .buttonStyle(.borderedProminent).controlSize(.large)
-      HStack(spacing: 16) {
+      HStack(spacing: 10) {
         Button(model.latticeMode ? "Space: Lattice" : "Space: Disk") { model.toggleSpace() }
           .accessibilityIdentifier("space-toggle")
         Text(model.latticeMode ? "Grid \(model.depth * 2)" : "Detail \(model.depth)").font(.caption)
@@ -312,6 +320,10 @@ struct ControlsView: View {
         Button(["Front", "Left", "Right"][model.viewpoint]) { model.changeView() }
           .accessibilityIdentifier("viewpoint")
         Button("3/5 example") { model.preset() }.accessibilityIdentifier("example")
+        Button("p/q") { showFractionEntry = true }
+          .accessibilityLabel("Choose a fraction")
+          .accessibilityIdentifier("choose-fraction")
+          .popover(isPresented: $showFractionEntry, arrowEdge: .bottom) { FractionEntryView() }
         Button("Learn") {
           model.startLesson()
           showLesson = true
@@ -327,6 +339,7 @@ struct ControlsView: View {
           : "Green: ∞ to p/q. Orange: the L/R path. Both views share the same exact interval."
       )
       .font(.caption).foregroundStyle(.secondary)
+      .accessibilityIdentifier("geometry-explanation")
       Text(
         "M = \(model.state.matrixLabel)    det M = \(model.state.determinant)    •    \(model.state.word.count)/24 moves"
       )

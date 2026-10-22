@@ -1,3 +1,13 @@
+# Native 0.3: direct fraction entry
+
+[Reduced 6/10 entry](native-03/fraction-entry.png) · [13/17 beyond the finite grid](native-03/outside-grid.png) · [Full simulator summary](native-03/simulator-summary.json) · [Focused UI recheck](native-03/direct-entry-summary.json) · [Validation](native-03/validation.json)
+
+The p/q control opens a native entry popover. It accepts positive numerator and denominator values up to 1000 before reduction, provided the exact L/R path has at most 24 moves. It reports zero denominators, non-positive values, malformed text, integer overflow, raw bounds and excessive path length without changing the current mathematical or lesson state. Valid entry replaces the path, clears a stale lesson, and preserves the active lattice/disk representation. Undo removes the final move on that path.
+
+Ten Swift core tests and ten native model/UI tests passed. A final focused UI run also passed after strengthening the Undo assertion. Simulator tests typed valid, overflow, zero-denominator, out-of-range and long-path entries; checked the linked disk/lattice; and verified the selected fraction survived exit/re-entry. A comparison of [907 inputs](native-03/browser-parity.json) found no difference between native entry and browser selection in acceptance, reduced rational or exact word. This is bounded test evidence, not a formal proof.
+
+A clean Debug simulator build and a Release device build passed. The Release signature verified against the existing signing assets; no new profile, certificate or grant was created. No physical headset installation or execution is claimed.
+
 # Browser 0.2.3: context-loss and reload recovery
 
 [Before the fix](webxr/context-before-fix.png) · [Visible paused state](webxr/context-paused.png) · [Automatically restored geometry](webxr/context-restored.png) · [Validation record](webxr/recovery-023-validation.json)

@@ -156,4 +156,51 @@ import XCTest
     require("reset").tap()
     exit()
   }
+  func testDirectFractionEntryAndReentry() {
+    launch()
+    enter()
+    require("reset").tap()
+    require("choose-fraction").tap()
+    enterFraction("6/10")
+    XCTAssertTrue(require("fraction-result").label.contains("6/10 reduces to 3/5"))
+    XCTAssertTrue(require("entry-selected-state").label.contains("RLR"))
+    capture("14-direct-entry-reduced", holdFor: 4)
+    require("close-fraction-entry").tap()
+    require("space-toggle").tap()
+    require("choose-fraction").tap()
+    for (text, message) in [
+      ("1/0", "denominator cannot be zero"),
+      ("999999999999999999999/1", "too large"),
+      ("1/1000", "more than 24"),
+      ("1001/1001", "before reduction"),
+    ] {
+      enterFraction(text)
+      XCTAssertTrue(require("fraction-error").label.contains(message))
+      XCTAssertTrue(require("entry-selected-state").label.contains("3/5 · RLR"))
+    }
+    enterFraction("13/17")
+    XCTAssertTrue(require("entry-selected-state").label.contains("RLLLRRR"))
+    require("close-fraction-entry").tap()
+    XCTAssertTrue(require("space-toggle").label.contains("Disk"))
+    require("space-toggle").tap()
+    XCTAssertTrue(require("geometry-explanation").label.contains("beyond this finite grid"))
+    capture("15-direct-entry-beyond-grid", holdFor: 4)
+    exit()
+    enter()
+    XCTAssertEqual(require("word-state").label, "RLLLRRR")
+    require("choose-fraction").tap()
+    XCTAssertEqual(require("fraction-input").value as? String, "13/17")
+    require("close-fraction-entry").tap()
+    require("undo").tap()
+    XCTAssertEqual(require("word-state").label, "RLLLRR")
+    XCTAssertTrue(require("fraction-state").label.contains("10/13"))
+    require("reset").tap()
+    XCTAssertEqual(require("word-state").label, "Start")
+    exit()
+  }
+  private func enterFraction(_ text: String) {
+    require("clear-fraction").tap()
+    require("fraction-input").typeText(text)
+    require("select-fraction").tap()
+  }
 }

@@ -15,7 +15,7 @@ Credit **Katherine Stange** prominently, next to links to her [talk](https://kat
 
 ## Claims supported by this work
 
-Seven Swift math tests, eight native model/UI tests, and sixteen JavaScript tests passed. The revised native lesson popover also passed its focused UI test. Native UI tests exercised entry, exit, repeated re-entry, L/R, Undo, Reset, bounds and linked representation selection. Browser checks exercised orbit, sphere hit-testing, fraction entry, bounds and recovery. The latest native device-target Release build passed strict signature verification using existing signing material.
+Ten Swift core tests, ten native model/UI tests, and sixteen JavaScript tests passed. The revised native lesson popover also passed its focused UI test. Native UI tests exercised entry, exit, repeated re-entry, L/R, Undo, Reset, bounds and linked representation selection. Browser checks exercised orbit, sphere hit-testing, fraction entry, bounds and recovery. The latest native device-target Release build passed strict signature verification using existing signing material.
 
 ## Claims to leave open
 
@@ -34,3 +34,5 @@ Browser 0.2.1 was also exercised in **actual Mobile Safari on an iPhone simulato
 Browser 0.2.2 separates single-tap selection from gestures and keeps the lattice visible in landscape. [Actual simulator Safari before and after a drag](evidence/webxr/safari-landscape-validation.json) preserves the same rational while changing the view. Pinch and two-finger pan were tested with Chromium protocol-generated events. Accessibility-tree descriptions and keyboard controls passed; screen-reader speech, physical-device gestures and immersive WebXR remain unverified.
 
 Browser 0.2.3 recovers from controlled WebGL context loss without requiring another mathematical move. The visible fallback preserves access to exact controls, and reload restores the saved L/R word and finite grid. The evidence distinguishes browser-generated loss/restoration events from the separately mocked initial-WebGL failure. This does not establish physical GPU failure recovery or XR-session recovery.
+
+Native 0.3 adds direct positive-fraction entry. Entering `6/10` selects the reduced fraction `3/5` and its exact L/R path. Invalid, zero-denominator, overflow and out-of-domain entries preserve the previous mathematical state. A selected vector outside the visible grid keeps its direction plane and an explicit bounds explanation. Native and browser selection agreed on 907 bounded test inputs; this is test evidence, not a formal proof.

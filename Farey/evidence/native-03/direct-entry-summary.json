@@ -1,0 +1,45 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "8F6B0028-1110-4BF6-96D8-0AE6C6EC25AB",
+        "deviceName" : "Farey Fraction Entry Tests",
+        "modelName" : "Apple Vision Pro",
+        "osBuildNumber" : "24N5093f",
+        "osVersion" : "27.2",
+        "platform" : "visionOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 0,
+      "passedTests" : 1,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "FareyVision · Built with macOS 27.0.1",
+  "expectedFailures" : 0,
+  "failedTests" : 0,
+  "finishTime" : 1792676592.57,
+  "passedTests" : 1,
+  "result" : "Passed",
+  "runtimeWarnings" : [
+
+  ],
+  "skippedTests" : 0,
+  "startTime" : 1792676520.701,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+
+  ],
+  "title" : "Test - FareyVision",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 1
+}

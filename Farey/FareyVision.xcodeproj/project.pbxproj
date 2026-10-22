@@ -12,7 +12,9 @@
 		50169C3BD73D6543F31F3CB4 /* LessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F584720C6B68F7C947C316B /* LessonView.swift */; };
 		5F38C89D70A4B786BB710179 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB734B50E45A64ECE5F3884 /* ModelTests.swift */; };
 		62EABEA463688C29F1F0C0BE /* FareyImmersiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A8C40F1F10750667FF8185 /* FareyImmersiveView.swift */; };
+		67962EA32E952A703C11C3ED /* FractionEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48D8EAA86B5E3D3243B23E1 /* FractionEntryView.swift */; };
 		73D4D9B3EF25DBEC2BAE6BA1 /* SourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA1AF8E6922227E35ACCFD /* SourcesView.swift */; };
+		9746E4AC1BA76EFE0AA3BD6E /* FractionEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E749D7E4F37AFA16C91B31 /* FractionEntry.swift */; };
 		D4033446736A8D5EB805F5F7 /* Farey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B144AA0513729F6329CAC4 /* Farey.swift */; };
 		FEF13136B389FB8C703B5E4A /* FareyVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC84E39F327BBA627416B47 /* FareyVisionApp.swift */; };
 /* End PBXBuildFile section */
@@ -40,11 +42,13 @@
 		0F584720C6B68F7C947C316B /* LessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonView.swift; sourceTree = "<group>"; };
 		409DEA44D4AE7090B139101D /* FareyVisionTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FareyVisionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FB734B50E45A64ECE5F3884 /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
+		85E749D7E4F37AFA16C91B31 /* FractionEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionEntry.swift; sourceTree = "<group>"; };
 		A0549EACD6E4122836B758D3 /* FareyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FareyUITests.swift; sourceTree = "<group>"; };
 		A63FB572D6099E361D159293 /* LatticeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatticeRenderer.swift; sourceTree = "<group>"; };
 		A9CA1AF8E6922227E35ACCFD /* SourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesView.swift; sourceTree = "<group>"; };
 		B0B144AA0513729F6329CAC4 /* Farey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Farey.swift; sourceTree = "<group>"; };
 		CDC84E39F327BBA627416B47 /* FareyVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FareyVisionApp.swift; sourceTree = "<group>"; };
+		D48D8EAA86B5E3D3243B23E1 /* FractionEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionEntryView.swift; sourceTree = "<group>"; };
 		DF6032F9B92B99039811F6B0 /* FareyVision.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FareyVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -72,6 +76,7 @@
 			children = (
 				03A8C40F1F10750667FF8185 /* FareyImmersiveView.swift */,
 				CDC84E39F327BBA627416B47 /* FareyVisionApp.swift */,
+				D48D8EAA86B5E3D3243B23E1 /* FractionEntryView.swift */,
 				A63FB572D6099E361D159293 /* LatticeRenderer.swift */,
 				0F584720C6B68F7C947C316B /* LessonView.swift */,
 				A9CA1AF8E6922227E35ACCFD /* SourcesView.swift */,
@@ -102,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				B0B144AA0513729F6329CAC4 /* Farey.swift */,
+				85E749D7E4F37AFA16C91B31 /* FractionEntry.swift */,
 			);
 			name = FareyCore;
 			path = Packages/FareyCore/Sources/FareyCore;
@@ -209,6 +215,8 @@
 				D4033446736A8D5EB805F5F7 /* Farey.swift in Sources */,
 				62EABEA463688C29F1F0C0BE /* FareyImmersiveView.swift in Sources */,
 				FEF13136B389FB8C703B5E4A /* FareyVisionApp.swift in Sources */,
+				9746E4AC1BA76EFE0AA3BD6E /* FractionEntry.swift in Sources */,
+				67962EA32E952A703C11C3ED /* FractionEntryView.swift in Sources */,
 				3A67B96F5A7759B2CC7F8529 /* LatticeRenderer.swift in Sources */,
 				50169C3BD73D6543F31F3CB4 /* LessonView.swift in Sources */,
 				73D4D9B3EF25DBEC2BAE6BA1 /* SourcesView.swift in Sources */,
@@ -328,7 +336,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=xros*]" = "Apple Development";
 				"CODE_SIGN_STYLE[sdk=xros*]" = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 5795ZPYZ2T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Farey — Into the Infinite";
@@ -339,7 +347,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVision;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=xros*]" = "Lean Calculator Vision Pro 20261008";
 				SDKROOT = xros;
@@ -452,7 +460,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=xros*]" = "Apple Development";
 				"CODE_SIGN_STYLE[sdk=xros*]" = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 5795ZPYZ2T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Farey — Into the Infinite";
@@ -463,7 +471,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVision;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=xros*]" = "Lean Calculator Vision Pro 20261008";
 				SDKROOT = xros;

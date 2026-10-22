@@ -22,6 +22,7 @@ Xcode 27.2 beta 2 and visionOS 27.2 are installed; the simulator is `D2ECE520-ED
 ## Explore
 
 - Tap a lattice sphere or a floating rational label to select its positive rational p/q, including reducible pairs such as 6/10.
+- **p/q** opens direct entry. Positive numerator and denominator values must each be at most 1000 before reduction, and the exact path must fit within 24 moves. `6/10` selects `3/5`; invalid, zero, negative, overflow and over-limit entries leave the current selection and lesson intact. Selection rebuilds the L/R path, so Undo removes its last move.
 - **Learn** opens a worked path: predict and apply L at 1/2 to reach 2/3, then R to reach 3/5. Its vector explanation and linked disk use the same selected state.
 - **L** and **R** update the exact interval. **Undo** reverses one step. **3/5 example** reproduces the selected fraction used in our reference inspection.
 - The **green plane** contains the ray through (q,p). Every green lattice sphere is an exact integer multiple of that direction. The orange point is the primitive mediant; orange edges form its vector-addition parallelogram.
@@ -67,7 +68,7 @@ See [simulator evidence](evidence/README.md). The controls use a pushed native w
 
 The device target uses development team `5795ZPYZ2T` and the already-installed wildcard profile **Lean Calculator Vision Pro 20261008** (expires 2027-10-08). Its certificate matches the installed development identity, its wildcard covers `com.alok.FareyVision`, and it includes the paired Vision Pro. No new certificate, app identifier or provisioning profile was created. These device-only settings do not change the unsigned simulator workflow.
 
-A signed Release build of the spatial revision and strict signature verification succeeded on 2026-10-22. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
+A signed Release build of native 0.3 and strict signature verification succeeded on 2026-10-22. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
 
 ```sh
 build_root="$(python3 scripts/prepare-local-build.py)"

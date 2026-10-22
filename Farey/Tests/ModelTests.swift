@@ -52,4 +52,30 @@ import XCTest
     model.reset()
     XCTAssertEqual(model.state.wordLabel, "Start")
   }
+  func testDirectEntryPreservesStateOnErrorAndReplacesTheLessonOnSuccess() throws {
+    let model = GalleryModel()
+    model.startLesson()
+    model.predictLesson(Rational(2, 3))
+    model.toggleSpace()
+    model.changeView()
+    let state = model.state
+    let lesson = model.lesson
+    let revision = model.revision
+    for text in ["1/0", "1001/1001", "1/1000", "999999999999999999999/1"] {
+      XCTAssertThrowsError(try model.enterFraction(text))
+      XCTAssertEqual(model.state, state)
+      XCTAssertEqual(model.lesson, lesson)
+      XCTAssertEqual(model.revision, revision)
+    }
+    let result = try model.enterFraction("6/10")
+    XCTAssertEqual(result.fraction, Rational(3, 5))
+    XCTAssertNil(model.lesson)
+    XCTAssertFalse(model.latticeMode)
+    XCTAssertEqual(model.viewpoint, 1)
+    XCTAssertEqual(model.state.wordLabel, "RLR")
+    model.undo()
+    XCTAssertEqual(model.state.mediant, Rational(2, 3))
+    model.reset()
+    XCTAssertEqual(model.state.mediant, Rational(1, 1))
+  }
 }
