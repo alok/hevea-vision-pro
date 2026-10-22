@@ -1,20 +1,22 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { examples, vector, project, upperRoot, discriminant, height, kind, coefficientLattice, positiveRepresentative } from './starscape-core.js';
+import { examples, vector, project, upperRoot, discriminant, height, kind, positiveRepresentative } from './starscape-core.js';
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
-import { TapSelection, nearestToRay } from './input.js';
+import { TapSelection, nearestToRayPacked } from './input.js';
 import { cameraPlaneLabel } from './camera-planes.js';
-import { coefficientColor, gradientCSS, paletteRange, glyphRadius, glyphScale, outlinePixels, drawnPixels, pixelsPerWorld, sourceRadiusFactor } from './appearance.js';
-import { pairPlane, planeSection, coneDirections, necklaceMembers } from './pair-plane.js';
+import { coefficientColor, gradientCSS, paletteRange, glyphRadius, glyphScale, outlinePixels, sourceRadiusFactor, drawnPixels } from './appearance.js';
+import { enumerateLattice, inBall, isUpper, tripleAt, latticeRadii, ballCount } from './lattice.js';
+import { pointCloudMaterial, pointCloud, fillColors, fillFactors } from './point-cloud.js';
+import { pairPlane, planeSection, coneDirections, inPairPlane } from './pair-plane.js';
 const $ = id => document.getElementById(id);
 let radius = 6, whole = true, symmetricColor = false, projectionVisible = false;
-let selected = examples[0], points = [], cloudMesh, imageMesh;
+let selected = examples[0], lattice = null, cloudMesh, imageMesh;
 let session = null, savedView = null, startingXR = false;
 let inhabited=false, overviewView=null, lookDrag=null, look={yaw:0,pitch:0};
 const overviewFov=45, originFov=100;
-let categories='contrast', glyphKey=null, focusGlyphs=[];
-let secondSelection=null, pairMessage='', pairGlyphs=[], planeMembers=new Set(), baseColors=[], originMode=false;
+let categories='contrast', glyphKey=null, focusGlyphs=[], sigma=1;
+let secondSelection=null, pairMessage='', pairGlyphs=[], planeMembers=new Set(), originMode=false, timings={}, colorKey='', factorKey='';
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ antialias: true }); }
 catch {
@@ -41,9 +43,9 @@ const cloud = new THREE.Group(), disk = new THREE.Group(), cone = new THREE.Grou
 world.add(cloud, disk, cone, focus);
 // Unlit discs: the drawn color is exactly the legend color, with no shading or tone mapping.
 const sphere = new THREE.SphereGeometry(glyphRadius, 12, 8);
-const cloudMaterial = new THREE.MeshBasicMaterial();
+const cloudMaterial = pointCloudMaterial();
 const white = new THREE.MeshBasicMaterial({ color: 0xffffff });
-const imageMaterial = new THREE.MeshBasicMaterial({ color: 0x54e9f5 });
+const imageMaterial = new THREE.PointsMaterial({ color: 0x54e9f5, size: 2, sizeAttenuation: false });
 const selectionMaterial=new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.BackSide});
 const pairMaterial=new THREE.MeshBasicMaterial({color:0xffba6b,side:THREE.BackSide});
 function pointColor(point) {
@@ -76,16 +78,14 @@ const matrix = new THREE.Matrix4();
 function rebuild() {
   glyphKey=null;
   disposeChildren(cloud); disposeChildren(disk); disposeChildren(cone);
-  points = coefficientLattice(radius).filter(p=>whole || kind(p)==='upper');
-  baseColors = points.map(pointColor);
-  cloudMesh = new THREE.InstancedMesh(sphere, cloudMaterial, points.length);
-  points.forEach((p,i)=>{ cloudMesh.setMatrixAt(i,matrix.makeTranslation(...physical(vector(p)).toArray())); cloudMesh.setColorAt(i,pointColor(p)); });
-  cloudMesh.instanceMatrix.needsUpdate=true; cloudMesh.instanceColor.needsUpdate=true;
-  cloudMesh.computeBoundingSphere(); cloud.add(cloudMesh);
-  const images = points.map(positiveRepresentative).filter(Boolean).map(p=>project(p));
-  imageMesh = new THREE.InstancedMesh(sphere,imageMaterial,images.length);
-  images.forEach((p,i)=>{ matrix.makeScale(0.4,0.4,0.4); matrix.setPosition(physical(p)); imageMesh.setMatrixAt(i,matrix); });
-  imageMesh.instanceMatrix.needsUpdate=true; imageMesh.computeBoundingSphere(); disk.add(imageMesh);
+  let t=performance.now();
+  lattice = enumerateLattice(radius, !whole);
+  timings.enumerate=performance.now()-t;t=performance.now();
+  cloudMesh = pointCloud(lattice, cloudMaterial, symmetricColor, categories); cloudMesh.scale.setScalar(scale); cloud.add(cloudMesh);
+  colorKey=[radius,whole,symmetricColor,categories].join();factorKey=[radius,whole,symmetricColor,''].join();
+  timings.attributes=performance.now()-t;imageMesh=null;
+  // Overview distance is 5.4·R/8 (resetView); far clipping and zoom limits leave room beyond the whole ball.
+  camera.far=20+8*radius*scale;camera.updateProjectionMatrix();controls.maxDistance=Math.max(20,8*radius*scale);
   disk.add(surface(height,true,0.1), lines([circle(height)],0x54e9f5,0.8));
   for(const sign of [-1,1]) {
     const h=radius*sign;
@@ -94,6 +94,37 @@ function rebuild() {
   }
 }
 const origin = new THREE.Mesh(sphere,white); world.add(origin);
+const shown=p=>inBall(p,radius)&&(whole||isUpper(p));
+const latticePoints=()=>Array.from({length:lattice.count},(_,i)=>tripleAt(lattice,i));
+// Interior displayed triples on the Lorentz plane −2C·a + B·b − 2A·c = 0 (exact: |coefficients| ≤ 96).
+function planeInteriorMembers([A,B,C]){
+  const out=[], exact=Math.max(Math.abs(A),Math.abs(B),Math.abs(C))<2**40;
+  for(let i=0;i<lattice.count;i++){
+    const a=lattice.abc[3*i],b=lattice.abc[3*i+1],c=lattice.abc[3*i+2];
+    if(b*b-4*a*c<0&&(exact?-2*C*a+B*b-2*A*c===0:inPairPlane([A,B,C],[a,b,c])))out.push([a,b,c]);
+  }
+  return out;
+}
+// Color and size attributes are O(n) to fill, so refill only when their inputs change.
+// Radial images of every interior point on the screen y = height, built only once projection is shown.
+function buildImages(){
+  const t=performance.now(),images=new Float32Array(3*lattice.count);let n=0;
+  for(let i=0;i<lattice.count;i++){const q=positiveRepresentative(tripleAt(lattice,i));if(q){images.set(project(q),3*n);n++;}}
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(images.subarray(0,3*n),3));
+  imageMesh=new THREE.Points(geometry,imageMaterial);imageMesh.scale.setScalar(scale);imageMesh.frustumCulled=false;disk.add(imageMesh);
+  timings.images=performance.now()-t;
+}
+function refreshColors(){
+  const key=[radius,whole,symmetricColor,categories].join();if(key===colorKey)return;colorKey=key;
+  const t=performance.now();fillColors(lattice,symmetricColor,categories,cloudMesh.geometry.attributes.color.array);
+  cloudMesh.geometry.attributes.color.needsUpdate=true;timings.colors=performance.now()-t;
+}
+function refreshFactors(planeKey){
+  const key=[radius,whole,symmetricColor,planeKey].join();if(key===factorKey)return;factorKey=key;
+  const t=performance.now();
+  fillFactors(lattice,symmetricColor,i=>planeMembers.size>0&&isUpper(tripleAt(lattice,i))&&planeMembers.has(tripleAt(lattice,i).join()),cloudMesh.geometry.attributes.aFactor.array);
+  cloudMesh.geometry.attributes.aFactor.needsUpdate=true;timings.factors=performance.now()-t;
+}
 function selectPoint(point,asPair=false) {
   if(asPair) {
     const result=pairPlane(selected,point);
@@ -107,13 +138,13 @@ function updatePair() {
   $('pair-status').textContent=pairMessage;$('pair-status').hidden=!pairMessage;
   $('pair-details').hidden=!secondSelection;$('pair-clear').hidden=!secondSelection;
   if(!secondSelection)return;
-  const plane=pairPlane(selected,secondSelection), members=necklaceMembers(plane,points);
-  planeMembers=new Set(members.map(p=>p.join()));
+  const plane=pairPlane(selected,secondSelection), members=planeInteriorMembers(plane.normal);
+  planeMembers=new Set(members.map(p=>p.join()));refreshFactors(plane.normal.join());
   const root=upperRoot(positiveRepresentative(secondSelection));
   $('pair-second').textContent=`Second point: (${secondSelection.join(', ')}) · Δ = ${discriminant(secondSelection)} · root ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i`;
   $('pair-equation').textContent=`Plane: ${plane.equation}`;
   $('pair-endpoints').textContent=`Geodesic endpoints: ${plane.endpoints.map(p=>p.label).join(' and ')}`;
-  const secondVisible=points.some(p=>p.every((x,i)=>x===secondSelection[i]));
+  const secondVisible=shown(secondSelection);
   $('pair-count').textContent=`${members.length} displayed complex-root points lie exactly in this plane (amber rings). Multiples remain separate points.${secondVisible?'':' The second point is hidden by this filter/crop.'}`;
   const ring=new THREE.InstancedMesh(sphere,pairMaterial,members.length);
   focus.add(ring);pairGlyphs.push({mesh:ring,points:members});
@@ -124,16 +155,16 @@ function updatePair() {
   focus.add(lines([boundary],0xffba6b,0.35));
   const directions=coneDirections(plane);
   focus.add(lines(directions.map(p=>[p.map(x=>-radius*scale*x),p.map(x=>radius*scale*x)]),0xffba6b,0.7));
-  if(points.some(p=>p.every((x,i)=>x===secondSelection[i]))) {
+  if(secondVisible) {
     const marker=new THREE.Mesh(sphere,pairMaterial);marker.position.copy(physical(vector(secondSelection)));
     focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels,point:secondSelection});
   }
   if(projectionVisible)focus.add(lines([directions.map(p=>p.map(x=>height*scale*x))],0xffba6b,0.9));
 }
 function update() {
-  baseColors=points.map(pointColor);planeMembers=new Set();
-  disposeChildren(focus);focusGlyphs=[];pairGlyphs=[];glyphKey=null; disk.visible=projectionVisible; cone.visible=$('cone').checked;
-  const inCloud=points.some(p=>p.every((x,i)=>x===selected[i]));
+  refreshColors();planeMembers=new Set();
+  disposeChildren(focus);focusGlyphs=[];pairGlyphs=[];glyphKey=null; disk.visible=projectionVisible;if(projectionVisible&&!imageMesh)buildImages(); cone.visible=$('cone').checked;
+  const inCloud=shown(selected);
   if(inCloud) {
     focus.add(lines([[[0,0,0],physical(vector(selected)).toArray()]],0xbacbd6,0.35));
     const marker=new THREE.Mesh(sphere,selectionMaterial);
@@ -148,19 +179,19 @@ function update() {
   const root=representative?upperRoot(representative):null;
   $('root-state').textContent=root?`Upper root: ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i${kind(selected)==='lower'?' · sign-flipped representative':''}`:kind(selected)==='null'?(selected[0]===0?'Boundary: double root at infinity':'Boundary: repeated real root'):'Exterior: real roots (outside the Klein disk)';
   $('coefficient').value=selected.join(',');$('projection').checked=projectionVisible;
-  $('status').textContent=`${points.length} integer triples · radius ${radius}${inCloud?'':' · selected point hidden by this filter/crop'}`;
+  $('status').textContent=`${lattice.count.toLocaleString()} distinct integer triples · radius ${radius}${inCloud?'':' · selected point hidden by this filter/crop'}`;
   $('inhabit').disabled=!inCloud&&!inhabited;
-  updatePair();
-  renderer.domElement.setAttribute('aria-description',`Selected coefficient point ${selected.join(', ')}. ${kind(selected)} region. ${points.length} points. Both cone halves ${cone.visible?'shown':'hidden'}.`);
-  const [lo,hi]=paletteRange, reach=Math.max(0,...points.map(p=>-discriminant(p)));
+  updatePair();if(!secondSelection)refreshFactors('');
+  renderer.domElement.setAttribute('aria-description',`Selected coefficient point ${selected.join(', ')}. ${kind(selected)} region. ${lattice.count} points. Both cone halves ${cone.visible?'shown':'hidden'}.`);
+  const [lo,hi]=paletteRange, reach=lattice.maxInterior;
   $('palette-bar').style.background=gradientCSS();
   $('palette-label').textContent=`Interior |Δ|, log scale · this crop reaches ${reach}`;
   $('palette-low').textContent=lo;$('palette-high').textContent=hi;
   render();
 }
-const tempLocal=new THREE.Vector3(),tempWorld=new THREE.Vector3(),tempColor=new THREE.Color();
+const tempLocal=new THREE.Vector3(),tempWorld=new THREE.Vector3();
 // Which of her size causes applies: the origin-eye rule in Origin mode, plane emphasis for upper members.
-const radiusFactor=p=>sourceRadiusFactor(p,{origin:originMode,onPlane:!originMode&&kind(p)==='upper'&&planeMembers.has(p.join()),symmetric:symmetricColor});
+const radiusFactor=p=>sigma*sourceRadiusFactor(p,{origin:originMode,onPlane:!originMode&&kind(p)==='upper'&&planeMembers.has(p.join()),symmetric:symmetricColor});
 function updateGlyphSizes(){
   if(!cloudMesh)return;
   camera.updateMatrixWorld();world.updateMatrixWorld(true);
@@ -168,20 +199,9 @@ function updateGlyphSizes(){
   const key=camera.matrixWorld.elements.join(',')+'|'+height+'|'+camera.zoom+'|'+session+'|'+camera.fov;
   if(key===glyphKey)return;glyphKey=key;
   // Her overview fog: alpha falls by up to 55% between d−0.7R and d+0.9R from the eye (none in eye mode).
-  const d=camera.position.distanceTo(controls.target), R=radius*scale, fogNear=Math.max(0.1*scale,d-0.7*R), fogFar=d+0.9*R;
-  points.forEach((p,i)=>{
-    tempLocal.copy(physical(vector(p)));
-    tempWorld.copy(tempLocal).applyMatrix4(world.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
-    const depth=-tempWorld.z, factor=radiusFactor(p);
-    let size=1, dim=1;
-    if(!session&&depth>0){
-      const base=glyphRadius*pixelsPerWorld(depth,height,camera.fov,camera.zoom), drawn=drawnPixels(base*factor);
-      size=drawn.px/base;dim=drawn.dim*(inhabited?1:1-0.55*THREE.MathUtils.smoothstep(depth,fogNear,fogFar));
-    }
-    matrix.makeScale(size,size,size);matrix.setPosition(tempLocal);cloudMesh.setMatrixAt(i,matrix);
-    cloudMesh.setColorAt(i,tempColor.copy(baseColors[i]).multiplyScalar(dim));
-  });
-  cloudMesh.instanceMatrix.needsUpdate=true;cloudMesh.instanceColor.needsUpdate=true;
+  const d=camera.position.distanceTo(controls.target), R=radius*scale, u=cloudMaterial.uniforms;
+  u.uFog.value.set(Math.max(0.1*scale,d-0.7*R),d+0.9*R,inhabited||session?0:0.55);
+  u.uHalfH.value=height/2;u.uGlyph.value=glyphRadius*sigma;u.uDpr.value=renderer.getPixelRatio();u.uOrigin.value=originMode&&!session?1:0;
   for(const item of pairGlyphs) {
     item.points.forEach((p,i)=>{
       tempLocal.copy(physical(vector(p)));
@@ -252,6 +272,8 @@ for(const button of document.querySelectorAll('[data-move]'))button.onclick=()=>
 function resetView(){controls.target.copy(world.position);camera.position.copy(world.position).add(new THREE.Vector3(2.4,1.5,4.6).multiplyScalar(Math.max(1,radius/8)));controls.update();}
 function resize(){if(session)return;const r=$('viewport').getBoundingClientRect();if(r.width<=0||r.height<=0)return;camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setSize(r.width,r.height);render();}
 $('next').onclick=()=>{const sequence=[...examples,[-1,1,-2],[1,2,1],[1,3,1]];const i=sequence.findIndex(p=>p.every((x,j)=>x===selected[j]));selectPoint(sequence[(i+1)%sequence.length]);};
+// Her Star size control (0.4–2.5) scales every star radius.
+$('star-size').oninput=()=>{sigma=Number($('star-size').value);$('star-size-value').textContent=sigma.toFixed(2);glyphKey=null;render();};
 $('palette').onchange=()=>{categories=$('palette').value;update();};
 $('projection').onchange=()=>{projectionVisible=$('projection').checked;update();};
 $('cone').onchange=update;
@@ -262,7 +284,7 @@ $('view').onclick=()=>{camera.position.sub(controls.target).applyAxisAngle(new T
 $('reset').onclick=()=>{leaveInhabit();selected=examples[0];secondSelection=null;pairMessage='';radius=6;whole=true;symmetricColor=false;projectionVisible=false;$('radius').value='6';$('whole').checked=true;$('cone').checked=true;$('symmetric-color').checked=false;rebuild();resetView();update();};
 function selectEntered(asPair=false) {
   const parts=$('coefficient').value.split(',').map(s=>s.trim()),next=parts.map(Number);
-  if(parts.length!==3||parts.some(s=>!/^[-+]?\d+$/.test(s))||!coefficientLattice(radius).some(p=>p.every((x,i)=>x===next[i]))) {
+  if(parts.length!==3||parts.some(s=>!/^[-+]?\d+$/.test(s))||!shown(next)) {
     $('status').textContent='Choose a nonzero integer triple inside the current coefficient ball. The current selection is unchanged.';return;
   }
   selectPoint(next,asPair);
@@ -271,12 +293,17 @@ $('coefficient-form').onsubmit=event=>{event.preventDefault();selectEntered();};
 $('pair-add').onclick=()=>selectEntered(true);
 $('pair-clear').onclick=()=>{secondSelection=null;pairMessage='';update();$('pair-add').focus({preventScroll:true});};
 const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2(),tap=new TapSelection();
-function pickPoint(ray,maxAngle,asPair=false){
-  world.updateMatrixWorld(true);
-  const centers=points.map(p=>tempLocal.copy(physical(vector(p))).applyMatrix4(world.matrixWorld).toArray());
-  const i=nearestToRay(ray.origin.toArray(),ray.direction.toArray(),centers,maxAngle,session?0:camera.near);
-  if(i>=0)selectPoint(points[i],asPair);
+// The ray is mapped into lattice units (a uniform scale and translation keep angles), then searched exactly.
+function pickIndex(ray,maxAngle){
+  const t=performance.now();
+  cloudMesh.updateMatrixWorld(true);
+  const inverse=new THREE.Matrix4().copy(cloudMesh.matrixWorld).invert();
+  const o=ray.origin.clone().applyMatrix4(inverse), d=ray.direction.clone().transformDirection(inverse);
+  const i=nearestToRayPacked(o.toArray(),d.toArray(),lattice.xyz,lattice.count,maxAngle,session?0:camera.near/scale);
+  timings.pick=performance.now()-t;
+  return i;
 }
+function pickPoint(ray,maxAngle,asPair=false){const i=pickIndex(ray,maxAngle);if(i>=0)selectPoint(tripleAt(lattice,i),asPair);}
 // Desktop clicks select the nearest center within about 10 CSS pixels of the pointer.
 function selectAt(event){const r=renderer.domElement.getBoundingClientRect();pointer.set(2*(event.clientX-r.left)/r.width-1,1-2*(event.clientY-r.top)/r.height);raycaster.setFromCamera(pointer,camera);pickPoint(raycaster.ray,10*2*Math.tan(camera.fov*Math.PI/360)/(r.height*camera.zoom),event.shiftKey);}
 renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);if(inhabited){lookDrag={x:e.clientX,y:e.clientY};renderer.domElement.setPointerCapture(e.pointerId);}});renderer.domElement.addEventListener('pointermove',e=>{
@@ -285,7 +312,7 @@ renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);if(inhabited
   look.pitch=THREE.MathUtils.clamp(look.pitch-(e.clientY-lookDrag.y)*0.004,-Math.PI/2,Math.PI/2);
   lookDrag={x:e.clientX,y:e.clientY};applyLook();
 });renderer.domElement.addEventListener('pointerup',e=>{lookDrag=null;if(tap.end(e)&&!session)selectAt(e);});renderer.domElement.addEventListener('pointercancel',e=>{lookDrag=null;tap.cancel(e);});
-renderer.domElement.addEventListener('keydown',e=>{const move={w:'forward',s:'back',a:'left',d:'right',q:'down',e:'up'}[e.key.toLowerCase()];if(inhabited&&move){e.preventDefault();moveEye(move);return;}if(e.key==='Escape'&&inhabited){leaveInhabit();return;}if(e.key==='Home'){e.preventDefault();leaveInhabit();resetView();}if(['+','=','-'].includes(e.key)){e.preventDefault();if(inhabited){moveEye(e.key==='-'?'back':'forward');return;}const d=camera.position.distanceTo(controls.target),n=THREE.MathUtils.clamp(d*(e.key==='-'?1.1:1/1.1),1,20);camera.position.sub(controls.target).multiplyScalar(n/d).add(controls.target);controls.update();}});
+renderer.domElement.addEventListener('keydown',e=>{const move={w:'forward',s:'back',a:'left',d:'right',q:'down',e:'up'}[e.key.toLowerCase()];if(inhabited&&move){e.preventDefault();moveEye(move);return;}if(e.key==='Escape'&&inhabited){leaveInhabit();return;}if(e.key==='Home'){e.preventDefault();leaveInhabit();resetView();}if(['+','=','-'].includes(e.key)){e.preventDefault();if(inhabited){moveEye(e.key==='-'?'back':'forward');return;}const d=camera.position.distanceTo(controls.target),n=THREE.MathUtils.clamp(d*(e.key==='-'?1.1:1/1.1),controls.minDistance,controls.maxDistance);camera.position.sub(controls.target).multiplyScalar(n/d).add(controls.target);controls.update();}});
 controls.addEventListener('change',render);window.addEventListener('resize',resize);new ResizeObserver(resize).observe($('viewport'));
 const xrPanel=new THREE.Group();xrPanel.position.set(0,1,-1.15);xrPanel.visible=false;scene.add(xrPanel);const xrTargets=[];
 for(const [i,label] of ['Next','Projection','Reset','Exit'].entries()) {
@@ -298,4 +325,5 @@ $('xr').onclick=async()=>{if(startingXR||session)return;startingXR=true;$('xr').
 renderer.xr.addEventListener('sessionend',()=>{session=null;controls.enabled=!inhabited;xrPanel.visible=false;document.body.classList.remove('immersive');renderer.setAnimationLoop(null);if(savedView)restoreView(savedView,camera,controls);savedView=null;resize();checkXR();});
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();$('fatal').hidden=false;$('fatal').textContent='3D graphics paused. Waiting for the browser to restore the graphics context; reload if it does not recover.';controls.enabled=false;$('xr').disabled=true;session?.end().catch(()=>{});});
 renderer.domElement.addEventListener('webglcontextrestored',()=>{$('fatal').hidden=true;controls.enabled=!session&&!inhabited;resize();update();checkXR();});
+for(const option of $('radius').querySelectorAll('optgroup option'))option.textContent=`${option.value} · ${ballCount(Number(option.value)).toLocaleString()} points`;
 rebuild();resetView();resize();update();checkXR();

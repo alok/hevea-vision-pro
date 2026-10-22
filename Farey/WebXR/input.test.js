@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TapSelection, visibleIntersections, nearestToRay } from './input.js';
+import { TapSelection, visibleIntersections, nearestToRay, nearestToRayPacked } from './input.js';
 import * as THREE from 'three';
 
 const event = (pointerId = 1, clientX = 0, button = 0) => ({ pointerId, clientX, clientY: 0, button });
@@ -50,4 +50,11 @@ test('ray picking chooses the center with the smallest angle and ignores points 
   assert.equal(nearestToRay([0, 0, 0], [1, 0, 0], centers, 0.05), -1);
   assert.equal(nearestToRay([0, 0, 0], [0, 0, -1], [[0, 0, -5], [0, 0, -2]], 0.05), 1);
   assert.equal(nearestToRay([0, 0, 0], [0, 0, -1], [[0, 0, -5], [0, 0, -0.01]], 0.05, 0.05), 0);
+});
+
+test('packed ray picking agrees with the array version', () => {
+  const centers = [[0, 0, -5], [0.2, 0, -5], [0, 0, 5], [0.01, 0, -1], [0, 0, -2]];
+  const xyz = new Float32Array(centers.flat());
+  for (const [dir, tol, near] of [[[0, 0, -1], 0.05, 0], [[0.04, 0, -1], 0.05, 0], [[1, 0, 0], 0.05, 0], [[0, 0, -1], 0.05, 1.5]])
+    assert.equal(nearestToRayPacked([0, 0, 0], dir, xyz, centers.length, tol, near), nearestToRay([0, 0, 0], dir, centers, tol, near));
 });

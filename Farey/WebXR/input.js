@@ -42,3 +42,16 @@ export function nearestToRay(origin, direction, centers, maxAngle, minDistance=0
   });
   return best;
 }
+
+// The same rule over packed xyz coordinates, for clouds too large to hold as arrays of triples.
+export function nearestToRayPacked(origin, direction, xyz, count, maxAngle, minDistance=0) {
+  const [ox,oy,oz]=origin, length=Math.hypot(...direction), dx=direction[0]/length, dy=direction[1]/length, dz=direction[2]/length;
+  let best=-1, bestAngle=maxAngle, bestAlong=Infinity;
+  for(let i=0;i<count;i++){
+    const vx=xyz[3*i]-ox, vy=xyz[3*i+1]-oy, vz=xyz[3*i+2]-oz, along=vx*dx+vy*dy+vz*dz;
+    if(along<=minDistance)continue;
+    const angle=Math.atan2(Math.hypot(vy*dz-vz*dy,vz*dx-vx*dz,vx*dy-vy*dx),along);
+    if(angle<bestAngle-1e-12||(angle<=bestAngle+1e-12&&along<bestAlong)){best=i;bestAngle=angle;bestAlong=along;}
+  }
+  return best;
+}

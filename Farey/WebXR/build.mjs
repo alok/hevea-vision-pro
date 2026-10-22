@@ -14,7 +14,7 @@ let license = resolve(root, 'LICENSE');
 try { await access(license); } catch { license = resolve(root, '../../LICENSE'); }
 await rm(destination, { recursive: true, force: true });
 await mkdir(resolve(destination, 'vendor/addons/controls'), { recursive: true });
-const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css', 'starscape.js', 'starscape-core.js', 'appearance.js', 'camera-planes.js', 'pair-plane.js'];
+const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css', 'starscape.js', 'starscape-core.js', 'appearance.js', 'camera-planes.js', 'lattice.js', 'point-cloud.js', 'pair-plane.js'];
 for (const name of files) await copyFile(resolve(root, name), resolve(destination, name));
 const hash = content => createHash('sha256').update(content).digest('hex');
 const assetHash = async name => hash(await readFile(resolve(destination, name)));
@@ -27,7 +27,7 @@ for (const name of ['core.js', 'xr-support.js', 'input.js', 'recovery.js', 'cons
 }
 await writeFile(resolve(destination, 'app.js'), app);
 let starscape = await readFile(resolve(destination, 'starscape.js'), 'utf8');
-for (const name of ['starscape-core.js', 'xr-support.js', 'input.js', 'appearance.js', 'camera-planes.js', 'pair-plane.js']) starscape = starscape.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
+for (const name of ['starscape-core.js', 'xr-support.js', 'input.js', 'appearance.js', 'camera-planes.js', 'pair-plane.js', 'lattice.js', 'point-cloud.js']) starscape = starscape.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
 await writeFile(resolve(destination, 'starscape.js'), starscape);
 const html = (await readFile(resolve(root, 'index.html'), 'utf8'))
   .replace('./node_modules/three/build/three.module.js', './vendor/three.module.js')
@@ -77,7 +77,7 @@ Three.js ${dependency.version} is included under MIT; see vendor/THREE-LICENSE.t
 files.push('index.html', 'farey.html', 'COPYING.txt', 'SOURCE.txt', 'README.txt', 'serve.py', 'vendor/three.module.js', 'vendor/three.core.js', 'vendor/addons/controls/OrbitControls.js', 'vendor/THREE-LICENSE.txt');
 await mkdir(resolve(destination, 'source'), { recursive: true });
 const sources = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css', 'index.html',
-  'starscape.js', 'starscape-core.js', 'starscape-core.test.js', 'appearance.js', 'appearance.test.js', 'camera-planes.js', 'camera-planes.test.js', 'pair-plane.js', 'pair-plane.test.js', 'farey.html', 'build.mjs', 'package.json', 'package-lock.json', 'serve.py', 'PACKAGE_README.txt', 'package-smoke.mjs', 'smoke-offline.py', 'offline-checks.js',
+  'starscape.js', 'starscape-core.js', 'starscape-core.test.js', 'appearance.js', 'appearance.test.js', 'camera-planes.js', 'camera-planes.test.js', 'pair-plane.js', 'pair-plane.test.js', 'lattice.js', 'lattice.test.js', 'point-cloud.js', 'farey.html', 'build.mjs', 'package.json', 'package-lock.json', 'serve.py', 'PACKAGE_README.txt', 'package-smoke.mjs', 'smoke-offline.py', 'offline-checks.js',
   'core.test.js', 'xr-support.test.js', 'input.test.js', 'recovery.test.js', 'construction.test.js', 'view.test.js', 'package-smoke.test.js'];
 for (const name of sources) {
   await copyFile(resolve(root, name), resolve(destination, 'source', name));

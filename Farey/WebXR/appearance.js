@@ -61,13 +61,17 @@ export function gradientCSS() {
 export const glyphRadius = 0.013;
 export const sizePixels = { min: 1, knee: 2.5, cap: 9 };
 export const outlinePixels = 1.25;
+// Factor away from the origin eye; numeric arguments so dense clouds can fill it without allocating.
+export function orbitFactor(a, b, c, symmetric=false, onPlane=false) {
+  if(!(b*b-4*a*c<0)||(a<0&&!symmetric))return 1;
+  let g=Math.abs(a);for(let y of [b,c]){y=Math.abs(y);while(y)[g,y]=[y,g%y];}
+  return (g===1?1:0.72)*(onPlane?1.35:1);
+}
 export function sourceRadiusFactor(point, { origin=false, onPlane=false, symmetric=false } = {}) {
   const type=kind(point);
   if(type==='null'||type==='exterior')return 1;
   if(origin)return 0.4*Math.abs(discriminant(point))**0.25/Math.sqrt(Math.abs(point[0]+point[2]));
-  if(type==='lower'&&!symmetric)return 1;
-  const g=point.reduce((x,y)=>{x=Math.abs(x);y=Math.abs(y);while(y)[x,y]=[y,x%y];return x;},0);
-  return (g===1?1:0.72)*(onPlane?1.35:1);
+  return orbitFactor(...point,symmetric,onPlane);
 }
 // Maps a perspective radius to the drawn radius and the color factor that stands in for her alpha
 // (the background is black, so alpha over it is a scale of the color).
