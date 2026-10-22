@@ -1,5 +1,7 @@
 # Browser 0.12.0 verification
 
+Historical 0.12.0 artifact audit. Browser 0.12.1 adds tested XR camera restoration; see [current emulator evidence](XR_SIMULATION.md).
+
 October 22, 2026. This is a local demonstration package, not a public deployment or physical-headset release. [Mathematics and controls](DOUBLE_CONE.md) distinguish source-supported constructions from our presentation choices.
 
 ## Ready locally
@@ -37,7 +39,7 @@ Current screenshots and sanitized results: [dense overview](evidence/browser-0.1
 
 ## Remaining checks
 
-1. Use the installed official Immersive Web Emulator to verify actual simulated `immersive-vr` entry, stereo camera frames, head/controller pose, selection and exit. Installed code and desktop rendering do not prove this path. Physical headset input, frame rate and comfort remain separate work.
+1. IWE simulated entry, stereo, head/controller poses, selection and exit were subsequently exercised; [0.12.1 evidence](XR_SIMULATION.md) records the camera fixes. Physical headset input, frame rate and comfort remain separate work.
 2. Audit exact foreground/context overlap under optional plane-opacity fading; current transparency is approximate and avoids per-point sorting. At high density, ray-based selection can be ambiguous among coincident directions.
 3. Revalidate the latest coefficient page on Safari/touch and assistive technology. Historical Farey Safari tests do not establish these new paths.
 4. Native parity for signed lower nappe, Origin, dense renderer and new plane controls. Native 0.9.0's prior 36-test simulator run covers its older upper-cone scene; no new hardware result is implied.

@@ -1,0 +1,711 @@
+{
+  "browserVersion": "0.12.1",
+  "runtime": "Official Immersive Web Emulator 2.0.0, Chrome Default profile, simulated Quest 3",
+  "physicalHardware": false,
+  "cameraFixSHA256": "29aeb1cc36611aa23fb55e63774535a7293a9e7ce106b93eed00067e05685838",
+  "unitTests": {
+    "passed": 68,
+    "failed": 0,
+    "skipped": 0
+  },
+  "realOrbitControls": {
+    "positionDelta": 0,
+    "angleDelta": 0,
+    "enabled": false
+  },
+  "actualXRRecords": [
+    {
+      "time": 141941.39999999106,
+      "mode": "immersive-vr",
+      "active": true,
+      "head": [
+        0,
+        1.600000023841858,
+        0
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.600000023841858,
+            0
+          ],
+          "projection": [
+            1.2339121103286743,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0036193132400513,
+            -1,
+            0,
+            0,
+            -0.1001809611916542,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.600000023841858,
+            0
+          ],
+          "projection": [
+            1.2339121103286743,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0036193132400513,
+            -1,
+            0,
+            0,
+            -0.1001809611916542,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "handedness": "left",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            -0.25397980213165283,
+            1.4841421842575073,
+            -0.35035812854766846
+          ]
+        },
+        {
+          "handedness": "right",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            0.25,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            0.2539798319339752,
+            1.4841421842575073,
+            -0.35035818815231323
+          ]
+        }
+      ],
+      "selection": "(a,b,c) = (1, -1, 2) \u00b7 \u0394 = -7",
+      "stage": "0121-stereo",
+      "stereo": true,
+      "entries": 1,
+      "ends": 0,
+      "plane": ""
+    },
+    {
+      "time": 348658.299999997,
+      "mode": "immersive-vr",
+      "active": true,
+      "head": [
+        0,
+        1.399999976158142,
+        -3.0999999046325684
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.399999976158142,
+            -3.0999999046325684
+          ],
+          "projection": [
+            1.2339121103286743,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0005781650543213,
+            -1,
+            0,
+            0,
+            -0.01600462570786476,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.399999976158142,
+            -3.0999999046325684
+          ],
+          "projection": [
+            1.2339121103286743,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0005781650543213,
+            -1,
+            0,
+            0,
+            -0.01600462570786476,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "handedness": "left",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            -0.25397980213165283,
+            1.4841421842575073,
+            -0.35035812854766846
+          ]
+        },
+        {
+          "handedness": "right",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            0.25,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            0.2539798319339752,
+            1.4841421842575073,
+            -0.35035818815231323
+          ]
+        }
+      ],
+      "selection": "(a,b,c) = (1, -1, 2) \u00b7 \u0394 = -7",
+      "stage": "verified-apex-up",
+      "programmedEmulatorPose": true,
+      "orientation": [
+        0.7071067690849304,
+        0,
+        0,
+        0.7071067690849304
+      ]
+    },
+    {
+      "time": 350259.09999999404,
+      "mode": "immersive-vr",
+      "active": true,
+      "head": [
+        0,
+        1.399999976158142,
+        -3.0999999046325684
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.399999976158142,
+            -3.0999999046325684
+          ],
+          "projection": [
+            1.2339121103286743,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0005781650543213,
+            -1,
+            0,
+            0,
+            -0.01600462570786476,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.399999976158142,
+            -3.0999999046325684
+          ],
+          "projection": [
+            1.2339121103286743,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0005781650543213,
+            -1,
+            0,
+            0,
+            -0.01600462570786476,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "handedness": "left",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            -0.25397980213165283,
+            1.4841421842575073,
+            -0.35035812854766846
+          ]
+        },
+        {
+          "handedness": "right",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            0.25,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            0.2539798319339752,
+            1.4841421842575073,
+            -0.35035818815231323
+          ]
+        }
+      ],
+      "selection": "(a,b,c) = (1, -1, 2) \u00b7 \u0394 = -7",
+      "stage": "verified-apex-down",
+      "programmedEmulatorPose": true,
+      "orientation": [
+        -0.7071067690849304,
+        0,
+        0,
+        0.7071067690849304
+      ]
+    },
+    {
+      "stage": "0121-exit",
+      "active": false,
+      "entries": 3,
+      "ends": 3,
+      "selection": "(a,b,c) = (1, -1, 2) \u00b7 \u0394 = -7",
+      "immersive": false
+    }
+  ],
+  "earlier0120ControllerAndHeadFrames": [
+    {
+      "time": 723212.299999997,
+      "mode": "immersive-vr",
+      "active": true,
+      "head": [
+        0,
+        1.600000023841858,
+        0
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.600000023841858,
+            0
+          ],
+          "projection": [
+            0.6169560551643372,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0036193132400513,
+            -1,
+            0,
+            0,
+            -0.1001809611916542,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.600000023841858,
+            0
+          ],
+          "projection": [
+            0.6169560551643372,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0036193132400513,
+            -1,
+            0,
+            0,
+            -0.1001809611916542,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "handedness": "left",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            -0.25397980213165283,
+            1.4841421842575073,
+            -0.35035812854766846
+          ]
+        },
+        {
+          "handedness": "right",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            0.25,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            0.2539798319339752,
+            1.4841421842575073,
+            -0.35035818815231323
+          ]
+        }
+      ],
+      "selection": "(a,b,c) = (1, -1, 2) \u00b7 \u0394 = -7"
+    },
+    {
+      "time": 926761.299999997,
+      "mode": "immersive-vr",
+      "active": true,
+      "head": [
+        0.25,
+        1.600000023841858,
+        0
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            0.21850000321865082,
+            1.600000023841858,
+            0
+          ],
+          "projection": [
+            0.6169560551643372,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0036193132400513,
+            -1,
+            0,
+            0,
+            -0.1001809611916542,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.2815000116825104,
+            1.600000023841858,
+            0
+          ],
+          "projection": [
+            0.6169560551643372,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0036193132400513,
+            -1,
+            0,
+            0,
+            -0.1001809611916542,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "handedness": "left",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            0,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            -0.003979803062975407,
+            1.4841421842575073,
+            -0.35035812854766846
+          ]
+        },
+        {
+          "handedness": "right",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            0.5,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            0.5039798617362976,
+            1.4841421842575073,
+            -0.35035818815231323
+          ]
+        }
+      ],
+      "selection": "(a,b,c) = (1, -1, 2) \u00b7 \u0394 = -7"
+    },
+    {
+      "time": 1103144,
+      "mode": "immersive-vr",
+      "active": true,
+      "head": [
+        0.25,
+        1.600000023841858,
+        0
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            0.21850000321865082,
+            1.600000023841858,
+            0
+          ],
+          "projection": [
+            0.6169560551643372,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0036193132400513,
+            -1,
+            0,
+            0,
+            -0.1001809611916542,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.2815000116825104,
+            1.600000023841858,
+            0
+          ],
+          "projection": [
+            0.6169560551643372,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            -1.0036193132400513,
+            -1,
+            0,
+            0,
+            -0.1001809611916542,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "handedness": "left",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            0,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            -0.003979803062975407,
+            1.4841421842575073,
+            -0.35035812854766846
+          ]
+        },
+        {
+          "handedness": "right",
+          "profiles": [
+            "meta-quest-touch-plus",
+            "oculus-touch-v3",
+            "oculus-touch",
+            "generic-trigger-squeeze-thumbstick"
+          ],
+          "ray": [
+            0.5,
+            1.5,
+            -0.4000000059604645
+          ],
+          "grip": [
+            0.5120360851287842,
+            1.4857290983200073,
+            -0.35118305683135986
+          ]
+        }
+      ],
+      "selection": "(a,b,c) = (1, 0, -1) \u00b7 \u0394 = 4",
+      "plane": "Plane: 2a \u22122c = 0",
+      "endpoints": "Geodesic endpoints: -1 and 1"
+    }
+  ],
+  "limits": [
+    "Programmed emulator poses are not physical tracking.",
+    "The emulator was returned to manual control mode after three completed sessions.",
+    "Early probe attempts were overwritten by the emulator manual pose rig; only verified-apex records count as apex evidence.",
+    "Main Chrome had extension warnings and test-console errors; isolated application browser regressions reported no page errors.",
+    "Screenshot capture can precede a completed console operation; labels were checked against actual content and real XR frames."
+  ],
+  "isolatedBrowserWalkthroughs": {
+    "starscape-checks.js": {
+      "passed": true,
+      "errors": []
+    },
+    "pair-checks.js": {
+      "passed": true,
+      "errors": []
+    },
+    "debug-checks.js": {
+      "passed": true,
+      "errors": []
+    }
+  },
+  "package": {
+    "version": "0.12.1",
+    "payloadFiles": 73,
+    "zipBytes": 588518,
+    "zipSHA256": "0ab1c4112b7f7618618ac22f5943aa3c56f6aeb618928727f9c9ae2e8126a80f",
+    "manifestSHA256": "dcbe1a656859efbc8b6e8a155375ea0fa0f788e63aafb8f19931a54460a689fe",
+    "unpackedOutsideCheckout": true,
+    "offlineBothPagesPassed": true
+  }
+}

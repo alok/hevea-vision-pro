@@ -17,13 +17,18 @@ export function controllerRay(controller, raycaster) {
   raycaster.ray.direction.set(0, 0, -1).transformDirection(controller.matrixWorld);
 }
 
+// XR frames overwrite the camera's projection, fov (from the headset) and zoom (to 1), so a saved
+// view keeps them too. The projection is rebuilt from the current aspect, which follows the viewport.
 export function captureView(camera, controls) {
-  return { position: camera.position.clone(), quaternion: camera.quaternion.clone(), target: controls.target.clone() };
+  return { position: camera.position.clone(), quaternion: camera.quaternion.clone(), target: controls.target.clone(),
+    fov: camera.fov, zoom: camera.zoom };
 }
 
 export function restoreView(view, camera, controls) {
   camera.position.copy(view.position);
   camera.quaternion.copy(view.quaternion);
+  if (view.fov !== undefined) { camera.fov = view.fov; camera.zoom = view.zoom; camera.updateProjectionMatrix(); }
   controls.target.copy(view.target);
-  controls.update();
+  // A disabled OrbitControls (first-person or Origin) would still clamp and re-aim the restored pose.
+  if (controls.enabled !== false) controls.update();
 }

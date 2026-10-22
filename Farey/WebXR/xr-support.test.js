@@ -37,3 +37,47 @@ test('desktop camera and orbit target recover after XR changes the camera pose',
   assert.deepEqual(controls.target.toArray(), [0, 1, -3]);
   assert.ok(camera.quaternion.angleTo(view.quaternion) < 1e-7);
 });
+test('desktop field of view, zoom and projection recover after XR overwrites them', () => {
+  for (const fov of [45, 100]) {
+    const camera = new THREE.PerspectiveCamera(fov, 1280 / 900, 0.05, 60); camera.zoom = 1.7; camera.updateProjectionMatrix();
+    camera.position.set(3, 2, 4);
+    const controls = { target: new THREE.Vector3(0, 1, -3), update() { camera.lookAt(this.target); } };
+    controls.update();
+    const view = captureView(camera, controls), projection = camera.projectionMatrix.clone();
+    for (let session = 0; session < 2; session++) {
+      // What Three.js 0.180 WebXRManager.updateUserCamera does each XR frame.
+      camera.projectionMatrix.makePerspective(-0.1, 0.1, 0.1, -0.1, 0.05, 60);
+      camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+      camera.fov = THREE.MathUtils.RAD2DEG * 2 * Math.atan(1 / camera.projectionMatrix.elements[5]); camera.zoom = 1;
+      camera.position.set(0, 1.6, 0); controls.target.set(0, 0, 0);
+      restoreView(view, camera, controls);
+      assert.equal(camera.fov, fov);
+      assert.equal(camera.zoom, 1.7);
+      assert.deepEqual(camera.projectionMatrix.elements, projection.elements);
+      assert.deepEqual(camera.position.toArray(), [3, 2, 4]);
+      assert.deepEqual(controls.target.toArray(), [0, 1, -3]);
+      assert.ok(camera.quaternion.angleTo(view.quaternion) < 1e-7);
+    }
+  }
+});
+test('a disabled orbit controller does not move a restored first-person or Origin pose', () => {
+  const camera = new THREE.PerspectiveCamera(100, 1280 / 900, 0.008, 60);
+  const target = new THREE.Vector3(0, 1.4, -3.1);
+  camera.position.copy(target);
+  camera.quaternion.setFromEuler(new THREE.Euler(1.2, -0.7, 0.3, 'YXZ'));
+  let updates = 0;
+  // Like OrbitControls, update() re-applies orbit clamping and lookAt even when disabled.
+  const controls = { enabled: false, target: target.clone(), update() { updates++; camera.position.y += 1; camera.lookAt(this.target); } };
+  const view = captureView(camera, controls), position = camera.position.toArray(), quaternion = camera.quaternion.toArray();
+  camera.position.set(0, 1.6, 0); camera.quaternion.identity(); camera.fov = 90; camera.zoom = 1;
+  restoreView(view, camera, controls);
+  assert.equal(updates, 0);
+  assert.equal(controls.enabled, false);
+  assert.deepEqual(camera.position.toArray(), position);
+  assert.deepEqual(camera.quaternion.toArray(), quaternion);
+  assert.deepEqual(controls.target.toArray(), target.toArray());
+  assert.equal(camera.fov, 100);
+  controls.enabled = true;
+  restoreView(view, camera, controls);
+  assert.equal(updates, 1, 'enabled controls still synchronize');
+});

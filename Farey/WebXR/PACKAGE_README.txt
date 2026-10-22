@@ -88,8 +88,11 @@ look overlapped without triggering it. Geometry and selection do not move.
 XR AND GRAPHICS
 Desktop/touch 3D does not require a headset. Unsupported WebXR leaves these
 controls available. WebXR needs a compatible browser/device and runtime
-consent; remote hosting generally requires HTTPS. Actual immersive sessions,
-stereo frames and headset input have not been verified for this package.
+consent; remote hosting generally requires HTTPS. Browser 0.12.1 was tested with official Immersive Web Emulator 2.0.0
+in Chrome: actual immersive-vr sessions, two eye views, simulated head
+and controller poses, cutting-plane selection and repeated exit/re-entry.
+Camera field of view and first-person pose recover after exit. Emulation
+is not physical headset tracking, input, performance or comfort evidence.
 No browser security changes are needed or recommended for local desktop use.
 WebGL creation failure shows an explanation. The coefficient page pauses
 on context loss and repaints after restoration; the Farey page also has

@@ -1,6 +1,6 @@
 # Browser companion — coefficient cone and Farey L/R
 
-Version 0.12.0 opens the **signed 3D coefficient lattice and double cone** at `index.html`. The previous rational-pair lattice remains at `farey.html`; the two pages link to one another. See [the current double-cone guide](../DOUBLE_CONE.md) for exact coordinates, projection, source provenance and validation limits. No real WebXR session or headset execution has been verified.
+Version 0.12.1 opens the **signed 3D coefficient lattice and double cone** at `index.html`. The previous rational-pair lattice remains at `farey.html`; the two pages link to one another. See [the current double-cone guide](../DOUBLE_CONE.md) for exact coordinates, projection, source provenance and validation limits. Actual browser-emulated immersive sessions are now verified; see [XR simulation evidence](../XR_SIMULATION.md). Physical headset execution remains unverified.
 
 For the new scene: orbit the double cone, select a coefficient point, vary the radius or toggle the whole lattice. **Inhabit** enters the cloud; drag to look, W/A/S/D and Q/E move in ordinary Euclidean coefficient space. **Return to overview** restores the previous camera. Projection is off by default. The optional lower-half coloring is explicitly our extension. Invalid coefficient entries preserve the current state. Reload starts the coefficient scene at its default example. The Farey page retains its per-tab saved rational state.
 
@@ -41,7 +41,7 @@ Click an approximant row to **spotlight** it with double white rings. The target
 
 ## Immersive VR implementation
 
-The **Enter VR** button becomes available only when `isSessionSupported('immersive-vr')` succeeds. It requests an immersive VR session with a local-floor reference space. The lattice is stationary in a black environment. The implemented controller/select rays target points and use the in-world L, R, Undo, Reset, 3/5 and Exit controls. The session-end handler restores the desktop controls; this lifecycle still needs an actual XR session test. The in-world panel credits Stange and Series; full source links remain in the desktop panel.
+The **Enter VR** button becomes available only when `isSessionSupported('immersive-vr')` succeeds. It requests an immersive VR session with a local-floor reference space. The lattice is stationary in a black environment. The implemented controller/select rays target points and use the in-world L, R, Undo, Reset, 3/5 and Exit controls. The session-end handler restores the desktop controls; the shared restoration helper now recovers field of view, zoom and a disabled first-person camera after XR. The coefficient page completed three IWE session round trips. The separate Farey page has not had this live XR walkthrough. The in-world panel credits Stange and Series; full source links remain in the desktop panel.
 
 WebXR needs a compatible headset browser and a secure context. A headset cannot access the Mac's loopback address directly. Use an already-trusted HTTPS development host or an independently authorized deployment for headset testing. This work does not provision a certificate, change network permissions, or publish a site.
 
