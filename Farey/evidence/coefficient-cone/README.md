@@ -8,6 +8,7 @@ Native 0.9.0 (12), browser 0.8.0. These are captures of our original implementat
 - `browser-cloud.png`: projection hidden; the source cloud remains in three dimensions.
 - `browser-phone.png`, `browser-landscape.png`: Chromium at 390×844 and 844×390. These do not establish physical-phone or Safari behavior for the new scene.
 - `browser-validation.json`: source/image positions, distinct view positions, actual sphere-click result, state checks, context recovery and mocked unsupported-graphics fallback.
+- `coefficient-subpath.json`: the new scene loaded from `/dist/`, selected a scalar multiple and made no external requests.
 - `legacy-browser-validation.json`, `legacy-package-offline.json`: preserved Farey L/R page and packaged offline checks.
 - `focused-native-tests.json`: the 2-test tilted-scene simulator walkthrough. The complete suite is recorded separately when finished.
 - `provenance.json`: public-source hashes; original reference media was not redistributed.

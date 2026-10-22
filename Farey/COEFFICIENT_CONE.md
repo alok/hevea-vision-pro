@@ -1,6 +1,6 @@
 # Coefficient space before projection
 
-Native 0.9.0 and browser 0.8.0 open a noncoplanar mathematical object. The previous Farey L/R lattice remains available as a separate view.
+This guide describes native 0.9.0 and the earlier browser 0.8.0. [Browser 0.9.0](DOUBLE_CONE.md) extends the scene to the full signed lattice, both cone halves and an ambient first-person mode. The original versions open a noncoplanar mathematical object. The previous Farey L/R lattice remains available as a separate view.
 
 The distinction matters: Stange’s L/R slide starts with a **two-dimensional rational-pair lattice**. Its spheres and upright direction plane do not make it a three-dimensional lattice. The talk’s **Starscape / Lattice** sequence starts with integer polynomial coefficients `(a,b,c)` filling three-dimensional space, restricts them to a discriminant cone, then projects their rays to a disk. This update implements that coefficient construction in original code. It does not extrude the old Farey diagram.
 
@@ -48,6 +48,7 @@ Inspected on 22 October 2026:
 
 - [Stange’s exact talk, coefficient-cone slide](https://katestange.net/talks/math-exploration/#/starscape-cone).
 - [Live Starscape / Lattice talk viewer](https://www.katestange.net/starscape-lattice/?talk), stages 0, 1 and 2: coefficient lattice, cone interior, then radial projection. The public viewer’s own explanatory text and live implementation agree on the formulas above. Its source display uses `(b,a+c,a−c)`; ours differs by a rigid half-turn around the vertical axis.
+- Research background: [*Algebraic Number Starscapes*](https://arxiv.org/abs/2008.07655), Edmund Harriss, Katherine E. Stange and Steve Trettel. The author/title metadata was verified; the full paper was not independently audited in this increment.
 - The separate [L/R viewer](https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html) remains the reference for the original Farey view and [Caroline Series’s coding](https://doi.org/10.1112/jlms/s2-31.1.69).
 
 This is an independent finite explanatory implementation. No Stange JavaScript, meshes, media or screenshots are bundled. Public reference downloads and screenshots stay outside the repository. Source checksums are recorded in the evidence manifest. The point count, finite cone height, sphere sizes, colors, screen height, stationary oblique views and presentation tilt are our choices.
@@ -67,3 +68,9 @@ See [coefficient-cone evidence](evidence/coefficient-cone/) for current results 
 Simulator controls and desktop browser interaction do not establish physical headset comfort, GPU frame rate, WebXR session entry or controller operation. Tracking consent remains pending. Native sphere-tap automation and screen-reader speech remain unverified; native button-based selection and browser pointer selection are covered. The prior simulator screenshot/attachment capture inconsistency is not declared fixed by these successful captures.
 
 The earlier performance audit was paused at the user’s priority correction, and its temporary simulator was removed. Its partial timing data is not a completed benchmark of this new scene.
+
+## Next source-faithful increment
+
+A useful next step is the Lorentz-plane bridge from the current Farey interval into coefficient space. For neighboring endpoints p/q and r/s, the form `(q t−p)(s t−r)` has coefficients `(qs,−(ps+qr),pr)` and discriminant `(ps−qr)²=1. Its Lorentz-orthogonal plane cuts the cone in the corresponding rational geodesic. This is a planned, separately testable link; the current software does not yet draw it.
+
+Physical-headset interaction, immersive WebXR consent and GPU performance need their own authorized runtime checks. No upload or public deployment is included in this increment.

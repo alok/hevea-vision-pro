@@ -20,3 +20,31 @@ export function stars(bound = 8) {
   }
   return result;
 }
+
+export function kind(point) {
+  const delta = discriminant(point);
+  return delta === 0 ? 'null' : delta > 0 ? 'exterior' : point[0] > 0 ? 'upper' : 'lower';
+}
+
+// A finite Euclidean ball in the displayed coefficient coordinates, centered at the origin.
+// The coefficient triples themselves remain integral; the transformed lattice has covolume 2.
+export function coefficientLattice(radius = 6) {
+  if (!Number.isInteger(radius) || radius < 4 || radius > 12) return [];
+  const result = [];
+  for (let a = -radius; a <= radius; a++) for (let b = -radius; b <= radius; b++) {
+    for (let c = -radius; c <= radius; c++) {
+      if (a === 0 && b === 0 && c === 0) continue;
+      const v = vector([a,b,c]);
+      if (v.reduce((sum,x)=>sum+x*x,0) <= radius*radius) result.push([a,b,c]);
+    }
+  }
+  return result;
+}
+export function positiveRepresentative(point) {
+  if (discriminant(point) >= 0) return null;
+  return point[0] < 0 ? point.map(x=>-x) : [...point];
+}
+export function projectedRepresentative(point, h = height) {
+  const p = positiveRepresentative(point);
+  return p ? project(p,h) : null;
+}

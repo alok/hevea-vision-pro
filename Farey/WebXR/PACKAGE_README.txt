@@ -13,12 +13,20 @@ Stop the server with Control-C. It listens only on this computer's loopback.
 Use another --port if 8080 is occupied. Keep every file in the folder together.
 Do not double-click index.html: browser module security requires an HTTP URL.
 
-TRY THIS FIRST — COEFFICIENT CONE
-The opening page shows a true 3D coefficient lattice inside a cone, and a
-separate radial projection disk. Next point changes (1,-1,2) to (2,-2,4):
-the spatial location moves but its projected image and quadratic root do not.
-Hide projection to see the volume alone; Other side changes your viewpoint.
-Reset restores the default example and oblique view. Reload starts fresh.
+TRY THIS FIRST — DOUBLE CONE
+The opening page shows a signed 3D coefficient lattice and both cone halves.
+Drag to orbit, scroll to zoom; click a sphere or enter (a,b,c) to select it.
+Vary Radius, Whole coefficient lattice or Show double cone. Original-style
+color categories remain: upper discriminant colors, lower gray, exterior blue,
+null gold. Symmetric lower-half coloring is an explicitly labeled extension.
+Projection is optional and hidden initially.
+
+INHABIT
+Inhabit places the eye near the selected point. Drag to look; W/A/S/D move,
+Q/E go down/up. Onscreen buttons provide the same discrete steps. The readout
+reports Euclidean position and orientation. Return to overview restores the
+previous camera; Reset restores the default. This is ambient coefficient-space
+navigation, not intrinsic hyperbolic motion or a Flatland simulation.
 
 FAREY L/R — SEPARATE VIEW
 Follow the Farey L/R link, or open /farey.html. This intrinsically planar

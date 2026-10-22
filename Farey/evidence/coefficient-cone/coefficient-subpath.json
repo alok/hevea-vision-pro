@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "url": "http://127.0.0.1:8779/dist/",
+  "selection": "(a,b,c) = (2, -2, 4) \u00b7 \u0394 = -28",
+  "externalRequests": [],
+  "errors": [],
+  "assets": 9
+}

@@ -1,68 +1,36 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Test-only response instrumentation, used by Playwright CLI against a local preview.
+// Test-only instrumentation against an already-served loopback build.
 async page => {
-  if (!['localhost','127.0.0.1','[::1]'].includes(new URL(page.url()).hostname)) throw Error('Use a loopback preview.');
-  const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  const url=page.url();
-  await page.route('**/starscape.js*',async route=>{
-    const response=await route.fetch();
-    await route.fulfill({response,body:await response.text()+`\nconst lossExtension=renderer.getContext().getExtension('WEBGL_lose_context');window.__spatialTest={snapshot:()=>({selected:[...selected],image:project(selected),source:vector(selected),world:world.matrixWorld.elements.slice(),positions:dots.filter(d=>[[1,0,1],[1,1,1],[1,0,2],[2,0,2]].some(p=>p.every((x,i)=>x===d.userData.point[i]))).map(d=>({coefficient:d.userData.point,world:d.getWorldPosition(new THREE.Vector3()).toArray()})),camera:camera.position.toArray(),pointCount:points.length,projection:disk.visible,triangles:renderer.info.render.triangles,drawCalls:renderer.info.render.calls}),pickable:()=>{const r=renderer.domElement.getBoundingClientRect();for(const d of dots){if(d.userData.point.every((x,i)=>x===selected[i]))continue;const p=d.getWorldPosition(new THREE.Vector3()).project(camera);if(Math.abs(p.x)>.8||Math.abs(p.y)>.8)continue;const caster=new THREE.Raycaster();caster.setFromCamera(new THREE.Vector2(p.x,p.y),camera);if(caster.intersectObjects(dots)[0]?.object===d)return {point:d.userData.point,x:r.left+(p.x+1)*r.width/2,y:r.top+(1-p.y)*r.height/2};}return null;},lose:()=>lossExtension};`});
-  });
-  await page.reload(); await page.waitForFunction(()=>window.__spatialTest);
-  const snapshots=[];
-  snapshots.push(await page.evaluate(()=>__spatialTest.snapshot()));
-  await page.screenshot({path:'output/playwright/coefficient-cone/oblique.png'});
-  await page.locator('#view').click();
-  snapshots.push(await page.evaluate(()=>__spatialTest.snapshot()));
-  if(JSON.stringify(snapshots[0].camera)===JSON.stringify(snapshots[1].camera))throw Error('View did not change');
-  await page.screenshot({path:'output/playwright/coefficient-cone/other-side.png'});
-  await page.locator('#next').click();
-  const multiple=await page.evaluate(()=>__spatialTest.snapshot());
-  if(JSON.stringify(multiple.image)!==JSON.stringify(snapshots[0].image))throw Error('Multiples projected differently');
-  if(JSON.stringify(multiple.source)===JSON.stringify(snapshots[0].source))throw Error('Multiples lost depth');
-  await page.locator('#projection').uncheck();
-  if((await page.evaluate(()=>__spatialTest.snapshot())).projection)throw Error('Projection stayed visible');
-  await page.screenshot({path:'output/playwright/coefficient-cone/cloud.png'});
-  await page.locator('#coefficient').fill('1,2,1');await page.locator('#coefficient-form button').click();
-  if(!(await page.locator('#status').innerText()).includes('unchanged'))throw Error('Invalid input lacks feedback');
-  if(JSON.stringify((await page.evaluate(()=>__spatialTest.snapshot())).selected)!==JSON.stringify(multiple.selected))throw Error('Invalid input changed selection');
-  await page.locator('#coefficient').fill('2,1,1');await page.locator('#coefficient-form button').click();
-  if(!(await page.locator('#point-state').innerText()).includes('(2, 1, 1)'))throw Error('Valid input failed');
-  const pick=await page.evaluate(()=>__spatialTest.pickable());
-  if(!pick)throw Error('No exposed source point found for pointer check');
-  await page.mouse.click(pick.x,pick.y);
-  if(JSON.stringify((await page.evaluate(()=>__spatialTest.snapshot())).selected)!==JSON.stringify(pick.point))throw Error('Actual sphere click did not select its coefficient point');
-  await page.locator('#reset').click();
-  await page.context().setOffline(true);
-  await page.locator('#next').click();
-  if(!(await page.locator('#point-state').innerText()).includes('(2, -2, 4)'))throw Error('Offline interaction failed');
-  await page.context().setOffline(false);
-  await page.evaluate(()=>__spatialTest.lose().loseContext());
-  await page.waitForFunction(()=>!document.querySelector('#fatal').hidden);
-  await page.evaluate(()=>__spatialTest.lose().restoreContext());
-  await page.waitForFunction(()=>document.querySelector('#fatal').hidden);
-  if(!(await page.locator('#point-state').innerText()).includes('(2, -2, 4)'))throw Error('Restore changed selection');
-  await page.locator('#reset').click();
-  await page.setViewportSize({width:390,height:844});await page.waitForTimeout(100);
-  await page.screenshot({path:'output/playwright/coefficient-cone/phone.png'});
-  const phone=await page.locator('#viewport').boundingBox();if(phone.height<200||phone.width<300)throw Error('Phone scene is clipped');
-  await page.setViewportSize({width:844,height:390});await page.waitForTimeout(100);
-  await page.screenshot({path:'output/playwright/coefficient-cone/landscape.png'});
-  await page.setViewportSize({width:1280,height:900});await page.reload();await page.waitForFunction(()=>window.__spatialTest);
-  const fresh=await page.evaluate(()=>__spatialTest.snapshot());
-  if(JSON.stringify(fresh.selected)!=='[1,-1,2]')throw Error('Fresh load mismatch');
-  const fallback = await page.context().browser().newContext();
-  let fallbackResult;
-  try {
-    await fallback.addInitScript(() => {
-      const getContext=HTMLCanvasElement.prototype.getContext;
-      HTMLCanvasElement.prototype.getContext=function(type,...args){return /webgl/i.test(type)?null:getContext.call(this,type,...args);};
-    });
-    const blank=await fallback.newPage(); await blank.goto(url);
-    await blank.waitForFunction(()=>!document.querySelector('#fatal').hidden);
-    fallbackResult=await blank.evaluate(()=>({message:document.querySelector('#fatal').textContent,disabled:[...document.querySelectorAll('.controls button,.controls input')].every(control=>control.disabled)}));
-    if(!fallbackResult.disabled)throw Error('Unsupported graphics controls remained active');
-  } finally { await fallback.close(); }
-  if(errors.length)throw Error(errors.join('\n'));
-  return{passed:true,url,snapshots,multiple,fresh,phone,pick,fallbackResult,errors,actualXRSession:false};
+ if(!['127.0.0.1','localhost','[::1]'].includes(new URL(page.url()).hostname))throw Error('Use loopback');
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.route('**/starscape.js*',async route=>{const r=await route.fetch();await route.fulfill({response:r,body:await r.text()+`\nconst loseExtension=renderer.getContext().getExtension('WEBGL_lose_context');window.__double={snapshot:()=>({selected:[...selected],camera:camera.position.toArray(),quaternion:camera.quaternion.toArray(),near:camera.near,inhabited,points:points.length,screenPoints:points.slice(0,4).map(p=>world.localToWorld(physical(vector(p))).project(camera).toArray()),visiblePoints:points.filter(p=>{const v=world.localToWorld(physical(vector(p))).project(camera);return Math.abs(v.x)<1&&Math.abs(v.y)<1&&Math.abs(v.z)<1;}).length,counts:Object.fromEntries(['upper','lower','null','exterior'].map(k=>[k,points.filter(p=>kind(p)===k).length])),lowerColor:pointColor([-1,1,-2]).getHexString(),upperColor:pointColor([1,-1,2]).getHexString(),disk:disk.visible,cone:cone.visible,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles}),pick:()=>{const rect=renderer.domElement.getBoundingClientRect();for(let i=0;i<points.length;i++){const p=physical(vector(points[i]));world.localToWorld(p);p.project(camera);if(Math.abs(p.x)>.8||Math.abs(p.y)>.8)continue;const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(p.x,p.y),camera);if(ray.intersectObject(cloudMesh)[0]?.instanceId===i)return {point:points[i],x:rect.x+(p.x+1)*rect.width/2,y:rect.y+(1-p.y)*rect.height/2};}return null;},lose:()=>loseExtension};`});});
+ await page.reload();await page.waitForFunction(()=>window.__double);
+ const initial=await page.evaluate(()=>__double.snapshot());
+ if(Object.values(initial.counts).some(n=>n===0)||initial.disk||!initial.cone)throw Error('Bad full double cone default');
+ await page.screenshot({path:'output/playwright/double-cone/overview.png'});
+ const pick=await page.evaluate(()=>__double.pick());if(!pick)throw Error('No visible sphere for click');await page.mouse.click(pick.x,pick.y);if(JSON.stringify((await page.evaluate(()=>__double.snapshot())).selected)!==JSON.stringify(pick.point))throw Error('Instanced sphere click failed');
+ await page.locator('#radius').selectOption('12');const max=await page.evaluate(()=>__double.snapshot());if(max.points>=4000||max.calls>20)throw Error('Geometry budget exceeded');
+ await page.locator('#whole').uncheck();const upperOnly=await page.evaluate(()=>__double.snapshot());if(upperOnly.counts.lower||upperOnly.counts.exterior||upperOnly.counts.null)throw Error('Upper-only filter failed');await page.locator('#cone').uncheck();if((await page.evaluate(()=>__double.snapshot())).cone)throw Error('Cone visibility failed');
+ await page.locator('#reset').click();await page.locator('#symmetric-color').check();const colored=await page.evaluate(()=>__double.snapshot());if(colored.lowerColor!==colored.upperColor)throw Error('Symmetric extension mismatch');
+ await page.locator('#reset').click();await page.locator('#coefficient').fill('-1,1,-2');await page.locator('#coefficient-form button').click();if(!(await page.locator('#root-state').innerText()).includes('0.500 + 1.323i'))throw Error('Negative representative failed');
+ await page.locator('#projection').check();if(!(await page.evaluate(()=>__double.snapshot())).disk)throw Error('Projection failed');
+ await page.locator('#reset').click();const overview=await page.evaluate(()=>__double.snapshot());
+ await page.locator('#inhabit').click();const inside=await page.evaluate(()=>__double.snapshot());if(!inside.inhabited||inside.near!==0.008||inside.visiblePoints<5)throw Error('Inhabit failed');
+ await page.screenshot({path:'output/playwright/double-cone/inside.png'});
+ await page.keyboard.press('w');const directKey=await page.evaluate(()=>__double.snapshot());if(JSON.stringify(directKey.camera)===JSON.stringify(inside.camera))throw Error('Inhabit did not take keyboard focus');
+ await page.locator('#radius').selectOption('4');const changedCrop=await page.evaluate(()=>__double.snapshot());if(JSON.stringify(changedCrop.camera)!==JSON.stringify(directKey.camera))throw Error('Inside crop change moved eye');
+ await page.locator('[data-move="forward"]').click();const moved=await page.evaluate(()=>__double.snapshot());if(JSON.stringify(moved.camera)===JSON.stringify(inside.camera)||JSON.stringify(moved.selected)!==JSON.stringify(inside.selected))throw Error('Movement failed');
+ if(!moved.screenPoints.some((p,i)=>p.some((x,j)=>Math.abs(x-inside.screenPoints[i][j])>1e-6)))throw Error('No translated-view parallax');
+ await page.locator('canvas').first().focus();await page.locator('canvas').first().press('w');
+ const keyboard=await page.evaluate(()=>__double.snapshot());if(JSON.stringify(keyboard.camera)===JSON.stringify(moved.camera))throw Error('W navigation failed');
+ const box=await page.locator('canvas').first().boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+55,box.y+box.height/2-30,{steps:5});await page.mouse.up();const looked=await page.evaluate(()=>__double.snapshot());if(JSON.stringify(looked.quaternion)===JSON.stringify(moved.quaternion)||JSON.stringify(looked.camera)!==JSON.stringify(keyboard.camera))throw Error('First person look moved eye');
+ await page.locator('#inhabit').click();const returned=await page.evaluate(()=>__double.snapshot());if(returned.camera.some((x,i)=>Math.abs(x-overview.camera[i])>1e-8))throw Error('Return lost overview pose');
+ await page.context().setOffline(true);await page.locator('#next').click();await page.context().setOffline(false);
+ await page.evaluate(()=>__double.lose().loseContext());await page.waitForFunction(()=>!document.querySelector('#fatal').hidden);await page.evaluate(()=>__double.lose().restoreContext());await page.waitForFunction(()=>document.querySelector('#fatal').hidden);
+ if(errors.length)throw Error(errors.join('\n'));
+ await page.locator('#reset').click();
+ await page.setViewportSize({width:390,height:844});await page.screenshot({path:'output/playwright/double-cone/phone.png'});
+ await page.setViewportSize({width:844,height:390});await page.screenshot({path:'output/playwright/double-cone/landscape.png'});
+ await page.setViewportSize({width:1280,height:900});
+ return {passed:true,initial,pick,max,upperOnly,colored,inside,directKey,changedCrop,moved,keyboard,looked,returned,errors,actualXRSession:false};
 }

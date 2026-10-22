@@ -1,6 +1,6 @@
 # Farey — Into the Infinite
 
-[Coefficient-cone update](COEFFICIENT_CONE.md) — native 0.9.0 / browser 0.8.0. [Previous release-candidate readiness](READER_READINESS.md) — native 0.8.1 / browser 0.7.4. [Precision notice](PRECISION_NOTICE.md). [Safari and compact-view audit](MOBILE_SAFARI.md). [Lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) · [Native integration check](INTEGRATION_08.md). [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
+[Coefficient-cone update](COEFFICIENT_CONE.md) — native 0.9.0 / browser 0.9.0. [Previous release-candidate readiness](READER_READINESS.md) — native 0.8.1 / browser 0.7.4. [Precision notice](PRECISION_NOTICE.md). [Safari and compact-view audit](MOBILE_SAFARI.md). [Lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) · [Native integration check](INTEGRATION_08.md). [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
 
 [Independent mathematical consistency audit](MATHEMATICAL_AUDIT.md): exact rational state agrees across implementations; very close deep disk curves can merge at display precision. Read exact fractions when interpreting overlapping arcs.
 
@@ -8,7 +8,9 @@
 
 **Inspired by [Katherine Stange’s mathematical visualizations](https://www.katestange.net/code/) and her [Illustrating Mathematics for Math 2.0 talk](https://katestange.net/talks/math-exploration/).** Underlying L/R geodesic coding: [Caroline Series (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 
-The default scene is now the noncoplanar **coefficient lattice** from Stange’s Starscape / Lattice construction: 280 integer triples `(a,b,c)` inside the discriminant cone, alongside their radial projection onto a Klein disk. Selecting `(1,−1,2)` then its multiple `(2,−2,4)` changes the spatial point while keeping the projected point and quadratic root fixed. A stationary oblique view exposes depth immediately. The immersive surroundings are black.
+The native default scene is the noncoplanar **coefficient lattice** from Stange’s Starscape / Lattice construction: 280 integer triples `(a,b,c)` inside the discriminant cone, alongside their radial projection onto a Klein disk. Selecting `(1,−1,2)` then its multiple `(2,−2,4)` changes the spatial point while keeping the projected point and quadratic root fixed. A stationary oblique view exposes depth immediately. The immersive surroundings are black.
+
+The browser now leads with a signed coefficient lattice, a double cone and an **Inhabit** mode; see [the browser-first update](DOUBLE_CONE.md).
 
 The separate **Farey L/R** view retains the rational-pair lattice, mediants and linked Poincaré disk. That lattice is intrinsically planar; the new coefficient scene does not relabel it as a three-dimensional lattice. See [exact formulas and evidence](COEFFICIENT_CONE.md).
 
@@ -49,6 +51,8 @@ Xcode 27.2 beta 2 and visionOS 27.2 are installed; the simulator is `D2ECE520-ED
 - **Reset** restores the initial interval, grid, lattice view and front placement. **Exit** returns to the entry window, ready for another session.
 
 ## Mathematics and source boundary
+
+The coefficient-cone formulas and their provenance are in [the new scene guide](COEFFICIENT_CONE.md). The remainder of this section describes the separate Farey L/R view.
 
 Before this revision, we ran the [exact L/R viewer embedded in Stange's slides](https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html) in a browser. Selecting 3/5 showed R L R² acting on (1,0)^T. The Tessellation, Dots, Lattice and Labels stages link a rational to the integer point (q,p) and its vertical direction plane; dragging changes the spatial view. We also inspected the separate [Farey Hyperboloid](https://www.katestange.net/farey-hyperboloid/) companion, which links a ruled q=1 surface to geodesics. This version implements the talk's lattice construction; the hyperboloid is reference material for a separate representation.
 

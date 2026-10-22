@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { stars, vector, project, upperRoot, discriminant } from './starscape-core.js';
+import { stars, vector, project, upperRoot, discriminant, kind, coefficientLattice, positiveRepresentative, projectedRepresentative } from './starscape-core.js';
 test('every coefficient point lies strictly inside the 3D cone and projects along its ray', () => {
   for (const p of stars()) {
     const [x,y,z] = vector(p), image = project(p);
@@ -30,4 +30,19 @@ test('the displayed set is noncoplanar and rejects nonstars', () => {
   assert.notEqual(determinant,0);
   assert.equal(project([1,2,1]),null); assert.equal(project([0,0,1]),null);
   assert.equal(stars(100).length,0);
+});
+test('full coefficient ball contains both cone halves and exact sign partners', () => {
+  const points=coefficientLattice(6), keys=new Set(points.map(p=>p.join(',')));
+  assert.ok(points.some(p=>kind(p)==='upper'));
+  assert.ok(points.some(p=>kind(p)==='lower'));
+  assert.ok(points.some(p=>kind(p)==='null'));
+  assert.ok(points.some(p=>kind(p)==='exterior'));
+  for(const p of points) {
+    assert.ok(keys.has(p.map(x=>-x).join(',')));
+    assert.ok(vector(p).reduce((s,x)=>s+x*x,0)<=36);
+    if(discriminant(p)<0) assert.deepEqual(projectedRepresentative(p), projectedRepresentative(p.map(x=>-x)));
+  }
+  assert.deepEqual(positiveRepresentative([-1,1,-2]),[1,-1,2]);
+  assert.equal(projectedRepresentative([1,2,1]),null);
+  assert.ok(coefficientLattice(12).length<4000);
 });

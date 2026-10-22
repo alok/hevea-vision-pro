@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Into the Infinite — The coefficient cone</title>
+  <title>Into the Infinite — The double cone</title>
   <link rel="icon" href="data:,"><link rel="stylesheet" href="style.css">
   <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
   <style>
@@ -12,7 +12,7 @@
     #point-state { color: #ffb05d; font: 18px ui-monospace,monospace; }
     .formula { font: 13px ui-monospace,monospace; }
     #coefficient { width: 120px; }
-    #projection { width: auto; }
+    input[type="checkbox"] { width: auto; }
     @media(max-width: 800px) {
       header { left: 16px; top: 12px; }
       h1 { font-size: 28px; margin: 4px 0 8px; }
@@ -25,28 +25,36 @@
   <noscript><p class="startup-error">JavaScript is needed for the spatial scene. <a href="https://www.katestange.net/starscape-lattice/">See Katherine Stange’s original viewer.</a></p></noscript>
   <main id="viewport" aria-label="Three-dimensional coefficient lattice and its projection"></main>
   <header><p class="eyebrow">INTO THE INFINITE · COEFFICIENT SPACE IN THREE DIMENSIONS</p>
-    <h1>The coefficient cone</h1>
+    <h1>The double cone</h1>
     <p class="credit">Inspired by <strong>Katherine Stange</strong> · <a href="https://katestange.net/talks/math-exploration/">Original talk ↗</a> · <a href="https://www.katestange.net/starscape-lattice/">Original 3D viewer ↗</a></p>
   </header>
   <section class="controls" aria-label="Coefficient space controls">
-    <strong>From three dimensions to two</strong>
+    <strong>Explore coefficient space</strong>
     <p id="point-state" aria-live="polite"></p>
     <p id="root-state" class="formula"></p>
-    <p>Orange is an integer coefficient point. White is its image on the cyan projection disk. Other coefficient points occupy different depths inside the cone.</p>
-    <div class="row"><button id="next">Next point</button><button id="view">Other side</button><button id="reset">Reset</button></div>
-    <p><label><input type="checkbox" id="projection" checked> Show projection and ray</label></p>
+    <p>Integer triples fill space around both cone halves. Upper interior: discriminant colors. Lower interior: gray. Exterior: blue. Boundary: gold.</p>
+    <div class="row"><button id="inhabit">Inhabit</button><label>Radius <select id="radius"><option>4</option><option selected>6</option><option>8</option><option>10</option><option>12</option></select></label><button id="next">Next point</button><button id="view">Other side</button><button id="reset">Reset</button></div>
+    <section id="navigation" hidden>
+      <p id="location" class="formula" aria-live="polite"></p>
+      <div class="row"><button data-move="forward">Forward</button><button data-move="back">Back</button><button data-move="left">Left</button><button data-move="right">Right</button><button data-move="up">Up</button><button data-move="down">Down</button></div>
+      <p>Drag to look. W/A/S/D move; Q/E move down/up. This is ambient Euclidean coefficient space, not hyperbolic or Flatland navigation.</p>
+    </section>
+    <p><label><input type="checkbox" id="whole" checked> Whole coefficient lattice</label></p>
+    <p><label><input type="checkbox" id="cone" checked> Show double cone</label></p>
+    <p><label><input type="checkbox" id="symmetric-color"> Color lower half too (our extension)</label></p>
+    <p><label><input type="checkbox" id="projection"> Project to Klein disk</label></p>
     <form id="coefficient-form"><label>(a,b,c) <input id="coefficient" value="1,-1,2" aria-label="Integer coefficients a, b, c"></label><button>Select</button></form>
     <p id="status" role="status"></p>
     <details><summary>Exact correspondence</summary>
       <p class="formula">x = −b, y = a+c, z = c−a<br>Δ = b²−4ac = x²+z²−y²</p>
-      <p>We keep integer triples with a&gt;0, Δ&lt;0 and a+c≤8. This is a transformed coefficient lattice, not arbitrary integer points in (x,y,z).</p>
-      <p>The screen y=4 cuts the cone in a disk. Radial projection multiplies every coordinate by 4/(a+c). Multiples, such as (1,−1,2) and (2,−2,4), lie at different depths but share one image and one quadratic root.</p>
+      <p>The whole lattice shows integer coefficient triples in a finite ball x²+y²+z²≤R², including both signs. Turn Whole coefficient lattice off to keep only a&gt;0, Δ&lt;0. The full transformed grid is not arbitrary integer (x,y,z).</p>
+      <p>The optional screen y=4 cuts the upper cone in a disk. A lower-half triple is sign-flipped first; a polynomial and its negative have the same roots. Radial projection multiplies every coordinate by 4/(a+c). Multiples, such as (1,−1,2) and (2,−2,4), lie at different depths but share one image and one quadratic root.</p>
       <p>The normalized disk coordinates u=−b/(a+c), v=(c−a)/(a+c) map to the upper half-plane by u/(1−v) + i√(1−u²−v²)/(1−v), the quadratic root shown above.</p>
     </details>
     <p class="hint">Drag to orbit · scroll to zoom · right-drag to pan. Focus the scene and use arrows to pan, +/− to zoom, Home to reset. No automatic motion.</p>
     <p><button id="xr" disabled>Checking WebXR…</button></p><p id="xr-status" class="hint"></p>
     <p><a href="farey.html">Explore the separate Farey L/R lattice →</a></p>
-    <details><summary>Sources and scope</summary><p>Original implementation of the coefficient-cone construction in Katherine Stange’s talk and Starscape / Lattice viewer. Finite points, sphere sizes, colors and fixed oblique views are presentation choices. No source code or media from her viewer is bundled.</p><p>The separate Farey L/R demonstration credits <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series (1985)</a>. The two lattices have distinct meanings.</p></details>
+    <details><summary>Sources and scope</summary><p>Original implementation of the coefficient-cone construction in Katherine Stange’s talk and Starscape / Lattice viewer. Our symmetric cone extent and origin-centered crop differ from the original viewer’s asymmetric framing. Its upper discriminant palette is interpolated in linear RGB here; lower-half coloring is an opt-in extension. Finite points and sphere sizes are presentation choices. No source code or media from her viewer is bundled.</p><p>The separate Farey L/R demonstration credits <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series (1985)</a>. The two lattices have distinct meanings. Research background: <a href="https://arxiv.org/abs/2008.07655">Algebraic Number Starscapes — Harriss, Stange and Trettel</a>.</p></details>
   </section>
   <p id="fatal" role="alert" hidden></p>
   <script type="module" id="farey-app" src="starscape.js"></script>

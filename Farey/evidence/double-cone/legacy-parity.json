@@ -1,0 +1,13 @@
+{
+  "legacyRuntimeUnchanged": true,
+  "comparedWith": "Farey-WebXR-0.8.0.zip",
+  "files": {
+    "app.js": true,
+    "core.js": true,
+    "xr-support.js": true,
+    "input.js": true,
+    "recovery.js": true,
+    "construction.js": true,
+    "view.js": true
+  }
+}
