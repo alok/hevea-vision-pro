@@ -20,10 +20,7 @@ import SwiftUI
       }
       for rational in LatticeRenderer.landmarks {
         if let label = attachments.entity(for: "lattice-\(rational.p)-\(rational.q)") {
-          label.position = lattice.labelPosition(rational)
-          label.orientation = simd_quatf(angle: -.pi / 7, axis: [1, 0, 0])
-          label.scale = [3, 3, 3]
-          lattice.root.addChild(label)
+          lattice.addLandmark(label, at: rational)
         }
       }
       if let title = attachments.entity(for: "title") {
@@ -48,6 +45,9 @@ import SwiftUI
           Button(rational.description) { model.select(LatticePoint(p: rational.p, q: rational.q)) }
             .font(.caption.weight(.semibold)).buttonStyle(.borderedProminent)
             .tint(landmarkColor(rational))
+            .foregroundStyle(
+              rational == model.state.selectedPoint?.rational && rational != model.state.mediant
+                ? Color.black : Color.white)
             .accessibilityIdentifier("lattice-\(rational.p)-\(rational.q)")
         }
       }
@@ -113,6 +113,7 @@ import SwiftUI
   }
   private func landmarkColor(_ rational: Rational) -> Color {
     if rational == model.state.mediant { return .orange }
+    if rational == model.state.selectedPoint?.rational { return .white }
     if rational == model.state.left { return .cyan }
     if rational == model.state.right { return .purple }
     return .blue

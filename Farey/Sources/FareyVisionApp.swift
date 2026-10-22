@@ -120,7 +120,7 @@ import SwiftUI
     Window("Farey controls", id: "controls") {
       ControlsWindowView().environment(model)
     }
-    .defaultSize(width: 760, height: 275)
+    .defaultSize(width: 760, height: 310)
     .defaultWindowPlacement { _, _ in WindowPlacement(.utilityPanel) }
     .windowStyle(.plain)
     .persistentSystemOverlays(.hidden)
@@ -259,6 +259,7 @@ struct ControlsView: View {
   @State private var showSources = false
   @State private var showLesson = false
   @State private var showFractionEntry = false
+  @State private var showPointInspection = false
   var body: some View {
     VStack(spacing: 12) {
       HStack(alignment: .firstTextBaseline) {
@@ -340,6 +341,12 @@ struct ControlsView: View {
       )
       .font(.caption).foregroundStyle(.secondary)
       .accessibilityIdentifier("geometry-explanation")
+      if let inspection = model.state.inspection {
+        Button("Point (q, p): \(inspection.equation) · Inspect") { showPointInspection = true }
+          .font(.caption.monospaced()).foregroundStyle(.cyan).buttonStyle(.plain)
+          .accessibilityIdentifier("inspect-point")
+          .popover(isPresented: $showPointInspection, arrowEdge: .bottom) { PointInspectionView() }
+      }
       Text(
         "M = \(model.state.matrixLabel)    det M = \(model.state.determinant)    •    \(model.state.word.count)/24 moves"
       )

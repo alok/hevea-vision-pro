@@ -15,6 +15,9 @@ const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 
 for (const name of files) await copyFile(resolve(root, name), resolve(destination, name));
 const hash = content => createHash('sha256').update(content).digest('hex');
 const assetHash = async name => hash(await readFile(resolve(destination, name)));
+const recovery = (await readFile(resolve(destination, 'recovery.js'), 'utf8'))
+  .replace("'./core.js'", `'./core.js?v=${await assetHash('core.js')}'`);
+await writeFile(resolve(destination, 'recovery.js'), recovery);
 let app = await readFile(resolve(destination, 'app.js'), 'utf8');
 for (const name of ['core.js', 'xr-support.js', 'input.js', 'recovery.js']) {
   app = app.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);

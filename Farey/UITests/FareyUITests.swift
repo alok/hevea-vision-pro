@@ -33,7 +33,8 @@ import XCTest
     XCTAssertTrue(button.wait(for: \.isEnabled, toEqual: true, timeout: 20))
     button.tap()
     require("word-state")
-    let rendered = NSPredicate(format: "label CONTAINS %@", "lattice points")
+    let rendered = NSPredicate(
+      format: "label CONTAINS %@ OR label CONTAINS %@", "lattice points", "Farey edges")
     expectation(for: rendered, evaluatedWith: require("render-receipt"))
     waitForExpectations(timeout: 20)
   }
@@ -202,5 +203,36 @@ import XCTest
     require("clear-fraction").tap()
     require("fraction-input").typeText(text)
     require("select-fraction").tap()
+  }
+  func testInspectedMultipleAndLinkedDisk() {
+    launch()
+    enter()
+    require("reset").tap()
+    require("lattice-6-10").tap()
+    XCTAssertEqual(require("word-state").label, "RLR")
+    XCTAssertTrue(require("inspect-point").label.contains("(10, 6) = 2 × (5, 3)"))
+    require("inspect-point").tap()
+    XCTAssertEqual(require("point-equation").label, "(10, 6) = 2 × (5, 3)")
+    XCTAssertTrue(require("point-gcd").label.contains("gcd(10, 6) = 2"))
+    XCTAssertTrue(require("point-reduction").label.contains("6/10 = 3/5"))
+    capture("16-inspected-multiple", holdFor: 3)
+    require("close-point-inspection").tap()
+    require("space-toggle").tap()
+    XCTAssertTrue(require("inspect-point").label.contains("(10, 6) = 2 × (5, 3)"))
+    capture("17-multiple-linked-disk", holdFor: 3)
+    exit()
+    enter()
+    XCTAssertTrue(require("inspect-point").label.contains("(10, 6) = 2 × (5, 3)"))
+    require("space-toggle").tap()
+    for _ in 0..<3 { require("detail-less").tap() }
+    require("inspect-point").tap()
+    XCTAssertTrue(require("point-outside-grid").label.contains("beyond this finite grid"))
+    require("close-point-inspection").tap()
+    require("undo").tap()
+    XCTAssertEqual(require("word-state").label, "RL")
+    XCTAssertTrue(require("inspect-point").label.contains("(3, 2) = 1 × (3, 2)"))
+    require("reset").tap()
+    XCTAssertTrue(require("inspect-point").label.contains("(1, 1) = 1 × (1, 1)"))
+    exit()
   }
 }

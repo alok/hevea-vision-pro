@@ -15,7 +15,7 @@ Credit **Katherine Stange** prominently, next to links to her [talk](https://kat
 
 ## Claims supported by this work
 
-Ten Swift core tests, ten native model/UI tests, and sixteen JavaScript tests passed. The revised native lesson popover also passed its focused UI test. Native UI tests exercised entry, exit, repeated re-entry, L/R, Undo, Reset, bounds and linked representation selection. Browser checks exercised orbit, sphere hit-testing, fraction entry, bounds and recovery. The latest native device-target Release build passed strict signature verification using existing signing material.
+Fourteen Swift core tests, twelve native model/UI tests, and nineteen JavaScript tests passed. The revised native lesson popover also passed its focused UI test. Native UI tests exercised entry, exit, repeated re-entry, L/R, Undo, Reset, bounds and linked representation selection. Browser checks exercised orbit, sphere hit-testing, fraction entry, bounds and recovery. The latest native device-target Release build passed strict signature verification using existing signing material.
 
 ## Claims to leave open
 
@@ -36,3 +36,7 @@ Browser 0.2.2 separates single-tap selection from gestures and keeps the lattice
 Browser 0.2.3 recovers from controlled WebGL context loss without requiring another mathematical move. The visible fallback preserves access to exact controls, and reload restores the saved L/R word and finite grid. The evidence distinguishes browser-generated loss/restoration events from the separately mocked initial-WebGL failure. This does not establish physical GPU failure recovery or XR-session recovery.
 
 Native 0.3 adds direct positive-fraction entry. Entering `6/10` selects the reduced fraction `3/5` and its exact L/R path. Invalid, zero-denominator, overflow and out-of-domain entries preserve the previous mathematical state. A selected vector outside the visible grid keeps its direction plane and an explicit bounds explanation. Native and browser selection agreed on 907 bounded test inputs; this is test evidence, not a formal proof.
+
+Native 0.4 and browser 0.3 distinguish the inspected integer point from its reduced direction. The worked example is `(10,6) = 2 × (5,3)`: the two lattice points have different locations but represent the same rational `3/5`. The inspector shows the gcd, primitive vector and exact L/R word. The native disk links that reduced rational to the same boundary point and green geodesic from infinity; it does not identify lattice distances with hyperbolic distances. The finite upright plane now reaches the grid boundary so the displayed multiples visibly lie in it. [Native and browser comparison](evidence/point-inspection/parity.json) agreed on 966 bounded coordinate pairs, including zero and invalid inputs.
+
+The point-inspection increment includes [native inspection](evidence/point-inspection/native-multiple.png), its [linked disk](evidence/point-inspection/native-disk.png), and the [browser view](evidence/point-inspection/browser-multiple.png). The browser check clicked the actual 6/10 sphere and verified point identity survived reload. Native tests selected its spatial label, switched representations, exited/re-entered, and tested a point outside the reduced grid. This does not establish physical hand/eye interaction or an immersive WebXR session.

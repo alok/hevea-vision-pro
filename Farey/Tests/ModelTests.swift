@@ -29,6 +29,26 @@ import XCTest
     model.preset()
     XCTAssertEqual(model.state.mediant, Rational(3, 5))
   }
+  func testInspectedMultipleSurvivesPresentationChangesAndInvalidSelection() throws {
+    let model = GalleryModel()
+    model.select(LatticePoint(p: 6, q: 10))
+    XCTAssertEqual(model.state.inspection?.equation, "(10, 6) = 2 × (5, 3)")
+    model.toggleSpace()
+    model.changeView()
+    model.changeDepth(-3)
+    model.select(LatticePoint(p: 0, q: 5))
+    XCTAssertEqual(model.state.selectedPoint, LatticePoint(p: 6, q: 10))
+    XCTAssertThrowsError(try model.enterFraction("1/0"))
+    XCTAssertEqual(model.state.selectedPoint, LatticePoint(p: 6, q: 10))
+    model.undo()
+    XCTAssertNil(model.state.selectedPoint)
+    XCTAssertEqual(model.state.mediant, Rational(2, 3))
+    _ = try model.enterFraction("14/14")
+    XCTAssertEqual(model.state.inspection?.divisor, 14)
+    model.startLesson()
+    XCTAssertEqual(model.state.inspection?.primitive, Rational(1, 2))
+    XCTAssertEqual(model.state.inspection?.divisor, 1)
+  }
   func testWorkedPathUsesExactStateAndRejectsMissingPrediction() {
     let model = GalleryModel()
     model.startLesson()

@@ -1,0 +1,9 @@
+{
+  "url": "https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html",
+  "inspectedOn": "2026-10-22",
+  "coordinates": "Integer point (q,p) represents direction p/q.",
+  "plane": "Upright plane through the origin and the rational direction.",
+  "sourcePageSHA256": "eb46dbe925e4cc7065db131ed5ccd05ef8a8e5cf43bc90623c02be4094512c38",
+  "sourceOrMediaCopied": false,
+  "note": "Reference page inspected for mathematical conventions. Implementation is original; this record is not a license grant."
+}

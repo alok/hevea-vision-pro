@@ -22,10 +22,11 @@ Xcode 27.2 beta 2 and visionOS 27.2 are installed; the simulator is `D2ECE520-ED
 ## Explore
 
 - Tap a lattice sphere or a floating rational label to select its positive rational p/q, including reducible pairs such as 6/10.
+- **Inspect** below the geometry hint explains the actual selected point: `(10,6) = 2 × (5,3)`, `gcd(10,6) = 2`, and `6/10 = 3/5`. The point remains distinct from its reduced direction across lattice/disk switches and immersive re-entry. White marks a non-primitive inspected point; orange marks the primitive mediant. L/R, Undo and Reset choose a new direction and clear the previous point identity.
 - **p/q** opens direct entry. Positive numerator and denominator values must each be at most 1000 before reduction, and the exact path must fit within 24 moves. `6/10` selects `3/5`; invalid, zero, negative, overflow and over-limit entries leave the current selection and lesson intact. Selection rebuilds the L/R path, so Undo removes its last move.
 - **Learn** opens a worked path: predict and apply L at 1/2 to reach 2/3, then R to reach 3/5. Its vector explanation and linked disk use the same selected state.
 - **L** and **R** update the exact interval. **Undo** reverses one step. **3/5 example** reproduces the selected fraction used in our reference inspection.
-- The **green plane** contains the ray through (q,p). Every green lattice sphere is an exact integer multiple of that direction. The orange point is the primitive mediant; orange edges form its vector-addition parallelogram.
+- The **green plane** contains the ray through (q,p). Every green lattice sphere is an exact integer multiple of the primitive direction. Cyan/purple edges form the neighbor-vector parallelogram; its orange diagonal reaches the primitive mediant.
 - **Space: Lattice / Disk** switches the spatial representation while preserving the same rational and matrix.
 - **Front / Left / Right** provide camera-equivalent translations of the lattice relative to a stationary viewer, making depth and parallax inspectable without forced camera motion.
 - Grid controls bound the visible integer patch. If the primitive vector lies beyond that patch, the direction plane remains visible and the controls say so.
@@ -46,7 +47,7 @@ M ← M L          M ← M R
 
 L replaces the left column by the mediant, and R replaces the right column. Every step preserves ad−bc=1. This app displays the current mediant M(1). The original reference's endpoint word appends R to place that same fraction in M(∞): our interval word RLR selects 3/5, while RLRR sends (1,0)^T to (3,5)^T. These conventions are stated explicitly rather than conflated.
 
-The lattice is a rigidly placed copy of Z²: (q,p) is mapped to a physical plane by uniform scale and rotation. Its direction plane is perpendicular to the lattice and passes through the origin. The parallelogram is ordinary vector addition (q₁,p₁)+(q₂,p₂), and its integer area is one for neighboring Farey endpoints. Sphere radii, colors, physical placement and the finite plane height are presentation choices.
+The lattice is a rigidly placed copy of Z²: (q,p) is mapped to a physical plane by uniform scale and rotation. Its direction plane is perpendicular to the lattice and passes through the origin; the drawn patch extends to the grid boundary along the selected ray. Positive scalar multiples share this ray, plane and disk boundary point, while their lattice locations differ. The parallelogram is ordinary vector addition (q₁,p₁)+(q₂,p₂), and its integer area is one for neighboring Farey endpoints. Sphere radii, colors, physical placement and the finite plane height are presentation choices. Axis points represent 0 and ∞ and remain non-selectable boundaries in this positive-rational interface.
 
 The disk places p/q at (2pq/(p²+q²), (p²−q²)/(p²+q²)), joining Farey neighbors by sampled circular arcs orthogonal to the boundary. It is a finite tessellation, not the infinite object or a reconstructed Stange fractal.
 
@@ -68,7 +69,7 @@ See [simulator evidence](evidence/README.md). The controls use a pushed native w
 
 The device target uses development team `5795ZPYZ2T` and the already-installed wildcard profile **Lean Calculator Vision Pro 20261008** (expires 2027-10-08). Its certificate matches the installed development identity, its wildcard covers `com.alok.FareyVision`, and it includes the paired Vision Pro. No new certificate, app identifier or provisioning profile was created. These device-only settings do not change the unsigned simulator workflow.
 
-A signed Release build of native 0.3 and strict signature verification succeeded on 2026-10-22. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
+A signed Release build of native 0.4 and strict signature verification succeeded on 2026-10-22. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
 
 ```sh
 build_root="$(python3 scripts/prepare-local-build.py)"

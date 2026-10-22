@@ -10,7 +10,8 @@ const $ = id => document.getElementById(id);
 const state = new FareyState();
 const savedSelection = readSelection();
 for (const turn of savedSelection?.word ?? '') state.step(turn);
-const colors = { base: 0x267ac9, muted: 0x254354, left: 0x54e9f5, right: 0xb18aee, selected: 0xffa140, ray: 0x58e896 };
+if (savedSelection?.point) state.select(savedSelection.point.p, savedSelection.point.q);
+const colors = { base: 0x267ac9, muted: 0x254354, left: 0x54e9f5, right: 0xb18aee, selected: 0xffa140, ray: 0x58e896, inspected: 0xffffff };
 let renderer;
 try {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
@@ -141,9 +142,10 @@ function update() {
     if (point.p === state.left.p && point.q === state.left.q) key = 'left';
     if (point.p === state.right.p && point.q === state.right.q) key = 'right';
     if (point.p === m.p && point.q === m.q) key = 'selected';
-    mesh.material = materials[key]; mesh.scale.setScalar(key === 'selected' ? 1.65 : 1);
+    if (state.selectedPoint && point.p === state.selectedPoint.p && point.q === state.selectedPoint.q && !primitive(point)) key = 'inspected';
+    mesh.material = materials[key]; mesh.scale.setScalar(['selected', 'inspected'].includes(key) ? 1.65 : 1);
   }
-  const scale = Math.min(1, bound / Math.max(m.p, m.q));
+  const scale = bound / Math.max(m.p, m.q);
   const end = position({ p: m.p * scale, q: m.q * scale }), h = 0.65;
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, ...end, 0, h, 0, end[0], h, end[2]], 3));
@@ -160,17 +162,21 @@ function update() {
   $('fraction').textContent = `${fraction(state.left)} < ${fraction(m)} < ${fraction(state.right)}`;
   $('rational').value = fraction(m);
   $('matrix').textContent = `M = [${state.right.p} ${state.left.p}; ${state.right.q} ${state.left.q}] · det M = ${state.determinant} · ${state.word.length}/24 moves`;
-  $('vector-state').textContent = `Selected primitive vector (q,p) = (${m.q},${m.p})`;
-  const saved = writeSelection(state.word, bound);
+  const inspection = state.inspection;
+  $('vector-state').textContent = `Primitive vector (q,p) = (${m.q},${m.p}) · gcd(${inspection.point.q}, ${inspection.point.p}) = ${inspection.divisor}`;
+  $('point-equation').textContent = `Point (q,p): ${inspection.equation}`;
+  const inspectedInside = inspection.point.p <= bound && inspection.point.q <= bound;
+  $('point-detail').textContent = `${inspection.reduction}. Divide both coordinates by ${inspection.divisor} to obtain the primitive vector. Positive multiples share the same ray and upright green plane. White marks the inspected point when it differs from the orange primitive point. ${inspectedInside ? '' : 'The inspected point is beyond this finite grid; its coordinates have not been moved to the edge. '}L/R follows the reduced fraction, not the distance from the origin. Axis points 0 and ∞ are boundaries and do not replace this positive selection.`;
+  const saved = writeSelection(state.word, bound, undefined, state.selectedPoint);
   $('graphics-message').textContent = `Your exact selection is ${fraction(m)}, with grid ${bound}. `
     + (saved ? 'Reloading will keep this selection.' : 'Tab storage is unavailable; this selection may not survive a reload.');
   const spoken = value => value.q === 0 ? 'infinity' : `${value.p} over ${value.q}`;
-  $('geometry-description').textContent = `Finite integer lattice. Selected fraction ${spoken(m)}, direction vector (${m.q}, ${m.p}). Neighbors ${spoken(state.left)} and ${spoken(state.right)}. Their vectors add to the selected vector. The green plane contains its integer multiples.`;
+  $('geometry-description').textContent = `Finite integer lattice. Selected fraction ${spoken(m)}, direction vector (${m.q}, ${m.p}). Inspected point (${inspection.point.q}, ${inspection.point.p}) is ${inspection.divisor} times this primitive vector. Neighbors ${spoken(state.left)} and ${spoken(state.right)}. Their vectors add to the primitive vector. The green plane contains its integer multiples.`;
   $('receipt').textContent = `${points.length} lattice points · ${points.filter(p => onRay(p.userData.point, m)).length} on this ray${inside ? '' : ' · primitive point beyond the finite grid'}`;
   $('left').disabled = $('right').disabled = state.word.length >= 24;
   $('undo').disabled = !state.word;
   vrLabel.material.map.dispose();
-  vrLabel.material.map = makeText(`${state.word || 'Start'}   ${fraction(state.left)} < ${fraction(m)} < ${fraction(state.right)}`, 1600, 160);
+  vrLabel.material.map = makeText(`${state.word || 'Start'}   ${fraction(m)}   ${inspection.equation}`, 1600, 160);
   if (lesson && lesson.word !== state.word) lesson = null;
   renderLesson();
   render();
@@ -260,7 +266,9 @@ function activate(hits) {
   if (!hits.length) return;
   const { object } = hits[0];
   if (object.userData.action) object.userData.action();
-  else if (object.userData.point?.p > 0 && object.userData.point?.q > 0) state.select(object.userData.point.p, object.userData.point.q);
+  else if (object.userData.point?.p > 0 && object.userData.point?.q > 0) {
+    if (state.select(object.userData.point.p, object.userData.point.q)) lesson = null;
+  }
   update();
 }
 const tap = new TapSelection();
@@ -316,7 +324,7 @@ $('view').onclick = () => {
 };
 $('select-form').onsubmit = e => {
   e.preventDefault(); const [p, q] = $('rational').value.split('/').map(Number);
-  if (state.select(p, q)) update();
+  if (state.select(p, q)) { lesson = null; update(); }
   else $('receipt').textContent = 'Choose positive integers up to 1000 with a path of at most 24 moves.';
 };
 $('reload-graphics').onclick = () => location.reload();

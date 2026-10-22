@@ -1,3 +1,13 @@
+# Native 0.4 / browser 0.3: points and primitive directions
+
+[Native inspector](point-inspection/native-multiple.png) · [Linked disk](point-inspection/native-disk.png) · [Browser inspector](point-inspection/browser-multiple.png) · [Simulator results](point-inspection/simulator-summary.json) · [Cross-platform comparison](point-inspection/parity.json) · [Validation](point-inspection/validation.json) · [Current showcase](point-inspection/showcase.png)
+
+The selected integer point remains distinct from its reduced direction: `(10,6) = 2 × (5,3)` represents `6/10 = 3/5`, with exact L/R word `RLR`. Both apps explain the gcd and primitive vector. The native disk retains the same point inspection while showing the reduced rational's boundary point and green geodesic. The finite upright plane now extends to the grid boundary. White marks a non-primitive inspected point and orange marks the primitive mediant. Grid changes never move the inspected coordinates to the edge.
+
+Fourteen Swift core tests, twelve native model/UI tests and nineteen JavaScript tests passed. The [966-case comparison](point-inspection/parity.json) checks acceptance, point factorization, primitive direction and exact word, including zero, negative and bounded inputs. A further [focused UI check](point-inspection/focused-summary.json) passed with the final screenshot. Native UI tests selected the spatial 6/10 label, inspected its reduction, switched to the disk, exited/re-entered, reduced the grid, then used Undo and Reset. The actual sphere/raycast path was tested with a mouse in both the [browser source](point-inspection/browser-source.json) and [static artifact](point-inspection/browser-static.json); point identity also survived reload. The existing keyboard, lesson and layout [regression](point-inspection/browser-regression.json) and three browser-generated WebGL loss/restoration cycles passed again.
+
+A signed native Release build and clean Debug simulator build passed using the existing signing assets. Physical headset execution and genuine WebXR sessions remain unverified; no tracking permission or new signing asset was granted. [Reference conventions](point-inspection/reference-check.json) were rechecked against Stange's public viewer; no source or media was copied.
+
 # Native 0.3: direct fraction entry
 
 [Reduced 6/10 entry](native-03/fraction-entry.png) · [13/17 beyond the finite grid](native-03/outside-grid.png) · [Full simulator summary](native-03/simulator-summary.json) · [Focused UI recheck](native-03/direct-entry-summary.json) · [Validation](native-03/validation.json)

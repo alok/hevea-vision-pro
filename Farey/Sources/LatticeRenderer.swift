@@ -11,11 +11,13 @@ import SwiftUI
 @MainActor final class LatticeRenderer {
   static let landmarks = [
     Rational(1, 1), Rational(1, 2), Rational(2, 3), Rational(3, 5), Rational(3, 2),
+    Rational(6, 10),
   ]
   let root = Entity()
   private let base = Entity()
   private let selection = Entity()
   private var points: [LatticePoint: ModelEntity] = [:]
+  private var landmarkLabels: [Rational: Entity] = [:]
   private var previousBound = 0
   private let spacing: Float = 0.25
   private let sphere = MeshResource.generateSphere(radius: 0.036)
@@ -31,6 +33,7 @@ import SwiftUI
   private let leftMaterial = SimpleMaterial(color: UIColor.cyan, roughness: 0.3, isMetallic: false)
   private let rightMaterial = SimpleMaterial(
     color: UIColor.systemPurple, roughness: 0.3, isMetallic: false)
+  private let inspectedMaterial = SimpleMaterial(color: UIColor.white, roughness: 0.3, isMetallic: false)
   private let arrow = MeshResource.generateCone(height: 0.06, radius: 0.022)
 
   init() {
@@ -59,23 +62,30 @@ import SwiftUI
   private func position(_ rational: Rational) -> SIMD3<Float> {
     position(p: Float(rational.p), q: Float(rational.q))
   }
-  func labelPosition(_ rational: Rational) -> SIMD3<Float> {
-    position(rational) + [0, 0.18, 0]
+  func addLandmark(_ entity: Entity, at rational: Rational) {
+    entity.position = position(rational) + [0, 0.18, 0]
+    entity.orientation = simd_quatf(angle: -.pi / 7, axis: [1, 0, 0])
+    entity.scale = [3, 3, 3]
+    landmarkLabels[rational] = entity
+    root.addChild(entity)
   }
 
-  private func clipped(_ rational: Rational, bound: Int) -> SIMD3<Float> {
+  private func planeEndpoint(_ rational: Rational, bound: Int) -> SIMD3<Float> {
     let largest = max(Float(rational.p), Float(rational.q), 1)
-    let scale = min(1, Float(bound) / largest)
+    let scale = Float(bound) / largest
     return position(p: Float(rational.p) * scale, q: Float(rational.q) * scale)
   }
 
   func render(state: FareyState, bound: Int, viewpoint: Int) throws -> String {
     let start = ContinuousClock.now
     if bound != previousBound { try rebuildBase(bound: bound) }
+    for (rational, label) in landmarkLabels {
+      label.isEnabled = rational.p <= bound && rational.q <= bound
+    }
 
     selection.children.removeAll()
     updatePointColors(for: state)
-    let end = clipped(state.mediant, bound: bound)
+    let end = planeEndpoint(state.mediant, bound: bound)
     let height: SIMD3<Float> = [0, 0.65, 0]
     var descriptor = MeshDescriptor(name: "Exact rational direction plane")
     descriptor.positions = MeshBuffers.Positions([.zero, end, height, end + height])
@@ -96,6 +106,11 @@ import SwiftUI
 
     let within = state.mediant.p <= bound && state.mediant.q <= bound
     if within { try addMediantBasis(state) }
+    if let point = state.selectedPoint, point.rational != state.mediant,
+      point.p <= bound, point.q <= bound, !Self.landmarks.contains(point.rational) {
+      label(point.rational.description, at: position(point.rational) + [-0.05, 0.14, 0],
+        color: .white, parent: selection)
+    }
     // Preview translations are equivalent to moving the viewer oppositely.
     // They reveal parallax while leaving the actual camera stationary.
     root.position = [[0, 1.8, -2.1], [0.45, 1.8, -2.1], [-0.45, 1.8, -2.1]][viewpoint]
@@ -142,7 +157,10 @@ import SwiftUI
   private func updatePointColors(for state: FareyState) {
     for (point, entity) in points {
       let selected = point.rational == state.mediant
-      if selected {
+      let inspected = point == state.selectedPoint && !selected
+      if inspected {
+        entity.model?.materials = [inspectedMaterial]
+      } else if selected {
         entity.model?.materials = [orange]
       } else if point.rational == state.left {
         entity.model?.materials = [leftMaterial]
@@ -153,7 +171,7 @@ import SwiftUI
       } else {
         entity.model?.materials = [point.isPrimitive ? blue : muted]
       }
-      entity.scale = selected ? [1.65, 1.65, 1.65] : [1, 1, 1]
+      entity.scale = selected || inspected ? [1.65, 1.65, 1.65] : [1, 1, 1]
     }
   }
 
@@ -178,7 +196,7 @@ import SwiftUI
         accessibility.isAccessibilityElement = true
         accessibility.traits = .button
         accessibility.systemActions = .activate
-        accessibility.label = "Rational \(point.p)/\(point.q)"
+        accessibility.label = "Lattice point (\(point.q), \(point.p)), fraction \(point.p)/\(point.q)"
         entity.components.set(accessibility)
       }
       points[point] = entity

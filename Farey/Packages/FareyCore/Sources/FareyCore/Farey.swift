@@ -40,14 +40,19 @@ public struct FareyState: Equatable, Sendable {
   public private(set) var word: [Turn] = []
   public private(set) var right = Rational(1, 0)
   public private(set) var left = Rational(0, 1)
+  public private(set) var selectedPoint: LatticePoint?
   public init() {}
   public var mediant: Rational { left.mediant(right) }
   public var determinant: Int64 { right.p * left.q - left.p * right.q }
   public var wordLabel: String { word.isEmpty ? "Start" : word.map(\.rawValue).joined() }
   public var matrixLabel: String { "[\(right.p)  \(left.p); \(right.q)  \(left.q)]" }
   public var canStep: Bool { word.count < Self.maxSteps }
+  public var inspection: PointInspection? {
+    PointInspection(selectedPoint ?? LatticePoint(p: mediant.p, q: mediant.q))
+  }
   @discardableResult public mutating func step(_ turn: Turn) -> Bool {
     guard canStep else { return false }
+    selectedPoint = nil
     switch turn {
     case .l: left = mediant
     case .r: right = mediant
@@ -70,6 +75,7 @@ public struct FareyState: Equatable, Sendable {
       guard candidate.canStep else { return false }
       candidate.step(candidate.mediant.p * target.q < target.p * candidate.mediant.q ? .l : .r)
     }
+    candidate.selectedPoint = LatticePoint(p: target.p, q: target.q)
     self = candidate
     return true
   }

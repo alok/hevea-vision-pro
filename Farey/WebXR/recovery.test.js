@@ -32,3 +32,12 @@ test('corrupt or unavailable storage does not break the live demo', () => {
   assert.equal(writeSelection('R', 12, unavailable), false);
   assert.equal(writeSelection('X', 12, () => memory()), false);
 });
+test('reload preserves a multiple only when it matches the canonical word', () => {
+  const store = memory();
+  assert.equal(writeSelection('RLR', 12, () => store, { p: 6, q: 10 }), true);
+  assert.deepEqual(readSelection(() => store), { word: 'RLR', grid: 12, point: { p: 6, q: 10 } });
+  for (const point of [{ p: 5, q: 6 }, { p: 0, q: 0 }, { p: 3, q: 0 }, { p: 1001, q: 1001 }]) {
+    assert.equal(writeSelection('RLR', 12, () => store, point), false);
+    assert.equal(readSelection(() => ({ getItem: () => JSON.stringify({ version: 1, word: 'RLR', grid: 12, point }) })), null);
+  }
+});

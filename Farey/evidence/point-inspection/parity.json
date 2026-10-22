@@ -1,0 +1,6 @@
+{
+  "pairsChecked": 966,
+  "differences": [],
+  "range": "All p,q from 0 through 30, plus negative and 1000/1001 boundary cases",
+  "formalProof": false
+}
