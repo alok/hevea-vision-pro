@@ -27,3 +27,18 @@ export class TapSelection {
     this.candidate = null;
   }
 }
+
+// Point glyphs are only a few pixels wide, so selection measures each center's angle from the ray
+// instead of hitting mesh surfaces. Returns the index of the closest center within maxAngle, or -1.
+// Equal angles prefer the nearer center; centers closer than minDistance (clipped) are skipped.
+export function nearestToRay(origin, direction, centers, maxAngle, minDistance=0) {
+  const [ox,oy,oz]=origin, length=Math.hypot(...direction), [dx,dy,dz]=direction.map(v=>v/length);
+  let best=-1, bestAngle=maxAngle, bestAlong=Infinity;
+  centers.forEach(([x,y,z],i)=>{
+    const vx=x-ox, vy=y-oy, vz=z-oz, along=vx*dx+vy*dy+vz*dz;
+    if(along<=minDistance)return;
+    const angle=Math.atan2(Math.hypot(vy*dz-vz*dy,vz*dx-vx*dz,vx*dy-vy*dx),along);
+    if(angle<bestAngle-1e-12||(angle<=bestAngle+1e-12&&along<bestAlong)){best=i;bestAngle=angle;bestAlong=along;}
+  });
+  return best;
+}

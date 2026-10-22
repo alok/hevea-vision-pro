@@ -3,12 +3,15 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { examples, vector, project, upperRoot, discriminant, height, kind, coefficientLattice, positiveRepresentative } from './starscape-core.js';
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
-import { TapSelection } from './input.js';
+import { TapSelection, nearestToRay } from './input.js';
+import { cameraPlaneLabel } from './camera-planes.js';
+import { coefficientColor, gradientCSS, paletteRange, glyphRadius, glyphScale, outlinePixels } from './appearance.js';
 const $ = id => document.getElementById(id);
 let radius = 6, whole = true, symmetricColor = false, projectionVisible = false;
 let selected = examples[0], points = [], cloudMesh, imageMesh;
 let session = null, savedView = null, startingXR = false;
 let inhabited=false, overviewView=null, lookDrag=null;
+let categories='contrast', glyphKey=null, focusGlyphs=[];
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ antialias: true }); }
 catch {
@@ -25,8 +28,6 @@ renderer.domElement.tabIndex = 0;
 renderer.domElement.setAttribute('role', 'img');
 renderer.domElement.setAttribute('aria-label', 'Signed integer coefficient lattice in and around a double cone');
 const scene = new THREE.Scene(); scene.background = new THREE.Color(0);
-scene.add(new THREE.HemisphereLight(0xc9e8ff, 0x31404a, 2.3));
-const light = new THREE.DirectionalLight(0xffffff, 3); light.position.set(-2, 4, 3); scene.add(light);
 const camera = new THREE.PerspectiveCamera(45, 1, 0.05, 60);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = false; controls.minDistance = 1; controls.maxDistance = 20;
@@ -35,25 +36,20 @@ const world = new THREE.Group(); world.position.set(0, 1.4, -3.1); scene.add(wor
 const scale = 0.16, physical = p => new THREE.Vector3(...p).multiplyScalar(scale);
 const cloud = new THREE.Group(), disk = new THREE.Group(), cone = new THREE.Group(), focus = new THREE.Group();
 world.add(cloud, disk, cone, focus);
-const sphere = new THREE.SphereGeometry(0.023, 12, 8);
-const cloudMaterial = new THREE.MeshStandardMaterial({ roughness: 0.35 });
+// Unlit discs: the drawn color is exactly the legend color, with no shading or tone mapping.
+const sphere = new THREE.SphereGeometry(glyphRadius, 12, 8);
+const cloudMaterial = new THREE.MeshBasicMaterial();
 const white = new THREE.MeshBasicMaterial({ color: 0xffffff });
 const imageMaterial = new THREE.MeshBasicMaterial({ color: 0x54e9f5 });
-const palette = ['#F06A6A','#E99456','#D6BD69','#7AB89B','#70A6D8','#AD92D0'].map(c => new THREE.Color(c));
+const selectionMaterial=new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.BackSide});
 function pointColor(point) {
-  const type = kind(point);
-  if (type === 'null') return new THREE.Color(0xd6bd69);
-  if (type === 'exterior') return new THREE.Color(0x448abb);
-  if (type === 'lower' && !symmetricColor) return new THREE.Color(0x64717d);
-  const t = THREE.MathUtils.clamp(Math.log(-discriminant(point)/3)/Math.log(80), 0, 1) * (palette.length-1);
-  const i = Math.min(palette.length-2, Math.floor(t));
-  return palette[i].clone().lerp(palette[i+1],t-i);
+  return new THREE.Color().setRGB(...coefficientColor(point,symmetricColor,categories),THREE.SRGBColorSpace);
 }
 function disposeChildren(group) {
   for (const object of [...group.children]) {
     group.remove(object);
     if (object.geometry && object.geometry !== sphere) object.geometry.dispose();
-    if (object.material && ![white,imageMaterial,cloudMaterial].includes(object.material)) object.material.dispose();
+    if (object.material && ![white,imageMaterial,cloudMaterial,selectionMaterial].includes(object.material)) object.material.dispose();
     object.dispose?.();
   }
 }
@@ -74,6 +70,7 @@ function surface(h,isDisk,opacity) {
 }
 const matrix = new THREE.Matrix4();
 function rebuild() {
+  glyphKey=null;
   disposeChildren(cloud); disposeChildren(disk); disposeChildren(cone);
   points = coefficientLattice(radius).filter(p=>whole || kind(p)==='upper');
   cloudMesh = new THREE.InstancedMesh(sphere, cloudMaterial, points.length);
@@ -87,25 +84,25 @@ function rebuild() {
   disk.add(surface(height,true,0.1), lines([circle(height)],0x54e9f5,0.8));
   for(const sign of [-1,1]) {
     const h=radius*sign;
-    cone.add(surface(h,false,0.035));
-    cone.add(lines([circle(h),...Array.from({length:8},(_,i)=>[[0,0,0],circle(h)[i*8]])],0x54e9f5,0.4));
+    cone.add(surface(h,false,0.018));
+    cone.add(lines([circle(h),...Array.from({length:8},(_,i)=>[[0,0,0],circle(h)[i*8]])],0x7896a8,0.26));
   }
 }
-const origin = new THREE.Mesh(sphere,white); origin.scale.setScalar(1.3); world.add(origin);
+const origin = new THREE.Mesh(sphere,white); world.add(origin);
 function update() {
-  points.forEach((p,i)=>cloudMesh.setColorAt(i,p.every((x,j)=>x===selected[j])?new THREE.Color(0xffa140):pointColor(p)));
+  points.forEach((p,i)=>cloudMesh.setColorAt(i,pointColor(p)));
   cloudMesh.instanceColor.needsUpdate=true;
-  disposeChildren(focus); disk.visible=projectionVisible; cone.visible=$('cone').checked;
+  disposeChildren(focus);focusGlyphs=[];glyphKey=null; disk.visible=projectionVisible; cone.visible=$('cone').checked;
   const inCloud=points.some(p=>p.every((x,i)=>x===selected[i]));
   if(inCloud) {
-    focus.add(lines([[[0,0,0],physical(vector(selected)).toArray()]],0xffa140));
-    const marker=new THREE.Mesh(sphere,new THREE.MeshBasicMaterial({color:0xffa140}));
-    marker.position.copy(physical(vector(selected)));marker.scale.setScalar(1.5);focus.add(marker);
+    focus.add(lines([[[0,0,0],physical(vector(selected)).toArray()]],0xbacbd6,0.35));
+    const marker=new THREE.Mesh(sphere,selectionMaterial);
+    marker.position.copy(physical(vector(selected)));focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels});
   }
   const representative=positiveRepresentative(selected);
   if(projectionVisible && representative && inCloud) {
     const image=physical(project(representative));focus.add(lines([[[0,0,0],image.toArray()]],0xffffff));
-    const marker=new THREE.Mesh(sphere,white);marker.position.copy(image);marker.scale.setScalar(1.5);focus.add(marker);
+    const marker=new THREE.Mesh(sphere,white);marker.position.copy(image);focus.add(marker);focusGlyphs.push({mesh:marker,extra:0});
   }
   $('point-state').textContent=`(a,b,c) = (${selected.join(', ')}) · Δ = ${discriminant(selected)}`;
   const root=representative?upperRoot(representative):null;
@@ -114,14 +111,37 @@ function update() {
   $('status').textContent=`${points.length} integer triples · radius ${radius}${inCloud?'':' · selected point hidden by this filter/crop'}`;
   $('inhabit').disabled=!inCloud&&!inhabited;
   renderer.domElement.setAttribute('aria-description',`Selected coefficient point ${selected.join(', ')}. ${kind(selected)} region. ${points.length} points. Both cone halves ${cone.visible?'shown':'hidden'}.`);
+  const [lo,hi]=paletteRange, reach=Math.max(0,...points.map(p=>-discriminant(p)));
+  $('palette-bar').style.background=gradientCSS();
+  $('palette-label').textContent=`Interior |Δ|, log scale · this crop reaches ${reach}`;
+  $('palette-low').textContent=lo;$('palette-high').textContent=hi;
   render();
 }
-function render(){if(!renderer.getContext().isContextLost())renderer.render(scene,camera);}
+const tempLocal=new THREE.Vector3(),tempWorld=new THREE.Vector3();
+function updateGlyphSizes(){
+  if(!cloudMesh)return;
+  camera.updateMatrixWorld();world.updateMatrixWorld(true);
+  const height=renderer.domElement.clientHeight;
+  const key=camera.matrixWorld.elements.join(',')+'|'+height+'|'+camera.zoom+'|'+session;
+  if(key===glyphKey)return;glyphKey=key;
+  points.forEach((p,i)=>{
+    tempLocal.copy(physical(vector(p)));
+    tempWorld.copy(tempLocal).applyMatrix4(world.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
+    const size=session?1:glyphScale(-tempWorld.z,height,camera.fov,camera.zoom);
+    matrix.makeScale(size,size,size);matrix.setPosition(tempLocal);cloudMesh.setMatrixAt(i,matrix);
+  });
+  cloudMesh.instanceMatrix.needsUpdate=true;
+  for(const item of [{mesh:origin,extra:0},...focusGlyphs]){
+    tempWorld.copy(item.mesh.position).applyMatrix4(world.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
+    item.mesh.scale.setScalar(session?(item.extra?1.4:1):glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,item.extra));
+  }
+}
+function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();renderer.render(scene,camera);}}
+
 function showLocation() {
   if(!inhabited)return;
   const p=camera.position.clone().sub(world.position).divideScalar(scale);
-  const look=new THREE.Euler().setFromQuaternion(camera.quaternion,'YXZ');
-  $('location').textContent=`Eye (x,y,z): ${p.toArray().map(x=>x.toFixed(2)).join(', ')} · yaw ${(look.y*180/Math.PI).toFixed(0)}°, pitch ${(look.x*180/Math.PI).toFixed(0)}° · Euclidean view`;
+  $('location').textContent=`Eye (x,y,z): ${p.toArray().map(x=>x.toFixed(2)).join(', ')} · ${cameraPlaneLabel(camera.quaternion)}`;
 }
 function enterInhabit() {
   overviewView=captureView(camera,controls); inhabited=true; controls.enabled=false;
@@ -151,6 +171,7 @@ for(const button of document.querySelectorAll('[data-move]'))button.onclick=()=>
 function resetView(){controls.target.copy(world.position);camera.position.copy(world.position).add(new THREE.Vector3(2.4,1.5,4.6).multiplyScalar(Math.max(1,radius/8)));controls.update();}
 function resize(){if(session)return;const r=$('viewport').getBoundingClientRect();if(r.width<=0||r.height<=0)return;camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setSize(r.width,r.height);render();}
 $('next').onclick=()=>{const sequence=[...examples,[-1,1,-2],[1,2,1],[1,3,1]];const i=sequence.findIndex(p=>p.every((x,j)=>x===selected[j]));selected=sequence[(i+1)%sequence.length];update();};
+$('palette').onchange=()=>{categories=$('palette').value;update();};
 $('projection').onchange=()=>{projectionVisible=$('projection').checked;update();};
 $('cone').onchange=update;
 $('whole').onchange=()=>{whole=$('whole').checked;rebuild();update();};
@@ -166,8 +187,14 @@ $('coefficient-form').onsubmit=event=>{
   selected=next;update();
 };
 const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2(),tap=new TapSelection();
-function activate(hit){if(!hit)return;if(hit.object.userData.action)hit.object.userData.action();else if(hit.object===cloudMesh && hit.instanceId!==undefined){selected=points[hit.instanceId];update();}}
-function selectAt(event){const r=renderer.domElement.getBoundingClientRect();pointer.set(2*(event.clientX-r.left)/r.width-1,1-2*(event.clientY-r.top)/r.height);raycaster.setFromCamera(pointer,camera);activate(raycaster.intersectObject(cloudMesh)[0]);}
+function pickPoint(ray,maxAngle){
+  world.updateMatrixWorld(true);
+  const centers=points.map(p=>tempLocal.copy(physical(vector(p))).applyMatrix4(world.matrixWorld).toArray());
+  const i=nearestToRay(ray.origin.toArray(),ray.direction.toArray(),centers,maxAngle,session?0:camera.near);
+  if(i>=0){selected=points[i];update();}
+}
+// Desktop clicks select the nearest center within about 10 CSS pixels of the pointer.
+function selectAt(event){const r=renderer.domElement.getBoundingClientRect();pointer.set(2*(event.clientX-r.left)/r.width-1,1-2*(event.clientY-r.top)/r.height);raycaster.setFromCamera(pointer,camera);pickPoint(raycaster.ray,10*2*Math.tan(camera.fov*Math.PI/360)/(r.height*camera.zoom));}
 renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);if(inhabited){lookDrag={x:e.clientX,y:e.clientY};renderer.domElement.setPointerCapture(e.pointerId);}});renderer.domElement.addEventListener('pointermove',e=>{
   tap.move(e);if(!inhabited||!lookDrag)return;
   const rotation=new THREE.Euler().setFromQuaternion(camera.quaternion,'YXZ');
@@ -184,7 +211,7 @@ for(const [i,label] of ['Next','Projection','Reset','Exit'].entries()) {
   const canvas=document.createElement('canvas');canvas.width=256;canvas.height=128;const ctx=canvas.getContext('2d');ctx.fillStyle='#142b38';ctx.fillRect(0,0,256,128);ctx.fillStyle='#fff';ctx.font='32px system-ui';ctx.textAlign='center';ctx.fillText(label,128,76);
   const button=new THREE.Mesh(new THREE.PlaneGeometry(0.22,0.11),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(canvas)}));button.position.x=(i-1.5)*0.24;button.userData.action=()=>{if(i===3)session?.end();else $(['next','projection','reset'][i]).click();};xrTargets.push(button);xrPanel.add(button);
 }
-for(let i=0;i<2;i++){const controller=renderer.xr.getController(i);scene.add(controller);controller.addEventListener('select',()=>{controllerRay(controller,raycaster);activate(raycaster.intersectObjects([...xrTargets,cloudMesh])[0]);});}
+for(let i=0;i<2;i++){const controller=renderer.xr.getController(i);scene.add(controller);controller.addEventListener('select',()=>{controllerRay(controller,raycaster);const button=raycaster.intersectObjects(xrTargets)[0];if(button)button.object.userData.action();else pickPoint(raycaster.ray,0.02);});}
 async function checkXR(){const availability=await xrAvailability(navigator.xr,isSecureContext);$('xr').disabled=!availability.supported;$('xr').textContent=availability.supported?'Enter VR':'VR unavailable here';$('xr-status').textContent=availability.message;}
 $('xr').onclick=async()=>{if(startingXR||session)return;startingXR=true;$('xr').disabled=true;savedView=captureView(camera,controls);try{session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor']});await renderer.xr.setSession(session);controls.enabled=false;xrPanel.visible=true;document.body.classList.add('immersive');renderer.setAnimationLoop(render);}catch{await session?.end().catch(()=>{});session=null;$('status').textContent='VR entry was cancelled or unavailable. The browser scene remains usable.';checkXR();}finally{startingXR=false;}};
 renderer.xr.addEventListener('sessionend',()=>{session=null;controls.enabled=!inhabited;xrPanel.visible=false;document.body.classList.remove('immersive');renderer.setAnimationLoop(null);if(savedView)restoreView(savedView,camera,controls);savedView=null;resize();checkXR();});

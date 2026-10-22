@@ -9,10 +9,13 @@
     header { right: 20px; }
     .controls { width: 350px; max-height: calc(100svh - 175px); }
     #viewport { left: 380px; top: 140px; bottom: 16px; right: 12px; }
-    #point-state { color: #ffb05d; font: 18px ui-monospace,monospace; }
+    #point-state { color: #f0f5f8; font: 18px ui-monospace,monospace; }
     .formula { font: 13px ui-monospace,monospace; }
     #coefficient { width: 120px; }
     input[type="checkbox"] { width: auto; }
+    #palette-legend { font-size:12px;color:#b8c9d2;margin:12px 0; }
+    #palette-bar { height:9px;border-radius:3px;margin-top:5px; }
+    #palette-ticks { display:flex;justify-content:space-between;font:11px ui-monospace,monospace; }
     @media(max-width: 800px) {
       header { left: 16px; top: 12px; }
       h1 { font-size: 28px; margin: 4px 0 8px; }
@@ -32,10 +35,13 @@
     <strong>Explore coefficient space</strong>
     <p id="point-state" aria-live="polite"></p>
     <p id="root-state" class="formula"></p>
-    <p>Integer triples fill space around both cone halves. Upper interior: discriminant colors. Lower interior: gray. Exterior: blue. Boundary: gold.</p>
+    <p>Each triple is ax²+bx+c, drawn at (X,Y,Z) = (−b, a+c, c−a), so Δ = b²−4ac = X²+Z²−Y². Upper interior (Δ&lt;0, a&gt;0) is colored by |Δ|: one color per sheet Y²−X²−Z² = |Δ|, a level set preserved by SL₂(ℤ). Lower interior: gray unless enabled below. Exterior (Δ&gt;0, real roots): blue. Cone (Δ=0, double root): ivory, or gold in the reference option. A white ring marks the selection.</p>
+    <label>Categories <select id="palette"><option value="contrast">Contrast (our choice)</option><option value="reference">Stange reference</option></select></label>
+    <div id="palette-legend"><span id="palette-label"></span><div id="palette-bar"></div><div id="palette-ticks"><span id="palette-low"></span><span id="palette-high"></span></div></div>
     <div class="row"><button id="inhabit">Inhabit</button><label>Radius <select id="radius"><option>4</option><option selected>6</option><option>8</option><option>10</option><option>12</option></select></label><button id="next">Next point</button><button id="view">Other side</button><button id="reset">Reset</button></div>
     <section id="navigation" hidden>
       <p id="location" class="formula" aria-live="polite"></p>
+      <details><summary>Orientation convention</summary><p>Right-handed display basis X = −b, Y = a+c, Z = c−a, with e_x × e_y = e_z; local camera forward is −e_z. ZX turns about +Y, YZ about +X, XY about +Z. The existing ordered camera factorization is C = R_ZX(θ) R_YZ(φ) R_XY(ψ), equivalent to Euler YXZ. The rightmost factor acts first on column vectors. After ZX, the YZ and XY plane labels use the successively rotated camera basis. Drag changes the first two factors. These factors do not commute.</p></details>
       <div class="row"><button data-move="forward">Forward</button><button data-move="back">Back</button><button data-move="left">Left</button><button data-move="right">Right</button><button data-move="up">Up</button><button data-move="down">Down</button></div>
       <p>Drag to look. W/A/S/D move; Q/E move down/up. This is ambient Euclidean coefficient space, not hyperbolic or Flatland navigation.</p>
     </section>
@@ -54,7 +60,7 @@
     <p class="hint">Drag to orbit · scroll to zoom · right-drag to pan. Focus the scene and use arrows to pan, +/− to zoom, Home to reset. No automatic motion.</p>
     <p><button id="xr" disabled>Checking WebXR…</button></p><p id="xr-status" class="hint"></p>
     <p><a href="farey.html">Explore the separate Farey L/R lattice →</a></p>
-    <details><summary>Sources and scope</summary><p>Original implementation of the coefficient-cone construction in Katherine Stange’s talk and Starscape / Lattice viewer. Our symmetric cone extent and origin-centered crop differ from the original viewer’s asymmetric framing. Its upper discriminant palette is interpolated in linear RGB here; lower-half coloring is an opt-in extension. Finite points and sphere sizes are presentation choices. No source code or media from her viewer is bundled.</p><p>The separate Farey L/R demonstration credits <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series (1985)</a>. The two lattices have distinct meanings. Research background: <a href="https://arxiv.org/abs/2008.07655">Algebraic Number Starscapes — Harriss, Stange and Trettel</a>.</p></details>
+    <details><summary>Sources and scope</summary><p>Original implementation of the coefficient-cone construction in Katherine Stange’s talk and Starscape / Lattice viewer. Our symmetric cone extent and origin-centered crop differ from the original viewer’s asymmetric framing. Interior colors use her six anchors, OKLab interpolation and fixed logarithmic 3–240 range, so equal Δ has equal color in both viewers; nonprimitive multiples keep their own Δ. The default <em>Contrast</em> categories are our choice: the cone (Δ=0) is ivory rather than gold because her gold anchor is also an interior color, and exterior blue is slightly deepened for the same reason. <em>Stange reference</em> restores the earlier gold, blue and gray; her viewer derives its category colors from OKLCH lightness and chroma, and those exact values are not verified here. Lower-half coloring is an opt-in extension. Dots are flat, unlit discs whose radius stays between 1.25 and 3 CSS pixels; centers are exact. A click selects the nearest center within about 10 pixels. No source code or media from her viewer is bundled.</p><p>The separate Farey L/R demonstration credits <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series (1985)</a>. The two lattices have distinct meanings. Research background: <a href="https://arxiv.org/abs/2008.07655">Algebraic Number Starscapes — Harriss, Stange and Trettel</a>.</p></details>
   </section>
   <p id="fatal" role="alert" hidden></p>
   <script type="module" id="farey-app" src="starscape.js"></script>

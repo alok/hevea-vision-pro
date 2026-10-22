@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TapSelection, visibleIntersections } from './input.js';
+import { TapSelection, visibleIntersections, nearestToRay } from './input.js';
 import * as THREE from 'three';
 
 const event = (pointerId = 1, clientX = 0, button = 0) => ({ pointerId, clientX, clientY: 0, button });
@@ -40,4 +40,14 @@ test('cancelled gestures do not select and a later tap recovers', () => {
 test('secondary mouse buttons do not select', () => {
   const tap = new TapSelection(); tap.begin(event(1, 0, 2));
   assert.equal(tap.end(event(1, 0, 2)), false);
+});
+
+test('ray picking chooses the center with the smallest angle and ignores points behind the eye', () => {
+  const centers = [[0, 0, -5], [0.2, 0, -5], [0, 0, 5], [0.01, 0, -1]];
+  assert.equal(nearestToRay([0, 0, 0], [0, 0, -1], centers, 0.05), 0);
+  assert.equal(nearestToRay([0, 0, 0], [0.04, 0, -1], centers, 0.05), 1);
+  assert.equal(nearestToRay([0, 0, 0], [0, 0, 1], centers.slice(1), 0.05), 1);
+  assert.equal(nearestToRay([0, 0, 0], [1, 0, 0], centers, 0.05), -1);
+  assert.equal(nearestToRay([0, 0, 0], [0, 0, -1], [[0, 0, -5], [0, 0, -2]], 0.05), 1);
+  assert.equal(nearestToRay([0, 0, 0], [0, 0, -1], [[0, 0, -5], [0, 0, -0.01]], 0.05, 0.05), 0);
 });
