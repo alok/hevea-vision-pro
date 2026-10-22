@@ -1,9 +1,22 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TapSelection } from './input.js';
+import { TapSelection, visibleIntersections } from './input.js';
+import * as THREE from 'three';
 
 const event = (pointerId = 1, clientX = 0, button = 0) => ({ pointerId, clientX, clientY: 0, button });
+test('hidden projected-lattice markers cannot intercept a visible point', () => {
+  const geometry = new THREE.SphereGeometry(0.3), material = new THREE.MeshBasicMaterial();
+  const hidden = new THREE.Mesh(geometry, material), visible = new THREE.Mesh(geometry, material);
+  hidden.position.z = 1; hidden.visible = false;
+  hidden.updateMatrixWorld(); visible.updateMatrixWorld();
+  const ray = new THREE.Raycaster(new THREE.Vector3(0.1, 0.1, 3), new THREE.Vector3(0, 0, -1));
+  assert.equal(ray.intersectObjects([hidden, visible])[0].object, hidden);
+  assert.equal(visibleIntersections(ray, [hidden, visible])[0].object, visible);
+  visible.visible = false;
+  assert.equal(visibleIntersections(ray, [hidden, visible]).length, 0);
+  geometry.dispose(); material.dispose();
+});
 test('a primary tap selects once', () => {
   const tap = new TapSelection(); tap.begin(event());
   assert.equal(tap.end(event(1, 3)), true);

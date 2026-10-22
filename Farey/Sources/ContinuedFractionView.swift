@@ -53,7 +53,8 @@ struct ContinuedFractionView: View {
           + "Rings mark primitive lattice points and the matching disk boundary points.")
           .font(.caption).foregroundStyle(.secondary)
         Text("The choice changes which intermediate is a convergent, not the rational or its L/R path. "
-          + "Here M(1) = \(model.state.mediant); appending R gives the endpoint word for M(∞).")
+          + "Here M(1) = \(model.state.mediant); appending R gives the endpoint word for M(∞). "
+          + "At a rational endpoint the final triangle label is a convention; we use Stange's ending-in-R form.")
           .font(.caption).accessibilityIdentifier("cf-convention")
       }
       HStack {

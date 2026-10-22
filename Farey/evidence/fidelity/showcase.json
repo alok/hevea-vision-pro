@@ -1,0 +1,9 @@
+{
+  "simulator": "D2ECE520-ED92-4A38-A990-AE65431DF562",
+  "version": "0.7.1",
+  "build": "9",
+  "launchArguments": [
+    "--showcase"
+  ],
+  "hardware": false
+}

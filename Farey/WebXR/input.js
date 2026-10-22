@@ -1,4 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+// Three.js raycasting does not exclude an object whose visible flag is false.
+export function visibleIntersections(raycaster, objects) {
+  return raycaster.intersectObjects(objects.filter(object => object.visible));
+}
+
 export class TapSelection {
   active = new Set();
   candidate = null;

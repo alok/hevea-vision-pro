@@ -1,6 +1,6 @@
 # Farey lattice — browser and WebXR companion
 
-[Optional boundary-to-lattice construction](../CONSTRUCTION.md) — browser 0.6. [Previous release audit](../DEMO_READINESS.md).
+[Source-fidelity audit](../SOURCE_FIDELITY.md) — browser 0.6.1. [Optional boundary-to-lattice construction](../CONSTRUCTION.md). [Previous release audit](../DEMO_READINESS.md).
 
 An original Three.js implementation of the same integer lattice and L/R state as the native visionOS app. Inspired by **[Katherine Stange](https://katestange.net/talks/math-exploration/)** and her [visualization catalog](https://www.katestange.net/code/), with underlying [Caroline Series L/R geodesic coding (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 
@@ -15,7 +15,7 @@ npm start
 
 Open **http://127.0.0.1:8080**. The server binds only to this Mac and disables development caching so edits cannot mix stale styles with new code. Node.js, npm and Python 3 are required. Three.js is pinned to 0.180.0 with an integrity hash in the lockfile. No network dependency is used at runtime after installation.
 
-Drag to orbit, scroll to zoom, right-drag to pan. Hover a sphere to read its integer pair and click to select its rational direction. L/R, Undo, Reset, the 3/5 example and fraction entry share one exact state. Grid size is capped at 14 (224 nonzero points). On narrow screens the lattice occupies a separate visible area above the controls, and the lesson keeps only its relevant actions visible. Rendering is event-driven on desktop; XR uses the headset animation loop. Reset restores the initial geometry and view.
+Drag to orbit, scroll to zoom, right-drag to pan. Hover a sphere to read its coordinates and click to select its rational direction. L/R, Undo, Reset, the 3/5 example and fraction entry share one exact state. Grid size is capped at 14 (224 nonzero points). On narrow screens the lattice occupies a separate visible area above the controls, and the lesson keeps only its relevant actions visible. Rendering is event-driven on desktop; XR uses the headset animation loop. Reset restores the initial geometry and view.
 
 The **Point (q,p)** disclosure preserves and explains the selected integer point. Clicking `6/10` shows `(10,6) = 2 × (5,3)` and the reduced rational `3/5`, with the exact word `RLR`. The white inspected sphere differs from the orange primitive sphere, while both lie in the same upright green plane. That finite plane now extends to the grid boundary. Point identity survives grid changes and reload, including when the point is outside the visible grid; L/R, Undo, Reset and a new lesson clear it. Axis points 0 and ∞ remain non-selectable boundaries. The native app also shows how the same reduced rational determines its disk boundary point and green geodesic; the browser companion currently renders the lattice.
 

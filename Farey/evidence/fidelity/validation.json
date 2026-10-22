@@ -1,0 +1,35 @@
+{
+  "nativeVersion": "0.7.1",
+  "nativeBuild": 9,
+  "browserVersion": "0.6.1",
+  "swiftCoreTests": {
+    "passed": 25,
+    "failed": 0
+  },
+  "javascriptTests": {
+    "passed": 25,
+    "failed": 0
+  },
+  "focusedNativeTests": {
+    "passed": 12,
+    "failed": 0
+  },
+  "fullNativeSuite": {
+    "passed": 22,
+    "failed": 0,
+    "scope": "before final Sources-only scrolling layout fix"
+  },
+  "swiftlintStrict": "passed",
+  "staticFilesHashed": 14,
+  "referenceViewer": "3/5 selected, Tessellation/Dots/Lattice/Labels exercised",
+  "independentReview": "read-only source/math review; no remaining concrete defects found",
+  "actualWebXRSessionTested": false,
+  "physicalHeadsetTested": false,
+  "voiceOverSpeechTested": false,
+  "publicDeployment": false,
+  "finalSourcesUITest": {
+    "passed": 1,
+    "failed": 0,
+    "scope": "final Sources layout, L/R, reset, translations, exit and re-entry"
+  }
+}

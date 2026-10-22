@@ -90,7 +90,7 @@ import SwiftUI
         if model.constructionMoving {
           let revision = model.revision
           try? await Task.sleep(for: .seconds(1.4))
-          if !Task.isCancelled && revision == model.revision { model.constructionMoving = false }
+          if !Task.isCancelled && revision == model.revision { model.stopConstruction() }
         }
       } catch { model.renderReceipt = "Geometry error: \(error.localizedDescription)" }
     }

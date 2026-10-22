@@ -1,0 +1,43 @@
+{
+  "auditDate": "2026-10-22",
+  "sources": [
+    {
+      "url": "https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html",
+      "sha256": "eb46dbe925e4cc7065db131ed5ccd05ef8a8e5cf43bc90623c02be4094512c38",
+      "downloadFileModifiedUTC": "2026-10-22T15:19:23.717994+00:00",
+      "redistributed": false
+    },
+    {
+      "url": "https://warwick.ac.uk/fac/sci/maths/people/staff/caroline_series/hypgeomandcntdfractions.pdf",
+      "sha256": "c89ae70414b1690e0839563f2e649d43d1643d1d49a505b789f672440508abbd",
+      "downloadFileModifiedUTC": "2026-10-22T15:20:02.119191+00:00",
+      "redistributed": false
+    }
+  ],
+  "liveViewerObservation": {
+    "url": "https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice",
+    "selected": [
+      3,
+      5
+    ],
+    "readout": "35 = R1 L1 R2 (1,0)T35 = [0; 1, 1, 2]35 = 0 + 11 + 11 + 12",
+    "finalStage": 3,
+    "sourceMediaRedistributed": false,
+    "endpointWord": "RLRR",
+    "canonicalExpansion": [
+      0,
+      1,
+      1,
+      2
+    ],
+    "note": "The DOM readout loses fraction layout in textContent; explicit values verified visually and in the public source."
+  },
+  "paper1985Access": "publisher metadata only; full text not accessed",
+  "referenceScreenshots": "Private /tmp/farey-fidelity-stange-{chart,lattice,labels}.png; excluded from repository",
+  "sourceLineReferences": {
+    "coordinateConvention": "HTML lines 6\u201325",
+    "matrixAndFiniteExpansionConvention": "HTML lines 123\u2013148",
+    "cameraTransition": "HTML lines 653\u2013678"
+  },
+  "newImplementation": "Original code, not copied from Stange source"
+}

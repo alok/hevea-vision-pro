@@ -125,10 +125,7 @@ import SwiftUI
     // They reveal parallax while leaving the actual camera stationary.
     root.position = [[0, 1.8, -2.1], [0.45, 1.8, -2.1], [-0.45, 1.8, -2.1]][viewpoint]
     root.orientation = simd_quatf(angle: .pi / 7, axis: [1, 0, 0])
-    let elapsed = start.duration(to: .now)
-    let count = points.keys.filter { $0.isOnRay(state.mediant) }.count
-    return "\(points.count) lattice points · \(count) on the rational ray · \(elapsed) update"
-      + (within ? "" : " · primitive vector beyond this finite grid")
+    return receipt(for: state, stage: construction, moving: animateReveal, elapsed: start.duration(to: .now))
   }
 
   private func addMediantBasis(_ state: FareyState) throws {
@@ -277,6 +274,18 @@ import SwiftUI
 }
 
 extension LatticeRenderer {
+  private func receipt(for state: FareyState, stage: ConstructionStage?, moving: Bool, elapsed: Duration) -> String {
+    if (stage?.rawValue ?? 3) < 2 {
+      let directions = points.keys.filter { $0.q > 0 && $0.isPrimitive }.count
+      return "\(directions) projected direction dots · q = 1 · source grid: \(points.count) points"
+    }
+    if moving { return "\(points.count) markers · illustrative motion toward integer positions" }
+    let count = points.keys.filter { $0.isOnRay(state.mediant) }.count
+    let within = state.mediant.p <= previousBound && state.mediant.q <= previousBound
+    return "\(points.count) lattice points · \(count) on the rational ray · \(elapsed) update"
+      + (within ? "" : " · primitive vector beyond this finite grid")
+  }
+
   private func addSpotlight(_ point: Rational) throws {
     let center = position(point) + [0, 0.025, 0]
     var paths: [[SIMD3<Float>]] = []
@@ -321,6 +330,17 @@ extension LatticeRenderer {
     for (point, entity) in points {
       entity.stopAllAnimations()
       entity.isEnabled = !projected || (point.q > 0 && point.isPrimitive)
+      if var accessibility = entity.components[AccessibilityComponent.self] {
+        let original = "(\(point.q), \(point.p))"
+        if projected {
+          accessibility.label = "Projected direction \(point.rational) at (1, \(point.rational)), from integer point \(original)"
+        } else if animate {
+          accessibility.label = "Illustrative motion toward integer point \(original), fraction \(point.rational)"
+        } else {
+          accessibility.label = "Lattice point \(original), fraction \(point.rational)"
+        }
+        entity.components.set(accessibility)
+      }
       let target: SIMD3<Float>
       if projected, let projection = BoundaryConstruction.project(point) {
         target = position(p: Float(projection.x), q: 1)

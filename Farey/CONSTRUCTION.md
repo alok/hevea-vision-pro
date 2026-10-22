@@ -4,7 +4,7 @@ Native 0.7 and browser 0.6 add a manually advanced explanation inspired by [Kath
 
 Choose **Construct** in native controls or **Construct this direction** in the browser. Next and Back traverse four stages:
 
-1. **Boundary chart:** distinct primitive directions appear on the line q=1, labelled by p/q. Positive multiples project to the same point. Infinity has no finite point in this chart.
+1. **Boundary chart:** distinct primitive directions appear on the line q=1, positioned by p/q; the selected value is labelled. Positive multiples project to the same point. Infinity has no finite point in this chart.
 2. **Direction:** the selected ray connects the origin to its boundary value.
 3. **Integer lattice:** the finite integer points return to their original positions. The camera remains fixed.
 4. **Direction plane:** the upright plane and ordinary annotations reappear.
@@ -19,13 +19,15 @@ Coordinates here are written `(q,p)`. The ray through a point `(q,p)`, with q>0,
 
 The optional animation interpolates from `(1,p/q)` to `(q,p)` along that ray. Its intermediate positions need not be integer points. For 0≤t≤1, the interpolated point is `((1−t)/q + t) × (q,p)`, so it remains on the same ray. The interpolation, timing, sphere sizes and display placement are pedagogical choices; no hyperbolic map or isometry is claimed. This q=1 chart is separate from the native Poincaré disk representation. The software still uses floating-point geometry to render exact rational labels and integer state.
 
+Stange's original viewer leaves the lattice points fixed while its camera rises from a ground-level view to an overhead view. This optional stationary-camera projection is a different teaching sequence, not a reproduction of that camera transition. See the [source-fidelity audit](SOURCE_FIDELITY.md) for the exact correspondence and limits.
+
 The displayed q=1 segment and lattice have finite bounds. A boundary value beyond the segment, or an inspected integer point beyond the grid, is explicitly reported and is not clamped to the edge. Axis points remain boundaries; the selectable rational domain is unchanged.
 
 ## Verification and limits
 
 The [construction evidence](evidence/construction/) records browser source/static checks, native results and screenshots. Core tests verify ray incidence, scalar-multiple agreement and the absence of a finite q=1 intersection for infinity. Interaction checks cover stages, Stop, Restart, Done, unchanged state, returning to the linked disk, mobile layout, Reduce Motion emulation and graphics-loss recovery. Native Reduce Motion logic is exercised at the model boundary; this work does not change the user's system settings.
 
-Twenty-five core tests, 24 JavaScript tests and the 20-test native regression suite passed. The final construction revision additionally passed all nine native model tests and its UI scenario, followed by a focused caption-layout recheck. Browser source and static artifacts passed the stage, recovery and mobile checks. The existing simulator and browser regression suites also cover the ordinary experience. Signed device builds use existing signing material only. Physical-headset execution, immersive WebXR sessions, screen-reader speech and hardware comfort/performance remain unverified. XR tracking consent and private video upload approval are still pending; this increment performs neither operation.
+Twenty-five core tests, 24 JavaScript tests and the 20-test native regression suite passed. The final construction revision additionally passed all nine native model tests and its UI scenario, followed by a focused caption-layout recheck. Browser source and static artifacts passed the stage, recovery and mobile checks. The existing simulator and browser regression suites also cover the ordinary experience. Signed device builds use existing signing material only. Physical-headset execution, immersive WebXR sessions, screen-reader speech and hardware comfort/performance remain unverified. This increment does not validate immersive WebXR or physical-headset execution.
 
 Run the browser construction check with the existing Playwright CLI:
 

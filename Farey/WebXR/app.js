@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ApproximantSpotlight, FareyState, continuedFraction, fraction, grid, onRay, position, primitive } from './core.js';
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
-import { TapSelection } from './input.js';
+import { TapSelection, visibleIntersections } from './input.js';
 import { readSelection, writeSelection } from './recovery.js';
 import { boundaryProjection, ConstructionWalkthrough, constructionTitles } from './construction.js';
 
@@ -229,15 +229,14 @@ function update({ animateConstruction = false } = {}) {
       + ` Inspected (${inspection.point.q}, ${inspection.point.p}) unchanged.`
       + (p.p > bound || p.q > bound ? ` Outside grid ${bound}; coordinates are retained.` : ' Double white rings locate it.');
   }
-  $('cf-convention').textContent = `For ${fraction(m)}, the app word ${state.word || '(empty)'} gives M(1). Appending R gives the endpoint word ${state.word}R for M(∞). The expansion choice changes labels, not this state.`;
+  $('cf-convention').textContent = `For ${fraction(m)}, the app word ${state.word || '(empty)'} gives M(1). Appending R gives the endpoint word ${state.word}R for M(∞). At a rational endpoint the final triangle label is a convention; we use Stange's ending-in-R form. The expansion choice changes labels, not this state.`;
   const inspectedInside = inspection.point.p <= bound && inspection.point.q <= bound;
-  $('point-detail').textContent = `${inspection.reduction}. Divide both coordinates by ${inspection.divisor} to obtain the primitive vector. Positive multiples share the same ray and upright green plane. White marks the inspected point when it differs from the orange primitive point. ${inspectedInside ? '' : 'The inspected point is beyond this finite grid; its coordinates have not been moved to the edge. '}L/R follows the reduced fraction, not the distance from the origin. Axis points 0 and ∞ are boundaries and do not replace this positive selection.`;
+  $('point-detail').textContent = `${inspection.reduction}. Divide both coordinates by ${inspection.divisor} to obtain the primitive vector. Positive multiples share the same ray and upright green plane. White marks the inspected point when it differs from the orange primitive point. ${inspectedInside ? '' : 'The inspected point is beyond this finite grid; its coordinates have not been moved to the edge. '}L/R follows the reduced fraction, not the distance from the origin. Axis points 0 and ∞ are boundaries and do not replace this positive selection.`
+    + (construction.stage === null ? '' : ' During construction these are the retained integer coordinates, not the projected or moving dot position.');
   const saved = writeSelection(state.word, bound, undefined, state.selectedPoint);
   $('graphics-message').textContent = `Your exact selection is ${fraction(m)}, with grid ${bound}. `
     + (saved ? 'Reloading will keep this selection.' : 'Tab storage is unavailable; this selection may not survive a reload.');
-  const spoken = value => value.q === 0 ? 'infinity' : `${value.p} over ${value.q}`;
-  $('geometry-description').textContent = `Finite integer lattice. Selected fraction ${spoken(m)}, direction vector (${m.q}, ${m.p}). Inspected point (${inspection.point.q}, ${inspection.point.p}) is ${inspection.divisor} times this primitive vector. Neighbors ${spoken(state.left)} and ${spoken(state.right)}. Their vectors add to the primitive vector. The green plane contains its integer multiples.`;
-  $('receipt').textContent = `${points.length} lattice points · ${points.filter(p => onRay(p.userData.point, m)).length} on this ray${inside ? '' : ' · primitive point beyond the finite grid'}`;
+  describeScene();
   $('left').disabled = $('right').disabled = state.word.length >= 24;
   $('undo').disabled = !state.word;
   vrLabel.material.map.dispose();
@@ -248,6 +247,36 @@ function update({ animateConstruction = false } = {}) {
   applyConstructionPose(construction.stage === null || construction.stage >= 2 ? 1 : 0);
   if (animateConstruction && construction.stage === 2 && !reducedMotion.matches) animateLatticeReveal();
   render();
+}
+function describeScene(moving = false) {
+  const m = state.mediant, inspection = state.inspection, phase = construction.stage ?? 3;
+  const spoken = value => value.q === 0 ? 'infinity' : `${value.p} over ${value.q}`;
+  let name, description, receipt;
+  if (phase < 2) {
+    const count = points.filter(mesh => mesh.userData.point.q > 0 && primitive(mesh.userData.point)).length;
+    name = 'Projected rational directions on q equals one';
+    description = `${count} primitive direction dots projected onto q = 1, not integer lattice positions. Selected fraction ${spoken(m)} meets the chart at (1, ${spoken(m)}). Positive multiples share that value. Infinity has no finite chart point.`;
+    receipt = `${count} projected direction dots · q = 1 · source grid: ${points.length} points`;
+  } else if (moving) {
+    name = 'Illustrative motion toward the integer lattice';
+    description = `Markers move along their rays toward integer positions (q,p). Intermediate positions need not be integer points. This interpolation is not a hyperbolic map. Selected fraction ${spoken(m)} and the retained integer selection are unchanged.`;
+    receipt = `${points.length} markers · illustrative motion toward integer positions`;
+  } else {
+    name = 'Interactive three-dimensional integer lattice';
+    description = `Finite integer lattice. Selected fraction ${spoken(m)}, direction vector (${m.q}, ${m.p}). Inspected point (${inspection.point.q}, ${inspection.point.p}) is ${inspection.divisor} times this primitive vector. Neighbors ${spoken(state.left)} and ${spoken(state.right)}. Their vectors add to the primitive vector.`
+      + (phase >= 3 ? ' The green plane contains its integer multiples.' : ' The green ray marks the selected direction; the plane appears in the next step.');
+    receipt = `${points.length} lattice points · ${points.filter(p => onRay(p.userData.point, m)).length} on this ray`
+      + (m.p <= bound && m.q <= bound ? '' : ' · primitive point beyond the finite grid');
+  }
+  $('viewport').setAttribute('aria-label', name);
+  renderer.domElement.setAttribute('aria-label', name);
+  $('geometry-description').textContent = description;
+  $('receipt').textContent = receipt;
+  $('geometry-hint').textContent = phase < 2
+    ? 'Dots mark directions at q=1; their positions need not be integer coordinates.'
+    : moving ? 'The illustration follows the same rays; points reach integer coordinates at the end.'
+      : phase === 2 ? 'The green line marks the selected ray. The plane appears in the next step.'
+        : 'Cyan + purple = orange mediant. The green plane contains its integer multiples.';
 }
 function constructionLine(a, b, color) {
   const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...a), new THREE.Vector3(...b)]);
@@ -305,10 +334,13 @@ function stopConstructionAnimation() {
   if (constructionFrame !== null) cancelAnimationFrame(constructionFrame);
   constructionFrame = null;
   $('construction-stop').disabled = true;
+  $('hover').hidden = true;
+  describeScene();
 }
 function animateLatticeReveal() {
   const start = performance.now();
   $('construction-stop').disabled = false;
+  $('hover').hidden = true;
   const frame = now => {
     const t = Math.min(1, (now - start) / 1400), eased = t * t * (3 - 2 * t);
     applyConstructionPose(eased); render();
@@ -317,6 +349,7 @@ function animateLatticeReveal() {
   };
   applyConstructionPose(0);
   constructionFrame = requestAnimationFrame(frame);
+  describeScene(true);
 }
 $('construction-start').onclick = () => { construction.start(); update(); };
 $('construction-back').onclick = () => { construction.move(-1); update(); };
@@ -440,10 +473,13 @@ renderer.domElement.addEventListener('pointermove', e => {
   if (session || e.buttons) { $('hover').hidden = true; return; }
   setPointer(e);
   raycaster.setFromCamera(pointer, camera);
-  const point = raycaster.intersectObjects(points)[0]?.object.userData.point;
+  const point = visibleIntersections(raycaster, points)[0]?.object.userData.point;
   $('hover').hidden = !point;
   if (point) {
-    $('hover').textContent = `${fraction(point)} · (q,p) = (${point.q},${point.p})`;
+    const coordinates = (construction.stage ?? 3) < 2
+      ? `chart (1, ${fraction(point)}) · from integer (${point.q},${point.p})`
+      : constructionFrame !== null ? `moving toward integer (${point.q},${point.p})` : `(q,p) = (${point.q},${point.p})`;
+    $('hover').textContent = `${fraction(point)} · ${coordinates}`;
     $('hover').style.left = `${e.clientX + 15}px`; $('hover').style.top = `${e.clientY + 15}px`;
   }
 });
@@ -451,7 +487,7 @@ renderer.domElement.addEventListener('pointerleave', () => { $('hover').hidden =
 renderer.domElement.addEventListener('pointerup', e => {
   if (!tap.end(e) || session) return;
   setPointer(e);
-  raycaster.setFromCamera(pointer, camera); activate(raycaster.intersectObjects(points));
+  raycaster.setFromCamera(pointer, camera); activate(visibleIntersections(raycaster, points));
 });
 renderer.domElement.addEventListener('pointercancel', e => tap.cancel(e));
 renderer.domElement.addEventListener('keydown', e => {
@@ -471,7 +507,7 @@ for (let i = 0; i < 2; i++) {
   line.scale.z = 6; controller.add(line); scene.add(controller);
   controller.addEventListener('select', () => {
     controllerRay(controller, raycaster);
-    activate(raycaster.intersectObjects([...vrTargets, ...points]));
+    activate(visibleIntersections(raycaster, [...vrTargets, ...points]));
   });
 }
 $('left').onclick = () => { state.step('L'); update(); };

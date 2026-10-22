@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "freshWalkthrough": true,
+  "visibleSpotlightPixelsChanged": true,
+  "targetAndInspectedPointPreserved": true,
+  "convergentIntermediateAndBoundaryRows": true,
+  "expansionToggle": true,
+  "undoResetAndTargetChanges": true,
+  "outsideGridRetained": true,
+  "lessonPredictionPreserved": true,
+  "keyboardRowFocusPreserved": true,
+  "reloadPreservedTargetAndClearedTransientSpotlight": true,
+  "layouts": [
+    {
+      "width": 390,
+      "sceneHeight": 285,
+      "overflow": false,
+      "spotlightContextVisible": true
+    },
+    {
+      "width": 844,
+      "sceneHeight": 301,
+      "overflow": false,
+      "spotlightContextVisible": true
+    },
+    {
+      "width": 1440,
+      "sceneHeight": 1000,
+      "overflow": false,
+      "spotlightContextVisible": true
+    }
+  ],
+  "pageErrors": [],
+  "actualXRSession": false
+}

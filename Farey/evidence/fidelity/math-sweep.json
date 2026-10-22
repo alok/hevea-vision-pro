@@ -1,0 +1,15 @@
+{
+  "domain": "1 <= p,q <= 200",
+  "accepted": 34196,
+  "capped": 5804,
+  "checks": [
+    "determinant one",
+    "reduced target",
+    "both finite expansions",
+    "convergent inclusion",
+    "endpoint word = interval word + R",
+    "orthogonal equal-length display basis"
+  ],
+  "displayBasisLength": 0.25,
+  "claim": "bounded execution evidence, not a mathematical proof"
+}

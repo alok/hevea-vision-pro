@@ -75,10 +75,11 @@
       <div class="row"><button id="lesson-apply" disabled>Apply L</button><button id="lesson-next" hidden>Predict R next</button><button id="lesson-restart">Restart lesson</button><button id="lesson-close">Close lesson</button></div>
       <a href="https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html">Katherine Stange’s original L/R and lattice demonstration ↗</a>
     </section>
-    <p class="hint">Drag to orbit · scroll to zoom · right-drag to pan · click a sphere to select.<br>Focus the scene for keyboard controls: arrows pan, Shift + arrows rotate, +/− zoom, Home restores the view.<br>Cyan + purple = orange mediant. The green plane contains its integer multiples.</p>
+    <p class="hint">Drag to orbit · scroll to zoom · right-drag to pan · click a sphere to select.<br>Focus the scene for keyboard controls: arrows pan, Shift + arrows rotate, +/− zoom, Home restores the view.<br><span id="geometry-hint">Cyan + purple = orange mediant. The green plane contains its integer multiples.</span></p>
     <details><summary>Mathematics & sources</summary>
       <p id="xr-status" role="status"></p>
-      <p>Each sphere is an integer pair (q,p). The fraction p/q is its direction. Neighbor vectors form a unit-area parallelogram; adding them gives their mediant. The finite green plane stands perpendicular to the lattice through that direction.</p>
+      <p>In the ordinary lattice, each sphere is an integer pair (q,p). The fraction p/q is its direction. Neighbor vectors form a parallelogram of area one in integer coordinates; adding them gives their mediant. The finite green plane stands perpendicular to the lattice through that direction.</p>
+      <p>Construction projects directions onto q=1. Its optional dot motion is an illustration, not a hyperbolic map. Stange's original stages move the camera around fixed lattice points.</p>
       <p>This is original code inspired by Stange’s L/R lattice viewer, not a copy of her source or a reconstruction of her separate hyperboloid. Our word displays M(1); append R to send M(∞) to the same fraction.</p>
       <p>Underlying geodesic coding: <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series (1985) ↗</a>. Independent prototype by Alok Singh. No endorsement implied. Finite geometry; no forced camera motion.</p>
     </details>

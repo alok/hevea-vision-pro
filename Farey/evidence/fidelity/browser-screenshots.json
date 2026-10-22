@@ -1,0 +1,12 @@
+{
+  "projected": {
+    "receipt": "92 projected direction dots \u00b7 q = 1 \u00b7 source grid: 168 points",
+    "accessible": "Projected rational directions on q equals one"
+  },
+  "settled": {
+    "receipt": "168 lattice points \u00b7 2 on this ray",
+    "accessible": "Interactive three-dimensional integer lattice"
+  },
+  "source": "http://127.0.0.1:8081/",
+  "actualXRSession": false
+}

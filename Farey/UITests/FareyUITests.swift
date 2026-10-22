@@ -53,6 +53,11 @@ import XCTest
     require("sources").tap()
     XCTAssertEqual(require("stange-credit").label, "Katherine Stange")
     capture("00-sources")
+    let sourceNotes = require("sources-content")
+    sourceNotes.swipeUp()
+    XCTAssertTrue(require("source-boundary").isHittable)
+    XCTAssertTrue(require("source-boundary").label.contains("No source code or media"))
+    capture("00-sources-boundary")
     require("close-sources").tap()
     capture("01-lattice-default")
     require("step-L").tap()
@@ -100,7 +105,6 @@ import XCTest
     }
     exit()
   }
-
   func testSpatialPointSelectionAndLinkedDisk() {
     launch()
     enter()
@@ -235,7 +239,6 @@ import XCTest
     XCTAssertTrue(require("inspect-point").label.contains("(1, 1) = 1 × (1, 1)"))
     exit()
   }
-
 }
 
 extension FareyUITests {
@@ -246,10 +249,15 @@ extension FareyUITests {
     require("space-toggle").tap()
     require("construction-start").tap()
     XCTAssertTrue(require("geometry-explanation").label.contains("q = 1"))
+    XCTAssertTrue(require("render-receipt").label.contains("92 projected direction dots"))
     capture("31-boundary-chart", holdFor: 3)
     require("construction-next").tap()
     require("construction-motion").tap()
     capture("33-reveal-ready", holdFor: 1)
+    require("construction-next").tap()
+    XCTAssertTrue(require("construction-stop").wait(for: \.isEnabled, toEqual: false, timeout: 8))
+    XCTAssertTrue(require("render-receipt").label.contains("168 lattice points"))
+    require("construction-back").tap()
     require("construction-next").tap()
     if require("construction-stop").isEnabled { require("construction-stop").tap() }
     capture("34-reveal-finished", holdFor: 1)

@@ -1,0 +1,9 @@
+{
+  "version": "0.7.1",
+  "build": "9",
+  "signedReleaseBuildPassed": true,
+  "strictSignatureVerificationPassed": true,
+  "includesFinalSourcesLayout": true,
+  "hardwareExecution": false,
+  "signingMaterial": "existing team and installed profile only"
+}
