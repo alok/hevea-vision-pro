@@ -16,7 +16,7 @@ let session = null, savedView = null, startingXR = false;
 let inhabited=false, overviewView=null, lookDrag=null, look={yaw:0,pitch:0};
 const overviewFov=45, originFov=100;
 let categories='viridis', glyphKey=null, focusGlyphs=[], sigma=1, planeFocus=false;
-let secondSelection=null, pairMessage='', pairGlyphs=[], planeMembers=new Set(), originMode=false, timings={}, colorKey='', factorKey='';
+let latticeGeneration=0, secondSelection=null, pairMessage='', pairGlyphs=[], planeMembers=new Set(), originMode=false, timings={}, colorKey='', factorKey='';
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ antialias: true }); }
 catch {
@@ -77,7 +77,7 @@ function surface(h,isDisk,opacity) {
 }
 const matrix = new THREE.Matrix4();
 function rebuild() {
-  glyphKey=null;
+  glyphKey=null;latticeGeneration++;
   disposeChildren(cloud); disposeChildren(disk); disposeChildren(cone);
   let t=performance.now();
   lattice = enumerateLattice(radius, !whole);
@@ -231,7 +231,7 @@ function updateGlyphSizes(){
     item.mesh.scale.setScalar(session?(item.extra?1.4:1):glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,item.extra,item.point?radiusFactor(item.point):1));
   }
 }
-function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();renderer.render(scene,camera);if(!$('debug').hidden)showDebug();}}
+function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();if(session)updateAims();renderer.render(scene,camera);if(!$('debug').hidden)showDebug();}}
 // Debug overlay: closed by default; reads only counters that already exist, and only while open.
 let frameMeasure=null, frameRequest=null;
 function showDebug(){
@@ -379,12 +379,82 @@ controls.addEventListener('change',render);window.addEventListener('resize',resi
 const xrPanel=new THREE.Group();xrPanel.position.set(0,1,-1.15);xrPanel.visible=false;scene.add(xrPanel);const xrTargets=[];
 for(const [i,label] of ['Next','Projection','Reset','Exit'].entries()) {
   const canvas=document.createElement('canvas');canvas.width=256;canvas.height=128;const ctx=canvas.getContext('2d');ctx.fillStyle='#142b38';ctx.fillRect(0,0,256,128);ctx.fillStyle='#fff';ctx.font='32px system-ui';ctx.textAlign='center';ctx.fillText(label,128,76);
-  const button=new THREE.Mesh(new THREE.PlaneGeometry(0.22,0.11),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(canvas)}));button.position.x=(i-1.5)*0.24;button.userData.action=()=>{if(i===3)session?.end();else $(['next','projection','reset'][i]).click();};xrTargets.push(button);xrPanel.add(button);
+  const button=new THREE.Mesh(new THREE.PlaneGeometry(0.22,0.11),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(canvas)}));button.position.x=(i-1.5)*0.24;button.userData.label=label;button.userData.action=()=>{if(i===3)session?.end();else $(['next','projection','reset'][i]).click();};xrTargets.push(button);xrPanel.add(button);
 }
-for(let i=0;i<2;i++){const controller=renderer.xr.getController(i);scene.add(controller);controller.addEventListener('select',()=>{controllerRay(controller,raycaster);const button=raycaster.intersectObjects(xrTargets)[0];if(button)button.object.userData.action();else pickPoint(raycaster.ray,0.02);});}
+// XR aiming. The hover preview and the trigger use the same rule (aimTarget): an in-world button hit first,
+// otherwise the lattice center nearest the controller ray within aimAngle. The trigger recomputes on its own
+// ray, so after any movement, even below aimStale, it can pick a different point than the last preview; dense
+// crops are not fully disambiguated. The viewer-facing ring uses distance × tan(aimAngle) as an approximate angular-scale cue, not a mathematical locus.
+// Hover is cyan and never changes the selection; the selected point keeps its white outline.
+const aimAngle=0.02, aimStale=0.001, aimColor=0x9fdcff;
+const describe=p=>`(${p.join(', ')}) · Δ = ${discriminant(p)}`;
+const readoutCanvas=document.createElement('canvas');readoutCanvas.width=1024;readoutCanvas.height=190;
+const readoutTexture=new THREE.CanvasTexture(readoutCanvas);
+const readout=new THREE.Mesh(new THREE.PlaneGeometry(0.94,0.175),new THREE.MeshBasicMaterial({map:readoutTexture,transparent:true}));
+readout.position.y=0.155;xrPanel.add(readout);let readoutText='';
+function showReadout(lines){
+  const text=lines.join('\n');if(text===readoutText)return;readoutText=text;
+  const ctx=readoutCanvas.getContext('2d');ctx.clearRect(0,0,1024,190);ctx.fillStyle='#0b1218d9';ctx.fillRect(0,0,1024,190);
+  ctx.font='28px ui-monospace,Menlo,monospace';lines.forEach((line,i)=>{ctx.fillStyle=line.includes(' aim ')?'#9fdcff':'#f0f5f8';ctx.fillText(line,18,40+i*44);});
+  readoutTexture.needsUpdate=true;
+}
+function aimTarget(controller){
+  controllerRay(controller,raycaster);
+  const hit=raycaster.intersectObjects(xrTargets)[0];
+  if(hit)return {button:hit.object,distance:hit.distance};
+  const index=pickIndex(raycaster.ray,aimAngle);
+  if(index<0)return null;
+  const point=new THREE.Vector3().fromArray(lattice.xyz,3*index).applyMatrix4(cloudMesh.matrixWorld);
+  return {index,point,distance:point.distanceTo(raycaster.ray.origin)};
+}
+const aims=[0,1].map(i=>{
+  const controller=renderer.xr.getController(i);scene.add(controller);
+  const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3(0,0,-1)]),new THREE.LineBasicMaterial({color:aimColor,transparent:true,opacity:0.35}));
+  line.visible=false;controller.add(line);
+  const ring=new THREE.Mesh(new THREE.RingGeometry(0.8,1,48),new THREE.MeshBasicMaterial({color:aimColor,transparent:true,opacity:0.9,side:THREE.DoubleSide,depthWrite:false}));
+  ring.visible=false;ring.renderOrder=10;scene.add(ring);
+  const aim={controller,line,ring,target:null,shown:null,next:0,source:null,scanned:new THREE.Ray(),index:i};
+  controller.addEventListener('connected',e=>{aim.source=e.data;});
+  controller.addEventListener('disconnected',()=>{aim.source=null;aim.target=aim.shown=null;line.visible=ring.visible=false;});
+  controller.addEventListener('select',()=>{
+    const target=aimTarget(controller);aim.target=target;aim.scanned.copy(raycaster.ray);aim.generation=latticeGeneration;
+    if(target)aim.source?.gamepad?.hapticActuators?.[0]?.pulse?.(0.3,30);
+    if(target?.button)target.button.userData.action();else if(target)selectPoint(tripleAt(lattice,target.index));
+  });
+  return aim;
+});
+function updateAims(){
+  const now=performance.now(), eye=renderer.xr.getCamera();
+  for(const aim of aims){
+    aim.shown=null;
+    if(!aim.source){aim.line.visible=aim.ring.visible=false;continue;}
+    // A rebuilt lattice (radius, filter or reset) invalidates cached indices, positions and scan deadlines.
+    if(aim.generation!==latticeGeneration){aim.target=null;aim.next=0;}
+    aim.controller.updateWorldMatrix(true,false);cloudMesh.updateMatrixWorld();
+    // Hover picking is O(points); in dense crops it waits in proportion to its own measured cost. A preview is
+    // shown only for the ray it was computed from: once the ray has moved more than aimStale it is hidden until
+    // the next scan, while the trigger always recomputes on the current ray with the same rule.
+    controllerRay(aim.controller,raycaster);
+    if(now>=aim.next){const t=performance.now();aim.target=aimTarget(aim.controller);aim.scanned.copy(raycaster.ray);aim.generation=latticeGeneration;const cost=performance.now()-t;aim.next=now+(cost>4?8*cost:0);}
+    const stale=raycaster.ray.direction.angleTo(aim.scanned.direction)>aimStale||raycaster.ray.origin.distanceTo(aim.scanned.origin)>aimStale*(aim.target?.distance??1);
+    const target=aim.shown=stale?null:aim.target;
+    aim.line.visible=true;aim.line.scale.z=target?target.distance:0.6;
+    aim.ring.visible=!!target?.point;
+    if(target?.point){aim.ring.position.copy(target.point);aim.ring.quaternion.copy(eye.quaternion);aim.ring.scale.setScalar(Math.max(target.distance*Math.tan(aimAngle),0.004));}
+  }
+  for(const button of xrTargets)button.material.color.setScalar(aims.some(a=>a.shown?.button===button)?1.6:1);
+  // One aim line per connected hand, named by the input source's handedness, so each ring has its trigger.
+  const hands=aims.filter(a=>a.source).sort((a,b)=>(a.source.handedness==='right')-(b.source.handedness==='right'));
+  const aimLines=hands.map(a=>{
+    const hand={left:'Left',right:'Right'}[a.source.handedness]??`Hand ${a.index+1}`;
+    return `${hand} aim${' '.repeat(Math.max(1,6-hand.length))}${a.shown?.button?a.shown.button.userData.label:a.shown?describe(tripleAt(lattice,a.shown.index)):'—'}`;
+  });
+  const plane=currentPlane();
+  showReadout([...aimLines,`Selected    ${describe(selected)}`,...(plane?[`Plane       ${plane.equation}`]:[])]);
+}
 async function checkXR(){const availability=await xrAvailability(navigator.xr,isSecureContext);$('xr').disabled=!availability.supported;$('xr').textContent=availability.supported?'Enter VR':'VR unavailable here';$('xr-status').textContent=availability.message;}
 $('xr').onclick=async()=>{if(startingXR||session)return;startingXR=true;$('xr').disabled=true;savedView=captureView(camera,controls);try{session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor']});await renderer.xr.setSession(session);controls.enabled=false;xrPanel.visible=true;document.body.classList.add('immersive');renderer.setAnimationLoop(render);}catch{await session?.end().catch(()=>{});session=null;$('status').textContent='VR entry was cancelled or unavailable. The browser scene remains usable.';checkXR();}finally{startingXR=false;}};
-renderer.xr.addEventListener('sessionend',()=>{session=null;controls.enabled=!inhabited;xrPanel.visible=false;document.body.classList.remove('immersive');renderer.setAnimationLoop(null);if(savedView)restoreView(savedView,camera,controls);savedView=null;resize();checkXR();});
+renderer.xr.addEventListener('sessionend',()=>{session=null;for(const aim of aims){aim.target=null;aim.line.visible=aim.ring.visible=false;}controls.enabled=!inhabited;xrPanel.visible=false;document.body.classList.remove('immersive');renderer.setAnimationLoop(null);if(savedView)restoreView(savedView,camera,controls);savedView=null;resize();checkXR();});
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();$('fatal').hidden=false;$('fatal').textContent='3D graphics paused. Waiting for the browser to restore the graphics context; reload if it does not recover.';controls.enabled=false;$('xr').disabled=true;session?.end().catch(()=>{});});
 renderer.domElement.addEventListener('webglcontextrestored',()=>{$('fatal').hidden=true;controls.enabled=!session&&!inhabited;resize();update();checkXR();});
 for(const option of $('radius').querySelectorAll('optgroup option'))option.textContent=`${option.value} · ${ballCount(Number(option.value)).toLocaleString()} points`;

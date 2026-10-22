@@ -1,0 +1,521 @@
+{
+  "version": "0.13.0",
+  "physicalHardware": false,
+  "runtime": "Official IWE 2.0.0, Chrome, simulated Quest3",
+  "actualEmulatorObservations": [
+    {
+      "time": 128403.5,
+      "head": [
+        0,
+        1.600000023841858,
+        0
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.600000023841858,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.600000023841858,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "hand": "left",
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ]
+        },
+        {
+          "hand": "right",
+          "ray": [
+            0.5,
+            1.5,
+            -0.4000000059604645
+          ]
+        }
+      ],
+      "labels": {
+        "Left aim": "Left aim  (1, 0, 1) \u00b7 \u0394 = -4",
+        "Right aim": "Right aim (1, 0, -1) \u00b7 \u0394 = 4",
+        "Selected": "Selected    (1, 0, -1) \u00b7 \u0394 = 4",
+        "Plane": "Plane       2a \u22122c = 0"
+      },
+      "selected": "(a,b,c) = (1, 0, -1) \u00b7 \u0394 = 4",
+      "stage": "013-attached-real-session",
+      "attachedAfterEntry": true,
+      "domPlaneText": "Plane: 2a \u22122c = 0",
+      "inWorldPlaneText": "Plane       2a \u22122c = 0"
+    },
+    {
+      "time": 129444.10000000894,
+      "head": [
+        0,
+        1.600000023841858,
+        0
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.600000023841858,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.600000023841858,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "hand": "left",
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ]
+        },
+        {
+          "hand": "right",
+          "ray": [
+            0.5,
+            1.5,
+            -0.4000000059604645
+          ]
+        }
+      ],
+      "labels": {
+        "Left aim": "Left aim  (1, 0, 1) \u00b7 \u0394 = -4",
+        "Right aim": "Right aim (1, 0, -1) \u00b7 \u0394 = 4",
+        "Selected": "Selected    (1, 0, -1) \u00b7 \u0394 = 4",
+        "Plane": "Plane       2a \u22122c = 0"
+      },
+      "selected": "(a,b,c) = (1, 0, -1) \u00b7 \u0394 = 4",
+      "stage": "013-right-controller-select",
+      "domPlaneText": "Plane: 2a \u22122c = 0",
+      "inWorldPlaneText": "Plane       2a \u22122c = 0"
+    },
+    {
+      "time": 180310.70000000298,
+      "head": [
+        0,
+        1.600000023841858,
+        0
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.600000023841858,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.600000023841858,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "hand": "left",
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ]
+        },
+        {
+          "hand": "right",
+          "ray": [
+            0.5,
+            1.5,
+            -0.4000000059604645
+          ]
+        }
+      ],
+      "labels": {
+        "Left aim": "Left aim  (1, 0, 1) \u00b7 \u0394 = -4",
+        "Right aim": "Right aim (1, 0, -1) \u00b7 \u0394 = 4",
+        "Selected": "Selected    (1, 0, 1) \u00b7 \u0394 = -4"
+      },
+      "selected": "(a,b,c) = (1, 0, 1) \u00b7 \u0394 = -4",
+      "stage": "013-left-select-changing-state",
+      "domPlaneText": "Plane: 2a \u22122c = 0",
+      "inWorldPlaneText": null
+    },
+    {
+      "time": 181608.10000000894,
+      "head": [
+        0,
+        1.600000023841858,
+        0
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.600000023841858,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.600000023841858,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "hand": "left",
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ]
+        },
+        {
+          "hand": "right",
+          "ray": [
+            0.5,
+            1.5,
+            -0.4000000059604645
+          ]
+        }
+      ],
+      "labels": {
+        "Left aim": "Left aim  (1, 0, 1) \u00b7 \u0394 = -4",
+        "Right aim": "Right aim (1, 0, -1) \u00b7 \u0394 = 4",
+        "Selected": "Selected    (1, 0, -1) \u00b7 \u0394 = 4",
+        "Plane": "Plane       2a \u22122c = 0"
+      },
+      "selected": "(a,b,c) = (1, 0, -1) \u00b7 \u0394 = 4",
+      "stage": "013-right-select-changing-state",
+      "domPlaneText": "Plane: 2a \u22122c = 0",
+      "inWorldPlaneText": "Plane       2a \u22122c = 0"
+    },
+    {
+      "time": 182775.5,
+      "head": [
+        0,
+        1.600000023841858,
+        0
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.600000023841858,
+            0
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.600000023841858,
+            0
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "hand": "left",
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ]
+        },
+        {
+          "hand": "right",
+          "ray": [
+            0.5,
+            1.5,
+            -0.4000000059604645
+          ]
+        }
+      ],
+      "labels": {
+        "Left aim": "Left aim  (1, 0, 1) \u00b7 \u0394 = -4",
+        "Right aim": "Right aim Exit",
+        "Selected": "Selected    (1, 0, -1) \u00b7 \u0394 = 4",
+        "Plane": "Plane       2a \u22122c = 0"
+      },
+      "selected": "(a,b,c) = (1, 0, -1) \u00b7 \u0394 = 4",
+      "stage": "013-aim-app-exit",
+      "domPlaneText": "Plane: 2a \u22122c = 0",
+      "inWorldPlaneText": "Plane       2a \u22122c = 0"
+    },
+    {
+      "stage": "013-controller-exit",
+      "active": false,
+      "ends": 1,
+      "immersive": false,
+      "selected": "(a,b,c) = (1, 0, -1) \u00b7 \u0394 = 4"
+    },
+    {
+      "time": 243623.70000000298,
+      "head": [
+        0,
+        1.399999976158142,
+        -3.0999999046325684
+      ],
+      "orientation": [
+        0.7071067690849304,
+        0,
+        0,
+        0.7071067690849304
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.399999976158142,
+            -3.0999999046325684
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.399999976158142,
+            -3.0999999046325684
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "hand": "left",
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ]
+        },
+        {
+          "hand": "right",
+          "ray": [
+            0.5,
+            1.5,
+            -0.4000000059604645
+          ]
+        }
+      ],
+      "labels": {
+        "Left aim": "Left aim  (1, 0, 1) \u00b7 \u0394 = -4",
+        "Right aim": "Right aim Exit",
+        "Selected": "Selected    (1, 0, -1) \u00b7 \u0394 = 4",
+        "Plane": "Plane       2a \u22122c = 0"
+      },
+      "selected": "(a,b,c) = (1, 0, -1) \u00b7 \u0394 = 4",
+      "stage": "013-apex-upper",
+      "deviceOrientation": [
+        0.7071067690849304,
+        0,
+        0,
+        0.7071067690849304
+      ],
+      "domPlaneText": "Plane: 2a \u22122c = 0",
+      "inWorldPlaneText": "Plane       2a \u22122c = 0"
+    },
+    {
+      "time": 245174.80000001192,
+      "head": [
+        0,
+        1.399999976158142,
+        -3.0999999046325684
+      ],
+      "orientation": [
+        -0.7071067690849304,
+        0,
+        0,
+        0.7071067690849304
+      ],
+      "views": [
+        {
+          "eye": "left",
+          "position": [
+            -0.03150000050663948,
+            1.399999976158142,
+            -3.0999999046325684
+          ]
+        },
+        {
+          "eye": "right",
+          "position": [
+            0.03150000050663948,
+            1.399999976158142,
+            -3.0999999046325684
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "hand": "left",
+          "ray": [
+            -0.25,
+            1.5,
+            -0.4000000059604645
+          ]
+        },
+        {
+          "hand": "right",
+          "ray": [
+            0.5,
+            1.5,
+            -0.4000000059604645
+          ]
+        }
+      ],
+      "labels": {
+        "Left aim": "Left aim  (1, 0, 1) \u00b7 \u0394 = -4",
+        "Right aim": "Right aim Exit",
+        "Selected": "Selected    (1, 0, -1) \u00b7 \u0394 = 4",
+        "Plane": "Plane       2a \u22122c = 0"
+      },
+      "selected": "(a,b,c) = (1, 0, -1) \u00b7 \u0394 = 4",
+      "stage": "013-apex-lower",
+      "deviceOrientation": [
+        -0.7071067690849304,
+        0,
+        0,
+        0.7071067690849304
+      ],
+      "domPlaneText": "Plane: 2a \u22122c = 0",
+      "inWorldPlaneText": "Plane       2a \u22122c = 0"
+    },
+    {
+      "stage": "013-reentry-end",
+      "active": false,
+      "ends": 2,
+      "controlMode": "manual",
+      "origin": "true",
+      "selected": "(a,b,c) = (1, 0, -1) \u00b7 \u0394 = 4",
+      "immersive": false
+    },
+    {
+      "stage": "013-runtime-ended-confirmed",
+      "activeSession": false,
+      "bodyImmersive": false,
+      "mode": "manual",
+      "origin": "true",
+      "selection": "(a,b,c) = (1, 0, -1) \u00b7 \u0394 = 4"
+    }
+  ],
+  "mockedRegression": {
+    "passed": true,
+    "mocked": "XR input and poses are mocked; no XRSession",
+    "oneHand": {
+      "readout": [
+        "Left aim  (2, 1, 1) \u00b7 \u0394 = -7",
+        "Selected    (1, -1, 2) \u00b7 \u0394 = -7"
+      ],
+      "selected": [
+        2,
+        1,
+        1
+      ]
+    },
+    "button": {
+      "hover": "Left aim  Next",
+      "afterMove": "Left aim  \u2014"
+    },
+    "dense": {
+      "previewed": [
+        2,
+        1,
+        1
+      ],
+      "backoffMs": 184,
+      "selectedAfterMove": [
+        43,
+        12,
+        -34
+      ]
+    },
+    "reset": {
+      "shownAfterReset": [
+        2,
+        1,
+        1
+      ]
+    },
+    "twoHands": {
+      "readout": [
+        "Left aim  (1, 0, 1) \u00b7 \u0394 = -4",
+        "Right aim (2, 1, 1) \u00b7 \u0394 = -7",
+        "Selected    (1, -1, 2) \u00b7 \u0394 = -7"
+      ],
+      "rightSelected": [
+        2,
+        1,
+        1
+      ],
+      "leftSelected": [
+        1,
+        0,
+        1
+      ]
+    }
+  },
+  "unitTests": {
+    "passed": 68,
+    "failed": 0,
+    "skipped": 0
+  },
+  "denseCPUScanMilliseconds": [
+    25,
+    26
+  ],
+  "denseCPUMeasurementSource": "Claude isolated browser test, no GPU/headset frame-rate inference",
+  "native": {
+    "version": "0.9.0",
+    "build": 12,
+    "freshSignedBuild": true,
+    "strictSignatureVerified": true,
+    "coreTestsPassed": 33,
+    "physicalInstallation": false,
+    "physicalDeviceStatus": "unavailable"
+  },
+  "limits": [
+    "Initial request observer missed entry; attached to actual active XRSession.",
+    "Programmed IWE poses and triggers are browser simulation, not physical tracking/input.",
+    "Hidden DOM plane text may persist; inWorldPlaneText records actual rendered readout.",
+    "No new grants, deployment, private uploads or deferred minimap UI."
+  ],
+  "package": {
+    "file": "output/Farey-WebXR-0.13.0.zip",
+    "bytes": 595314,
+    "sha256": "9669e53a13ae7de0b85ecd1cb58e4eaaa10452fecc567c930f654e7699a923f3",
+    "manifestSHA256": "4316ab7e1d2711018f8ee54876fd8008646a3005f315a7311bdb2876f07e07a8",
+    "extractedSmokePassed": true
+  }
+}

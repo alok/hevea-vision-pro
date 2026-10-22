@@ -91,7 +91,12 @@ controls available. WebXR needs a compatible browser/device and runtime
 consent; remote hosting generally requires HTTPS. Browser 0.12.1 was tested with official Immersive Web Emulator 2.0.0
 in Chrome: actual immersive-vr sessions, two eye views, simulated head
 and controller poses, cutting-plane selection and repeated exit/re-entry.
-Camera field of view and first-person pose recover after exit. Emulation
+Camera field of view and first-person pose recover after exit. Version 0.13.0
+also verifies per-hand aim/readout and actual emulator trigger selection.
+Faint rays and cyan rings preview targets; white marks the selection.
+The trigger recomputes on its current ray. Dense crops still have ambiguity
+and roughly 25 ms CPU hover scans in one test; physical XR performance
+is unverified. Emulation
 is not physical headset tracking, input, performance or comfort evidence.
 No browser security changes are needed or recommended for local desktop use.
 WebGL creation failure shows an explanation. The coefficient page pauses

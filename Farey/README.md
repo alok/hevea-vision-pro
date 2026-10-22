@@ -1,6 +1,6 @@
 # Farey — Into the Infinite
 
-[Current browser 0.12.1 XR verification](XR_SIMULATION.md) · [Browser 0.12.0 packaging audit](BROWSER_012_READINESS.md) · [Double cone, Origin and cutting planes](DOUBLE_CONE.md). Native remains 0.9.0; [its coefficient-cone guide](COEFFICIENT_CONE.md) records the separate simulator evidence. [Previous release-candidate readiness](READER_READINESS.md) — native 0.8.1 / browser 0.7.4. [Precision notice](PRECISION_NOTICE.md). [Safari and compact-view audit](MOBILE_SAFARI.md). [Lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) · [Native integration check](INTEGRATION_08.md). [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
+[Current browser 0.13.0 XR verification](XR_SIMULATION.md) · [Browser 0.12.0 packaging audit](BROWSER_012_READINESS.md) · [Double cone, Origin and cutting planes](DOUBLE_CONE.md). Native remains 0.9.0; [its coefficient-cone guide](COEFFICIENT_CONE.md) records the separate simulator evidence. [Previous release-candidate readiness](READER_READINESS.md) — native 0.8.1 / browser 0.7.4. [Precision notice](PRECISION_NOTICE.md). [Safari and compact-view audit](MOBILE_SAFARI.md). [Lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) · [Native integration check](INTEGRATION_08.md). [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
 
 [Independent mathematical consistency audit](MATHEMATICAL_AUDIT.md): exact rational state agrees across implementations; very close deep disk curves can merge at display precision. Read exact fractions when interpreting overlapping arcs.
 
@@ -95,7 +95,7 @@ See [simulator evidence](evidence/README.md). The controls use a pushed native w
 
 The device target uses development team `5795ZPYZ2T` and the already-installed wildcard profile **Lean Calculator Vision Pro 20261008** (expires 2027-10-08). Its certificate matches the installed development identity, its wildcard covers `com.alok.FareyVision`, and it includes the paired Vision Pro. No new certificate, app identifier or provisioning profile was created. These device-only settings do not change the unsigned simulator workflow.
 
-A signed Release build of native 0.8 and strict signature verification succeeded on 2026-10-22. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
+A fresh signed Release build of native 0.9.0 (12), strict signature verification and 33 core tests succeeded on 2026-10-22 using the existing signing assets. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
 
 ```sh
 build_root="$(python3 scripts/prepare-local-build.py)"
@@ -105,7 +105,7 @@ xcodebuild -project "$build_root/FareyVision.xcodeproj" -scheme FareyVision \
 codesign --verify --deep --strict /tmp/FareyVision-device/Build/Products/Release-xros/FareyVision.app
 ```
 
-The paired headset reports visionOS 27.2 and Developer Mode enabled. On 2026-10-22, both a read-only device-details query and an installed-app query succeeded; the earlier locked-device blocker did not recur. No installation or hardware execution has been performed. After unlocking, obtain its identifier with `xcrun devicectl list devices`, then run:
+The paired headset reports visionOS 27.2 and Developer Mode enabled. On 2026-10-22, both a read-only device-details query and an installed-app query succeeded; the earlier locked-device blocker did not recur. The latest connection checks report the physical headset unavailable; no installation or hardware execution has been performed. The browser has separate features and emulator evidence. After it reconnects and is unlocked, obtain its identifier with `xcrun devicectl list devices`, then run:
 
 ```sh
 xcrun devicectl device install app --device YOUR_VISION_PRO_IDENTIFIER \

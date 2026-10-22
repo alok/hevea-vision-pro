@@ -1,4 +1,27 @@
-# Browser 0.12.1 XR simulation verification
+# Browser 0.13.0 spatial interaction verification
+
+October 22, 2026. The current double-cone browser adds app-owned controller aim rays, depth-tested cyan hover rings and a compact in-world readout: Left aim, Right aim, Selected, and the current plane. Hover does not change the mathematical selection. Each trigger recomputes on that controller's current ray; a ray movement can change the result from the last preview. The viewer-facing ring is an approximate angular-scale cue, not a mathematical locus.
+
+Verified in the user's main Chrome using official IWE 2.0.0 and actual emulated XRSession/XRFrame objects:
+
+- Two stereo views, 0.063 m apart, with distinct left/right controller poses.
+- Left aim `(1,0,1)`, Δ=−4, and Right aim `(1,0,−1)`, Δ=4, appeared simultaneously. Real emulator trigger press/release events selected the corresponding point for each hand; the exterior selection restored plane `2a−2c=0`.
+- Right aim changed to Exit, the controller event ended the actual session.
+- Re-entry from desktop Origin rendered upper/lower apex views from programmed emulator poses. Exit restored the desktop Origin position/orientation, and the emulator returned to manual control with no active session. The app was returned to Overview afterward.
+
+[Structured 0.13 evidence](evidence/browser-0.13/checks.json) separates these real emulator observations from the portable `WebXR/xr-aim-checks.js` regression, which explicitly mocks XR inputs and creates no XRSession. The initial 0.13 request observer missed entry; it then attached to IWE's actual active session. Early test-console errors are not presented as app errors or as a clean main-Chrome console. A hidden DOM plane label can retain old text; current in-world Plane text is recorded separately.
+
+The mocked regression also checks stale-button clearing, R=96→6 cache invalidation, two-hand labels/selection, and unchanged selection during hover. All 68 unit/package tests pass. No minimap, palm interface, automatic camera motion, mathematical color change or native feature change was added.
+
+**Measured limit:** R=96 contains 1,852,484 distinct points. Claude measured roughly 25–26 ms CPU per linear hover scan in its isolated browser test; hover backs off about 180–200 ms, and moving rays hide stale previews. Those scans can still hitch rendering. This is not GPU timing or measured headset frame rate. Dense directional ambiguity, motion below the staleness threshold, real tracking jitter and physical haptics remain unresolved. The next supported improvement is to move/accelerate exact hover queries without changing selection semantics or silently sampling.
+
+Guidance consulted by Claude: [Apple HIG Eyes](https://developer.apple.com/design/human-interface-guidelines/eyes) and [Meta ray-casting best practices](https://developers.meta.com/vr/design/raycasting_bp/). The implementation review checked feedback against actual selection identity, lifecycle and cache ownership. Physical headset comfort and input remain untested.
+
+Native 0.9.0 (12), `com.alok.FareyVision`, was separately rebuilt from current native source, passed `codesign --verify --deep --strict`, and passed 33 core tests using existing signing only. The paired physical Vision Pro remains unavailable, so installation, launch and physical functionality have not occurred. Native does not yet have the browser's signed dense cloud/Origin/aiming parity. No new automation was created.
+
+---
+
+# Browser 0.12.1 camera-restoration verification
 
 October 22, 2026. The live localhost double-cone app was exercised in **actual `immersive-vr` sessions provided by official Immersive Web Emulator 2.0.0**, simulating Quest 3 in the user's main Chrome. This is browser simulation, not physical headset validation. The native Meta OpenXR Simulator is a separate runtime and was not used as proof of Chrome WebXR execution.
 
@@ -28,3 +51,7 @@ Remaining: physical Quest/Vision Pro tracking, controller/hand usability, GPU fr
 `WebXR/output/Farey-WebXR-0.12.1.zip` is 588,518 bytes; SHA-256 `0ab1c4112b7f7618618ac22f5943aa3c56f6aeb618928727f9c9ae2e8126a80f`. Its 73-file manifest SHA-256 is `dcbe1a656859efbc8b6e8a155375ea0fa0f788e63aafb8f19931a54460a689fe`. The ZIP was unpacked outside the checkout and checked using its own local server. Both pages passed clean-profile offline/mobile/state/failure checks with no external runtime requests or page errors. That isolated package smoke does not request XR; actual IWE evidence above comes from the promoted identical runtime code in main Chrome.
 
 To reproduce, unpack the ZIP, run `python3 serve.py --port 8778` in its folder and open `http://127.0.0.1:8778/`. On a browser with an already-authorized IWE installation, enable emulation for this origin and reload. Click Origin, then Enter VR. Use normal emulator headset/controller controls and the in-world Exit; repeat entry and check the restored desktop eye label and view. The emulator stereo-rendering option requires reload. Do not grant physical tracking or change browser security to reproduce the local desktop checks.
+
+## Current 0.13.0 package
+
+`WebXR/output/Farey-WebXR-0.13.0.zip` is 595,314 bytes; SHA-256 `9669e53a13ae7de0b85ecd1cb58e4eaaa10452fecc567c930f654e7699a923f3`. Its 74-file manifest SHA-256 is `4316ab7e1d2711018f8ee54876fd8008646a3005f315a7311bdb2876f07e07a8`. Independent extracted-package smoke passed both pages with no external runtime requests or page errors, including portrait/landscape and loaded-page offline behavior. The package still uses the documented `python3 serve.py --port 8778` local launch. This is a local artifact, not a public deployment.
