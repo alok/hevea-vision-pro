@@ -5,7 +5,7 @@ import { examples, vector, project, upperRoot, discriminant, height, kind, posit
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
 import { TapSelection, nearestToRayPacked } from './input.js';
 import { cameraPlaneLabel } from './camera-planes.js';
-import { coefficientColor, gradientCSS, paletteRange, glyphRadius, glyphScale, outlinePixels, sourceRadiusFactor, drawnPixels } from './appearance.js';
+import { coefficientColor, gradientCSS, paletteRange, categoryPalettes, glyphRadius, glyphScale, outlinePixels, sourceRadiusFactor, drawnPixels } from './appearance.js';
 import { enumerateLattice, inBall, isUpper, tripleAt, latticeRadii, ballCount } from './lattice.js';
 import { pointCloudMaterial, pointCloud, fillColors, fillFactors } from './point-cloud.js';
 import { pairPlane, planeFromNormal, planeSection, coneDirections, inPairPlane } from './pair-plane.js';
@@ -15,7 +15,7 @@ let selected = examples[0], lattice = null, cloudMesh, imageMesh;
 let session = null, savedView = null, startingXR = false;
 let inhabited=false, overviewView=null, lookDrag=null, look={yaw:0,pitch:0};
 const overviewFov=45, originFov=100;
-let categories='contrast', glyphKey=null, focusGlyphs=[], sigma=1, planeFocus=false;
+let categories='viridis', glyphKey=null, focusGlyphs=[], sigma=1, planeFocus=false;
 let secondSelection=null, pairMessage='', pairGlyphs=[], planeMembers=new Set(), originMode=false, timings={}, colorKey='', factorKey='';
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ antialias: true }); }
@@ -196,8 +196,9 @@ function update() {
   updatePair();
   renderer.domElement.setAttribute('aria-description',`Selected coefficient point ${selected.join(', ')}. ${kind(selected)} region. ${lattice.count} points. Both cone halves ${cone.visible?'shown':'hidden'}.`);
   const [lo,hi]=paletteRange, reach=lattice.maxInterior;
-  $('palette-bar').style.background=gradientCSS();
-  $('palette-label').textContent=`Interior |Δ|, log scale · this crop reaches ${reach}`;
+  $('palette-bar').style.background=gradientCSS(categories);
+  $('palette-label').textContent=`Upper interior |Δ| (log, ${categories==='viridis'?'Viridis 0.2–1':'Stange anchors'}) · crop reaches ${reach}`;
+  for(const type of ['exterior','null','lower'])$(`swatch-${type}`).style.background=categoryPalettes[categories][type];
   $('palette-low').textContent=lo;$('palette-high').textContent=hi;
   render();
 }
@@ -278,7 +279,8 @@ function moveEye(direction) {
   delta.multiplyScalar(0.12);camera.position.add(delta);controls.target.add(delta);showLocation();render();
 }
 $('inhabit').onclick=()=>inhabited?leaveInhabit():enterInhabit();
-$('origin').onclick=()=>eyeAtOrigin()?leaveInhabit():enterOrigin();
+// Origin is a location preset inside the egocentric mode; the Inhabit button alone toggles back to the overview.
+$('origin').onclick=enterOrigin;
 for(const button of document.querySelectorAll('[data-look]'))button.onclick=()=>{look.pitch={up:Math.PI/2,level:0,down:-Math.PI/2}[button.dataset.look];applyLook();renderer.domElement.focus({preventScroll:true});};
 for(const button of document.querySelectorAll('[data-move]'))button.onclick=()=>{moveEye(button.dataset.move);renderer.domElement.focus({preventScroll:true});};
 function resetView(){controls.target.copy(world.position);camera.position.copy(world.position).add(new THREE.Vector3(2.4,1.5,4.6).multiplyScalar(Math.max(1,radius/8)));controls.update();}

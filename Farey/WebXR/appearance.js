@@ -1,15 +1,18 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import { discriminant, kind } from './starscape-core.js';
+import { viridis } from './viridis.js';
 
-// Upper-interior color follows Stange's viewer: t = log(|Δ|/3) / log(240/3), interpolated in OKLab
-// through her six anchors. The range is fixed, so a given Δ has one color at every crop radius.
+// Upper-interior color uses Stange's fixed range: t = log(|Δ|/3) / log(240/3), clamped, so a given Δ has one
+// color at every crop radius. 'viridis' maps t onto canonical Viridis over [0.2, 1] (the darkest fifth is too
+// dark for single-pixel dots on black); 'reference' is her six anchors interpolated in OKLab.
 export const anchors = ['#F06A6A','#E99456','#D6BD69','#7AB89B','#70A6D8','#AD92D0'];
 export const paletteRange = [3, 240];
-// 'reference' keeps the v0.9 category colors (her viewer derives its own from OKLCH lightness and
-// chroma; those hues are not verified here), whose null gold is also an interior anchor.
-// 'contrast' is our choice: every category lies at least 0.1 in OKLab from the interior ramp.
+// 'viridis' categories are our choice: each lies at least 0.1 in OKLab from the ramp under normal, protan and
+// deutan vision (see appearance.test.js). 'reference' keeps the v0.9 approximations of her categories (her
+// viewer derives them from OKLCH lightness and chroma; exact hues unverified), whose null gold is an anchor.
+export const viridisStart = 0.2;
 export const categoryPalettes = {
-  contrast: { null: '#f2e9d0', exterior: '#3b78ad', lower: '#64717d' },
+  viridis: { null: '#f4f2ff', exterior: '#7a5230', lower: '#4d3a46' },
   reference: { null: '#d6bd69', exterior: '#448abb', lower: '#64717d' },
 };
 
@@ -32,18 +35,22 @@ function fromOklab([L,A,B]) {
 const anchorLab = anchors.map(hex=>oklab(decode(hex)));
 
 export const palettePosition = magnitude => clamp(Math.log(magnitude/paletteRange[0])/Math.log(paletteRange[1]/paletteRange[0]),0,1);
-export function paletteSample(t) {
+export function paletteSample(t, palette='viridis') {
+  if(palette==='viridis'){
+    const x=(viridisStart+(1-viridisStart)*clamp(t,0,1))*(viridis.length-1), i=Math.min(viridis.length-2,Math.floor(x)), f=x-i;
+    return viridis[i].map((a,j)=>a*(1-f)+viridis[i+1][j]*f);
+  }
   const x=clamp(t,0,1)*(anchorLab.length-1), i=Math.min(anchorLab.length-2,Math.floor(x)), f=x-i;
   return fromOklab(anchorLab[i].map((a,j)=>a*(1-f)+anchorLab[i+1][j]*f));
 }
 // Colors use the actual Δ of the triple; a nonprimitive multiple k·p has Δ scaled by k².
-export function coefficientColor(point, symmetric=false, categories='contrast') {
+export function coefficientColor(point, symmetric=false, palette='viridis') {
   const type=kind(point);
-  if(type!=='upper'&&!(type==='lower'&&symmetric))return decode(categoryPalettes[categories][type]);
-  return paletteSample(palettePosition(-discriminant(point)));
+  if(type!=='upper'&&!(type==='lower'&&symmetric))return decode(categoryPalettes[palette][type]);
+  return paletteSample(palettePosition(-discriminant(point)),palette);
 }
-export function gradientCSS() {
-  const stops=Array.from({length:17},(_,i)=>`rgb(${paletteSample(i/16).map(x=>Math.round(x*255)).join(' ')}) ${i*100/16}%`);
+export function gradientCSS(palette='viridis') {
+  const stops=Array.from({length:17},(_,i)=>`rgb(${paletteSample(i/16,palette).map(x=>Math.round(x*255)).join(' ')}) ${i*100/16}%`);
   return `linear-gradient(to right,${stops.join(',')})`;
 }
 
