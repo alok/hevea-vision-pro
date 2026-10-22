@@ -1,0 +1,15 @@
+{
+  "limit": true,
+  "recovery": true,
+  "invalid": "Choose positive integers up to 1000 with a path of at most 24 moves.",
+  "unchanged": "0/1 < 1/1 < \u221e",
+  "maxGrid": "224 lattice points \u00b7 14 on this ray",
+  "final": "1/2 < 3/5 < 2/3",
+  "immersiveVR": false,
+  "browser": "Chromium 155.0.0.0 on macOS",
+  "source": "Real browser interactions through Playwright CLI",
+  "sphereSelection": "Mouse click on (q,p)=(3,2) selected 2/3",
+  "orbit": "Actual pointer drag, screenshot retained",
+  "consoleErrors": 0,
+  "webxrHeadsetSessionTested": false
+}

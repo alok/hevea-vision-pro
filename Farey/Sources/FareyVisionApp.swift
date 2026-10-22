@@ -10,6 +10,7 @@ import SwiftUI
   var state = FareyState()
   var depth = 6
   var viewpoint = 0
+  var latticeMode = true
   var immersionOpen = false
   var transitioning = false
   var immersionSession = 0
@@ -29,11 +30,18 @@ import SwiftUI
     state.reset()
     depth = 6
     viewpoint = 0
+    latticeMode = true
+    revision += 1
+  }
+  func select(_ point: LatticePoint) {
+    if state.select(point.rational) { revision += 1 }
+  }
+  func toggleSpace() {
+    latticeMode.toggle()
     revision += 1
   }
   func preset() {
-    state.reset()
-    for t: Turn in [.l, .r, .l, .r, .l, .r] { state.step(t) }
+    state.select(Rational(3, 5))
     revision += 1
   }
   func changeDepth(_ delta: Int) {
@@ -56,7 +64,7 @@ import SwiftUI
     Window("Farey controls", id: "controls") {
       ControlsWindowView().environment(model)
     }
-    .defaultSize(width: 660, height: 235)
+    .defaultSize(width: 760, height: 275)
     .defaultWindowPlacement { _, _ in WindowPlacement(.utilityPanel) }
     .windowStyle(.plain)
     .persistentSystemOverlays(.hidden)
@@ -95,29 +103,11 @@ struct LaunchView: View {
       }
       DiskPreview().frame(height: 280)
       Text(
-        "Follow exact mediants through the hyperbolic disk.\n"
-          + "A finite Farey tessellation, rendered as light in a quiet, full-immersion void."
+        "Step into the integer lattice behind the Farey tessellation.\n"
+          + "Choose a rational, follow its direction plane, and build its mediants in a full-immersion void."
       )
       .multilineTextAlignment(.center).foregroundStyle(.secondary)
-      Button {
-        guard !model.transitioning else { return }
-        model.transitioning = true
-        model.renderReceipt = "Preparing geometry"
-        model.immersionSession += 1
-        model.record("Open requested session \(model.immersionSession)")
-        Task {
-          switch await openImmersiveSpace(id: "farey-void") {
-          case .opened:
-            model.record("Open completed session \(model.immersionSession)")
-            model.immersionOpen = true
-            pushWindow(id: "controls")
-          case .userCancelled: model.error = "Entry cancelled. Try again whenever you’re ready."
-          case .error: model.error = "The immersive space could not open. Please try again."
-          @unknown default: model.error = "The system could not enter the space."
-          }
-          model.transitioning = false
-        }
-      } label: {
+      Button(action: enter) {
         Label("Enter the void", systemImage: "viewfinder").font(.title3).padding(.horizontal, 35)
           .padding(.vertical, 8)
       }
@@ -132,7 +122,35 @@ struct LaunchView: View {
     }
     .padding(35)
     .background(Color(red: 0.015, green: 0.025, blue: 0.045))
+    .task {
+      #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--showcase"), model.immersionSession == 0 {
+          model.preset()
+          model.viewpoint = 1
+          enter()
+        }
+      #endif
+    }
 
+  }
+  private func enter() {
+    guard !model.transitioning, !model.immersionOpen else { return }
+    model.transitioning = true
+    model.renderReceipt = "Preparing geometry"
+    model.immersionSession += 1
+    model.record("Open requested session \(model.immersionSession)")
+    Task {
+      switch await openImmersiveSpace(id: "farey-void") {
+      case .opened:
+        model.record("Open completed session \(model.immersionSession)")
+        model.immersionOpen = true
+        pushWindow(id: "controls")
+      case .userCancelled: model.error = "Entry cancelled. Try again whenever you’re ready."
+      case .error: model.error = "The immersive space could not open. Please try again."
+      @unknown default: model.error = "The system could not enter the space."
+      }
+      model.transitioning = false
+    }
   }
 }
 
@@ -226,7 +244,9 @@ struct ControlsView: View {
       }
       .buttonStyle(.borderedProminent).controlSize(.large)
       HStack(spacing: 16) {
-        Text("Detail \(model.depth)").font(.caption)
+        Button(model.latticeMode ? "Space: Lattice" : "Space: Disk") { model.toggleSpace() }
+          .accessibilityIdentifier("space-toggle")
+        Text(model.latticeMode ? "Grid \(model.depth * 2)" : "Detail \(model.depth)").font(.caption)
         Button {
           model.changeDepth(-1)
         } label: {
@@ -239,11 +259,19 @@ struct ControlsView: View {
           Image(systemName: "plus")
         }
         .disabled(model.depth >= 7).accessibilityIdentifier("detail-more")
-        Button("View: \(["Front", "Oblique", "Side"][model.viewpoint])") { model.changeView() }
+        Button(["Front", "Left", "Right"][model.viewpoint]) { model.changeView() }
           .accessibilityIdentifier("viewpoint")
-        Button("Example LRLRLR") { model.preset() }.accessibilityIdentifier("example")
-        Button("About & sources") { showSources = true }.accessibilityIdentifier("sources")
+        Button("3/5 example") { model.preset() }.accessibilityIdentifier("example")
+        Button("Sources") { showSources = true }.accessibilityIdentifier("sources")
       }.buttonStyle(.bordered).controlSize(.small)
+      Text(
+        model.latticeMode
+          ? (model.state.mediant.p > model.depth * 2 || model.state.mediant.q > model.depth * 2
+            ? "Direction plane shown. The primitive point lies beyond this finite grid."
+            : "Tap a point for p/q. Green plane: multiples of (q, p). Orange: the mediant.")
+          : "Green: ∞ to p/q. Orange: the L/R path. Both views share the same exact interval."
+      )
+      .font(.caption).foregroundStyle(.secondary)
       Text(
         "M = \(model.state.matrixLabel)    det M = \(model.state.determinant)    •    \(model.state.word.count)/24 moves"
       )
@@ -256,7 +284,7 @@ struct ControlsView: View {
           .orange)
       }
     }
-    .padding(20).frame(width: 660)
+    .padding(20).frame(width: 760)
     .glassBackgroundEffect()
     .accessibilityElement(children: .contain)
     .sheet(isPresented: $showSources) { SourcesView() }

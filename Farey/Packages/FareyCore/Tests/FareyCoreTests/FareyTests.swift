@@ -102,6 +102,11 @@ final class FareyTests: XCTestCase {
     let midpoint = Geometry.geodesic(zero, one)[16]
     XCTAssertEqual(midpoint.x, 1 - 1 / sqrt(2), accuracy: 1e-12)
     XCTAssertEqual(midpoint.y, -1 + 1 / sqrt(2), accuracy: 1e-12)
+    for point in Geometry.geodesic(Rational(1, 0).diskPoint, Rational(3, 5).diskPoint) {
+      let squared = (point.x - 5.0 / 3) * (point.x - 5.0 / 3) + (point.y - 1) * (point.y - 1)
+      XCTAssertEqual(squared, 25.0 / 9, accuracy: 1e-12)
+      XCTAssertLessThanOrEqual(point.lengthSquared, 1.000001)
+    }
   }
 
   private func gcd(_ a: Int64, _ b: Int64) -> Int64 {

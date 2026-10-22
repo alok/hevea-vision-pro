@@ -33,7 +33,7 @@ import XCTest
     XCTAssertTrue(button.wait(for: \.isEnabled, toEqual: true, timeout: 20))
     button.tap()
     require("word-state")
-    let rendered = NSPredicate(format: "label CONTAINS %@", "Farey edges")
+    let rendered = NSPredicate(format: "label CONTAINS %@", "lattice points")
     expectation(for: rendered, evaluatedWith: require("render-receipt"))
     waitForExpectations(timeout: 20)
   }
@@ -53,7 +53,7 @@ import XCTest
     XCTAssertEqual(require("stange-credit").label, "Katherine Stange")
     capture("00-sources")
     require("close-sources").tap()
-    capture("01-initial-void")
+    capture("01-lattice-default")
     require("step-L").tap()
     require("step-R").tap()
     XCTAssertEqual(require("word-state").label, "LR")
@@ -62,13 +62,13 @@ import XCTest
     require("undo").tap()
     XCTAssertEqual(require("word-state").label, "L")
     require("example").tap()
-    XCTAssertEqual(require("word-state").label, "LRLRLR")
+    XCTAssertEqual(require("word-state").label, "RLR")
     require("viewpoint").tap()
-    capture("03-oblique")
+    capture("03-left-translation")
     require("viewpoint").tap()
-    capture("04-side")
+    capture("04-right-translation")
     require("detail-more").tap()
-    capture("05-maximum-detail")
+    capture("05-maximum-grid")
     require("reset").tap()
     XCTAssertEqual(require("word-state").label, "Start")
     capture("06-reset")
@@ -97,6 +97,23 @@ import XCTest
       require("reset").tap()
       XCTAssertEqual(require("word-state").label, "Start")
     }
+    exit()
+  }
+
+  func testSpatialPointSelectionAndLinkedDisk() {
+    launch()
+    enter()
+    require("lattice-3-5").tap()
+    XCTAssertTrue(require("fraction-state").label.contains("3/5"))
+    XCTAssertEqual(require("word-state").label, "RLR")
+    capture("10-selected-lattice")
+    require("space-toggle").tap()
+    XCTAssertTrue(
+      require("render-receipt").wait(for: \.label, toEqual: "253 Farey edges", timeout: 20))
+    XCTAssertTrue(require("fraction-state").label.contains("3/5"))
+    capture("11-linked-disk")
+    require("reset").tap()
+    XCTAssertTrue(require("space-toggle").label.contains("Lattice"))
     exit()
   }
 

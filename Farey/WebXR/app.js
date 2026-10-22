@@ -1,0 +1,226 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { FareyState, fraction, grid, onRay, position, primitive } from './core.js';
+
+const $ = id => document.getElementById(id);
+const state = new FareyState();
+const colors = { base: 0x267ac9, muted: 0x254354, left: 0x54e9f5, right: 0xb18aee, selected: 0xffa140, ray: 0x58e896 };
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+} catch {
+  $('fatal').hidden = false;
+  $('fatal').textContent = 'A WebGL-capable browser is needed to draw the lattice. The mathematics and native visionOS version remain available in the repository.';
+  throw new Error('WebGL unavailable');
+}
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.xr.enabled = true;
+renderer.xr.setReferenceSpaceType('local-floor');
+$('viewport').append(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000);
+const camera = new THREE.PerspectiveCamera(48, 1, 0.05, 60);
+camera.position.set(3.3, 3.1, 2.1);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.75, -3.2);
+controls.minDistance = 1.2;
+controls.maxDistance = 14;
+controls.enableDamping = false;
+controls.update();
+scene.add(new THREE.HemisphereLight(0xc9e8ff, 0x31404a, 2.3));
+const light = new THREE.DirectionalLight(0xffffff, 3);
+light.position.set(-2, 4, 1); scene.add(light);
+const lattice = new THREE.Group();
+lattice.position.set(0, 1.8, -2.1);
+lattice.rotation.x = Math.PI / 7;
+scene.add(lattice);
+const pointsGroup = new THREE.Group(), selection = new THREE.Group();
+lattice.add(pointsGroup, selection);
+const sphere = new THREE.SphereGeometry(0.036, 16, 10);
+const materials = Object.fromEntries(Object.entries(colors).map(([key, color]) => [key, new THREE.MeshStandardMaterial({ color, roughness: 0.35 })]));
+const origin = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xffffff }));
+origin.scale.setScalar(1.5); lattice.add(origin);
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+let bound = 12, points = [], gridLines, session = null, startingXR = false;
+const vrPanel = new THREE.Group();
+vrPanel.position.set(0, 1.15, -1.15);
+vrPanel.visible = false;
+scene.add(vrPanel);
+const vrTargets = [];
+
+function makeText(text, width, height, background = '#142b38') {
+  const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = background; ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = '#eaf7ff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = `${Math.floor(height * 0.42)}px system-ui`; ctx.fillText(text, width / 2, height / 2);
+  return new THREE.CanvasTexture(canvas);
+}
+function panelButton(text, x, action) {
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(0.145, 0.08), new THREE.MeshBasicMaterial({ map: makeText(text, 256, 128) }));
+  mesh.position.set(x, 0, 0); mesh.userData.action = action; vrPanel.add(mesh); vrTargets.push(mesh);
+}
+panelButton('L', -0.4, () => state.step('L'));
+panelButton('R', -0.24, () => state.step('R'));
+panelButton('Undo', -0.08, () => state.undo());
+panelButton('Reset', 0.08, reset);
+panelButton('3/5', 0.24, () => state.select(3, 5));
+panelButton('Exit', 0.4, () => session?.end());
+const vrLabel = new THREE.Mesh(new THREE.PlaneGeometry(1, 0.1), new THREE.MeshBasicMaterial({ map: makeText('', 1600, 160) }));
+vrLabel.position.y = 0.1; vrPanel.add(vrLabel);
+const vrCredit = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.08), new THREE.MeshBasicMaterial({ map: makeText('Katherine Stange · L/R coding: Caroline Series', 1800, 128, '#080f16') }));
+vrCredit.position.y = -0.1; vrPanel.add(vrCredit);
+
+function disposeGroup(group) {
+  while (group.children.length) {
+    const object = group.children[0]; group.remove(object);
+    object.geometry?.dispose();
+    if (object.material) object.material.dispose();
+  }
+}
+function segment(a, b, color) {
+  const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...a), new THREE.Vector3(...b)]);
+  selection.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({ color })));
+}
+function vector(end, color) {
+  const v = new THREE.Vector3(...end);
+  // Each selection owns its line and cone, so disposal never touches shared sphere meshes.
+  segment([0, 0, 0], end, color);
+  const head = new THREE.Mesh(new THREE.ConeGeometry(0.025, 0.07, 10), new THREE.MeshBasicMaterial({ color }));
+  head.position.copy(v.clone().addScaledVector(v.clone().normalize(), -0.035));
+  head.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), v.normalize()); selection.add(head);
+}
+function rebuildGrid() {
+  for (const mesh of points) pointsGroup.remove(mesh);
+  points = grid(bound).map(point => {
+    const mesh = new THREE.Mesh(sphere, materials[primitive(point) ? 'base' : 'muted']);
+    mesh.position.fromArray(position(point)); mesh.userData.point = point; pointsGroup.add(mesh); return mesh;
+  });
+  if (gridLines) { lattice.remove(gridLines); gridLines.geometry.dispose(); gridLines.material.dispose(); }
+  const vertices = [];
+  for (let n = 0; n <= bound; n++) {
+    vertices.push(...position({ p: n, q: 0 }), ...position({ p: n, q: bound }));
+    vertices.push(...position({ p: 0, q: n }), ...position({ p: bound, q: n }));
+  }
+  const geometry = new THREE.BufferGeometry(); geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  gridLines = new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ color: 0x263743 })); lattice.add(gridLines);
+}
+function update() {
+  disposeGroup(selection);
+  const m = state.mediant;
+  for (const mesh of points) {
+    const point = mesh.userData.point;
+    let key = primitive(point) ? 'base' : 'muted';
+    if (onRay(point, m)) key = 'ray';
+    if (point.p === state.left.p && point.q === state.left.q) key = 'left';
+    if (point.p === state.right.p && point.q === state.right.q) key = 'right';
+    if (point.p === m.p && point.q === m.q) key = 'selected';
+    mesh.material = materials[key]; mesh.scale.setScalar(key === 'selected' ? 1.65 : 1);
+  }
+  const scale = Math.min(1, bound / Math.max(m.p, m.q));
+  const end = position({ p: m.p * scale, q: m.q * scale }), h = 0.65;
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, ...end, 0, h, 0, end[0], h, end[2]], 3));
+  geometry.setIndex([0, 1, 2, 2, 1, 3]); geometry.computeVertexNormals();
+  selection.add(new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: colors.ray, transparent: true, opacity: 0.16, side: THREE.DoubleSide, depthWrite: false })));
+  segment([0, 0, 0], end, colors.ray); segment([0, h, 0], [end[0], h, end[2]], colors.ray);
+  const inside = m.p <= bound && m.q <= bound;
+  if (inside) {
+    const a = position(state.left), b = position(state.right), c = position(m);
+    vector(a, colors.left); vector(b, colors.right); vector(c, colors.selected);
+    segment(a, c, colors.right); segment(b, c, colors.left);
+  }
+  $('word').textContent = state.word || 'Start';
+  $('fraction').textContent = `${fraction(state.left)} < ${fraction(m)} < ${fraction(state.right)}`;
+  $('matrix').textContent = `M = [${state.right.p} ${state.left.p}; ${state.right.q} ${state.left.q}] · det M = ${state.determinant} · ${state.word.length}/24 moves`;
+  $('receipt').textContent = `${points.length} lattice points · ${points.filter(p => onRay(p.userData.point, m)).length} on this ray${inside ? '' : ' · primitive point beyond the finite grid'}`;
+  $('left').disabled = $('right').disabled = state.word.length >= 24;
+  $('undo').disabled = !state.word;
+  vrLabel.material.map.dispose();
+  vrLabel.material.map = makeText(`${state.word || 'Start'}   ${fraction(state.left)} < ${fraction(m)} < ${fraction(state.right)}`, 1600, 160);
+  render();
+}
+function reset() {
+  state.reset(); bound = 12; $('bound').value = '12'; rebuildGrid();
+  if (!session) { camera.position.set(3.3, 3.1, 2.1); controls.target.set(0, 1.75, -3.2); controls.update(); }
+}
+function render() { renderer.render(scene, camera); }
+function resize() { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); render(); }
+function activate(hits) {
+  if (!hits.length) return;
+  const { object } = hits[0];
+  if (object.userData.action) object.userData.action();
+  else if (object.userData.point?.p > 0 && object.userData.point?.q > 0) state.select(object.userData.point.p, object.userData.point.q);
+  update();
+}
+let down;
+renderer.domElement.addEventListener('pointerdown', e => { down = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener('pointermove', e => {
+  if (session || e.buttons) { $('hover').hidden = true; return; }
+  pointer.set(e.clientX / innerWidth * 2 - 1, 1 - e.clientY / innerHeight * 2);
+  raycaster.setFromCamera(pointer, camera);
+  const point = raycaster.intersectObjects(points)[0]?.object.userData.point;
+  $('hover').hidden = !point;
+  if (point) {
+    $('hover').textContent = `${fraction(point)} · (q,p) = (${point.q},${point.p})`;
+    $('hover').style.left = `${e.clientX + 15}px`; $('hover').style.top = `${e.clientY + 15}px`;
+  }
+});
+renderer.domElement.addEventListener('pointerleave', () => { $('hover').hidden = true; });
+renderer.domElement.addEventListener('pointerup', e => {
+  if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5 || session) return;
+  pointer.set(e.clientX / innerWidth * 2 - 1, 1 - e.clientY / innerHeight * 2);
+  raycaster.setFromCamera(pointer, camera); activate(raycaster.intersectObjects(points));
+});
+for (let i = 0; i < 2; i++) {
+  const controller = renderer.xr.getController(i);
+  const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(0, 0, -1)]), new THREE.LineBasicMaterial({ color: 0x80dfea }));
+  line.scale.z = 6; controller.add(line); scene.add(controller);
+  controller.addEventListener('select', () => {
+    raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
+    raycaster.ray.direction.set(0, 0, -1).transformDirection(controller.matrixWorld);
+    activate(raycaster.intersectObjects([...vrTargets, ...points]));
+  });
+}
+$('left').onclick = () => { state.step('L'); update(); };
+$('right').onclick = () => { state.step('R'); update(); };
+$('undo').onclick = () => { state.undo(); update(); };
+$('reset').onclick = () => { reset(); update(); };
+$('example').onclick = () => { state.select(3, 5); update(); };
+$('bound').onchange = () => { bound = Number($('bound').value); rebuildGrid(); update(); };
+$('view').onclick = () => { camera.position.set(0, 2.5, 3.2); controls.target.set(0, 1.75, -3.2); controls.update(); render(); };
+$('select-form').onsubmit = e => {
+  e.preventDefault(); const [p, q] = $('rational').value.split('/').map(Number);
+  if (state.select(p, q)) update();
+  else $('receipt').textContent = 'Choose positive integers up to 1000 with a path of at most 24 moves.';
+};
+controls.addEventListener('change', render);
+window.addEventListener('resize', resize);
+renderer.xr.addEventListener('sessionend', () => {
+  session = null; startingXR = false; vrPanel.visible = false; controls.enabled = true;
+  document.body.classList.remove('immersive'); $('xr').textContent = 'Enter VR'; $('xr').disabled = false;
+  renderer.setAnimationLoop(null); resize();
+});
+$('xr').onclick = async () => {
+  if (startingXR || session) return;
+  startingXR = true; $('xr').disabled = true;
+  try {
+    session = await navigator.xr.requestSession('immersive-vr', { optionalFeatures: ['local-floor', 'bounded-floor'] });
+    await renderer.xr.setSession(session);
+    controls.enabled = false; vrPanel.visible = true; document.body.classList.add('immersive');
+    renderer.setAnimationLoop(render);
+  } catch (error) {
+    await session?.end().catch(() => {}); session = null; startingXR = false;
+    $('xr').disabled = false; $('receipt').textContent = `VR entry cancelled or unavailable: ${error.message}`;
+  }
+};
+async function checkXR() {
+  try {
+    const supported = !!navigator.xr && await navigator.xr.isSessionSupported('immersive-vr');
+    $('xr').disabled = !supported; $('xr').textContent = supported ? 'Enter VR' : 'VR unavailable here';
+    $('xr').title = supported ? 'Enter a full immersive VR session' : 'Requires a compatible WebXR headset browser and HTTPS or localhost.';
+  } catch { $('xr').textContent = 'VR unavailable here'; }
+}
+rebuildGrid(); update(); resize(); checkXR();

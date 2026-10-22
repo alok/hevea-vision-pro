@@ -1,4 +1,24 @@
-# Simulator evidence
+# Current spatial and browser evidence
+
+**2026-10-22 spatial revision:** [39-second simulator excerpt](spatial/demo.mp4), [3/5 showcase](spatial/showcase.png), [opposite translated view](spatial/right-view.png), [linked disk](spatial/linked-disk.png), [attribution panel](spatial/sources.png).
+
+![Current native spatial scene](spatial/showcase.png)
+
+- Seven Swift core tests passed, including all visible rational selections, exact ray incidence, the 24-move cap and orthogonal circular geodesics.
+- Six native Debug tests passed, zero failures or skips: two model tests and four UI tests. [Final Xcode summary](spatial/simulator-summary.json). The UI tests cover L/R, Undo, Reset, grid limits, the move limit and recovery, linked lattice/disk selection, and four consecutive entry/exit cycles.
+- Fresh Debug build from the checked-in XcodeGen specification passed. The latest Release device build and strict signature verification also passed using the existing signing material. No physical-headset installation or execution occurred.
+- Strict SwiftLint passed with zero violations. Geometry is capped at 224 lattice points / 196 positive selectable pairs, and 509 disk edges. Static geometry is cached; updates do not run per frame. No new frame-rate measurement is claimed.
+- Front/Left/Right change the model placement relative to a stationary viewer. These spatial-revision captures demonstrate the resulting parallax; they are not evidence of physical-headset tracking or a new independent Device Hub camera-navigation run.
+
+The video is a real simulator-screen excerpt from the passing run, with entry/exit transitions. No desktop, private recording or Stange media is included. Some automatic screenshot requests lagged the test markers; only visually checked captures are published above, with captions based on their visible state. Raw recordings, uncurated captures and result bundles remain local.
+
+**Browser companion:** [3/5 scene](webxr/farey-webxr-final.png), [mouse orbit](webxr/farey-webxr-orbit.png), [sphere selection](webxr/farey-webxr-point-selected.png), [validation record](webxr/validation.json). Four JavaScript math tests passed. Real browser interactions verified the 24-step limit, Undo recovery, invalid-input rejection, grid cap, 6/10 → 3/5 selection and a mouse click selecting (q,p)=(3,2). Chromium's console was clean after the final change. It reported immersive VR unsupported, so no actual WebXR headset session was tested.
+
+[Launch instructions](../README.md#run-on-this-mac) · [Browser instructions](../WebXR/README.md) · [Guest-post evidence guide](../GUEST_POST_EVIDENCE.md)
+
+---
+
+# Archived disk-only simulator evidence
 
 [Watch the 32-second simulator tour](demo.mp4). [Launch instructions](../README.md#run-on-this-mac).
 

@@ -5,6 +5,7 @@ struct SourcesView: View {
   static let talkURL = URL(string: "https://katestange.net/talks/math-exploration/")!
   static let catalogURL = URL(string: "https://www.katestange.net/code/")!
   static let seriesURL = URL(string: "https://doi.org/10.1112/jlms/s2-31.1.69")!
+  static let latticeURL = URL(string: "https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html")!
   @Environment(\.dismiss) private var dismiss
 
   var body: some View {
@@ -18,12 +19,14 @@ struct SourcesView: View {
         Link("Original talk ↗", destination: Self.talkURL)
         Link("Visualization catalog ↗", destination: Self.catalogURL)
       }.font(.headline)
+      Link("Original L/R and lattice demonstration ↗", destination: Self.latticeURL)
       Divider()
       Text("Caroline Series").font(.title2.weight(.medium))
       Link("The modular surface and continued fractions (1985) ↗", destination: Self.seriesURL)
       Text(
-        "Exact integer L/R matrices and mediants generate this finite Farey tessellation. "
-          + "The hyperbolic arcs are sampled as tubes; their colors and thickness are presentation choices."
+        "Exact integer L/R matrices and mediants link the lattice and the finite Farey tessellation. "
+          + "The point (q, p) represents p/q. Its direction plane contains its integer multiples. "
+          + "Orange edges show vector addition. Sphere radii, colors, plane height and the scene's tilt are presentation choices."
       )
       Text(
         "Independent native implementation by Alok Singh. "

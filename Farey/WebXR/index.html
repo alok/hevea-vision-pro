@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Farey — Into the Infinite</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+  <main id="viewport" aria-label="Interactive three-dimensional integer lattice"></main>
+  <output id="hover" hidden></output>
+  <header>
+    <p class="eyebrow">INTO THE INFINITE · A SPATIAL MATHEMATICS STUDY</p>
+    <h1>The Farey lattice</h1>
+    <p class="credit">Inspired by <strong>Katherine Stange</strong> · <a href="https://katestange.net/talks/math-exploration/">Original talk ↗</a> · <a href="https://www.katestange.net/code/">Visualizations ↗</a></p>
+  </header>
+  <section class="controls" aria-label="Farey controls">
+    <div class="state"><span id="word">Start</span><strong id="fraction">0/1 &lt; 1/1 &lt; ∞</strong></div>
+    <div class="row">
+      <button id="left" class="cyan">L</button><button id="right" class="purple">R</button>
+      <button id="undo">Undo</button><button id="reset">Reset</button>
+      <button id="example">3/5 example</button><button id="xr" disabled>Checking WebXR…</button>
+    </div>
+    <div class="row secondary">
+      <label>Grid <select id="bound"><option>6</option><option>8</option><option>10</option><option selected>12</option><option>14</option></select></label>
+      <form id="select-form"><label>p/q <input id="rational" value="3/5" aria-label="Positive rational p/q" pattern="[0-9]+/[0-9]+" required></label><button>Select</button></form>
+      <button id="view">Front view</button>
+    </div>
+    <p id="matrix"></p><p id="receipt" role="status"></p>
+    <p class="hint">Drag to orbit · scroll to zoom · right-drag to pan · click a sphere to select.<br>Cyan + purple = orange mediant. The green plane contains its integer multiples.</p>
+    <details><summary>Mathematics & sources</summary>
+      <p>Each sphere is an integer pair (q,p). The fraction p/q is its direction. Neighbor vectors form a unit-area parallelogram; adding them gives their mediant. The finite green plane stands perpendicular to the lattice through that direction.</p>
+      <p>This is original code inspired by Stange’s L/R lattice viewer, not a copy of her source or a reconstruction of her separate hyperboloid. Our word displays M(1); append R to send M(∞) to the same fraction.</p>
+      <p>Underlying geodesic coding: <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series (1985) ↗</a>. Independent prototype by Alok Singh. No endorsement implied. Finite geometry; no forced camera motion.</p>
+    </details>
+  </section>
+  <p id="fatal" role="alert" hidden></p>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

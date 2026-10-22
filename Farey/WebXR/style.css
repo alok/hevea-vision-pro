@@ -1,0 +1,32 @@
+:root { color-scheme: dark; font: 15px/1.5 system-ui, sans-serif; color: #e6f1f6; background: #000; }
+* { box-sizing: border-box; }
+body { margin: 0; overflow: hidden; }
+#viewport { position: fixed; inset: 0; }
+canvas { display: block; touch-action: none; }
+header { position: absolute; top: 24px; left: 32px; pointer-events: none; }
+header a { pointer-events: auto; }
+.eyebrow { color: #65d8e9; font-size: 11px; letter-spacing: .2em; margin: 0; }
+h1 { font: 300 clamp(26px, 4vw, 44px)/1.1 Georgia, serif; margin: 10px 0 12px; }
+.credit { margin: 0; color: #9aaebc; font-size: 13px; }
+a { color: #80dfea; text-underline-offset: 3px; }
+.controls { position: absolute; bottom: 22px; left: 24px; width: min(670px, calc(100% - 48px)); padding: 18px 20px; background: #0d1620ed; border: 1px solid #263743; border-radius: 16px; box-shadow: 0 16px 50px #0008; }
+.state, .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.state { justify-content: space-between; font-family: ui-monospace, monospace; margin-bottom: 12px; }
+#word { max-width: 45%; overflow-wrap: anywhere; }
+#fraction { color: #ffb05d; font-size: 17px; }
+button, select, input { font: inherit; border: 1px solid #3c5362; border-radius: 8px; color: #eef8ff; background: #172a37; padding: 8px 13px; }
+button { cursor: pointer; }
+button:hover { background: #284454; }
+button:disabled { opacity: .45; cursor: default; }
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #87e9fc; outline-offset: 3px; }
+.cyan { background: #176576; } .purple { background: #684d97; }
+.secondary { margin-top: 10px; font-size: 13px; }
+form { display: flex; gap: 7px; align-items: center; } input { width: 76px; padding: 5px; } select { padding: 5px; }
+#matrix { font: 12px ui-monospace, monospace; color: #adc1cf; margin: 14px 0 6px; }
+#receipt, .hint, details { color: #9cabb7; font-size: 12px; margin: 6px 0 0; }
+summary { cursor: pointer; color: #8bd7e3; }
+details p { max-width: 60ch; } details[open] { max-height: 200px; overflow-y: auto; }
+#fatal { position: absolute; top: 160px; left: 32px; right: 32px; background: #452526; padding: 20px; }
+#hover { position: fixed; pointer-events: none; background: #11232fec; border: 1px solid #5a8099; border-radius: 7px; padding: 5px 10px; font: 13px ui-monospace, monospace; }
+body.immersive header, body.immersive .controls { display: none; }
+@media(max-width: 700px) { header { left: 20px; top: 18px; right: 16px; } .credit { font-size: 11px; } .controls { left: 12px; bottom: 12px; width: calc(100% - 24px); padding: 13px; } .hint { display: none; } .row { gap: 6px; } button { padding: 7px 10px; } }
