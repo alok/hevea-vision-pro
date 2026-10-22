@@ -15,7 +15,7 @@ Credit **Katherine Stange** prominently, next to links to her [talk](https://kat
 
 ## Claims supported by this work
 
-Twenty Swift core tests, sixteen native model/UI tests, and twenty-two JavaScript tests passed. The revised native lesson popover also passed its focused UI test. Native UI tests exercised entry, exit, repeated re-entry, L/R, Undo, Reset, bounds and linked representation selection. Browser checks exercised orbit, sphere hit-testing, fraction entry, bounds and recovery. The latest native device-target Release build passed strict signature verification using existing signing material.
+Twenty-three Swift core tests, seventeen native model/UI tests, and twenty-two JavaScript tests passed. The revised native lesson popover also passed its focused UI test. Native UI tests exercised entry, exit, repeated re-entry, L/R, Undo, Reset, bounds and linked representation selection. Browser checks exercised orbit, sphere hit-testing, fraction entry, bounds and recovery. The latest native device-target Release build passed strict signature verification using existing signing material.
 
 ## Claims to leave open
 
@@ -44,3 +44,5 @@ The point-inspection increment includes [native inspection](evidence/point-inspe
 Native 0.5 and browser 0.4 distinguish convergents from intermediate mediants. The [canonical view](evidence/convergents/native-canonical.png) marks `2/3` as intermediate for `3/5 = [0;1,1,2]`; the [alternate finite form](evidence/convergents/native-alternate.png) makes it a convergent of `[0;1,1,1,1]`. The rational and exact L/R path stay fixed. Gold and gray rings agree with the labels in the native lattice, [native disk](evidence/convergents/native-disk.png), and [browser](evidence/convergents/browser-canonical.png). Convergent labels are relative to the chosen expansion; not every visited mediant is a convergent.
 
 Native 0.6 and browser 0.5 add a separate approximant spotlight. Double white rings locate the chosen row without changing the target, inspected point or lesson prediction. A fresh-launch walkthrough follows the lesson, enters `6/10`, spotlights an intermediate and a convergent, changes expansion, switches views, checks a point beyond the grid, then clears and resets. That review led to two visibility fixes: the native row picker closes so it cannot cover its marker, and browser target/spotlight context stays visible while the rows scroll. The [walkthrough evidence](evidence/spotlight/validation.json) separates this tested behavior from unverified headset and WebXR operation.
+
+The native 0.6.1 / browser 0.5.1 [release audit](DEMO_READINESS.md) corrects numerical collapse in deep disk arcs and recovery after zero-size browser resizing. It records deterministic geometry checks, repeated native background/foreground transitions, malformed-state rejection and desktop CPU timings. These add reliability evidence; they do not close the real WebXR or physical-headset validation gap.

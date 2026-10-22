@@ -1,0 +1,33 @@
+{
+  "duplicateSegments": 108870,
+  "examples": [
+    {
+      "duplicates": 30,
+      "left": "2584/1597",
+      "right": "4181/2584",
+      "word": "LRLRLRLRLRLRLRLRLRLRLRLR"
+    },
+    {
+      "duplicates": 30,
+      "left": "6765/4181",
+      "right": "4181/2584",
+      "word": "LRLRLRLRLRLRLRLRLRLRLRLR"
+    },
+    {
+      "duplicates": 30,
+      "left": "6765/4181",
+      "right": "10946/6765",
+      "word": "LRLRLRLRLRLRLRLRLRLRLRLR"
+    },
+    {
+      "duplicates": 30,
+      "left": "17711/10946",
+      "right": "28657/17711",
+      "word": "LRLRLRLRLRLRLRLRLRLRLRLR"
+    }
+  ],
+  "maxSquaredRadiusOvershoot": 2.220446049250313e-16,
+  "nonfinitePoints": 0,
+  "states": 1004,
+  "arcsOutsideDiskByMoreThan1eMinus6": 0
+}

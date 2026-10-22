@@ -239,6 +239,27 @@ import XCTest
 }
 
 extension FareyUITests {
+  func testMaximumPathDiskAndBackgroundRecovery() {
+    launch()
+    enter()
+    require("reset").tap()
+    for index in 0..<24 { require(index % 2 == 0 ? "step-L" : "step-R").tap() }
+    let word = require("word-state").label
+    let fraction = require("fraction-state").label
+    require("space-toggle").tap()
+    XCTAssertTrue(require("render-receipt").wait(for: \.label, toEqual: "253 Farey edges", timeout: 20))
+    capture("30-max-path-disk", holdFor: 3)
+    for _ in 0..<3 {
+      XCUIDevice.shared.press(.home)
+      app.activate()
+      if element("enter-void").isHittable { enter() }
+      XCTAssertEqual(require("word-state").label, word)
+      XCTAssertEqual(require("fraction-state").label, fraction)
+      XCTAssertTrue(require("render-receipt").label.contains("Farey edges"))
+    }
+    require("reset").tap()
+    exit()
+  }
   func testFreshLaunchSpotlightWalkthrough() {
     app = XCUIApplication()
     app.terminate()

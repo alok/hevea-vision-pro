@@ -1,5 +1,7 @@
 # Farey — Into the Infinite
 
+[Current demo-readiness checklist and release audit](DEMO_READINESS.md) — native 0.6.1 / browser 0.5.1.
+
 **Inspired by [Katherine Stange’s mathematical visualizations](https://www.katestange.net/code/) and her [Illustrating Mathematics for Math 2.0 talk](https://katestange.net/talks/math-exploration/).** Underlying L/R geodesic coding: [Caroline Series (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 
 A native visionOS experience of the integer lattice behind the Farey tessellation. Shaded spheres occupy actual integer coordinates in space; a translucent plane follows the selected rational direction, and a parallelogram shows how the mediant adds two integer vectors. The linked Poincaré disk uses the same exact state. The surrounding immersive space is fully black. The viewer is stationary by default.
@@ -75,7 +77,7 @@ See [simulator evidence](evidence/README.md). The controls use a pushed native w
 
 The device target uses development team `5795ZPYZ2T` and the already-installed wildcard profile **Lean Calculator Vision Pro 20261008** (expires 2027-10-08). Its certificate matches the installed development identity, its wildcard covers `com.alok.FareyVision`, and it includes the paired Vision Pro. No new certificate, app identifier or provisioning profile was created. These device-only settings do not change the unsigned simulator workflow.
 
-A signed Release build of native 0.6 and strict signature verification succeeded on 2026-10-22. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
+A signed Release build of native 0.6.1 and strict signature verification succeeded on 2026-10-22. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
 
 ```sh
 build_root="$(python3 scripts/prepare-local-build.py)"

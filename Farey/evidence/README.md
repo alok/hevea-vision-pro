@@ -1,3 +1,9 @@
+# Native 0.6.1 / browser 0.5.1 release audit
+
+[Readiness checklist](../DEMO_READINESS.md) · [Current 3D showcase](release-audit/native-showcase.png) · [Full native result](release-audit/native-full-summary.json) · [Maximum-depth native disk](release-audit/native-maximum-path.png) · [Browser resize failure before](release-audit/browser-resize-before.png) · [Recovered scene after](release-audit/browser-resize-after.png) · [Numerical probe](release-audit/geodesics-after.json)
+
+The numerical probe covers 1,004 depth-24 histories. The native test repeats Home, app activation and immersive re-entry three times with the exact fraction preserved. Browser source/static evidence includes actual context-loss recovery, malformed saved state, zero-size resize recovery and tab background/foreground. CPU timing records are desktop measurements, not XR frame-rate evidence. Full verification and precise remaining boundaries are in the readiness checklist.
+
 # Native 0.6 / browser 0.5: a separate approximant spotlight
 
 [Native spotlight](spotlight/native-spotlight.png) · [Linked disk](spotlight/native-disk.png) · [Outside-grid case](spotlight/native-outside-grid.png) · [Browser](spotlight/browser-spotlight.png) · [Phone context](spotlight/phone-spotlight.png) · [Validation](spotlight/validation.json) · [Full native results](spotlight/simulator-summary.json) · [Final fresh walkthrough](spotlight/fresh-walkthrough-summary.json) · [Current showcase](spotlight/showcase.png)

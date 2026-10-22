@@ -1,0 +1,17 @@
+{
+  "samples": 120,
+  "maximumGrid": 14,
+  "synchronousMove": {
+    "medianMs": 4.399999998509884,
+    "p95Ms": 5,
+    "maxMs": 5.5
+  },
+  "nextAnimationFrame": {
+    "medianMs": 16.299999997019768,
+    "p95Ms": 17.299999997019768,
+    "maxMs": 18.399999998509884
+  },
+  "input": "programmatic DOM clicks, paced by animation frames",
+  "scope": "desktop main-thread submission; not GPU completion, headset FPS or physical interaction latency",
+  "actualXRSession": false
+}

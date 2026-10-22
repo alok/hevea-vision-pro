@@ -1,5 +1,7 @@
 # Farey lattice — browser and WebXR companion
 
+[Current demo-readiness checklist and release audit](../DEMO_READINESS.md) — native 0.6.1 / browser 0.5.1.
+
 An original Three.js implementation of the same integer lattice and L/R state as the native visionOS app. Inspired by **[Katherine Stange](https://katestange.net/talks/math-exploration/)** and her [visualization catalog](https://www.katestange.net/code/), with underlying [Caroline Series L/R geodesic coding (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 
 ## Run locally

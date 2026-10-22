@@ -1,0 +1,39 @@
+{
+  "browserGeneratedEvents": [
+    {
+      "type": "webglcontextlost",
+      "trusted": true
+    },
+    {
+      "type": "webglcontextrestored",
+      "trusted": true
+    },
+    {
+      "type": "webglcontextlost",
+      "trusted": true
+    },
+    {
+      "type": "webglcontextrestored",
+      "trusted": true
+    },
+    {
+      "type": "webglcontextlost",
+      "trusted": true
+    },
+    {
+      "type": "webglcontextrestored",
+      "trusted": true
+    }
+  ],
+  "cycles": 3,
+  "matchingFrames": [
+    true,
+    true
+  ],
+  "controlsWorkedDuringLoss": true,
+  "reloadButtonPreservedSelectionAndGrid": true,
+  "resetReplacedSavedState": true,
+  "mockedContext": false,
+  "hardwareFailureSimulated": true,
+  "actualXRSession": false
+}

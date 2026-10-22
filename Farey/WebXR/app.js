@@ -314,7 +314,8 @@ function resize() {
   const phone = matchMedia('(max-width: 700px)').matches;
   viewport.style.top = phone || landscape ? `${document.querySelector('header').getBoundingClientRect().bottom + 12}px` : '0';
   viewport.style.bottom = landscape ? '12px' : phone ? `${innerHeight - document.querySelector('.controls').getBoundingClientRect().top + 12}px` : '0';
-  const width = viewport.clientWidth, height = Math.max(1, viewport.clientHeight);
+  const width = viewport.clientWidth, height = viewport.clientHeight;
+  if (width <= 0 || height <= 0) return;
   camera.aspect = width / height;
   fitAspect();
   camera.updateProjectionMatrix(); renderer.setSize(width, height); render();

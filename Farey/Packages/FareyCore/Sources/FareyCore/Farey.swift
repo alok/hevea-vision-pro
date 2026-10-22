@@ -148,29 +148,18 @@ public enum Geometry {
     return edges
   }
 
-  /// Circular arcs orthogonal to the unit circle; diameters are a separate case.
+  /// A stable rational-quadratic parametrization of the geodesic between unit-boundary points.
+  /// The origin is the tangent intersection; its weight is half the endpoint chord length.
   public static func geodesic(_ start: Point2, _ end: Point2, segments: Int = 32) -> [Point2] {
     let count = max(2, segments)
-    let determinant = start.x * end.y - start.y * end.x
-    if abs(determinant) < 1e-10 {
-      return (0...count).map { i in
-        let t = Double(i) / Double(count)
-        return Point2(start.x * (1 - t) + end.x * t, start.y * (1 - t) + end.y * t)
-      }
+    let weight = min(1, hypot(end.x - start.x, end.y - start.y) / 2)
+    return (0...count).map { index in
+      let t = Double(index) / Double(count)
+      let a = (1 - t) * (1 - t)
+      let b = t * t
+      let denominator = a + b + 2 * weight * t * (1 - t)
+      return Point2((a * start.x + b * end.x) / denominator,
+        (a * start.y + b * end.y) / denominator)
     }
-    let cx = (end.y - start.y) / determinant
-    let cy = (start.x - end.x) / determinant
-    let radius = sqrt(max(0, cx * cx + cy * cy - 1))
-    let angle = atan2(start.y - cy, start.x - cx)
-    var delta = atan2(end.y - cy, end.x - cx) - angle
-    if delta > .pi { delta -= 2 * .pi }
-    if delta < -.pi { delta += 2 * .pi }
-    var result = (0...count).map { i in
-      let theta = angle + delta * Double(i) / Double(count)
-      return Point2(cx + radius * cos(theta), cy + radius * sin(theta))
-    }
-    result[0] = start
-    result[count] = end
-    return result
   }
 }

@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-22",
+  "nativeVersion": "0.6.1",
+  "nativeBuild": "7",
+  "browserVersion": "0.5.1",
+  "baseCommit": "50c8f25ef8ef308a6ad892bd6993d3d4af4fe7b8",
+  "xcode": "27.2 beta 2 (27B5028f)",
+  "visionOSSimulator": "27.2 (24N5093f)",
+  "browser": "Chromium 155.0.0.0 on macOS",
+  "swiftCoreTests": {
+    "passed": 23,
+    "failed": 0
+  },
+  "javascriptTests": {
+    "passed": 22,
+    "failed": 0
+  },
+  "browserArtifacts": [
+    "source at loopback port 8080",
+    "static dist at loopback port 8081"
+  ],
+  "staticPayloadHashesVerified": 13,
+  "controlledWebGLLossCyclesPerArtifact": 3,
+  "nativeFocusedMaximumPathAndHomeRecovery": {
+    "passed": 1,
+    "failed": 0,
+    "homeCycles": 3
+  },
+  "actualXRSession": false,
+  "physicalHeadsetExecution": false,
+  "publicDeployment": false,
+  "nativeFullSuite": {
+    "passed": 17,
+    "failed": 0,
+    "skipped": 0,
+    "modelTests": 7,
+    "uiTests": 10
+  },
+  "mainSimulator": {
+    "version": "0.6.1",
+    "build": "7",
+    "launched": true,
+    "launchArgument": "--showcase"
+  }
+}

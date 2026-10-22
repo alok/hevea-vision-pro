@@ -1,0 +1,8 @@
+{
+  "duplicateSegments": 0,
+  "examples": [],
+  "maxSquaredRadiusOvershoot": 2.220446049250313e-16,
+  "nonfinitePoints": 0,
+  "states": 1004,
+  "arcsOutsideDiskByMoreThan1eMinus6": 0
+}

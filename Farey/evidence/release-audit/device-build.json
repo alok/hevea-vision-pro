@@ -1,0 +1,12 @@
+{
+  "version": "0.6.1",
+  "build": "7",
+  "bundleIdentifier": "com.alok.FareyVision",
+  "configuration": "Release",
+  "target": "generic/platform=visionOS",
+  "xcodebuildExit": 0,
+  "strictCodesignVerificationExit": 0,
+  "signingAssets": "existing identity and installed profile only",
+  "installedOnHardware": false,
+  "executedOnHardware": false
+}
