@@ -1,0 +1,20 @@
+{
+  "nativeVersion": "0.7",
+  "nativeBuild": "8",
+  "browserVersion": "0.6.0",
+  "coreTestsPassed": 25,
+  "javascriptTestsPassed": 24,
+  "nativeFullSuitePassed": 20,
+  "nativeFinalFocusedPassed": 10,
+  "nativeFinalFocus": "All 9 model tests and final construction UI scenario, including bounds and active re-entry",
+  "browserSourceAndStaticPassed": true,
+  "signedReleaseAndStrictSignaturePassed": true,
+  "nativeReduceMotion": "model parameter and UI environment wiring; OS setting not changed",
+  "browserReduceMotion": "actual matchMedia change via browser emulation",
+  "physicalHeadsetExecution": false,
+  "actualImmersiveWebXRSession": false,
+  "privateVideoUpload": "Not attempted; approval pending",
+  "publicDeployment": false,
+  "nativeFinalLayoutRecheckPassed": 1,
+  "mainSimulatorInstalledVersion": "0.7 (8)"
+}

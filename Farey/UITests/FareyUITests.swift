@@ -239,6 +239,42 @@ import XCTest
 }
 
 extension FareyUITests {
+  func testConstructionAndReturnToLinkedDisk() {
+    launch()
+    enter()
+    require("lattice-6-10").tap()
+    require("space-toggle").tap()
+    require("construction-start").tap()
+    XCTAssertTrue(require("geometry-explanation").label.contains("q = 1"))
+    capture("31-boundary-chart", holdFor: 3)
+    require("construction-next").tap()
+    require("construction-motion").tap()
+    capture("33-reveal-ready", holdFor: 1)
+    require("construction-next").tap()
+    if require("construction-stop").isEnabled { require("construction-stop").tap() }
+    capture("34-reveal-finished", holdFor: 1)
+    XCTAssertTrue(require("geometry-explanation").label.contains("Integer lattice"))
+    capture("32-construction-lattice", holdFor: 3)
+    exit()
+    enter()
+    XCTAssertTrue(require("geometry-explanation").label.contains("Integer lattice"))
+    XCTAssertFalse(require("construction-stop").isEnabled)
+    require("construction-next").tap()
+    require("construction-close").tap()
+    XCTAssertTrue(require("space-toggle").label.contains("Disk"))
+    XCTAssertEqual(require("word-state").label, "RLR")
+    XCTAssertTrue(require("inspect-point").label.contains("(10, 6)"))
+    require("choose-fraction").tap()
+    enterFraction("25/1")
+    require("close-fraction-entry").tap()
+    require("construction-start").tap()
+    require("construction-next").tap()
+    require("construction-next").tap()
+    XCTAssertTrue(require("geometry-explanation").label.contains("outside grid 12"))
+    capture("35-construction-outside", holdFor: 3)
+    require("reset").tap()
+    exit()
+  }
   func testMaximumPathDiskAndBackgroundRecovery() {
     launch()
     enter()

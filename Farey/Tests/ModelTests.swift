@@ -113,6 +113,50 @@ import XCTest
     model.reset()
     XCTAssertEqual(model.state.wordLabel, "Start")
   }
+  func testConstructionPreservesMathematicsLessonAndPresentation() {
+    let model = GalleryModel()
+    model.startLesson()
+    model.predictLesson(Rational(2, 3))
+    model.spotlightPoint(Rational(1, 1))
+    model.toggleSpace()
+    model.changeView()
+    let viewpoint = model.viewpoint
+    let state = model.state, lesson = model.lesson
+    model.startConstruction()
+    for _ in 0..<4 { model.moveConstruction(1, reduceMotion: true) }
+    XCTAssertEqual(model.constructionStage, .plane)
+    XCTAssertEqual(model.state, state)
+    XCTAssertEqual(model.lesson, lesson)
+    XCTAssertEqual(model.spotlight.rational, Rational(1, 1))
+    model.endConstruction()
+    XCTAssertFalse(model.latticeMode)
+    XCTAssertEqual(model.viewpoint, viewpoint)
+    XCTAssertEqual(model.state, state)
+  }
+  func testConstructionMotionIsOptInAndReducedMotionWins() {
+    let model = GalleryModel()
+    model.startConstruction()
+    model.moveConstruction(1, reduceMotion: false)
+    model.animateConstruction = true
+    model.moveConstruction(1, reduceMotion: true)
+    XCTAssertFalse(model.constructionMoving)
+    model.moveConstruction(-1, reduceMotion: false)
+    model.moveConstruction(1, reduceMotion: false)
+    XCTAssertTrue(model.constructionMoving)
+    model.changeDepth(-1)
+    XCTAssertFalse(model.constructionMoving)
+    model.moveConstruction(-1, reduceMotion: false)
+    model.moveConstruction(1, reduceMotion: false)
+    model.stopConstruction()
+    XCTAssertFalse(model.constructionMoving)
+    model.reset()
+    XCTAssertNil(model.constructionStage)
+    model.select(LatticePoint(p: 13, q: 17))
+    model.startConstruction()
+    model.moveConstruction(1, reduceMotion: true)
+    model.moveConstruction(1, reduceMotion: true)
+    XCTAssertTrue(model.constructionExplanation.contains("outside grid 12"))
+  }
   func testDirectEntryPreservesStateOnErrorAndReplacesTheLessonOnSuccess() throws {
     let model = GalleryModel()
     model.startLesson()

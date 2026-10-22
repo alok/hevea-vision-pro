@@ -53,10 +53,10 @@ import SwiftUI
       }
       Attachment(id: "title") {
         VStack(spacing: 4) {
-          Text(model.latticeMode ? "THE FAREY LATTICE" : "THE FAREY UNIVERSE")
+          Text(model.constructionStage != nil ? "BOUNDARY TO LATTICE" : model.latticeMode ? "THE FAREY LATTICE" : "THE FAREY UNIVERSE")
             .font(.headline).tracking(4).foregroundStyle(.cyan)
           Text(
-            model.latticeMode
+            model.constructionStage != nil ? "q = 1 · a projective chart of the same rational direction" : model.latticeMode
               ? "p/q is the direction (q, p) · mediants add integer vectors"
               : "Exact rational edges · finite hyperbolic tessellation"
           ).font(.caption)
@@ -72,19 +72,26 @@ import SwiftUI
     .task(id: [model.revision, model.immersionSession, model.immersionOpen ? 1 : 0]) {
       guard model.immersionOpen else { return }
       do {
-        renderer.root.isEnabled = !model.latticeMode
-        renderer.labels.isEnabled = !model.latticeMode && model.viewpoint == 0
-        lattice.root.isEnabled = model.latticeMode
-        if model.latticeMode {
+        let showingLattice = model.latticeMode || model.constructionStage != nil
+        renderer.root.isEnabled = !showingLattice
+        renderer.labels.isEnabled = !showingLattice && model.viewpoint == 0
+        lattice.root.isEnabled = showingLattice
+        if showingLattice {
           model.renderReceipt = try lattice.render(
             state: model.state, bound: model.depth * 2,
-            viewpoint: model.viewpoint, alternateCF: model.alternateCF, spotlight: model.spotlight.rational)
+            viewpoint: model.viewpoint, alternateCF: model.alternateCF, spotlight: model.spotlight.rational,
+            construction: model.constructionStage, animateReveal: model.constructionMoving)
         } else {
           model.renderReceipt = try renderer.render(
             state: model.state, depth: model.depth, viewpoint: model.viewpoint,
             alternateCF: model.alternateCF, spotlight: model.spotlight.rational)
         }
         model.record("Rendered session \(model.immersionSession): \(model.renderReceipt)")
+        if model.constructionMoving {
+          let revision = model.revision
+          try? await Task.sleep(for: .seconds(1.4))
+          if !Task.isCancelled && revision == model.revision { model.constructionMoving = false }
+        }
       } catch { model.renderReceipt = "Geometry error: \(error.localizedDescription)" }
     }
     .gesture(
@@ -97,6 +104,7 @@ import SwiftUI
       model.error = nil
     }
     .onDisappear {
+      model.stopConstruction()
       activation?.cancel()
       activation = nil
       model.record("Immersive view disappeared session \(model.immersionSession)")

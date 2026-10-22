@@ -77,18 +77,23 @@ import SwiftUI
   }
 
   func render(
-    state: FareyState, bound: Int, viewpoint: Int, alternateCF: Bool = false, spotlight: Rational? = nil
+    state: FareyState, bound: Int, viewpoint: Int, alternateCF: Bool = false, spotlight: Rational? = nil,
+    construction: ConstructionStage? = nil, animateReveal: Bool = false
   ) throws -> String {
     let start = ContinuousClock.now
     if bound != previousBound { try rebuildBase(bound: bound) }
     for (rational, label) in landmarkLabels {
-      label.isEnabled = rational.p <= bound && rational.q <= bound
+      label.isEnabled = rational.p <= bound && rational.q <= bound && (construction?.rawValue ?? 3) >= 3
     }
 
     selection.children.removeAll()
     updatePointColors(for: state)
-    try addCFRings(state.cfPoints(alternate: alternateCF), bound: bound)
-    if let spotlight, spotlight.p <= bound, spotlight.q <= bound { try addSpotlight(spotlight) }
+    applyConstruction(construction, animate: animateReveal)
+    let phase = construction?.rawValue ?? 3
+    if phase >= 3 {
+      try addCFRings(state.cfPoints(alternate: alternateCF), bound: bound)
+      if let spotlight, spotlight.p <= bound, spotlight.q <= bound { try addSpotlight(spotlight) }
+    }
     let end = planeEndpoint(state.mediant, bound: bound)
     let height: SIMD3<Float> = [0, 0.65, 0]
     var descriptor = MeshDescriptor(name: "Exact rational direction plane")
@@ -101,16 +106,17 @@ import SwiftUI
     var planeMaterial = UnlitMaterial(color: UIColor.systemGreen)
     planeMaterial.blending = .transparent(opacity: .init(floatLiteral: 0.16))
     planeMaterial.faceCulling = .none
-    selection.addChild(
-      ModelEntity(mesh: try .generate(from: [descriptor]), materials: [planeMaterial]))
-    selection.addChild(
-      try lines(
-        [[.zero, end], [height, end + height]],
-        radius: 0.006, color: .systemGreen))
+    if phase >= 3 {
+      selection.addChild(
+        ModelEntity(mesh: try .generate(from: [descriptor]), materials: [planeMaterial]))
+      selection.addChild(try lines([[height, end + height]], radius: 0.006, color: .systemGreen))
+    }
+    if phase >= 1 { selection.addChild(try lines([[.zero, end]], radius: 0.006, color: .systemGreen)) }
+    if construction != nil { try addBoundaryChart(state.mediant, bound: bound) }
 
     let within = state.mediant.p <= bound && state.mediant.q <= bound
-    if within { try addMediantBasis(state) }
-    if let point = state.selectedPoint, point.rational != state.mediant,
+    if within && phase >= 3 { try addMediantBasis(state) }
+    if phase >= 3, let point = state.selectedPoint, point.rational != state.mediant,
       point.p <= bound, point.q <= bound, !Self.landmarks.contains(point.rational) {
       label(point.rational.description, at: position(point.rational) + [-0.05, 0.14, 0],
         color: .white, parent: selection)
@@ -214,6 +220,7 @@ import SwiftUI
           roughness: 0.3, isMetallic: false)
       ])
     origin.scale = [1.5, 1.5, 1.5]
+    origin.name = "origin"
     base.addChild(origin)
     label("q", at: position(p: 0, q: Float(bound)) + [0, 0.12, 0], color: .cyan, parent: base)
     label("p", at: position(p: Float(bound), q: 0) + [0, 0.12, 0], color: .cyan, parent: base)
@@ -300,6 +307,43 @@ extension LatticeRenderer {
         selection.addChild(try lines(paths, radius: 0.003,
           color: convergent ? UIColor.systemYellow : UIColor.lightGray))
       }
+    }
+  }
+
+}
+
+extension LatticeRenderer {
+  private func applyConstruction(_ stage: ConstructionStage?, animate: Bool) {
+    let projected = (stage?.rawValue ?? 3) < 2
+    for entity in base.children {
+      entity.isEnabled = !projected || (entity.name == "origin" && stage == .direction)
+    }
+    for (point, entity) in points {
+      entity.stopAllAnimations()
+      entity.isEnabled = !projected || (point.q > 0 && point.isPrimitive)
+      let target: SIMD3<Float>
+      if projected, let projection = BoundaryConstruction.project(point) {
+        target = position(p: Float(projection.x), q: 1)
+      } else { target = position(point.rational) }
+      if animate && point.q > 0 {
+        var transform = entity.transform
+        transform.translation = target
+        entity.move(to: transform, relativeTo: base, duration: 1.4, timingFunction: .easeInOut)
+      } else { entity.position = target }
+    }
+  }
+
+  private func addBoundaryChart(_ rational: Rational, bound: Int) throws {
+    let start = position(p: 0, q: 1), end = position(p: Float(bound), q: 1)
+    selection.addChild(try lines([[start, end]], radius: 0.004, color: .cyan))
+    label("q = 1 · p/q", at: start + [-0.1, 0.16, 0], color: .cyan, parent: selection)
+    let value = Double(rational.p) / Double(rational.q)
+    if value <= Double(bound) {
+      let dot = ModelEntity(mesh: sphere, materials: [orange])
+      dot.position = position(p: Float(value), q: 1) + [0, 0.025, 0]
+      dot.scale = [1.7, 1.7, 1.7]
+      selection.addChild(dot)
+      label(rational.description, at: dot.position + [0.03, 0.15, 0], color: .orange, parent: selection)
     }
   }
 

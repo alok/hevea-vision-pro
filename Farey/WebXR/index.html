@@ -40,6 +40,15 @@
       <button id="learn">Learn a move</button>
     </div>
     <p id="matrix"></p><p id="vector-state"></p>
+    <button id="construction-start">Construct this direction</button>
+    <section id="construction" aria-label="Boundary to lattice construction" hidden>
+      <strong id="construction-heading"></strong>
+      <p id="construction-explanation" role="status"></p>
+      <div class="row"><button id="construction-back">Back</button><button id="construction-next">Next</button>
+        <button id="construction-stop" disabled>Stop</button><button id="construction-reset">Restart construction</button><button id="construction-close">Done</button></div>
+      <label><input type="checkbox" id="construction-motion"> <span id="construction-motion-label">Animate lattice reveal</span></label>
+      <p>q=1 is a projective chart of directions, not the Poincaré disk. Steps never move the camera. <a href="https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html">Stange's staged demonstration ↗</a></p>
+    </section>
     <details id="point-inspection"><summary id="point-equation"></summary><p id="point-detail"></p></details>
     <details id="cf-inspector">
       <summary id="cf-summary">Continued fraction</summary>

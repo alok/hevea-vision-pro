@@ -1,0 +1,37 @@
+{
+  "devicesAndConfigurations": [
+    {
+      "device": {
+        "architecture": "arm64",
+        "deviceId": "DA4A7887-555F-4762-8AC8-7BB110DD25FB",
+        "deviceName": "Farey Construction Test",
+        "modelName": "Apple Vision Pro",
+        "osBuildNumber": "24N5093f",
+        "osVersion": "27.2",
+        "platform": "visionOS Simulator"
+      },
+      "expectedFailures": 0,
+      "failedTests": 0,
+      "passedTests": 1,
+      "skippedTests": 0,
+      "testPlanConfiguration": {
+        "configurationId": "1",
+        "configurationName": "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription": "FareyVision \u00b7 Built with macOS 27.0.1",
+  "expectedFailures": 0,
+  "failedTests": 0,
+  "finishTime": 1792682169.224,
+  "passedTests": 1,
+  "result": "Passed",
+  "runtimeWarnings": [],
+  "skippedTests": 0,
+  "startTime": 1792682108.447,
+  "statistics": [],
+  "testFailures": [],
+  "title": "Test - FareyVision",
+  "topInsights": [],
+  "totalTestCount": 1
+}

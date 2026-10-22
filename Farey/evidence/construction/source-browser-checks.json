@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "keyboardScene": true,
+  "keyboardLesson": true,
+  "layout": {
+    "scene": {
+      "x": 0,
+      "y": 130.09375,
+      "width": 390,
+      "height": 284.7890625,
+      "top": 130.09375,
+      "right": 390,
+      "bottom": 414.8828125,
+      "left": 0
+    },
+    "controls": {
+      "x": 12,
+      "y": 426.8828125,
+      "width": 366,
+      "height": 405.1171875,
+      "top": 426.8828125,
+      "right": 378,
+      "bottom": 832,
+      "left": 12
+    }
+  },
+  "limitAndRecovery": true,
+  "reducibleSelection": true,
+  "invalidSelectionRejected": true,
+  "portraitLandscapeReset": true,
+  "pageErrors": []
+}

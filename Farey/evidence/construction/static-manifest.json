@@ -1,0 +1,16 @@
+{
+  "COPYING.txt": "7190da7e65538198da782335faa64ff26d7d13997df620e4bb296a4a936949d9",
+  "SOURCE.txt": "ad019833b73833a18fc715c5dc221b11f2c3b8925741dd1077c88749219911c4",
+  "app.js": "f6e130bdf5233d494c5f5c32106342bda57892eb6585d05ef6fab0c730fc97f8",
+  "construction.js": "c52a28cbb93aadf918fc151813036ef3a1a9504bcd9d7d0596de0c2dd353720e",
+  "core.js": "56de3faa0fd73c497b13cdc49a1275338bc0c6eec5abb6e2d97fb23b9f1317c8",
+  "index.html": "eb8b082ce5eba49093d989bee3a9b4ab32bcc0ba0aa336990e2bcc6e282740cb",
+  "input.js": "b3f06e45fcc5e6b42a7f01f7cd24008af68c0025b2a0b6a537ff29a354d5ffe8",
+  "recovery.js": "315b608fe2cd83b7a2eb03c7f0f80e5f9b4cdca0c49fed6aa58610d1a6560432",
+  "style.css": "989d849381ddbea128c12c7575ecb885f10d4763c87f4a3db34a4ab7f6040719",
+  "vendor/THREE-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+  "vendor/addons/controls/OrbitControls.js": "b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c",
+  "vendor/three.core.js": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20",
+  "vendor/three.module.js": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a",
+  "xr-support.js": "f3776e7e2e1d975f3f3957685f8b6506a6efea291d33b84de1f95276464bd67e"
+}

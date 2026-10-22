@@ -5,10 +5,14 @@ import { ApproximantSpotlight, FareyState, continuedFraction, fraction, grid, on
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
 import { TapSelection } from './input.js';
 import { readSelection, writeSelection } from './recovery.js';
+import { boundaryProjection, ConstructionWalkthrough, constructionTitles } from './construction.js';
 
 const $ = id => document.getElementById(id);
 const state = new FareyState();
 const spotlight = new ApproximantSpotlight();
+const construction = new ConstructionWalkthrough();
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+let constructionFrame = null;
 const savedSelection = readSelection();
 for (const turn of savedSelection?.word ?? '') state.step(turn);
 if (savedSelection?.point) state.select(savedSelection.point.p, savedSelection.point.q);
@@ -50,6 +54,7 @@ lattice.rotation.x = Math.PI / 7;
 scene.add(lattice);
 const pointsGroup = new THREE.Group(), selection = new THREE.Group();
 lattice.add(pointsGroup, selection);
+const constructionOverlay = new THREE.Group(); lattice.add(constructionOverlay);
 const sphere = new THREE.SphereGeometry(0.036, 16, 10);
 const materials = Object.fromEntries(Object.entries(colors).map(([key, color]) => [key, new THREE.MeshStandardMaterial({ color, roughness: 0.35 })]));
 const origin = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xffffff }));
@@ -136,7 +141,8 @@ function rebuildGrid() {
   axisLabels[0].position.fromArray(position({ p: 0, q: bound })).y += 0.14;
   axisLabels[1].position.fromArray(position({ p: bound, q: 0 })).y += 0.14;
 }
-function update() {
+function update({ animateConstruction = false } = {}) {
+  stopConstructionAnimation();
   disposeGroup(selection);
   spotlight.reconcile(state, alternateCF);
   const m = state.mediant;
@@ -238,8 +244,101 @@ function update() {
   vrLabel.material.map = makeText(`${state.word || 'Start'}   ${fraction(m)}   ${inspection.equation}`, 1600, 160);
   if (lesson && lesson.word !== state.word) lesson = null;
   renderLesson();
+  renderConstruction();
+  applyConstructionPose(construction.stage === null || construction.stage >= 2 ? 1 : 0);
+  if (animateConstruction && construction.stage === 2 && !reducedMotion.matches) animateLatticeReveal();
   render();
 }
+function constructionLine(a, b, color) {
+  const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...a), new THREE.Vector3(...b)]);
+  constructionOverlay.add(new THREE.Line(geometry, new THREE.LineBasicMaterial({ color })));
+}
+function applyConstructionPose(amount) {
+  const phase = construction.stage ?? 3;
+  for (const mesh of points) {
+    const point = mesh.userData.point, projected = boundaryProjection(point), actual = position(point);
+    mesh.visible = phase >= 2 || (!!projected && primitive(point));
+    const start = projected ? position(projected) : actual;
+    mesh.position.set(...actual.map((value, i) => start[i] + amount * (value - start[i])));
+  }
+  origin.visible = phase >= 1;
+  gridLines.visible = phase >= 2;
+  for (const label of axisLabels) label.visible = phase >= 2;
+  selection.visible = phase >= 3;
+}
+function renderConstruction() {
+  const active = construction.stage !== null, stage = construction.stage ?? 0;
+  document.body.classList.toggle('constructing', active);
+  $('construction-start').hidden = active;
+  $('construction').hidden = !active;
+  $('construction-back').disabled = stage === 0;
+  $('construction-next').disabled = stage === 3;
+  $('construction-motion').disabled = reducedMotion.matches;
+  $('construction-motion').checked = construction.animate && !reducedMotion.matches;
+  $('construction-motion-label').textContent = reducedMotion.matches ? 'Reduce Motion: instant steps' : 'Animate lattice reveal';
+  disposeGroup(constructionOverlay);
+  if (!active) return;
+  const m = state.mediant;
+  const descriptions = [
+    `q = 1: the ray meets (1, ${fraction(m)}). Multiples share this boundary value. Infinity has no finite intersection.`,
+    `The ray from (0,0) through (1, ${fraction(m)}) has slope ${fraction(m)}. Its positive integer points share this direction.`,
+    'Integer points return to (q,p). In-between positions need not be integer lattice points. This illustration is not a hyperbolic map.',
+    'The upright plane contains this ray. Its height is a display choice, not another rational coordinate.'
+  ];
+  $('construction-heading').textContent = `${stage + 1}/4 · ${constructionTitles[stage]}`;
+  $('construction-explanation').textContent = descriptions[stage] + (m.p / m.q > bound ? ' Boundary value beyond the visible q=1 segment.' : '');
+  if (stage >= 2 && (state.inspection.point.p > bound || state.inspection.point.q > bound)) {
+    $('construction-explanation').textContent += ` Inspected point outside grid ${bound}; coordinates unchanged.`;
+  }
+  constructionLine(position({ p: 0, q: 1 }), position({ p: bound, q: 1 }), colors.left);
+  if (stage >= 1) {
+    const scale = bound / Math.max(m.p, m.q);
+    constructionLine([0, 0, 0], position({ p: m.p * scale, q: m.q * scale }), colors.ray);
+  }
+  if (m.p / m.q <= bound) {
+    const point = position(boundaryProjection(m));
+    constructionLine([point[0] - 0.055, 0.02, point[2]], [point[0] + 0.055, 0.02, point[2]], colors.selected);
+    constructionLine([point[0], 0.02, point[2] - 0.055], [point[0], 0.02, point[2] + 0.055], colors.selected);
+  }
+}
+function stopConstructionAnimation() {
+  if (constructionFrame !== null) cancelAnimationFrame(constructionFrame);
+  constructionFrame = null;
+  $('construction-stop').disabled = true;
+}
+function animateLatticeReveal() {
+  const start = performance.now();
+  $('construction-stop').disabled = false;
+  const frame = now => {
+    const t = Math.min(1, (now - start) / 1400), eased = t * t * (3 - 2 * t);
+    applyConstructionPose(eased); render();
+    if (t < 1) constructionFrame = requestAnimationFrame(frame);
+    else stopConstructionAnimation();
+  };
+  applyConstructionPose(0);
+  constructionFrame = requestAnimationFrame(frame);
+}
+$('construction-start').onclick = () => { construction.start(); update(); };
+$('construction-back').onclick = () => { construction.move(-1); update(); };
+$('construction-next').onclick = () => {
+  const reveal = construction.stage === 1 && construction.animate;
+  construction.move(1); update({ animateConstruction: reveal });
+};
+$('construction-motion').onchange = () => { construction.animate = $('construction-motion').checked; };
+$('construction-reset').onclick = () => { construction.start(); update(); };
+$('construction-close').onclick = () => { construction.close(); update(); $('construction-start').focus(); };
+$('construction-stop').onclick = () => { stopConstructionAnimation(); applyConstructionPose(1); render(); };
+reducedMotion.addEventListener('change', () => {
+  if (reducedMotion.matches) construction.animate = false;
+  stopConstructionAnimation(); renderConstruction();
+  applyConstructionPose(construction.stage === null || construction.stage >= 2 ? 1 : 0); render();
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    stopConstructionAnimation(); applyConstructionPose(construction.stage === null || construction.stage >= 2 ? 1 : 0);
+  }
+  render();
+});
 function startLesson() {
   reset(); state.select(1, 2);
   lesson = { step: 0, phase: 'predict', guess: null, word: state.word };
@@ -295,6 +394,7 @@ $('lesson-apply').onclick = () => {
   $(lesson.step === 0 ? 'lesson-next' : 'lesson-close').focus({ preventScroll: true });
 };
 function reset() {
+  construction.close();
   alternateCF = false;
   spotlight.clear();
   state.reset(); bound = 12; $('bound').value = '12'; rebuildGrid();
@@ -393,6 +493,8 @@ $('reload-graphics').onclick = () => location.reload();
 $('cf-alternate').onchange = () => { alternateCF = $('cf-alternate').checked; update(); };
 $('clear-spotlight').onclick = () => { spotlight.clear(); update(); };
 renderer.domElement.addEventListener('webglcontextlost', event => {
+  stopConstructionAnimation();
+  applyConstructionPose(construction.stage === null || construction.stage >= 2 ? 1 : 0);
   event.preventDefault(); graphicsLost = true; controls.enabled = false;
   renderer.domElement.style.visibility = 'hidden';
   renderer.domElement.tabIndex = -1;

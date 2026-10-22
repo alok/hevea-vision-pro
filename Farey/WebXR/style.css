@@ -29,6 +29,10 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px s
 .cyan { background: #176576; } .purple { background: #684d97; }
 .secondary { margin-top: 10px; font-size: 13px; }
 #lesson { border-top: 1px solid #345; padding-top: 10px; margin-top: 10px; font-size: 13px; }
+#construction { font-size: 12px; border-top: 1px solid #345; margin-top: 10px; padding-top: 10px; }
+#construction input { width: auto; }
+#construction .row { margin-bottom: 8px; }
+.controls:has(#construction:not([hidden])) { width: min(480px, calc(100% - 48px)); }
 #lesson .row { margin-top: 8px; }
 #lesson p { color: #c1d3dd; }
 #lesson button[aria-pressed="true"] { background: #326879; }
@@ -55,9 +59,12 @@ details p { max-width: 60ch; } details[open] { max-height: 200px; overflow-y: au
 body.immersive header, body.immersive .controls { display: none; }
 @media(max-width: 700px) { header { left: 20px; top: 18px; right: 16px; } .credit { font-size: 11px; } .controls { left: 12px; bottom: 12px; width: calc(100% - 24px); padding: 13px; } .hint { display: none; } .row { gap: 6px; } button { padding: 7px 10px; } }
 @media(max-width: 700px) {
-  .controls, .controls:has(#lesson:not([hidden])), .controls:has(#cf-inspector[open]) { width: calc(100% - 24px); max-height: min(48svh, calc(100svh - 220px)); }
+  .controls, .controls:has(#lesson:not([hidden])), .controls:has(#cf-inspector[open]), .controls:has(#construction:not([hidden])) { width: calc(100% - 24px); max-height: min(48svh, calc(100svh - 220px)); }
   .learning .controls > .row, .learning #matrix, .learning #receipt { display: none; }
   .learning .state { margin-bottom: 4px; }
+  .constructing .controls { height: min(48svh, calc(100svh - 220px)); }
+  .constructing .controls > .row, .constructing #matrix, .constructing #vector-state,
+  .constructing #point-inspection, .constructing #cf-inspector, .constructing #receipt { display: none; }
 }
 @media(max-height: 500px) and (orientation: landscape) {
   header { top: 12px; left: 20px; }
@@ -65,5 +72,5 @@ body.immersive header, body.immersive .controls { display: none; }
   h1 { font-size: 28px; margin: 0 0 6px; }
   .credit { font-size: 11px; }
   #viewport { left: 46vw; right: 12px; }
-  .controls, .controls:has(#lesson:not([hidden])), .controls:has(#cf-inspector[open]) { left: 12px; bottom: 12px; width: calc(46vw - 24px); max-height: calc(100svh - 112px); padding: 12px; }
+  .controls, .controls:has(#lesson:not([hidden])), .controls:has(#cf-inspector[open]), .controls:has(#construction:not([hidden])) { left: 12px; bottom: 12px; width: calc(46vw - 24px); max-height: calc(100svh - 112px); padding: 12px; }
 }

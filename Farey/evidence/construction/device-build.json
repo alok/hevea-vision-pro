@@ -1,0 +1,7 @@
+{
+  "version": "0.7",
+  "build": "8",
+  "signedReleaseBuildPassed": true,
+  "strictSignatureVerificationPassed": true,
+  "hardwareExecution": false
+}

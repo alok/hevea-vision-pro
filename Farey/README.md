@@ -1,6 +1,6 @@
 # Farey — Into the Infinite
 
-[Current demo-readiness checklist and release audit](DEMO_READINESS.md) — native 0.6.1 / browser 0.5.1. [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
+[Optional boundary-to-lattice construction](CONSTRUCTION.md) — native 0.7 / browser 0.6. [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
 
 **Inspired by [Katherine Stange’s mathematical visualizations](https://www.katestange.net/code/) and her [Illustrating Mathematics for Math 2.0 talk](https://katestange.net/talks/math-exploration/).** Underlying L/R geodesic coding: [Caroline Series (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 

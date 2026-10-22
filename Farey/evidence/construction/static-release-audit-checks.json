@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "viewports": [
+    {
+      "width": 10,
+      "height": 1,
+      "sceneWidth": 0,
+      "sceneHeight": 0
+    },
+    {
+      "width": 1,
+      "height": 1,
+      "sceneWidth": 1,
+      "sceneHeight": 0
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "sceneWidth": 390,
+      "sceneHeight": 285
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "sceneWidth": 444,
+      "sceneHeight": 301
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "sceneWidth": 1440,
+      "sceneHeight": 1000
+    }
+  ],
+  "zeroSizeRecoveryPixelsMatched": true,
+  "malformedStatesRejected": 8,
+  "validSavedSelectionRestored": true,
+  "tabBackgroundForegroundPreservedView": true,
+  "pageErrors": [],
+  "actualXRSession": false
+}

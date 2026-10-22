@@ -1,3 +1,7 @@
+# Optional construction: native 0.7 / browser 0.6
+
+[Construction and mathematical boundaries](../CONSTRUCTION.md) · [Native boundary chart](construction/31-boundary-chart.png) · [Native lattice reveal](construction/32-construction-lattice.png). The ordinary stationary scene remains the default; interpolation is opt-in and is not a hyperbolic map.
+
 # Current demonstration package
 
 [Outline and scope](../DEMONSTRATION_OUTLINE.md) · [Local playback](demo-package/playback.html) · [Video hashes/versions](demo-package/manifest.json). The two compact MP4s remain local delivery artifacts and are excluded from Git; representative app screenshots and capture helpers are included.

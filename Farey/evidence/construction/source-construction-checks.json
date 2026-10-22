@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "stages": 4,
+  "restoredPixels": true,
+  "preservedTargetPointSpotlightAndLesson": true,
+  "motionOptInAndStop": true,
+  "reducedMotion": true,
+  "outsideChartExplained": true,
+  "contextLossSettlesAnimation": true,
+  "actualXRSession": false
+}

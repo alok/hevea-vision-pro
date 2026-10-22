@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		01688C6CAB3944E90840346B /* ApproximantSpotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6974348EF1ECC8C24B121855 /* ApproximantSpotlight.swift */; };
 		1546C25B5B69C6087DFAF0F3 /* FareyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0549EACD6E4122836B758D3 /* FareyUITests.swift */; };
+		3054ECF6B7D7F6C6B2722E3C /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7887CD4183897433EBB95830 /* ControlsView.swift */; };
 		3A67B96F5A7759B2CC7F8529 /* LatticeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63FB572D6099E361D159293 /* LatticeRenderer.swift */; };
 		4A6EE4DDF6CC43F1E42EA99D /* ContinuedFraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4F39720B8EC90F7245FF32 /* ContinuedFraction.swift */; };
 		50169C3BD73D6543F31F3CB4 /* LessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F584720C6B68F7C947C316B /* LessonView.swift */; };
@@ -19,7 +20,9 @@
 		73D4D9B3EF25DBEC2BAE6BA1 /* SourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA1AF8E6922227E35ACCFD /* SourcesView.swift */; };
 		83ED2C70B974C73C54C14F25 /* PointInspectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DC18A820B056DD9785D194 /* PointInspectionView.swift */; };
 		9746E4AC1BA76EFE0AA3BD6E /* FractionEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E749D7E4F37AFA16C91B31 /* FractionEntry.swift */; };
+		B4FB932129F9D54A11A262EF /* BoundaryConstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE56F3CE3943B46C7FEFC52 /* BoundaryConstruction.swift */; };
 		D07B35BE021167F8F26F5C52 /* PointInspection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5FC9A48C1DC065CDC832A1 /* PointInspection.swift */; };
+		D360FB6CF623DF645072FF65 /* ConstructionControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C66D680BFB3295124E099B /* ConstructionControls.swift */; };
 		D4033446736A8D5EB805F5F7 /* Farey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B144AA0513729F6329CAC4 /* Farey.swift */; };
 		DCEA61484D1A37CC31D56074 /* SpotlightReadout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC19A288A6F614C588F085F /* SpotlightReadout.swift */; };
 		FEF13136B389FB8C703B5E4A /* FareyVisionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC84E39F327BBA627416B47 /* FareyVisionApp.swift */; };
@@ -52,16 +55,19 @@
 		5FB734B50E45A64ECE5F3884 /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		6974348EF1ECC8C24B121855 /* ApproximantSpotlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproximantSpotlight.swift; sourceTree = "<group>"; };
 		6F5FC9A48C1DC065CDC832A1 /* PointInspection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointInspection.swift; sourceTree = "<group>"; };
+		7887CD4183897433EBB95830 /* ControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsView.swift; sourceTree = "<group>"; };
 		85E749D7E4F37AFA16C91B31 /* FractionEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionEntry.swift; sourceTree = "<group>"; };
 		A0549EACD6E4122836B758D3 /* FareyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FareyUITests.swift; sourceTree = "<group>"; };
 		A2DC18A820B056DD9785D194 /* PointInspectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointInspectionView.swift; sourceTree = "<group>"; };
 		A63FB572D6099E361D159293 /* LatticeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatticeRenderer.swift; sourceTree = "<group>"; };
+		A6C66D680BFB3295124E099B /* ConstructionControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructionControls.swift; sourceTree = "<group>"; };
 		A9CA1AF8E6922227E35ACCFD /* SourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourcesView.swift; sourceTree = "<group>"; };
 		AA4F39720B8EC90F7245FF32 /* ContinuedFraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinuedFraction.swift; sourceTree = "<group>"; };
 		B0B144AA0513729F6329CAC4 /* Farey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Farey.swift; sourceTree = "<group>"; };
 		CDC84E39F327BBA627416B47 /* FareyVisionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FareyVisionApp.swift; sourceTree = "<group>"; };
 		D48D8EAA86B5E3D3243B23E1 /* FractionEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractionEntryView.swift; sourceTree = "<group>"; };
 		DF6032F9B92B99039811F6B0 /* FareyVision.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FareyVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBE56F3CE3943B46C7FEFC52 /* BoundaryConstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundaryConstruction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -86,7 +92,9 @@
 		36605A10EDC2A16848ACA790 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				A6C66D680BFB3295124E099B /* ConstructionControls.swift */,
 				420BF76F2A945DDCB974CA98 /* ContinuedFractionView.swift */,
+				7887CD4183897433EBB95830 /* ControlsView.swift */,
 				03A8C40F1F10750667FF8185 /* FareyImmersiveView.swift */,
 				CDC84E39F327BBA627416B47 /* FareyVisionApp.swift */,
 				D48D8EAA86B5E3D3243B23E1 /* FractionEntryView.swift */,
@@ -122,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				6974348EF1ECC8C24B121855 /* ApproximantSpotlight.swift */,
+				FBE56F3CE3943B46C7FEFC52 /* BoundaryConstruction.swift */,
 				AA4F39720B8EC90F7245FF32 /* ContinuedFraction.swift */,
 				B0B144AA0513729F6329CAC4 /* Farey.swift */,
 				85E749D7E4F37AFA16C91B31 /* FractionEntry.swift */,
@@ -231,8 +240,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				01688C6CAB3944E90840346B /* ApproximantSpotlight.swift in Sources */,
+				B4FB932129F9D54A11A262EF /* BoundaryConstruction.swift in Sources */,
+				D360FB6CF623DF645072FF65 /* ConstructionControls.swift in Sources */,
 				4A6EE4DDF6CC43F1E42EA99D /* ContinuedFraction.swift in Sources */,
 				6D3A5AA65AC0871142260A14 /* ContinuedFractionView.swift in Sources */,
+				3054ECF6B7D7F6C6B2722E3C /* ControlsView.swift in Sources */,
 				D4033446736A8D5EB805F5F7 /* Farey.swift in Sources */,
 				62EABEA463688C29F1F0C0BE /* FareyImmersiveView.swift in Sources */,
 				FEF13136B389FB8C703B5E4A /* FareyVisionApp.swift in Sources */,
@@ -360,7 +372,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=xros*]" = "Apple Development";
 				"CODE_SIGN_STYLE[sdk=xros*]" = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 5795ZPYZ2T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Farey — Into the Infinite";
@@ -371,7 +383,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.6.1;
+				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVision;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=xros*]" = "Lean Calculator Vision Pro 20261008";
 				SDKROOT = xros;
@@ -484,7 +496,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=xros*]" = "Apple Development";
 				"CODE_SIGN_STYLE[sdk=xros*]" = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 5795ZPYZ2T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Farey — Into the Infinite";
@@ -495,7 +507,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.6.1;
+				MARKETING_VERSION = 0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVision;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=xros*]" = "Lean Calculator Vision Pro 20261008";
 				SDKROOT = xros;
