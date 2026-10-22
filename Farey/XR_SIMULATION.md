@@ -7,7 +7,7 @@ Verified in the user's main Chrome using official IWE 2.0.0 and actual emulated 
 - Two stereo views, 0.063 m apart, with distinct left/right controller poses.
 - Left aim `(1,0,1)`, Δ=−4, and Right aim `(1,0,−1)`, Δ=4, appeared simultaneously. Real emulator trigger press/release events selected the corresponding point for each hand; the exterior selection restored plane `2a−2c=0`.
 - Right aim changed to Exit, the controller event ended the actual session.
-- Re-entry from desktop Origin rendered upper/lower apex views from programmed emulator poses. Exit restored the desktop Origin position/orientation, and the emulator returned to manual control with no active session. The app was returned to Overview afterward.
+- Re-entry from desktop Origin rendered upper/lower apex views from programmed emulator poses. Exit restored the desktop Origin position/orientation, and the emulator returned to manual control with no active session. Final Overview handback was not verified in this run; desktop Origin restoration was verified.
 
 [Structured 0.13 evidence](evidence/browser-0.13/checks.json) separates these real emulator observations from the portable `WebXR/xr-aim-checks.js` regression, which explicitly mocks XR inputs and creates no XRSession. The initial 0.13 request observer missed entry; it then attached to IWE's actual active session. Early test-console errors are not presented as app errors or as a clean main-Chrome console. A hidden DOM plane label can retain old text; current in-world Plane text is recorded separately.
 
