@@ -1,0 +1,60 @@
+{
+  "buildRoot": "/tmp/farey-build-lcow6deb",
+  "simulator": "04E18233-8CB6-4F93-83B8-705782B46431",
+  "markers": [
+    {
+      "name": "demo-start-credit",
+      "seconds": 0.0
+    },
+    {
+      "name": "demo-lattice",
+      "seconds": 8.42
+    },
+    {
+      "name": "demo-lesson-L",
+      "seconds": 14.55
+    },
+    {
+      "name": "demo-lesson-R",
+      "seconds": 24.69
+    },
+    {
+      "name": "demo-point-reduction",
+      "seconds": 28.69
+    },
+    {
+      "name": "demo-oblique",
+      "seconds": 37.67
+    },
+    {
+      "name": "demo-canonical",
+      "seconds": 41.14
+    },
+    {
+      "name": "demo-intermediate-spotlight",
+      "seconds": 47.13
+    },
+    {
+      "name": "demo-alternate",
+      "seconds": 54.0
+    },
+    {
+      "name": "demo-linked-disk",
+      "seconds": 61.52
+    },
+    {
+      "name": "demo-exit",
+      "seconds": 69.89
+    },
+    {
+      "name": "demo-reentered",
+      "seconds": 77.38
+    },
+    {
+      "name": "demo-stop",
+      "seconds": 81.39
+    }
+  ],
+  "testExit": 0,
+  "resultBundle": "/tmp/farey-build-lcow6deb/Demo.xcresult"
+}

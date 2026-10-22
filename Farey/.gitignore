@@ -5,3 +5,7 @@ __pycache__/
 *.mp4.sb-*
 tour-*.mp4
 evidence/lifecycle-measurements.json
+evidence/demo-package/*.mp4
+evidence/demo-package/*.webm
+evidence/demo-package/*.log
+output/playwright/

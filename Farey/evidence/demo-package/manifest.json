@@ -1,0 +1,36 @@
+{
+  "captureDate": "2026-10-22",
+  "applicationCommit": "490a7d1ed5e7ae2f47384cfa5bd30e7b559ef93d",
+  "nativeVersion": "0.6.1",
+  "nativeBuild": "7",
+  "browserVersion": "0.5.1",
+  "audioIncluded": false,
+  "desktopOrPrivateWindowsIncluded": false,
+  "actualXRSession": false,
+  "physicalHeadsetTested": false,
+  "videos": [
+    {
+      "file": "native-demo.mp4",
+      "sha256": "444ff114882e92b5af377dd3cc55983514688cf736686f53ded68beeaf49ba5c",
+      "bytes": 1139303,
+      "durationSeconds": 81.458333,
+      "width": 1920,
+      "height": 1080,
+      "fullDecodePassed": true
+    },
+    {
+      "file": "browser-demo.mp4",
+      "sha256": "3af2ff0e6fe535260d348bd6a98ee156878fb7d24e1c1afa8c518821593af483",
+      "bytes": 803823,
+      "durationSeconds": 39.0,
+      "width": 1440,
+      "height": 1000,
+      "fullDecodePassed": true
+    }
+  ],
+  "reference": {
+    "url": "https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html",
+    "retrievedHTMLSHA256": "eb46dbe925e4cc7065db131ed5ccd05ef8a8e5cf43bc90623c02be4094512c38",
+    "screenshotsBundled": false
+  }
+}

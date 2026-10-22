@@ -1,0 +1,23 @@
+{
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+  "results": [
+    {
+      "file": "native-demo.mp4",
+      "duration": 81.458333,
+      "width": 1920,
+      "height": 1080,
+      "advanced": true,
+      "playedToEnd": true,
+      "error": null
+    },
+    {
+      "file": "browser-demo.mp4",
+      "duration": 39,
+      "width": 1440,
+      "height": 1000,
+      "advanced": true,
+      "playedToEnd": true,
+      "error": null
+    }
+  ]
+}

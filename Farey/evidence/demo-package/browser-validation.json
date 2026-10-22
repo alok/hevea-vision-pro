@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "marks": [
+    {
+      "name": "start",
+      "seconds": 0.123
+    },
+    {
+      "name": "orbit",
+      "seconds": 4.623
+    },
+    {
+      "name": "lesson-L",
+      "seconds": 7.818
+    },
+    {
+      "name": "lesson-R",
+      "seconds": 11.009
+    },
+    {
+      "name": "point-reduction",
+      "seconds": 14.179
+    },
+    {
+      "name": "intermediate",
+      "seconds": 18.35
+    },
+    {
+      "name": "convergent",
+      "seconds": 22.436
+    },
+    {
+      "name": "spotlight",
+      "seconds": 26.518
+    },
+    {
+      "name": "sources",
+      "seconds": 29.63
+    },
+    {
+      "name": "finish",
+      "seconds": 33.783
+    }
+  ],
+  "durationSeconds": 36.835,
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+  "pageErrors": [],
+  "actualXRSession": false
+}

@@ -1,3 +1,7 @@
+# Current demonstration package
+
+[Outline and scope](../DEMONSTRATION_OUTLINE.md) · [Local playback](demo-package/playback.html) · [Video hashes/versions](demo-package/manifest.json). The two compact MP4s remain local delivery artifacts and are excluded from Git; representative app screenshots and capture helpers are included.
+
 # Native 0.6.1 / browser 0.5.1 release audit
 
 [Readiness checklist](../DEMO_READINESS.md) · [Current 3D showcase](release-audit/native-showcase.png) · [Full native result](release-audit/native-full-summary.json) · [Maximum-depth native disk](release-audit/native-maximum-path.png) · [Browser resize failure before](release-audit/browser-resize-before.png) · [Recovered scene after](release-audit/browser-resize-after.png) · [Numerical probe](release-audit/geodesics-after.json)
