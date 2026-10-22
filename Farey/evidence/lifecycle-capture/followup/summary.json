@@ -1,0 +1,76 @@
+{
+  "runtimeSourceCommit": "665e54fb6839563ba9ead173e21a720cea10648d",
+  "priorCheckpoint": "48d346256c359070d5a53caa3cc0c6cf2bf545bb",
+  "runtimeChanged": false,
+  "version": "0.8",
+  "build": "10",
+  "idle": {
+    "totalCaptures": 44,
+    "settledCaptures": 40,
+    "firstSettledCaptureSecondsSinceLaunch": 5.33,
+    "settledMaximumChannelDifference": 1,
+    "pixelIdenticalTotal": 31,
+    "regionThresholdExceededAfterSettling": false
+  },
+  "singleChanges": {
+    "testPassed": true,
+    "captures": 60,
+    "groups": [
+      "baseline",
+      "viewpoint",
+      "mediant",
+      "disk",
+      "chart"
+    ],
+    "capturesPerGroup": 12,
+    "postChangeFirstCaptureLagSeconds": {
+      "viewpoint": 0.451,
+      "mediant": 0.509,
+      "disk": 1.497,
+      "chart": 0.514
+    },
+    "regionThresholdExceeded": false,
+    "captureOnly": true,
+    "wholeImageThresholdExceeded": false
+  },
+  "videos": {
+    "with-stills": {
+      "localPath": "/tmp/farey-idle-probe/with-stills.mov",
+      "sha256": "7c7294fc865d2b173e236e3a5b24b22f9a5c647dc6df6f46eb5e88f455e94ef7",
+      "bytes": 3600447,
+      "uploaded": false
+    },
+    "video-only": {
+      "localPath": "/tmp/farey-idle-probe/video-only.mov",
+      "sha256": "1715bdc0dd31b766aead7e7a13db86bea4dc4764ec5076b43dd49b1a4483b25b",
+      "bytes": 3874336,
+      "uploaded": false
+    }
+  },
+  "scope": "These controls did not reproduce the prior missing/partial scene. They do not identify the cause or prove shorter transient frames absent.",
+  "popoverControl": {
+    "testPassed": true,
+    "captures": 72,
+    "valueHeld": "3/5",
+    "groups": [
+      "baseline",
+      "continued-fraction popup close",
+      "picker cancel",
+      "Home with picker closed",
+      "Home with picker open",
+      "final"
+    ],
+    "wholeImageThresholdExceeded": false
+  },
+  "pickerCommitControl": {
+    "testPassed": true,
+    "captures": 36,
+    "groups": [
+      "baseline",
+      "first selection",
+      "second selection"
+    ],
+    "wholeImageThresholdExceeded": false
+  },
+  "measurementQualification": "Comparisons use 960x540 images and a luminance-difference threshold of 6 against the last capture in each fixed-state group. A zero changed fraction is not proof of byte-identical frames or of behavior before the first capture."
+}

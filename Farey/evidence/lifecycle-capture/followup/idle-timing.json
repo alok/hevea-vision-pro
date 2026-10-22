@@ -1,0 +1,342 @@
+{
+  "simulator": "3A977975-2991-4331-8020-BCBA80312686",
+  "runtimeVersion": "0.8",
+  "runtimeBuild": "10",
+  "launchAt": 1792687537.453967,
+  "captures": [
+    {
+      "phase": "still-only",
+      "file": "still-only-00.png",
+      "startedAt": 1792687538.055325,
+      "finishedAt": 1792687538.8889,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-01.png",
+      "startedAt": 1792687539.3988311,
+      "finishedAt": 1792687540.321824,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-02.png",
+      "startedAt": 1792687540.831962,
+      "finishedAt": 1792687541.428511,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-03.png",
+      "startedAt": 1792687541.9381912,
+      "finishedAt": 1792687542.274747,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-04.png",
+      "startedAt": 1792687542.782759,
+      "finishedAt": 1792687543.040301,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-05.png",
+      "startedAt": 1792687543.54322,
+      "finishedAt": 1792687543.791682,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-06.png",
+      "startedAt": 1792687544.301329,
+      "finishedAt": 1792687544.558057,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-07.png",
+      "startedAt": 1792687545.068296,
+      "finishedAt": 1792687545.285525,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-08.png",
+      "startedAt": 1792687545.796443,
+      "finishedAt": 1792687546.0232809,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-09.png",
+      "startedAt": 1792687546.5272682,
+      "finishedAt": 1792687546.969185,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-10.png",
+      "startedAt": 1792687547.489061,
+      "finishedAt": 1792687547.703833,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-11.png",
+      "startedAt": 1792687548.211901,
+      "finishedAt": 1792687548.402268,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-12.png",
+      "startedAt": 1792687548.903938,
+      "finishedAt": 1792687549.099261,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-13.png",
+      "startedAt": 1792687549.608211,
+      "finishedAt": 1792687549.79965,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-14.png",
+      "startedAt": 1792687550.308831,
+      "finishedAt": 1792687550.5027509,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-15.png",
+      "startedAt": 1792687551.0173829,
+      "finishedAt": 1792687551.2005959,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-16.png",
+      "startedAt": 1792687551.716351,
+      "finishedAt": 1792687551.9129338,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-17.png",
+      "startedAt": 1792687552.423109,
+      "finishedAt": 1792687552.6209211,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-18.png",
+      "startedAt": 1792687553.1239738,
+      "finishedAt": 1792687553.354832,
+      "exitCode": 0
+    },
+    {
+      "phase": "still-only",
+      "file": "still-only-19.png",
+      "startedAt": 1792687553.860773,
+      "finishedAt": 1792687554.064864,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-00.png",
+      "startedAt": 1792687554.9038332,
+      "finishedAt": 1792687555.104707,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-01.png",
+      "startedAt": 1792687555.616852,
+      "finishedAt": 1792687555.8022678,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-02.png",
+      "startedAt": 1792687556.304002,
+      "finishedAt": 1792687556.518175,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-03.png",
+      "startedAt": 1792687557.0191832,
+      "finishedAt": 1792687557.218789,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-04.png",
+      "startedAt": 1792687557.719785,
+      "finishedAt": 1792687557.9157,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-05.png",
+      "startedAt": 1792687558.42561,
+      "finishedAt": 1792687558.621948,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-06.png",
+      "startedAt": 1792687559.123627,
+      "finishedAt": 1792687559.319978,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-07.png",
+      "startedAt": 1792687559.822593,
+      "finishedAt": 1792687560.03565,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-08.png",
+      "startedAt": 1792687560.5457962,
+      "finishedAt": 1792687560.7524061,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-09.png",
+      "startedAt": 1792687561.258229,
+      "finishedAt": 1792687561.451288,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-10.png",
+      "startedAt": 1792687561.952415,
+      "finishedAt": 1792687562.152639,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-11.png",
+      "startedAt": 1792687562.6611981,
+      "finishedAt": 1792687562.856699,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-12.png",
+      "startedAt": 1792687563.359194,
+      "finishedAt": 1792687563.574341,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-13.png",
+      "startedAt": 1792687564.079112,
+      "finishedAt": 1792687564.269562,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-14.png",
+      "startedAt": 1792687564.785625,
+      "finishedAt": 1792687564.989012,
+      "exitCode": 0
+    },
+    {
+      "phase": "combined",
+      "file": "combined-15.png",
+      "startedAt": 1792687565.505557,
+      "finishedAt": 1792687565.703323,
+      "exitCode": 0
+    },
+    {
+      "phase": "after-video",
+      "file": "after-video-00.png",
+      "startedAt": 1792687578.618631,
+      "finishedAt": 1792687578.819442,
+      "exitCode": 0
+    },
+    {
+      "phase": "after-video",
+      "file": "after-video-01.png",
+      "startedAt": 1792687579.3303301,
+      "finishedAt": 1792687579.520869,
+      "exitCode": 0
+    },
+    {
+      "phase": "after-video",
+      "file": "after-video-02.png",
+      "startedAt": 1792687580.032177,
+      "finishedAt": 1792687580.215803,
+      "exitCode": 0
+    },
+    {
+      "phase": "after-video",
+      "file": "after-video-03.png",
+      "startedAt": 1792687580.7181199,
+      "finishedAt": 1792687580.9204311,
+      "exitCode": 0
+    },
+    {
+      "phase": "after-video",
+      "file": "after-video-04.png",
+      "startedAt": 1792687581.4257238,
+      "finishedAt": 1792687581.617826,
+      "exitCode": 0
+    },
+    {
+      "phase": "after-video",
+      "file": "after-video-05.png",
+      "startedAt": 1792687582.1223838,
+      "finishedAt": 1792687582.339296,
+      "exitCode": 0
+    },
+    {
+      "phase": "after-video",
+      "file": "after-video-06.png",
+      "startedAt": 1792687582.851027,
+      "finishedAt": 1792687583.072085,
+      "exitCode": 0
+    },
+    {
+      "phase": "after-video",
+      "file": "after-video-07.png",
+      "startedAt": 1792687583.583471,
+      "finishedAt": 1792687583.806806,
+      "exitCode": 0
+    }
+  ],
+  "phases": [
+    {
+      "name": "still-only",
+      "start": 1792687538.055171,
+      "end": 1792687554.567901
+    },
+    {
+      "name": "with-stills",
+      "start": 1792687554.568934
+    },
+    {
+      "name": "combined",
+      "start": 1792687554.903775,
+      "end": 1792687566.2068639
+    },
+    {
+      "name": "video-only",
+      "start": 1792687566.291911,
+      "end": 1792687578.528749
+    },
+    {
+      "name": "after-video",
+      "start": 1792687578.61811,
+      "end": 1792687584.31699
+    }
+  ]
+}

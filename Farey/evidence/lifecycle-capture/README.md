@@ -20,3 +20,5 @@ The standalone still run captured [foreground](full-foreground.png), [confirmed 
 ## Video-only tour
 
 The revised recorder passed its [asserted walkthrough](video-tour-summary.json). [Video metadata](video-tour.json) records the raw capture, chapter timestamps and a fully decoded 86-second 1080p export (1.21 MB). It stays local at `/tmp/farey-lifecycle-video-demo/native-demo-trimmed.mp4`; no video was uploaded or committed. [An actual video frame](video-tour-oblique.png) shows the oblique lattice and inspected multiple. Playback frame rate is not a headset performance measurement.
+
+[Controlled follow-up](followup/README.md) records idle, individual-change, popover and picker-commit experiments. These negative controls further constrain the issue without identifying its cause.

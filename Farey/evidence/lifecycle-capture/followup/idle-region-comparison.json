@@ -1,0 +1,280 @@
+{
+  "reference": "after-video-07.png",
+  "resizedTo": [
+    960,
+    540
+  ],
+  "region": [
+    180,
+    25,
+    840,
+    250
+  ],
+  "thresholdLuma": 6,
+  "rows": [
+    {
+      "file": "still-only-00.png",
+      "changedPixels": 148500,
+      "changedFraction": 1.0,
+      "meanAbsoluteLumaDifference": 160.81428282828284
+    },
+    {
+      "file": "still-only-01.png",
+      "changedPixels": 148499,
+      "changedFraction": 0.999993265993266,
+      "meanAbsoluteLumaDifference": 154.75521885521886
+    },
+    {
+      "file": "still-only-02.png",
+      "changedPixels": 148500,
+      "changedFraction": 1.0,
+      "meanAbsoluteLumaDifference": 160.61721212121213
+    },
+    {
+      "file": "still-only-03.png",
+      "changedPixels": 30980,
+      "changedFraction": 0.20861952861952862,
+      "meanAbsoluteLumaDifference": 10.712080808080808
+    },
+    {
+      "file": "still-only-04.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-05.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-06.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-07.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-08.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-09.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-10.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-11.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-12.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-13.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-14.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-15.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-16.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-17.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-18.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "still-only-19.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-00.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-01.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-02.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-03.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-04.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-05.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-06.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-07.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-08.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-09.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-10.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-11.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-12.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-13.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-14.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "combined-15.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "after-video-00.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "after-video-01.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "after-video-02.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "after-video-03.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "after-video-04.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "after-video-05.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "after-video-06.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    },
+    {
+      "file": "after-video-07.png",
+      "changedPixels": 0,
+      "changedFraction": 0.0,
+      "meanAbsoluteLumaDifference": 0.0
+    }
+  ]
+}

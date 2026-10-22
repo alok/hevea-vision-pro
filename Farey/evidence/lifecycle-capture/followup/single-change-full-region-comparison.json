@@ -1,0 +1,489 @@
+{
+  "resize": [
+    960,
+    540
+  ],
+  "thresholdLuma": 6,
+  "rows": [
+    {
+      "file": "transition-baseline-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-baseline-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-chart-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-disk-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-mediant-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "transition-viewpoint-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    }
+  ]
+}

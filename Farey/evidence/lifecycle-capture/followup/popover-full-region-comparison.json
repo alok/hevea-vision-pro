@@ -1,0 +1,585 @@
+{
+  "resize": [
+    960,
+    540
+  ],
+  "thresholdLuma": 6,
+  "rows": [
+    {
+      "file": "popover-baseline-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-baseline-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-cf-closed-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-final-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-with-picker-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-home-without-picker-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-00.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-01.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-02.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-03.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-04.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-05.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-06.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-07.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-08.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-09.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-10.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    },
+    {
+      "file": "popover-picker-cancelled-11.png",
+      "changedFractions": {
+        "geometry": 0.0,
+        "controls": 0.0,
+        "whole": 0.0
+      }
+    }
+  ]
+}

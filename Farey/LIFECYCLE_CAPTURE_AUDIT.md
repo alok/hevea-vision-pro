@@ -29,3 +29,9 @@ For a video-only tour, run `python3 scripts/record-demo.py --output /tmp/farey-v
 See [evidence and results](evidence/lifecycle-capture/README.md). Apple's [`SceneEvents.Update`](https://developer.apple.com/documentation/realitykit/sceneevents/update) and [`Entity.isActive`](https://developer.apple.com/documentation/realitykit/entity/isactive) provide scene-state observations, not proof that a screenshot contains an entity's pixels.
 
 Actual immersive WebXR, hardware rendering and hand/gaze input remain unverified. No permission, signing, deployment or upload changes were made.
+
+## Controlled follow-up
+
+Additional unmodified-runtime controls did not reproduce the earlier partial scene. Forty idle captures after startup remained within one 8-bit channel value of the reference, including captures during video recording. Separate fixed-state groups covered individual viewpoint, mediant, disk and chart changes (60 captures), popover dismissal and Home/re-entry with the value fixed (72), and two picker commits (36). All three temporary UI scenarios passed. At the documented comparison threshold, none of those groups changed from its final frame.
+
+The first post-change samples occurred after XCTest had completed the action and relevant assertions; for the single-change test this was 0.45–1.50 seconds after the render log. These controls cannot rule out shorter transients or the earlier rapid mixed sequence. They show that simultaneous capture alone, simple state changes alone, and the tested popover sequences are insufficient to reproduce the problem consistently. The causal boundary remains unresolved; no app rendering workaround was added. See [parameters, fixtures and comparisons](evidence/lifecycle-capture/followup/README.md).

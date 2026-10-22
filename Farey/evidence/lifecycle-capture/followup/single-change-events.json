@@ -1,0 +1,46 @@
+[
+  {
+    "timestamp": "2026-10-22 09:48:20.597549-0700",
+    "event": "Open requested session 1"
+  },
+  {
+    "timestamp": "2026-10-22 09:48:21.504855-0700",
+    "event": "Immersive view appeared session 1"
+  },
+  {
+    "timestamp": "2026-10-22 09:48:21.513388-0700",
+    "event": "Open completed session 1"
+  },
+  {
+    "timestamp": "2026-10-22 09:48:21.675320-0700",
+    "event": "Rendered session 1: 168 lattice points \u00b7 2 on the rational ray \u00b7 0.048802959 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:48:31.446490-0700",
+    "event": "Rendered session 1: 168 lattice points \u00b7 2 on the rational ray \u00b7 0.016381667 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:48:38.735962-0700",
+    "event": "Rendered session 1: 168 lattice points \u00b7 1 on the rational ray \u00b7 0.010929833 seconds update"
+  },
+  {
+    "timestamp": "2026-10-22 09:48:45.686757-0700",
+    "event": "Rendered session 1: 253 Farey edges \u00b7 15 draw groups \u00b7 0.043481791 seconds update \u00b7 stationary"
+  },
+  {
+    "timestamp": "2026-10-22 09:48:53.436607-0700",
+    "event": "Rendered session 1: 92 projected direction dots \u00b7 q = 1 \u00b7 source grid: 168 points"
+  },
+  {
+    "timestamp": "2026-10-22 09:49:00.293414-0700",
+    "event": "Close requested session 1"
+  },
+  {
+    "timestamp": "2026-10-22 09:49:00.779798-0700",
+    "event": "Close completed session 1"
+  },
+  {
+    "timestamp": "2026-10-22 09:49:01.727662-0700",
+    "event": "Immersive view disappeared session 1"
+  }
+]
