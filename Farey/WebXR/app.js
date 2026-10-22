@@ -6,6 +6,7 @@ import { xrAvailability, controllerRay, captureView, restoreView } from './xr-su
 import { TapSelection, visibleIntersections } from './input.js';
 import { readSelection, writeSelection } from './recovery.js';
 import { boundaryProjection, ConstructionWalkthrough, constructionTitles } from './construction.js';
+import { sideBySideViewport, initialDesktopView, viewDistanceScale, axisLabelWorldSize } from './view.js';
 
 const $ = id => document.getElementById(id);
 const state = new FareyState();
@@ -65,6 +66,7 @@ origin.scale.setScalar(1.5); lattice.add(origin);
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let bound = savedSelection?.grid ?? 12, points = [], gridLines, session = null, startingXR = false, desktopView, aspectFit = 1;
+let minimumViewAspect = 0.85;
 let graphicsLost = false;
 let alternateCF = false;
 $('bound').value = String(bound);
@@ -481,11 +483,28 @@ function reset() {
   alternateCF = false;
   spotlight.clear();
   state.reset(); bound = 12; $('bound').value = '12'; rebuildGrid();
-  if (!session) { camera.position.set(3.3, 3.1, 2.1); controls.target.set(0, 1.75, -3.2); aspectFit = 1; fitAspect(); controls.update(); }
+  if (!session) resetView();
 }
-function render() { if (!graphicsLost) renderer.render(scene, camera); }
+const labelPosition = new THREE.Vector3();
+function render() {
+  if (graphicsLost) return;
+  camera.updateMatrixWorld();
+  for (const label of axisLabels) {
+    label.getWorldPosition(labelPosition).applyMatrix4(camera.matrixWorldInverse);
+    const size = session ? 0.18 : axisLabelWorldSize(-labelPosition.z, renderer.domElement.clientHeight, camera.fov, camera.zoom);
+    label.scale.set(size, size, 1);
+  }
+  renderer.render(scene, camera);
+}
+function resetView(front = false) {
+  const compact = innerWidth <= 700 || sideBySideViewport(innerWidth, innerHeight);
+  const center = lattice.localToWorld(new THREE.Vector3(...position({ p: 6, q: 6 })));
+  const view = initialDesktopView(center.toArray(), compact, front);
+  camera.position.fromArray(view.position); controls.target.fromArray(view.target);
+  minimumViewAspect = view.minimumAspect; aspectFit = 1; fitAspect(); controls.update();
+}
 function fitAspect() {
-  const next = Math.max(1, 0.85 / camera.aspect);
+  const next = viewDistanceScale(camera.aspect, minimumViewAspect);
   camera.position.sub(controls.target).multiplyScalar(next / aspectFit).add(controls.target);
   controls.maxDistance = 14 * next;
   aspectFit = next;
@@ -493,7 +512,7 @@ function fitAspect() {
 function resize() {
   if (session) return;
   const viewport = $('viewport');
-  const landscape = matchMedia('(max-height: 500px) and (orientation: landscape)').matches;
+  const landscape = sideBySideViewport(innerWidth, innerHeight);
   const phone = matchMedia('(max-width: 700px)').matches;
   viewport.style.top = phone || landscape ? `${document.querySelector('header').getBoundingClientRect().bottom + 12}px` : '0';
   viewport.style.bottom = landscape ? '12px' : phone ? `${innerHeight - document.querySelector('.controls').getBoundingClientRect().top + 12}px` : '0';
@@ -572,8 +591,7 @@ $('reset').onclick = () => { reset(); update(); };
 $('example').onclick = () => { state.select(3, 5); update(); };
 $('bound').onchange = () => { bound = Number($('bound').value); rebuildGrid(); update(); };
 $('view').onclick = () => {
-  camera.position.set(0, 2.5, 3.2); controls.target.set(0, 1.75, -3.2);
-  aspectFit = 1; fitAspect(); controls.update(); render();
+  resetView(true); render();
 };
 $('select-form').onsubmit = e => {
   e.preventDefault(); const [p, q] = $('rational').value.split('/').map(Number);
@@ -643,4 +661,4 @@ async function checkXR() {
   $('xr').title = availability.message;
   $('xr-status').textContent = availability.message;
 }
-rebuildGrid(); update(); resize(); checkXR();
+rebuildGrid(); resetView(); update(); resize(); checkXR();

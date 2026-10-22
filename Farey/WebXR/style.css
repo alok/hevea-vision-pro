@@ -62,6 +62,7 @@ details p { max-width: 60ch; } details[open] { max-height: 200px; overflow-y: au
 #hover { position: fixed; pointer-events: none; background: #11232fec; border: 1px solid #5a8099; border-radius: 7px; padding: 5px 10px; font: 13px ui-monospace, monospace; }
 body.immersive header, body.immersive .controls { display: none; }
 @media(max-width: 700px) { header { left: 20px; top: 18px; right: 16px; } .credit { font-size: 11px; } .controls { left: 12px; bottom: 12px; width: calc(100% - 24px); padding: 13px; } .hint { display: none; } .row { gap: 6px; } button { padding: 7px 10px; } }
+@media(max-width: 700px), (pointer: coarse) { #rational, #bound { font-size: 16px; } }
 @media(max-width: 700px) {
   .controls, .controls:has(#lesson:not([hidden])), .controls:has(#cf-inspector[open]), .controls:has(#construction:not([hidden])) { width: calc(100% - 24px); max-height: min(48svh, calc(100svh - 220px)); }
   .learning .controls > .row, .learning #matrix, .learning #receipt { display: none; }
@@ -70,7 +71,7 @@ body.immersive header, body.immersive .controls { display: none; }
   .constructing .controls > .row, .constructing #matrix, .constructing #vector-state,
   .constructing #point-inspection, .constructing #cf-inspector, .constructing #receipt { display: none; }
 }
-@media(max-height: 500px) and (orientation: landscape) {
+@media(max-height: 700px) and (min-width: 701px) {
   header { top: 12px; left: 20px; }
   .eyebrow, .hint { display: none; }
   h1 { font-size: 28px; margin: 0 0 6px; }

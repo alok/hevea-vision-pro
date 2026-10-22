@@ -23,6 +23,8 @@ CONTROLS AND STATE
 Drag to orbit, scroll to zoom, right-drag to pan. On touch screens, use one
 finger to rotate and two to pan/pinch. Focus the scene for arrow-key pan,
 Shift+arrows rotation, +/- zoom and Home/front view. The camera starts still.
+Compact screens center the grid more closely; short, wide windows place it
+beside the controls. Axis letters stay readable while you change the view.
 Use L/R, Undo, Reset, the 3/5 example, or a positive fraction such as 6/10.
 Point inspection keeps (10,6) separate from its primitive direction (5,3).
 Reload restores the validated selection and grid in this browser tab, but

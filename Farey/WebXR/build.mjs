@@ -14,7 +14,7 @@ let license = resolve(root, 'LICENSE');
 try { await access(license); } catch { license = resolve(root, '../../LICENSE'); }
 await rm(destination, { recursive: true, force: true });
 await mkdir(resolve(destination, 'vendor/addons/controls'), { recursive: true });
-const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'style.css'];
+const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'style.css'];
 for (const name of files) await copyFile(resolve(root, name), resolve(destination, name));
 const hash = content => createHash('sha256').update(content).digest('hex');
 const assetHash = async name => hash(await readFile(resolve(destination, name)));
@@ -22,7 +22,7 @@ const recovery = (await readFile(resolve(destination, 'recovery.js'), 'utf8'))
   .replace("'./core.js'", `'./core.js?v=${await assetHash('core.js')}'`);
 await writeFile(resolve(destination, 'recovery.js'), recovery);
 let app = await readFile(resolve(destination, 'app.js'), 'utf8');
-for (const name of ['core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js']) {
+for (const name of ['core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js']) {
   app = app.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
 }
 await writeFile(resolve(destination, 'app.js'), app);
@@ -63,9 +63,9 @@ Three.js ${dependency.version} is included under MIT; see vendor/THREE-LICENSE.t
 `);
 files.push('index.html', 'COPYING.txt', 'SOURCE.txt', 'README.txt', 'serve.py', 'vendor/three.module.js', 'vendor/three.core.js', 'vendor/addons/controls/OrbitControls.js', 'vendor/THREE-LICENSE.txt');
 await mkdir(resolve(destination, 'source'), { recursive: true });
-const sources = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'style.css', 'index.html',
+const sources = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'style.css', 'index.html',
   'build.mjs', 'package.json', 'package-lock.json', 'serve.py', 'PACKAGE_README.txt', 'package-smoke.mjs', 'smoke-offline.py', 'offline-checks.js',
-  'core.test.js', 'xr-support.test.js', 'input.test.js', 'recovery.test.js', 'construction.test.js', 'package-smoke.test.js'];
+  'core.test.js', 'xr-support.test.js', 'input.test.js', 'recovery.test.js', 'construction.test.js', 'view.test.js', 'package-smoke.test.js'];
 for (const name of sources) {
   await copyFile(resolve(root, name), resolve(destination, 'source', name));
   files.push(`source/${name}`);

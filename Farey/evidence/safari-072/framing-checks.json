@@ -1,0 +1,139 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "scene": {
+        "x": 0,
+        "y": 130.09375,
+        "width": 390,
+        "height": 209,
+        "top": 130.09375,
+        "right": 390,
+        "bottom": 339.09375,
+        "left": 0
+      },
+      "panel": {
+        "x": 12,
+        "y": 351.484375,
+        "width": 366,
+        "height": 335.515625,
+        "top": 351.484375,
+        "right": 378,
+        "bottom": 687,
+        "left": 12
+      },
+      "maxExtent": 0.7063809933778402,
+      "labelPixels": [
+        27.999999999999996,
+        27.99999999999999
+      ],
+      "selectionPreservedCamera": true,
+      "explicitZoomWorked": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scene": {
+        "x": 0,
+        "y": 130.09375,
+        "width": 390,
+        "height": 285,
+        "top": 130.09375,
+        "right": 390,
+        "bottom": 415.09375,
+        "left": 0
+      },
+      "panel": {
+        "x": 12,
+        "y": 426.890625,
+        "width": 366,
+        "height": 405.109375,
+        "top": 426.890625,
+        "right": 378,
+        "bottom": 832,
+        "left": 12
+      },
+      "maxExtent": 0.8645758059966323,
+      "labelPixels": [
+        27.99999999999997,
+        27.999999999999968
+      ],
+      "selectionPreservedCamera": true,
+      "explicitZoomWorked": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "scene": {
+        "x": 388.234375,
+        "y": 77.296875,
+        "width": 444,
+        "height": 301,
+        "top": 77.296875,
+        "right": 832.234375,
+        "bottom": 378.296875,
+        "left": 388.234375
+      },
+      "panel": {
+        "x": 12,
+        "y": 100,
+        "width": 364.234375,
+        "height": 278,
+        "top": 100,
+        "right": 376.234375,
+        "bottom": 378,
+        "left": 12
+      },
+      "maxExtent": 0.8020590632680945,
+      "labelPixels": [
+        27.999999999999986,
+        28.000000000000007
+      ],
+      "selectionPreservedCamera": true,
+      "explicitZoomWorked": true
+    },
+    {
+      "viewport": {
+        "width": 848,
+        "height": 562
+      },
+      "scene": {
+        "x": 390.078125,
+        "y": 77.296875,
+        "width": 446,
+        "height": 473,
+        "top": 77.296875,
+        "right": 836.078125,
+        "bottom": 550.296875,
+        "left": 390.078125
+      },
+      "panel": {
+        "x": 12,
+        "y": 105,
+        "width": 366.078125,
+        "height": 445,
+        "top": 105,
+        "right": 378.078125,
+        "bottom": 550,
+        "left": 12
+      },
+      "maxExtent": 0.8394841872892944,
+      "labelPixels": [
+        27.999999999999996,
+        27.99999999999996
+      ],
+      "selectionPreservedCamera": true,
+      "explicitZoomWorked": true
+    }
+  ],
+  "instrumentedRendererInspection": true,
+  "actualXRSession": false
+}

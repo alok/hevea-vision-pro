@@ -82,9 +82,11 @@ async (page) => {
       const layout = await mobile.tab.evaluate(() => {
         const scene = document.querySelector('#viewport').getBoundingClientRect();
         return { width: innerWidth, height: innerHeight, scrollWidth: document.documentElement.scrollWidth,
-          sceneWidth: scene.width, sceneHeight: scene.height };
+          sceneWidth: scene.width, sceneHeight: scene.height,
+          inputFontSize: parseFloat(getComputedStyle(document.querySelector('#rational')).fontSize) };
       });
       ensure(layout.scrollWidth <= layout.width && layout.sceneHeight > 80 && layout.sceneWidth > 80, 'Mobile layout hides the scene or overflows');
+      ensure(layout.inputFontSize >= 16, 'Small touch input can trigger Safari automatic zoom');
       ensure(await mobile.tab.locator('#word').textContent() === 'RLR', 'Offline mobile selection failed');
       layouts.push(layout);
       await mobile.tab.screenshot({ path: `output/playwright/offline-mobile-${size.width}.png` });

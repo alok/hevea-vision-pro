@@ -1,0 +1,150 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "view": "default",
+      "zoom": 1,
+      "dx": -4,
+      "firstPreview": "7/13",
+      "moves": 5,
+      "selected": "3/5"
+    },
+    {
+      "view": "default",
+      "zoom": 1,
+      "dx": -2,
+      "firstPreview": "5/9",
+      "moves": 3,
+      "selected": "3/5"
+    },
+    {
+      "view": "default",
+      "zoom": 1,
+      "dx": 0,
+      "firstPreview": "3/5",
+      "moves": 0,
+      "selected": "3/5"
+    },
+    {
+      "view": "default",
+      "zoom": 1,
+      "dx": 2,
+      "firstPreview": "7/11",
+      "moves": 3,
+      "selected": "3/5"
+    },
+    {
+      "view": "default",
+      "zoom": 1,
+      "dx": 4,
+      "firstPreview": "2/3",
+      "moves": 5,
+      "selected": "3/5"
+    },
+    {
+      "view": "front",
+      "zoom": 1,
+      "dx": -4,
+      "firstPreview": "5/12",
+      "moves": 11,
+      "selected": "3/5"
+    },
+    {
+      "view": "front",
+      "zoom": 1,
+      "dx": -2,
+      "firstPreview": "5/11",
+      "moves": 8,
+      "selected": "3/5"
+    },
+    {
+      "view": "front",
+      "zoom": 1,
+      "dx": 0,
+      "firstPreview": "1/2",
+      "moves": 6,
+      "selected": "3/5"
+    },
+    {
+      "view": "front",
+      "zoom": 1,
+      "dx": 2,
+      "firstPreview": "7/13",
+      "moves": 5,
+      "selected": "3/5"
+    },
+    {
+      "view": "front",
+      "zoom": 1,
+      "dx": 4,
+      "firstPreview": "7/12",
+      "moves": 1,
+      "selected": "3/5"
+    },
+    {
+      "view": "front",
+      "zoom": 2,
+      "dx": -4,
+      "firstPreview": "6/13",
+      "moves": 7,
+      "selected": "3/5"
+    },
+    {
+      "view": "front",
+      "zoom": 2,
+      "dx": -2,
+      "firstPreview": "6/13",
+      "moves": 7,
+      "selected": "3/5"
+    },
+    {
+      "view": "front",
+      "zoom": 2,
+      "dx": 0,
+      "firstPreview": "1/2",
+      "moves": 6,
+      "selected": "3/5"
+    },
+    {
+      "view": "front",
+      "zoom": 2,
+      "dx": 2,
+      "firstPreview": "1/2",
+      "moves": 6,
+      "selected": "3/5"
+    },
+    {
+      "view": "front",
+      "zoom": 2,
+      "dx": 4,
+      "firstPreview": "7/13",
+      "moves": 5,
+      "selected": "3/5"
+    }
+  ],
+  "exactSelectionRequired": true,
+  "previewAndCancelPreservePointLessonAndCamera": true,
+  "mobileTouchAndKeyboard": true,
+  "controllerActionWiringOnly": true,
+  "memoryBefore": {
+    "geometries": 6,
+    "textures": 2
+  },
+  "memoryAfter": {
+    "geometries": 6,
+    "textures": 2
+  },
+  "layouts": [
+    {
+      "width": 390,
+      "sceneHeight": 285,
+      "overflow": false
+    },
+    {
+      "width": 844,
+      "sceneHeight": 301,
+      "overflow": false
+    }
+  ],
+  "actualXRSession": false
+}

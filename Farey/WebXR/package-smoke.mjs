@@ -66,7 +66,7 @@ export async function auditPackage(directory) {
       }
     }
   }
-  for (const name of ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js']) {
+  for (const name of ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js']) {
     const code = await readFile(resolve(root, name), 'utf8');
     ensure(!/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon)\s*\(/.test(code), `Review new network API in ${name}`);
   }
