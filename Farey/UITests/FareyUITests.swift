@@ -24,9 +24,9 @@ import XCTest
     }
     return e
   }
-  func capture(_ name: String) {
+  func capture(_ name: String, holdFor seconds: TimeInterval = 1) {
     NSLog("FAREY_CAPTURE:%@", name)
-    Thread.sleep(forTimeInterval: 1)
+    Thread.sleep(forTimeInterval: seconds)
   }
   func enter() {
     let button = require("enter-void")
@@ -130,4 +130,30 @@ import XCTest
     }
   }
 
+  func testWorkedPathAndLinkedView() {
+    launch()
+    enter()
+    require("learn").tap()
+    XCTAssertTrue(require("lesson-fraction").label.contains("1/2"))
+    XCTAssertFalse(require("lesson-apply").isEnabled)
+    require("lesson-choice-1-3").tap()
+    require("lesson-apply").tap()
+    XCTAssertTrue(require("lesson-fraction").label.contains("2/3"))
+    XCTAssertTrue(require("lesson-explanation").label.contains("(2, 1) + (1, 1) = (3, 2)"))
+    capture("12-native-lesson-L", holdFor: 3)
+    require("lesson-next").tap()
+    require("lesson-choice-3-5").tap()
+    require("lesson-apply").tap()
+    XCTAssertTrue(require("lesson-fraction").label.contains("3/5"))
+    capture("13-native-lesson-R", holdFor: 3)
+    require("lesson-space").tap()
+    require("close-lesson").tap()
+    XCTAssertTrue(require("space-toggle").label.contains("Disk"))
+    XCTAssertTrue(require("fraction-state").label.contains("3/5"))
+    XCTAssertEqual(require("word-state").label, "RLR")
+    require("undo").tap()
+    XCTAssertEqual(require("word-state").label, "RL")
+    require("reset").tap()
+    exit()
+  }
 }

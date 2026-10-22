@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1546C25B5B69C6087DFAF0F3 /* FareyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0549EACD6E4122836B758D3 /* FareyUITests.swift */; };
 		3A67B96F5A7759B2CC7F8529 /* LatticeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63FB572D6099E361D159293 /* LatticeRenderer.swift */; };
+		50169C3BD73D6543F31F3CB4 /* LessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F584720C6B68F7C947C316B /* LessonView.swift */; };
 		5F38C89D70A4B786BB710179 /* ModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB734B50E45A64ECE5F3884 /* ModelTests.swift */; };
 		62EABEA463688C29F1F0C0BE /* FareyImmersiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A8C40F1F10750667FF8185 /* FareyImmersiveView.swift */; };
 		73D4D9B3EF25DBEC2BAE6BA1 /* SourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CA1AF8E6922227E35ACCFD /* SourcesView.swift */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		03A8C40F1F10750667FF8185 /* FareyImmersiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FareyImmersiveView.swift; sourceTree = "<group>"; };
 		0A0BAA4BDFFC63C26E4B3053 /* FareyVisionUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FareyVisionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0F584720C6B68F7C947C316B /* LessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonView.swift; sourceTree = "<group>"; };
 		409DEA44D4AE7090B139101D /* FareyVisionTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FareyVisionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FB734B50E45A64ECE5F3884 /* ModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTests.swift; sourceTree = "<group>"; };
 		A0549EACD6E4122836B758D3 /* FareyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FareyUITests.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				03A8C40F1F10750667FF8185 /* FareyImmersiveView.swift */,
 				CDC84E39F327BBA627416B47 /* FareyVisionApp.swift */,
 				A63FB572D6099E361D159293 /* LatticeRenderer.swift */,
+				0F584720C6B68F7C947C316B /* LessonView.swift */,
 				A9CA1AF8E6922227E35ACCFD /* SourcesView.swift */,
 			);
 			path = Sources;
@@ -207,6 +210,7 @@
 				62EABEA463688C29F1F0C0BE /* FareyImmersiveView.swift in Sources */,
 				FEF13136B389FB8C703B5E4A /* FareyVisionApp.swift in Sources */,
 				3A67B96F5A7759B2CC7F8529 /* LatticeRenderer.swift in Sources */,
+				50169C3BD73D6543F31F3CB4 /* LessonView.swift in Sources */,
 				73D4D9B3EF25DBEC2BAE6BA1 /* SourcesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,7 +328,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=xros*]" = "Apple Development";
 				"CODE_SIGN_STYLE[sdk=xros*]" = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 5795ZPYZ2T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Farey — Into the Infinite";
@@ -335,7 +339,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVision;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=xros*]" = "Lean Calculator Vision Pro 20261008";
 				SDKROOT = xros;
@@ -448,7 +452,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=xros*]" = "Apple Development";
 				"CODE_SIGN_STYLE[sdk=xros*]" = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 5795ZPYZ2T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Farey — Into the Infinite";
@@ -459,7 +463,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alok.FareyVision;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=xros*]" = "Lean Calculator Vision Pro 20261008";
 				SDKROOT = xros;

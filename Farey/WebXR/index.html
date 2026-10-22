@@ -17,7 +17,7 @@
     <p class="credit">Inspired by <strong>Katherine Stange</strong> · <a href="https://katestange.net/talks/math-exploration/">Original talk ↗</a> · <a href="https://www.katestange.net/code/">Visualizations ↗</a></p>
   </header>
   <section class="controls" aria-label="Farey controls">
-    <div class="state"><span id="word">Start</span><strong id="fraction">0/1 &lt; 1/1 &lt; ∞</strong></div>
+    <div class="state" aria-live="polite"><span id="word">Start</span><strong id="fraction">0/1 &lt; 1/1 &lt; ∞</strong></div>
     <div class="row">
       <button id="left" class="cyan">L</button><button id="right" class="purple">R</button>
       <button id="undo">Undo</button><button id="reset">Reset</button>
@@ -29,7 +29,7 @@
       <button id="view">Front view</button>
       <button id="learn">Learn a move</button>
     </div>
-    <p id="matrix"></p><p id="receipt" role="status"></p>
+    <p id="matrix"></p><p id="vector-state"></p><p id="receipt" role="status"></p>
     <section id="lesson" aria-label="Worked Farey moves" hidden>
       <strong id="lesson-question"></strong>
       <div id="lesson-choices" class="row"></div>

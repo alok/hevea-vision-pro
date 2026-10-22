@@ -21,12 +21,20 @@ import SwiftUI
   var error: String?
   var renderReceipt = "Preparing geometry"
   var revision = 0
-  func step(_ turn: Turn) { if state.step(turn) { revision += 1 } }
+  var lesson: LessonProgress?
+  func step(_ turn: Turn) {
+    if state.step(turn) {
+      lesson = nil
+      revision += 1
+    }
+  }
   func undo() {
+    lesson = nil
     state.undo()
     revision += 1
   }
   func reset() {
+    lesson = nil
     state.reset()
     depth = 6
     viewpoint = 0
@@ -34,13 +42,17 @@ import SwiftUI
     revision += 1
   }
   func select(_ point: LatticePoint) {
-    if state.select(point.rational) { revision += 1 }
+    if state.select(point.rational) {
+      lesson = nil
+      revision += 1
+    }
   }
   func toggleSpace() {
     latticeMode.toggle()
     revision += 1
   }
   func preset() {
+    lesson = nil
     state.select(Rational(3, 5))
     revision += 1
   }
@@ -51,6 +63,43 @@ import SwiftUI
   func changeView() {
     viewpoint = (viewpoint + 1) % 3
     revision += 1
+  }
+  func startLesson() {
+    reset()
+    state.select(Rational(1, 2))
+    lesson = LessonProgress()
+    revision += 1
+  }
+  func endLesson() { lesson = nil }
+  func predictLesson(_ choice: Rational) {
+    guard let progress = lesson, progress.explanation == nil, progress.choices.contains(choice)
+    else { return }
+    lesson?.prediction = choice
+  }
+  func applyLessonStep() {
+    guard var progress = lesson, progress.explanation == nil, let prediction = progress.prediction
+    else { return }
+    let turn = progress.turn
+    let old = turn == .l ? state.left : state.right
+    let middle = state.mediant
+    guard state.step(turn) else { return }
+    let left = state.left
+    let right = state.right
+    let result = state.mediant
+    let feedback =
+      prediction == result
+      ? "Your prediction matched." : "You predicted \(prediction); the result is \(result)."
+    progress.explanation =
+      "\(feedback) \(turn.rawValue) replaced \(old) with \(middle). "
+      + "The new neighbors are \(left) and \(right). Their lattice vectors add: "
+      + "(\(left.q), \(left.p)) + (\(right.q), \(right.p)) = (\(result.q), \(result.p)). "
+      + "The mediant is \(result)."
+    lesson = progress
+    revision += 1
+  }
+  func nextLessonStep() {
+    guard let progress = lesson, progress.index == 0, progress.explanation != nil else { return }
+    lesson = LessonProgress(index: 1)
   }
 }
 
@@ -201,6 +250,7 @@ struct ControlsView: View {
   @Environment(GalleryModel.self) private var model
   @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
   @State private var showSources = false
+  @State private var showLesson = false
   var body: some View {
     VStack(spacing: 12) {
       HStack(alignment: .firstTextBaseline) {
@@ -262,6 +312,11 @@ struct ControlsView: View {
         Button(["Front", "Left", "Right"][model.viewpoint]) { model.changeView() }
           .accessibilityIdentifier("viewpoint")
         Button("3/5 example") { model.preset() }.accessibilityIdentifier("example")
+        Button("Learn") {
+          model.startLesson()
+          showLesson = true
+        }.accessibilityIdentifier("learn")
+          .popover(isPresented: $showLesson, arrowEdge: .bottom) { LessonView() }
         Button("Sources") { showSources = true }.accessibilityIdentifier("sources")
       }.buttonStyle(.bordered).controlSize(.small)
       Text(

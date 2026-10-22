@@ -27,7 +27,7 @@ The build copies only application files, the required Three.js modules, GPL text
 
 On the intended Quest/Meta Browser and/or physical Vision Pro, test the published HTTPS URL with the user's explicit runtime consent. Record browser/OS versions and device type. Confirm an actual `immersive-vr` session, valid stereo views and rendered frames, then select fractions, use L/R, Undo and Reset, exit and re-enter three times. Check transient-pointer input on visionOS and controller rays on Quest. Check readability, stationary placement, comfort and performance on hardware separately.
 
-Do not describe desktop orbit or a positive capability query as an immersive-session test. The isolated visionOS simulator reported WebXR available, but Safari's welcome screen plus `kAXErrorAPIDisabled` prevented the entry action. No XR session or frame was observed. The native app's passing simulator tests do not close this WebXR gap.
+Do not describe desktop orbit or a positive capability query as an immersive-session test. The isolated visionOS simulator reported WebXR available and an actual mouse click reached Safari’s runtime consent prompt for device position and head-movement tracking. That permission was not granted. No XR session or frame was observed. The next XR acceptance step requires explicit runtime consent; the earlier XCTest accessibility blocker has been bypassed using existing macOS UI authorization without changing security settings. The native app's passing simulator tests do not close this WebXR gap.
 
 ## Rollback and stop conditions
 

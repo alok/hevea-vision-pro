@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-22",
+  "browser": "Chromium via Playwright",
+  "mockedNavigatorXR": true,
+  "actualXRSession": false,
+  "verified": [
+    "Enter VR disables duplicate entry while request is pending",
+    "Desktop L remains usable while the request waits",
+    "After eight seconds a waiting-for-browser message appears",
+    "NotAllowedError restores Enter VR and a usable desktop view"
+  ],
+  "selectedWhileWaiting": "1/1 < 2/1 < \u221e",
+  "result": "passed"
+}

@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-22",
+  "browser": "Safari 27.0.1",
+  "url": "http://127.0.0.1:8080/",
+  "actualBrowser": true,
+  "verified": [
+    "Learn a move starts at 1/2",
+    "Predict 2/3 and apply L",
+    "Predict 3/5 and apply R",
+    "Selected state and vector explanation agree"
+  ],
+  "selected": "1/2 < 3/5 < 2/3",
+  "word": "RLR",
+  "vectorEquation": "(2, 1) + (3, 2) = (5, 3)",
+  "pageConsoleMessages": [],
+  "navigatorXRExposed": false,
+  "actualXRSession": false,
+  "screenshot": "desktop-safari-lesson.png",
+  "note": "Captured before the final axis labels and portrait camera-fit refinement; the lesson logic is unchanged."
+}

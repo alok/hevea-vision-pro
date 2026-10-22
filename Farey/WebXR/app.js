@@ -44,7 +44,7 @@ const origin = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xfff
 origin.scale.setScalar(1.5); lattice.add(origin);
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
-let bound = 12, points = [], gridLines, session = null, startingXR = false, desktopView;
+let bound = 12, points = [], gridLines, session = null, startingXR = false, desktopView, aspectFit = 1;
 let lesson = null;
 const lessonSteps = [
   { turn: 'L', choices: ['1/3', '2/3', '3/2'] },
@@ -55,6 +55,10 @@ vrPanel.position.set(0, 1.15, -1.15);
 vrPanel.visible = false;
 scene.add(vrPanel);
 const vrTargets = [];
+const axisLabels = ['q', 'p'].map(text => {
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: makeText(text, 128, 128, '#000') }));
+  sprite.scale.set(0.18, 0.18, 1); lattice.add(sprite); return sprite;
+});
 
 function makeText(text, width, height, background = '#142b38') {
   const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
@@ -112,6 +116,8 @@ function rebuildGrid() {
   }
   const geometry = new THREE.BufferGeometry(); geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
   gridLines = new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({ color: 0x263743 })); lattice.add(gridLines);
+  axisLabels[0].position.fromArray(position({ p: 0, q: bound })).y += 0.14;
+  axisLabels[1].position.fromArray(position({ p: bound, q: 0 })).y += 0.14;
 }
 function update() {
   disposeGroup(selection);
@@ -141,6 +147,7 @@ function update() {
   $('word').textContent = state.word || 'Start';
   $('fraction').textContent = `${fraction(state.left)} < ${fraction(m)} < ${fraction(state.right)}`;
   $('matrix').textContent = `M = [${state.right.p} ${state.left.p}; ${state.right.q} ${state.left.q}] · det M = ${state.determinant} · ${state.word.length}/24 moves`;
+  $('vector-state').textContent = `Selected primitive vector (q,p) = (${m.q},${m.p})`;
   $('receipt').textContent = `${points.length} lattice points · ${points.filter(p => onRay(p.userData.point, m)).length} on this ray${inside ? '' : ' · primitive point beyond the finite grid'}`;
   $('left').disabled = $('right').disabled = state.word.length >= 24;
   $('undo').disabled = !state.word;
@@ -194,10 +201,20 @@ $('lesson-apply').onclick = () => {
 };
 function reset() {
   state.reset(); bound = 12; $('bound').value = '12'; rebuildGrid();
-  if (!session) { camera.position.set(3.3, 3.1, 2.1); controls.target.set(0, 1.75, -3.2); controls.update(); }
+  if (!session) { camera.position.set(3.3, 3.1, 2.1); controls.target.set(0, 1.75, -3.2); aspectFit = 1; fitAspect(); controls.update(); }
 }
 function render() { renderer.render(scene, camera); }
-function resize() { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); render(); }
+function fitAspect() {
+  const next = Math.max(1, 0.85 / camera.aspect);
+  camera.position.sub(controls.target).multiplyScalar(next / aspectFit).add(controls.target);
+  controls.maxDistance = 14 * next;
+  aspectFit = next;
+}
+function resize() {
+  camera.aspect = innerWidth / innerHeight;
+  if (!session) fitAspect();
+  camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); render();
+}
 function activate(hits) {
   if (!hits.length) return;
   const { object } = hits[0];
@@ -239,7 +256,10 @@ $('undo').onclick = () => { state.undo(); update(); };
 $('reset').onclick = () => { reset(); update(); };
 $('example').onclick = () => { state.select(3, 5); update(); };
 $('bound').onchange = () => { bound = Number($('bound').value); rebuildGrid(); update(); };
-$('view').onclick = () => { camera.position.set(0, 2.5, 3.2); controls.target.set(0, 1.75, -3.2); controls.update(); render(); };
+$('view').onclick = () => {
+  camera.position.set(0, 2.5, 3.2); controls.target.set(0, 1.75, -3.2);
+  aspectFit = 1; fitAspect(); controls.update(); render();
+};
 $('select-form').onsubmit = e => {
   e.preventDefault(); const [p, q] = $('rational').value.split('/').map(Number);
   if (state.select(p, q)) update();
@@ -257,15 +277,22 @@ renderer.xr.addEventListener('sessionend', () => {
 $('xr').onclick = async () => {
   if (startingXR || session) return;
   startingXR = true; $('xr').disabled = true;
+  $('xr').textContent = 'Waiting for VR…';
   desktopView = captureView(camera, controls);
+  const waiting = setTimeout(() => {
+    if (startingXR && !session) $('receipt').textContent = 'VR is waiting for the browser. Check its permission prompt; you can keep exploring here.';
+  }, 8000);
   try {
-    session = await navigator.xr.requestSession('immersive-vr', { optionalFeatures: ['local-floor', 'bounded-floor'] });
+    session = await navigator.xr.requestSession('immersive-vr', { optionalFeatures: ['local-floor'] });
     await renderer.xr.setSession(session);
     controls.enabled = false; vrPanel.visible = true; document.body.classList.add('immersive');
     renderer.setAnimationLoop(render);
   } catch (error) {
     await session?.end().catch(() => {}); session = null; startingXR = false;
-    $('xr').disabled = false; $('receipt').textContent = `VR entry cancelled or unavailable: ${error.message}`;
+    $('xr').disabled = false; $('xr').textContent = 'Enter VR';
+    $('receipt').textContent = 'VR entry was cancelled or unavailable. The desktop view is still ready.';
+  } finally {
+    clearTimeout(waiting);
   }
 };
 async function checkXR() {

@@ -1,0 +1,24 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "mockedNavigatorXR": false,
+  "afterL": "1/2 < 2/3 < 1/1",
+  "afterR": "1/2 < 3/5 < 2/3",
+  "vector": "Selected primitive vector (q,p) = (5,3)",
+  "errors": [],
+  "manifest": {
+    "COPYING.txt": "7190da7e65538198da782335faa64ff26d7d13997df620e4bb296a4a936949d9",
+    "SOURCE.txt": "ad019833b73833a18fc715c5dc221b11f2c3b8925741dd1077c88749219911c4",
+    "app.js": "474aaf97daf88c00b93fd88df9aba5bfe711e361eab541fbebe6ddc7651b4bb5",
+    "core.js": "2f89f0c201a8512b721964cfcbffe4367932511e7868c94ae02a6c0bd774d2bf",
+    "index.html": "3f9f09622f441f055493b7048a224940a38f1589c90b0d3c3f517f41f667ba5e",
+    "style.css": "e70096b49ee5ef404d005ee09878e47e0350b517c1a3592907933557b7fd1b16",
+    "vendor/THREE-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+    "vendor/addons/controls/OrbitControls.js": "b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c",
+    "vendor/three.core.js": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20",
+    "vendor/three.module.js": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a",
+    "xr-support.js": "f3776e7e2e1d975f3f3957685f8b6506a6efea291d33b84de1f95276464bd67e"
+  },
+  "date": "2026-10-22",
+  "version": "0.2.0",
+  "actualXRSession": false
+}

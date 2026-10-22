@@ -29,4 +29,27 @@ import XCTest
     model.preset()
     XCTAssertEqual(model.state.mediant, Rational(3, 5))
   }
+  func testWorkedPathUsesExactStateAndRejectsMissingPrediction() {
+    let model = GalleryModel()
+    model.startLesson()
+    XCTAssertEqual(model.state.mediant, Rational(1, 2))
+    model.applyLessonStep()
+    XCTAssertEqual(model.state.wordLabel, "R")
+    model.predictLesson(Rational(1, 3))
+    model.applyLessonStep()
+    XCTAssertEqual(model.state.mediant, Rational(2, 3))
+    XCTAssertTrue(model.lesson?.explanation?.contains("(2, 1) + (1, 1) = (3, 2)") == true)
+    model.nextLessonStep()
+    model.predictLesson(Rational(3, 5))
+    model.applyLessonStep()
+    XCTAssertEqual(model.state.mediant, Rational(3, 5))
+    XCTAssertEqual(model.state.wordLabel, "RLR")
+    model.toggleSpace()
+    XCTAssertNotNil(model.lesson)
+    model.undo()
+    XCTAssertNil(model.lesson)
+    XCTAssertEqual(model.state.mediant, Rational(2, 3))
+    model.reset()
+    XCTAssertEqual(model.state.wordLabel, "Start")
+  }
 }

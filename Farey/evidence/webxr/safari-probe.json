@@ -1,23 +1,48 @@
 {
+  "date": "2026-10-22",
   "runtime": "visionOS 27.2 (24N5093f)",
   "separateTemporarySimulator": true,
-  "capabilityEvents": [
+  "source": "Local companion served at http://127.0.0.1:8765 with a temporary observer; no source from Stange bundled.",
+  "events": [
     {
       "kind": "capability",
       "secure": true,
       "xr": true,
       "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.2 Safari/605.1.15",
-      "time": 1792638032.621325
+      "applicationSHA256": "f756cf058526e3fc11e1ad75c34c9c49e2d7b166b47bb4211cfc7f0be035fa61",
+      "time": 1792673539.609055
     },
     {
       "kind": "supported",
       "vr": true,
-      "time": 1792638034.361811
+      "time": 1792673539.6232178
+    },
+    {
+      "kind": "requested",
+      "mode": "immersive-vr",
+      "options": {
+        "optionalFeatures": [
+          "local-floor"
+        ]
+      },
+      "visible": "visible",
+      "focused": true,
+      "activeGesture": true,
+      "time": 1792673584.583182
     }
   ],
-  "sessionRequested": false,
+  "sessionRequested": true,
   "sessionStarted": false,
   "xrFramesObserved": 0,
-  "blocker": "Safari informational welcome screen remained visible; XCTest failed to get matching snapshots: Error getting main window kAXErrorAPIDisabled. No permission or security settings changed.",
-  "physicalHeadsetTested": false
+  "input": "Actual mouse click through existing macOS Accessibility authorization; visible document, focused page, active user gesture recorded.",
+  "blocker": {
+    "action": "Allow the localhost immersive experience to track device position and head movements",
+    "status": "Not performed; Safari runtime consent remained pending, then the isolated Safari process was closed.",
+    "title": "“127.0.0.1” Would Like to Launch an Immersive Experience",
+    "message": "“127.0.0.1” will be able to track your device’s position and head movements."
+  },
+  "permissionsOrSecuritySettingsChanged": false,
+  "physicalHeadsetTested": false,
+  "previousProbe": "safari-probe-initial.json",
+  "note": "This supersedes the initial welcome-screen / XCTest accessibility blocker. It is not a successful XR session test."
 }

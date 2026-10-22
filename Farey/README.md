@@ -22,6 +22,7 @@ Xcode 27.2 beta 2 and visionOS 27.2 are installed; the simulator is `D2ECE520-ED
 ## Explore
 
 - Tap a lattice sphere or a floating rational label to select its positive rational p/q, including reducible pairs such as 6/10.
+- **Learn** opens a worked path: predict and apply L at 1/2 to reach 2/3, then R to reach 3/5. Its vector explanation and linked disk use the same selected state.
 - **L** and **R** update the exact interval. **Undo** reverses one step. **3/5 example** reproduces the selected fraction used in our reference inspection.
 - The **green plane** contains the ray through (q,p). Every green lattice sphere is an exact integer multiple of that direction. The orange point is the primitive mediant; orange edges form its vector-addition parallelogram.
 - **Space: Lattice / Disk** switches the spatial representation while preserving the same rational and matrix.
