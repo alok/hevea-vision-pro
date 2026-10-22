@@ -33,6 +33,20 @@ export function position({ p, q }) {
   const s = 0.25 / Math.sqrt(2);
   return [(p - q) * s, 0, -(p + q) * s];
 }
+export function boundedDirectionEndpoint(rational, bound) {
+  const scale = bound / Math.max(rational.p, rational.q, 1);
+  return position({ p: rational.p * scale, q: rational.q * scale });
+}
+// Exact Float32 collisions only; marker width and pixel resolution can hide other differences.
+export function latticeDirectionsOverlap(state, bound) {
+  const fractions = [state.left, state.mediant, state.right];
+  const positions = fractions.map(rational => boundedDirectionEndpoint(rational, bound).map(Math.fround));
+  for (let i = 0; i < 2; i++) for (let j = i + 1; j < 3; j++) {
+    if (fractions[i].p * fractions[j].q !== fractions[j].p * fractions[i].q
+      && positions[i].every((value, index) => value === positions[j][index])) return true;
+  }
+  return false;
+}
 export function grid(bound) {
   const n = Math.min(14, Math.max(6, bound));
   const points = [];

@@ -1,0 +1,44 @@
+{
+  "nativeVersion": "0.8.1",
+  "nativeBuild": "11",
+  "browserVersion": "0.7.4",
+  "browserTests": 39,
+  "coreTests": 30,
+  "nativeTests": 17,
+  "browserArchive": "WebXR/output/Farey-WebXR-0.7.4.zip",
+  "archiveSHA256": "c8f21411829e6ba16c03f9f19979448ab144f008268a7bf5b8e7cdee6521ff89",
+  "archiveBytes": 501470,
+  "staticManifestSHA256": "017a82bfd7c3254a77722554c3b5d0f714522ca1e652c75e3d851db435079d9e",
+  "hardwareTested": false,
+  "actualWebXRSession": false,
+  "images": {
+    "001-deep-precision-lattice.png": {
+      "sha256": "92051d997dfccf7a2230ecae11419e8d7b95908a1b4c6a5f9e5871785cadd525",
+      "size": [
+        3840,
+        2160
+      ]
+    },
+    "002-deep-precision-disk.png": {
+      "sha256": "1291487d494ba8aa5c57af1f91f24374c86e9772ef5bcf072f132fafcaa72216",
+      "size": [
+        3840,
+        2160
+      ]
+    },
+    "precision-static-desktop.png": {
+      "sha256": "96668180735f0eb75289a0d96473af6df5218347b66033c8ba5519b7d781783e",
+      "size": [
+        1440,
+        1000
+      ]
+    },
+    "precision-static-phone.png": {
+      "sha256": "0782d4695d6b2ec5c1818bfe3a118afcc825b3d7009503123590b41fe7583a79",
+      "size": [
+        390,
+        844
+      ]
+    }
+  }
+}

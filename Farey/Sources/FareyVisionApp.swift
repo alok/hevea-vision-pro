@@ -28,6 +28,14 @@ import SwiftUI
   var projectedSelection: ProjectedSelection?
   var animateConstruction = false
   var constructionMoving = false
+  var precisionNotice: String? {
+    guard constructionStage == nil else { return nil }
+    let overlaps = latticeMode
+      ? DisplayPrecision.latticeOverlaps(state, bound: depth * 2)
+      : DisplayPrecision.diskOverlaps(state)
+    guard overlaps else { return nil }
+    return "Display overlap: distinct fractions can look identical here. Read the exact values above."
+  }
   func spotlightPoint(_ point: Rational) {
     constructionMoving = false
     if spotlight.focus(point, in: state, alternate: alternateCF) { revision += 1 }

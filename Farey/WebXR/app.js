@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { ApproximantSpotlight, FareyState, ProjectedSelection, continuedFraction, fraction, grid, onRay, position, primitive } from './core.js';
+import { ApproximantSpotlight, FareyState, ProjectedSelection, boundedDirectionEndpoint, latticeDirectionsOverlap, continuedFraction, fraction, grid, onRay, position, primitive } from './core.js';
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
 import { TapSelection, visibleIntersections } from './input.js';
 import { readSelection, writeSelection } from './recovery.js';
@@ -110,6 +110,10 @@ const vrCredit = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.08), new THREE.Me
 vrCredit.position.y = -0.1; vrPanel.add(vrCredit);
 const vrCFLegend = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.06), new THREE.MeshBasicMaterial({ map: makeText('Gold: convergents · gray: intermediate mediants', 1800, 128, '#080f16') }));
 vrCFLegend.position.y = 0.19; vrPanel.add(vrCFLegend);
+const vrPrecision = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.06), new THREE.MeshBasicMaterial({
+  map: makeText('Display overlap · exact fractions remain distinct', 1800, 128, '#080f16')
+}));
+vrPrecision.position.y = 0.27; vrPrecision.visible = false; vrPanel.add(vrPrecision);
 const vrPickPanel = new THREE.Group(); vrPickPanel.position.y = -0.33; vrPanel.add(vrPickPanel);
 panelButton('Previous', -0.27, () => moveProjectedPick(-1), vrPickPanel, false);
 panelButton('Select', -0.09, confirmProjectedPick, vrPickPanel, false);
@@ -197,8 +201,7 @@ function update({ animateConstruction = false } = {}) {
     if (state.selectedPoint && point.p === state.selectedPoint.p && point.q === state.selectedPoint.q && !primitive(point)) key = 'inspected';
     mesh.material = materials[key]; mesh.scale.setScalar(['selected', 'inspected'].includes(key) ? 1.65 : 1);
   }
-  const scale = bound / Math.max(m.p, m.q);
-  const end = position({ p: m.p * scale, q: m.q * scale }), h = 0.65;
+  const end = boundedDirectionEndpoint(m, bound), h = 0.65;
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, ...end, 0, h, 0, end[0], h, end[2]], 3));
   geometry.setIndex([0, 1, 2, 2, 1, 3]); geometry.computeVertexNormals();
@@ -320,6 +323,14 @@ function describeScene(moving = false) {
     receipt = `${points.length} lattice points · ${points.filter(p => onRay(p.userData.point, m)).length} on this ray`
       + (m.p <= bound && m.q <= bound ? '' : ' · primitive point beyond the finite grid');
   }
+  const overlap = construction.stage === null && latticeDirectionsOverlap(state, bound);
+  const notice = overlap
+    ? 'Display overlap: distinct fractions can look identical here. Read the exact values above.' : '';
+  const precisionNotice = $('precision-notice');
+  precisionNotice.hidden = !overlap;
+  if (precisionNotice.textContent !== notice) precisionNotice.textContent = notice;
+  vrPrecision.visible = overlap;
+  if (notice) description += ` ${notice}`;
   $('viewport').setAttribute('aria-label', name);
   renderer.domElement.setAttribute('aria-label', name);
   $('geometry-description').textContent = description;

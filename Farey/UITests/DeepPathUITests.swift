@@ -2,6 +2,38 @@
 import XCTest
 
 extension FareyUITests {
+  func testPrecisionNoticeAppearsOnlyForIndistinguishableDirections() throws {
+    app = XCUIApplication()
+    app.terminate()
+    Self.launched = false
+    launch()
+    enter()
+    require("example").tap()
+    XCTAssertFalse(element("precision-notice").exists)
+    require("reset").tap()
+    for character in String(repeating: "LR", count: 12) {
+      require(character == "L" ? "step-L" : "step-R").tap()
+    }
+    let word = require("word-state").label
+    XCTAssertFalse(element("precision-notice").exists)
+    require("detail-more").tap()
+    XCTAssertTrue(require("precision-notice").label.contains("Read the exact values"))
+    XCTAssertTrue(require("fraction-state").label.contains("121393/75025"))
+    try captureDeepState("precision-lattice", word: word, target: "121393/75025")
+    require("space-toggle").tap()
+    XCTAssertTrue(require("precision-notice").label.contains("distinct fractions"))
+    XCTAssertEqual(require("word-state").label, word)
+    try captureDeepState("precision-disk", word: word, target: "121393/75025")
+    require("construction-start").tap()
+    XCTAssertFalse(element("precision-notice").exists)
+    require("construction-close").tap()
+    XCTAssertTrue(element("precision-notice").exists)
+    XCTAssertEqual(require("word-state").label, word)
+    require("reset").tap()
+    XCTAssertFalse(element("precision-notice").exists)
+    exit()
+  }
+
   func testDeepDiskPathsAndExactLabels() throws {
     app = XCUIApplication()
     app.terminate()
@@ -60,6 +92,7 @@ extension FareyUITests {
       "fraction": require("fraction-state").label, "matrix": require("matrix-state").label,
       "space": require("space-toggle").label, "viewpoint": require("viewpoint").label,
       "explanation": require("geometry-explanation").label, "receipt": require("render-receipt").label,
+      "precisionNotice": element("precision-notice").exists ? element("precision-notice").label : "",
       "recordedAt": Date().timeIntervalSince1970,
     ]
     let attachment = XCTAttachment(

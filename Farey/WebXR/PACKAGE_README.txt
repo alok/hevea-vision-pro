@@ -41,6 +41,11 @@ closes lessons and temporary spotlights. Reset clears the selection and view.
 A new browser profile starts at 1/1. Storage isolation policies may differ
 when duplicating an existing tab. Closing a tab normally ends its session.
 
+A small display-overlap notice appears when distinct interval directions
+have identical single-precision display coordinates. The exact fractions
+remain different. It is a conservative test: close directions may still
+look overlapped without triggering it. Geometry and selection do not move.
+
 XR AND GRAPHICS
 Desktop/touch 3D does not require a headset. Unsupported WebXR leaves these
 controls available. WebXR needs a compatible browser/device and runtime

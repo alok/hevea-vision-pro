@@ -3,6 +3,26 @@ import XCTest
 @testable import FareyVision
 
 @MainActor final class ModelTests: XCTestCase {
+  func testPrecisionNoticeTracksTheViewWithoutChangingExactState() {
+    let model = GalleryModel()
+    model.preset()
+    XCTAssertNil(model.precisionNotice)
+    model.reset()
+    for _ in 0..<12 { model.step(.l); model.step(.r) }
+    let exact = model.state
+    XCTAssertNil(model.precisionNotice)
+    model.changeDepth(1)
+    XCTAssertNotNil(model.precisionNotice)
+    model.toggleSpace()
+    XCTAssertNotNil(model.precisionNotice)
+    model.startConstruction()
+    XCTAssertNil(model.precisionNotice)
+    model.endConstruction()
+    XCTAssertNotNil(model.precisionNotice)
+    XCTAssertEqual(model.state, exact)
+    model.reset()
+    XCTAssertNil(model.precisionNotice)
+  }
   func testResetRestoresPresentationAndBounds() {
     let model = GalleryModel()
     model.step(.l)

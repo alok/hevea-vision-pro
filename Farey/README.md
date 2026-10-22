@@ -1,6 +1,6 @@
 # Farey — Into the Infinite
 
-[First-use readiness audit](READER_READINESS.md) — native 0.8 / browser 0.7.3. [Safari and compact-view audit](MOBILE_SAFARI.md). [Lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) · [Native integration check](INTEGRATION_08.md). [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
+[Precision notice](PRECISION_NOTICE.md) — native 0.8.1 / browser 0.7.4. [Previous first-use audit](READER_READINESS.md) — native 0.8 / browser 0.7.3. [Safari and compact-view audit](MOBILE_SAFARI.md). [Lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) · [Native integration check](INTEGRATION_08.md). [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
 
 [Independent mathematical consistency audit](MATHEMATICAL_AUDIT.md): exact rational state agrees across implementations; very close deep disk curves can merge at display precision. Read exact fractions when interpreting overlapping arcs.
 

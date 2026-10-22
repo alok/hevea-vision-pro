@@ -117,6 +117,11 @@ struct ControlsView: View {
       .font(.caption).foregroundStyle(.secondary)
       .fixedSize(horizontal: false, vertical: true)
       .accessibilityIdentifier("geometry-explanation")
+      if let notice = model.precisionNotice {
+        Text(notice).font(.caption).foregroundStyle(.secondary)
+          .fixedSize(horizontal: false, vertical: true)
+          .accessibilityIdentifier("precision-notice")
+      }
       if let inspection = model.state.inspection {
         if model.constructionStage != nil {
           ConstructionControls()

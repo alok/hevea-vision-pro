@@ -1,0 +1,26 @@
+[
+  {
+    "explanation": "Green: \u221e to p/q. Orange: the L/R path. Both views share the same exact interval.",
+    "fraction": "46368/28657  <  121393/75025  <  75025/46368",
+    "matrix": "M = [75025  46368; 46368  28657]    det M = 1    \u2022    24/24 moves",
+    "name": "precision-disk",
+    "precisionNotice": "Display overlap: distinct fractions can look identical here. Read the exact values above.",
+    "receipt": "509 Farey edges",
+    "recordedAt": 1792691792.420912,
+    "space": "Space: Disk",
+    "viewpoint": "Front",
+    "word": "LRLRLRLRLRLRLRLRLRLRLRLR"
+  },
+  {
+    "explanation": "Direction plane shown. The primitive point lies beyond this finite grid.",
+    "fraction": "46368/28657  <  121393/75025  <  75025/46368",
+    "matrix": "M = [75025  46368; 46368  28657]    det M = 1    \u2022    24/24 moves",
+    "name": "precision-lattice",
+    "precisionNotice": "Display overlap: distinct fractions can look identical here. Read the exact values above.",
+    "receipt": "224 lattice points",
+    "recordedAt": 1792691783.906137,
+    "space": "Space: Lattice",
+    "viewpoint": "Front",
+    "word": "LRLRLRLRLRLRLRLRLRLRLRLR"
+  }
+]

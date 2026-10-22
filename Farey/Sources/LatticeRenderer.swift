@@ -71,9 +71,7 @@ import SwiftUI
   }
 
   private func planeEndpoint(_ rational: Rational, bound: Int) -> SIMD3<Float> {
-    let largest = max(Float(rational.p), Float(rational.q), 1)
-    let scale = Float(bound) / largest
-    return position(p: Float(rational.p) * scale, q: Float(rational.q) * scale)
+    DisplayPrecision.latticeEndpoint(rational, bound: bound)
   }
 
   func render(

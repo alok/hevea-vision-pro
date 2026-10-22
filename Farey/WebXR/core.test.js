@@ -1,6 +1,32 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ApproximantSpotlight, FareyState, continuedFraction, grid, inspectPoint, onRay, position, primitive } from './core.js';
+import { ApproximantSpotlight, FareyState, boundedDirectionEndpoint, latticeDirectionsOverlap, continuedFraction, grid, inspectPoint, onRay, position, primitive } from './core.js';
+
+test('Float32 direction collision is detected for the known deep path at every grid bound', () => {
+  const state = new FareyState();
+  for (const turn of 'LR'.repeat(12)) state.step(turn);
+  const exact = JSON.stringify(state);
+  for (let bound = 6; bound <= 14; bound++) assert.equal(latticeDirectionsOverlap(state, bound), true);
+  assert.deepEqual(state.mediant, { p: 121393, q: 75025 });
+  assert.equal(JSON.stringify(state), exact);
+});
+
+test('Ordinary and close-but-distinct directions do not trigger the precision notice', () => {
+  for (const word of ['', 'RLR', 'LRLRRRLLRLLRLLLLLRR', 'L'.repeat(24), 'R'.repeat(24)]) {
+    const state = new FareyState();
+    for (const turn of word) state.step(turn);
+    for (let bound = 6; bound <= 14; bound++) assert.equal(latticeDirectionsOverlap(state, bound), false, word);
+  }
+});
+
+test('Unreduced inspection is not a collision and the plane endpoint keeps its original formula', () => {
+  const state = new FareyState(); state.select(6, 10);
+  assert.equal(latticeDirectionsOverlap(state, 12), false);
+  for (const rational of [state.left, state.mediant, state.right, { p: 121393, q: 75025 }]) {
+    const scale = 12 / Math.max(rational.p, rational.q);
+    assert.deepEqual(boundedDirectionEndpoint(rational, 12), position({ p: rational.p * scale, q: rational.q * scale }));
+  }
+});
 
 test('L/R convention, mediant and unimodular basis', () => {
   const s = new FareyState();
