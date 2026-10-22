@@ -1,0 +1,94 @@
+{
+  "version": "0.2.1",
+  "date": "2026-10-22",
+  "runtime": "Chromium via Playwright",
+  "actualXRSession": false,
+  "sourceWalkthrough": {
+    "passed": true,
+    "keyboardLesson": true,
+    "layout": {
+      "scene": {
+        "x": 0,
+        "y": 130.09375,
+        "width": 390,
+        "height": 382.90625,
+        "top": 130.09375,
+        "right": 390,
+        "bottom": 513,
+        "left": 0
+      },
+      "controls": {
+        "x": 12,
+        "y": 525,
+        "width": 366,
+        "height": 307,
+        "top": 525,
+        "right": 378,
+        "bottom": 832,
+        "left": 12
+      }
+    },
+    "limitAndRecovery": true,
+    "reducibleSelection": true,
+    "invalidSelectionRejected": true,
+    "portraitLandscapeReset": true,
+    "pageErrors": []
+  },
+  "staticWalkthrough": {
+    "passed": true,
+    "keyboardLesson": true,
+    "layout": {
+      "scene": {
+        "x": 0,
+        "y": 130.09375,
+        "width": 390,
+        "height": 327.90625,
+        "top": 130.09375,
+        "right": 390,
+        "bottom": 458,
+        "left": 0
+      },
+      "controls": {
+        "x": 12,
+        "y": 525,
+        "width": 366,
+        "height": 307,
+        "top": 525,
+        "right": 378,
+        "bottom": 832,
+        "left": 12
+      }
+    },
+    "limitAndRecovery": true,
+    "reducibleSelection": true,
+    "invalidSelectionRejected": true,
+    "portraitLandscapeReset": true,
+    "pageErrors": []
+  },
+  "assetValidation": {
+    "checks": {
+      "app.js": {
+        "versioned": true,
+        "matches": true
+      },
+      "style.css": {
+        "versioned": true,
+        "matches": true
+      }
+    },
+    "manifest": {
+      "COPYING.txt": "7190da7e65538198da782335faa64ff26d7d13997df620e4bb296a4a936949d9",
+      "SOURCE.txt": "ad019833b73833a18fc715c5dc221b11f2c3b8925741dd1077c88749219911c4",
+      "app.js": "436a5a28cb25b026d802d6a9b6a4d293786ddca8f7191ea48017fdd233ed67b5",
+      "core.js": "2f89f0c201a8512b721964cfcbffe4367932511e7868c94ae02a6c0bd774d2bf",
+      "index.html": "4cee6d53227f0c07c037be299f555f90f5170a3aaae927a351bec0a50d927d65",
+      "style.css": "7cba2fb7b173d97b3fb8f111645736e478059429fc461c38755b019405f0006e",
+      "vendor/THREE-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+      "vendor/addons/controls/OrbitControls.js": "b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c",
+      "vendor/three.core.js": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20",
+      "vendor/three.module.js": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a",
+      "xr-support.js": "f3776e7e2e1d975f3f3957685f8b6506a6efea291d33b84de1f95276464bd67e"
+    },
+    "source": "http://127.0.0.1:8081/?revision=021"
+  }
+}

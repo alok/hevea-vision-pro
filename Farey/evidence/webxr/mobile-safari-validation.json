@@ -1,0 +1,160 @@
+{
+  "date": "2026-10-22",
+  "device": "iPhone 17e simulator",
+  "runtime": "iOS 27.2 (24B5089g)",
+  "browser": "Mobile Safari",
+  "input": "Real mouse taps routed through Device Hub to the simulated touch screen",
+  "inspection": "Temporary local wrapper reports DOM selection and viewport after taps; no inspection hook is bundled.",
+  "verified": [
+    "Visible lattice and controls",
+    "Predict and apply L: 1/2 to 2/3",
+    "Predict and apply R: 2/3 to 3/5",
+    "Close lesson",
+    "Undo: 3/5 to 2/3",
+    "Reset: initial 1/1"
+  ],
+  "events": [
+    {
+      "fraction": "0/1 < 1/1 < ∞",
+      "word": "",
+      "lesson": false,
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "gl": {
+        "geometries": 14,
+        "textures": 2
+      },
+      "time": 1792674383.889211
+    },
+    {
+      "fraction": "0/1 < 1/2 < 1/1",
+      "word": "R",
+      "lesson": true,
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "gl": {
+        "geometries": 14,
+        "textures": 2
+      },
+      "time": 1792674417.531796
+    },
+    {
+      "fraction": "0/1 < 1/2 < 1/1",
+      "word": "R",
+      "lesson": true,
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "gl": {
+        "geometries": 14,
+        "textures": 2
+      },
+      "time": 1792674456.059078
+    },
+    {
+      "fraction": "1/2 < 2/3 < 1/1",
+      "word": "RL",
+      "lesson": true,
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "gl": {
+        "geometries": 14,
+        "textures": 2
+      },
+      "time": 1792674479.805396
+    },
+    {
+      "fraction": "1/2 < 2/3 < 1/1",
+      "word": "RL",
+      "lesson": true,
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "gl": {
+        "geometries": 14,
+        "textures": 2
+      },
+      "time": 1792674511.6625931
+    },
+    {
+      "fraction": "1/2 < 2/3 < 1/1",
+      "word": "RL",
+      "lesson": true,
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "gl": {
+        "geometries": 14,
+        "textures": 2
+      },
+      "time": 1792674549.5581791
+    },
+    {
+      "fraction": "1/2 < 3/5 < 2/3",
+      "word": "RLR",
+      "lesson": true,
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "gl": {
+        "geometries": 14,
+        "textures": 2
+      },
+      "time": 1792674554.569559
+    },
+    {
+      "fraction": "1/2 < 3/5 < 2/3",
+      "word": "RLR",
+      "lesson": false,
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "gl": {
+        "geometries": 14,
+        "textures": 2
+      },
+      "time": 1792674609.600103
+    },
+    {
+      "fraction": "1/2 < 2/3 < 1/1",
+      "word": "RL",
+      "lesson": false,
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "gl": {
+        "geometries": 14,
+        "textures": 2
+      },
+      "time": 1792674641.7301388
+    },
+    {
+      "fraction": "0/1 < 1/1 < ∞",
+      "word": "",
+      "lesson": false,
+      "viewport": {
+        "width": 390,
+        "height": 699
+      },
+      "gl": {
+        "geometries": 14,
+        "textures": 2
+      },
+      "time": 1792674645.97182
+    }
+  ],
+  "physicalDeviceTested": false,
+  "actualXRSession": false
+}

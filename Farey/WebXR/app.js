@@ -161,21 +161,29 @@ function startLesson() {
   reset(); state.select(1, 2);
   lesson = { step: 0, phase: 'predict', guess: null, word: state.word };
   update();
+  $('lesson-choices').firstElementChild?.focus({ preventScroll: true });
 }
 function renderLesson() {
   $('lesson').hidden = !lesson;
-  if (!lesson) return;
+  document.body.classList.toggle('learning', !!lesson);
+  if (!lesson) { $('lesson-choices').replaceChildren(); return; }
   const step = lessonSteps[lesson.step];
   const predicting = lesson.phase === 'predict';
   $('lesson-question').textContent = predicting
     ? `Selected: ${fraction(state.mediant)}. After ${step.turn}, which rational will be selected?`
     : `Selected after ${step.turn}: ${fraction(state.mediant)}`;
-  $('lesson-choices').replaceChildren();
-  if (predicting) for (const choice of step.choices) {
-    const button = document.createElement('button'); button.textContent = choice;
-    button.setAttribute('aria-pressed', String(lesson.guess === choice));
-    button.onclick = () => { lesson.guess = choice; renderLesson(); };
-    $('lesson-choices').append(button);
+  const choices = $('lesson-choices');
+  if (!predicting) choices.replaceChildren();
+  else {
+    if (choices.dataset.step !== String(lesson.step) || !choices.childElementCount) {
+      choices.replaceChildren(...step.choices.map(choice => {
+        const button = document.createElement('button'); button.textContent = choice;
+        button.onclick = () => { lesson.guess = choice; renderLesson(); };
+        return button;
+      }));
+      choices.dataset.step = String(lesson.step);
+    }
+    for (const button of choices.children) button.setAttribute('aria-pressed', String(lesson.guess === button.textContent));
   }
   $('lesson-apply').hidden = !predicting;
   $('lesson-apply').disabled = !lesson.guess;
@@ -187,8 +195,11 @@ function renderLesson() {
 }
 $('learn').onclick = startLesson;
 $('lesson-restart').onclick = startLesson;
-$('lesson-close').onclick = () => { lesson = null; renderLesson(); };
-$('lesson-next').onclick = () => { lesson = { step: 1, phase: 'predict', guess: null, word: state.word }; renderLesson(); };
+$('lesson-close').onclick = () => { lesson = null; renderLesson(); $('learn').focus({ preventScroll: true }); };
+$('lesson-next').onclick = () => {
+  lesson = { step: 1, phase: 'predict', guess: null, word: state.word }; renderLesson();
+  $('lesson-choices').firstElementChild?.focus({ preventScroll: true });
+};
 $('lesson-apply').onclick = () => {
   if (!lesson || !lesson.guess || lesson.phase !== 'predict') return;
   const turn = lessonSteps[lesson.step].turn;
@@ -198,6 +209,7 @@ $('lesson-apply').onclick = () => {
   lesson.explanation = `${lesson.guess === fraction(m) ? 'Your prediction matched.' : `You predicted ${lesson.guess}; the selected fraction is ${fraction(m)}.`} ${turn} replaced ${old} with ${middle}. The new neighbors are ${fraction(a)} and ${fraction(b)}. Their lattice vectors add: (${a.q},${a.p}) + (${b.q},${b.p}) = (${m.q},${m.p}), so the mediant is ${fraction(m)}.`;
   lesson.phase = 'explain'; lesson.word = state.word;
   update();
+  $(lesson.step === 0 ? 'lesson-next' : 'lesson-close').focus({ preventScroll: true });
 };
 function reset() {
   state.reset(); bound = 12; $('bound').value = '12'; rebuildGrid();
@@ -211,9 +223,19 @@ function fitAspect() {
   aspectFit = next;
 }
 function resize() {
-  camera.aspect = innerWidth / innerHeight;
-  if (!session) fitAspect();
-  camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); render();
+  if (session) return;
+  const viewport = $('viewport');
+  const phone = matchMedia('(max-width: 700px)').matches;
+  viewport.style.top = phone ? `${document.querySelector('header').getBoundingClientRect().bottom + 12}px` : '0';
+  viewport.style.bottom = phone ? `${innerHeight - document.querySelector('.controls').getBoundingClientRect().top + 12}px` : '0';
+  const width = viewport.clientWidth, height = Math.max(1, viewport.clientHeight);
+  camera.aspect = width / height;
+  fitAspect();
+  camera.updateProjectionMatrix(); renderer.setSize(width, height); render();
+}
+function setPointer(event) {
+  const rect = renderer.domElement.getBoundingClientRect();
+  pointer.set((event.clientX - rect.left) / rect.width * 2 - 1, 1 - (event.clientY - rect.top) / rect.height * 2);
 }
 function activate(hits) {
   if (!hits.length) return;
@@ -226,7 +248,7 @@ let down;
 renderer.domElement.addEventListener('pointerdown', e => { down = [e.clientX, e.clientY]; });
 renderer.domElement.addEventListener('pointermove', e => {
   if (session || e.buttons) { $('hover').hidden = true; return; }
-  pointer.set(e.clientX / innerWidth * 2 - 1, 1 - e.clientY / innerHeight * 2);
+  setPointer(e);
   raycaster.setFromCamera(pointer, camera);
   const point = raycaster.intersectObjects(points)[0]?.object.userData.point;
   $('hover').hidden = !point;
@@ -238,7 +260,7 @@ renderer.domElement.addEventListener('pointermove', e => {
 renderer.domElement.addEventListener('pointerleave', () => { $('hover').hidden = true; });
 renderer.domElement.addEventListener('pointerup', e => {
   if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5 || session) return;
-  pointer.set(e.clientX / innerWidth * 2 - 1, 1 - e.clientY / innerHeight * 2);
+  setPointer(e);
   raycaster.setFromCamera(pointer, camera); activate(raycaster.intersectObjects(points));
 });
 for (let i = 0; i < 2; i++) {
@@ -267,6 +289,9 @@ $('select-form').onsubmit = e => {
 };
 controls.addEventListener('change', render);
 window.addEventListener('resize', resize);
+const layoutObserver = new ResizeObserver(resize);
+layoutObserver.observe(document.querySelector('header'));
+layoutObserver.observe(document.querySelector('.controls'));
 renderer.xr.addEventListener('sessionend', () => {
   session = null; startingXR = false; vrPanel.visible = false; controls.enabled = true;
   if (desktopView) restoreView(desktopView, camera, controls);

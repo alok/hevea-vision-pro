@@ -1,11 +1,11 @@
 {
   "name": "farey-into-the-infinite",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
-    "start": "python3 -m http.server 8080 --bind 127.0.0.1",
+    "start": "python3 serve.py",
     "test": "node --test core.test.js xr-support.test.js"
   },
   "dependencies": {

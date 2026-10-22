@@ -11,9 +11,9 @@ npm test
 npm start
 ```
 
-Open **http://127.0.0.1:8080**. The server binds only to this Mac. Node.js, npm and Python 3 are required. Three.js is pinned to 0.180.0 with an integrity hash in the lockfile. No network dependency is used at runtime after installation.
+Open **http://127.0.0.1:8080**. The server binds only to this Mac and disables development caching so edits cannot mix stale styles with new code. Node.js, npm and Python 3 are required. Three.js is pinned to 0.180.0 with an integrity hash in the lockfile. No network dependency is used at runtime after installation.
 
-Drag to orbit, scroll to zoom, right-drag to pan. Hover a sphere to read its integer pair and click to select its rational direction. L/R, Undo, Reset, the 3/5 example and fraction entry share one exact state. Grid size is capped at 14 (224 nonzero points). Rendering is event-driven on desktop; XR uses the headset animation loop. Reset restores the initial geometry and view.
+Drag to orbit, scroll to zoom, right-drag to pan. Hover a sphere to read its integer pair and click to select its rational direction. L/R, Undo, Reset, the 3/5 example and fraction entry share one exact state. Grid size is capped at 14 (224 nonzero points). On narrow screens the lattice occupies a separate visible area above the controls, and the lesson keeps only its relevant actions visible. Rendering is event-driven on desktop; XR uses the headset animation loop. Reset restores the initial geometry and view.
 
 ## Immersive VR
 
@@ -34,3 +34,14 @@ No Stange JavaScript, media or meshes are bundled. This is an independent implem
 ## Worked path
 
 Choose **Learn a move** to begin at 1/2. Predict the result of L, apply the actual operation, and compare the selected 2/3 point with the vector equation. Continue with R to reach 3/5. The explanation is computed from the same exact state as the lattice. Undo or another manual selection closes a stale lesson; Reset restores the ordinary starting state. This is a teaching interaction, not a claim of measured educational efficacy.
+
+## Browser regression walkthrough
+
+With the local server running, the optional Playwright CLI walkthrough checks keyboard-only lesson completion, focus retention, phone layout, exact reset/undo state, invalid input, reducible fractions and the 24-move limit:
+
+```sh
+playwright-cli open http://127.0.0.1:8080/
+playwright-cli run-code "$(cat browser-checks.js)"
+```
+
+This uses a separately installed Playwright CLI; it is not a runtime dependency. The same walkthrough passed against the built artifact. Actual iPhone 17e **simulator** Safari also completed the lesson, Undo and Reset. See [mobile evidence](../evidence/webxr/mobile-safari-validation.json). Physical iPhone, headset input and immersive WebXR remain separate validation steps.

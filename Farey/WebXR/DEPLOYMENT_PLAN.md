@@ -10,10 +10,10 @@ From `Farey/WebXR`, run:
 npm ci --ignore-scripts
 npm test
 npm run build
-python3 -m http.server 8081 --bind 127.0.0.1 --directory dist
+python3 serve.py --port 8081 --directory dist
 ```
 
-The build copies only application files, the required Three.js modules, GPL text, MIT dependency license and source link into `dist/`. It rewrites the import map to use those local modules. `manifest.json` gives SHA-256 hashes for the eleven payload files. Tests, node_modules, reference images, private context and native recordings are excluded. No bundler, remote CDN, API key, runtime API or server function is needed.
+The build copies only application files, the required Three.js modules, GPL text, MIT dependency license and source link into `dist/`. It rewrites the import map to use those local modules and adds content hashes to app, stylesheet and application-module URLs. `manifest.json` gives SHA-256 hashes for the eleven payload files. Tests, node_modules, reference images, private context and native recordings are excluded. No bundler, remote CDN, API key, runtime API or server function is needed.
 
 ## Publication settings once a destination is authorized
 

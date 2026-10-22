@@ -1,0 +1,36 @@
+{
+  "version": "0.2.1",
+  "runtime": "Chromium WebGL via temporary localhost inspection wrapper",
+  "scope": "Renderer object counts, not frame rate or physical memory measurement",
+  "procedure": "10 warmup move/reset pairs; four rounds of 50 L/R operations, five grid changes and repeated resets; sampled after returning to default state each round.",
+  "result": {
+    "warm": {
+      "geometries": 14,
+      "textures": 2,
+      "programs": 6
+    },
+    "runs": [
+      {
+        "geometries": 14,
+        "textures": 2,
+        "programs": 6
+      },
+      {
+        "geometries": 14,
+        "textures": 2,
+        "programs": 6
+      },
+      {
+        "geometries": 14,
+        "textures": 2,
+        "programs": 6
+      },
+      {
+        "geometries": 14,
+        "textures": 2,
+        "programs": 6
+      }
+    ],
+    "finalFraction": "0/1 < 1/1 < ∞"
+  }
+}

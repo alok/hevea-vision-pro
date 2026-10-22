@@ -13,9 +13,18 @@ await rm(destination, { recursive: true, force: true });
 await mkdir(resolve(destination, 'vendor/addons/controls'), { recursive: true });
 const files = ['app.js', 'core.js', 'xr-support.js', 'style.css'];
 for (const name of files) await copyFile(resolve(root, name), resolve(destination, name));
+const hash = content => createHash('sha256').update(content).digest('hex');
+const assetHash = async name => hash(await readFile(resolve(destination, name)));
+let app = await readFile(resolve(destination, 'app.js'), 'utf8');
+for (const name of ['core.js', 'xr-support.js']) {
+  app = app.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
+}
+await writeFile(resolve(destination, 'app.js'), app);
 const html = (await readFile(resolve(root, 'index.html'), 'utf8'))
   .replace('./node_modules/three/build/three.module.js', './vendor/three.module.js')
-  .replace('./node_modules/three/examples/jsm/', './vendor/addons/');
+  .replace('./node_modules/three/examples/jsm/', './vendor/addons/')
+  .replace('href="style.css"', `href="style.css?v=${await assetHash('style.css')}"`)
+  .replace('src="app.js"', `src="app.js?v=${await assetHash('app.js')}"`);
 await writeFile(resolve(destination, 'index.html'), html);
 for (const name of ['three.module.js', 'three.core.js']) {
   await copyFile(resolve(vendor, 'build', name), resolve(destination, 'vendor', name));

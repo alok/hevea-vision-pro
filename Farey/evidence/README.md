@@ -1,3 +1,11 @@
+# Browser 0.2.1: usable mobile lesson and reliable refresh
+
+Actual iPhone 17e simulator Safari on iOS 27.2 completed [L](webxr/mobile-safari-L.png), [R](webxr/mobile-safari-R.png), Undo and [Reset](webxr/mobile-safari-reset.png). The [record](webxr/mobile-safari-validation.json) contains the selected states after real Device Hub taps. The lattice remains visible above the lesson controls. This is a mobile browser simulator test, not a physical phone or WebXR headset test.
+
+The [automated browser walkthrough](webxr/browser-021-validation.json) passed against source and built output: keyboard focus through both lesson moves and Close, visible phone scene, reset/undo, 24-move cap and recovery, grid limits, reducible fraction selection and rejection of an unreachable fraction. Content-hashed app/CSS URLs matched their manifest. Eight JavaScript tests passed. A projected click on the relocated canvas selected 3/2, verifying the updated pointer coordinates.
+
+[Renderer resource counts](webxr/resource-stability.json) stayed at 14 geometries, 2 textures and 6 programs across four rounds of 50 moves with grid changes and resets. This measures renderer object stability, not frame rate, total memory or hardware performance. The temporary inspection wrapper is not shipped. Native 0.2 remains unchanged and available in the original simulator.
+
 # Version 0.2: worked path and browser readiness
 
 [Current native 3/5 scene](spatial/showcase-02.png) · [Native L explanation](spatial/lesson-L.png) · [Native R explanation](spatial/lesson-R.png) · [Desktop Safari lesson](webxr/desktop-safari-lesson.png) · [Portrait browser](webxr/portrait.png)
