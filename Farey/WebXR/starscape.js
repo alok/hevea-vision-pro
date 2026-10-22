@@ -5,7 +5,7 @@ import { examples, vector, project, upperRoot, discriminant, height, kind, coeff
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
 import { TapSelection, nearestToRay } from './input.js';
 import { cameraPlaneLabel } from './camera-planes.js';
-import { coefficientColor, gradientCSS, paletteRange, glyphRadius, glyphScale, outlinePixels } from './appearance.js';
+import { coefficientColor, gradientCSS, paletteRange, glyphRadius, glyphScale, outlinePixels, drawnPixels, pixelsPerWorld, sourceRadiusFactor } from './appearance.js';
 import { pairPlane, planeSection, coneDirections, necklaceMembers } from './pair-plane.js';
 const $ = id => document.getElementById(id);
 let radius = 6, whole = true, symmetricColor = false, projectionVisible = false;
@@ -14,7 +14,7 @@ let session = null, savedView = null, startingXR = false;
 let inhabited=false, overviewView=null, lookDrag=null, look={yaw:0,pitch:0};
 const overviewFov=45, originFov=100;
 let categories='contrast', glyphKey=null, focusGlyphs=[];
-let secondSelection=null, pairMessage='', pairGlyphs=[];
+let secondSelection=null, pairMessage='', pairGlyphs=[], planeMembers=new Set(), baseColors=[], originMode=false;
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ antialias: true }); }
 catch {
@@ -77,6 +77,7 @@ function rebuild() {
   glyphKey=null;
   disposeChildren(cloud); disposeChildren(disk); disposeChildren(cone);
   points = coefficientLattice(radius).filter(p=>whole || kind(p)==='upper');
+  baseColors = points.map(pointColor);
   cloudMesh = new THREE.InstancedMesh(sphere, cloudMaterial, points.length);
   points.forEach((p,i)=>{ cloudMesh.setMatrixAt(i,matrix.makeTranslation(...physical(vector(p)).toArray())); cloudMesh.setColorAt(i,pointColor(p)); });
   cloudMesh.instanceMatrix.needsUpdate=true; cloudMesh.instanceColor.needsUpdate=true;
@@ -107,6 +108,7 @@ function updatePair() {
   $('pair-details').hidden=!secondSelection;$('pair-clear').hidden=!secondSelection;
   if(!secondSelection)return;
   const plane=pairPlane(selected,secondSelection), members=necklaceMembers(plane,points);
+  planeMembers=new Set(members.map(p=>p.join()));
   const root=upperRoot(positiveRepresentative(secondSelection));
   $('pair-second').textContent=`Second point: (${secondSelection.join(', ')}) · Δ = ${discriminant(secondSelection)} · root ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i`;
   $('pair-equation').textContent=`Plane: ${plane.equation}`;
@@ -124,19 +126,18 @@ function updatePair() {
   focus.add(lines(directions.map(p=>[p.map(x=>-radius*scale*x),p.map(x=>radius*scale*x)]),0xffba6b,0.7));
   if(points.some(p=>p.every((x,i)=>x===secondSelection[i]))) {
     const marker=new THREE.Mesh(sphere,pairMaterial);marker.position.copy(physical(vector(secondSelection)));
-    focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels});
+    focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels,point:secondSelection});
   }
   if(projectionVisible)focus.add(lines([directions.map(p=>p.map(x=>height*scale*x))],0xffba6b,0.9));
 }
 function update() {
-  points.forEach((p,i)=>cloudMesh.setColorAt(i,pointColor(p)));
-  cloudMesh.instanceColor.needsUpdate=true;
+  baseColors=points.map(pointColor);planeMembers=new Set();
   disposeChildren(focus);focusGlyphs=[];pairGlyphs=[];glyphKey=null; disk.visible=projectionVisible; cone.visible=$('cone').checked;
   const inCloud=points.some(p=>p.every((x,i)=>x===selected[i]));
   if(inCloud) {
     focus.add(lines([[[0,0,0],physical(vector(selected)).toArray()]],0xbacbd6,0.35));
     const marker=new THREE.Mesh(sphere,selectionMaterial);
-    marker.position.copy(physical(vector(selected)));focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels});
+    marker.position.copy(physical(vector(selected)));focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels,point:selected});
   }
   const representative=positiveRepresentative(selected);
   if(projectionVisible && representative && inCloud) {
@@ -157,25 +158,35 @@ function update() {
   $('palette-low').textContent=lo;$('palette-high').textContent=hi;
   render();
 }
-const tempLocal=new THREE.Vector3(),tempWorld=new THREE.Vector3();
+const tempLocal=new THREE.Vector3(),tempWorld=new THREE.Vector3(),tempColor=new THREE.Color();
+// Which of her size causes applies: the origin-eye rule in Origin mode, plane emphasis for upper members.
+const radiusFactor=p=>sourceRadiusFactor(p,{origin:originMode,onPlane:!originMode&&kind(p)==='upper'&&planeMembers.has(p.join()),symmetric:symmetricColor});
 function updateGlyphSizes(){
   if(!cloudMesh)return;
   camera.updateMatrixWorld();world.updateMatrixWorld(true);
   const height=renderer.domElement.clientHeight;
-  const key=camera.matrixWorld.elements.join(',')+'|'+height+'|'+camera.zoom+'|'+session;
+  const key=camera.matrixWorld.elements.join(',')+'|'+height+'|'+camera.zoom+'|'+session+'|'+camera.fov;
   if(key===glyphKey)return;glyphKey=key;
+  // Her overview fog: alpha falls by up to 55% between d−0.7R and d+0.9R from the eye (none in eye mode).
+  const d=camera.position.distanceTo(controls.target), R=radius*scale, fogNear=Math.max(0.1*scale,d-0.7*R), fogFar=d+0.9*R;
   points.forEach((p,i)=>{
     tempLocal.copy(physical(vector(p)));
     tempWorld.copy(tempLocal).applyMatrix4(world.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
-    const size=session?1:glyphScale(-tempWorld.z,height,camera.fov,camera.zoom);
+    const depth=-tempWorld.z, factor=radiusFactor(p);
+    let size=1, dim=1;
+    if(!session&&depth>0){
+      const base=glyphRadius*pixelsPerWorld(depth,height,camera.fov,camera.zoom), drawn=drawnPixels(base*factor);
+      size=drawn.px/base;dim=drawn.dim*(inhabited?1:1-0.55*THREE.MathUtils.smoothstep(depth,fogNear,fogFar));
+    }
     matrix.makeScale(size,size,size);matrix.setPosition(tempLocal);cloudMesh.setMatrixAt(i,matrix);
+    cloudMesh.setColorAt(i,tempColor.copy(baseColors[i]).multiplyScalar(dim));
   });
-  cloudMesh.instanceMatrix.needsUpdate=true;
+  cloudMesh.instanceMatrix.needsUpdate=true;cloudMesh.instanceColor.needsUpdate=true;
   for(const item of pairGlyphs) {
     item.points.forEach((p,i)=>{
       tempLocal.copy(physical(vector(p)));
       tempWorld.copy(tempLocal).applyMatrix4(world.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
-      const size=session?1.2:glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,0.65);
+      const size=session?1.2:glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,0.65,radiusFactor(p));
       matrix.makeScale(size,size,size);matrix.setPosition(tempLocal);item.mesh.setMatrixAt(i,matrix);
     });
     item.mesh.instanceMatrix.needsUpdate=true;item.mesh.computeBoundingSphere();
@@ -183,7 +194,7 @@ function updateGlyphSizes(){
   origin.visible=!eyeAtOrigin();
   for(const item of [{mesh:origin,extra:0},...focusGlyphs]){
     tempWorld.copy(item.mesh.position).applyMatrix4(world.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
-    item.mesh.scale.setScalar(session?(item.extra?1.4:1):glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,item.extra));
+    item.mesh.scale.setScalar(session?(item.extra?1.4:1):glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,item.extra,item.point?radiusFactor(item.point):1));
   }
 }
 function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();renderer.render(scene,camera);}}
@@ -209,20 +220,20 @@ function beginEgocentric(){
   renderer.domElement.focus({preventScroll:true});
 }
 function enterInhabit() {
-  beginEgocentric();camera.fov=overviewFov;camera.updateProjectionMatrix();
+  beginEgocentric();originMode=false;camera.fov=overviewFov;camera.updateProjectionMatrix();
   camera.position.copy(world.position).add(physical(vector(selected))).add(new THREE.Vector3(0.10,0.12,0.10));
   const aim=world.position.clone();aim.y=camera.position.y;camera.lookAt(aim);
   const e=new THREE.Euler().setFromQuaternion(camera.quaternion,'YXZ');look={yaw:e.y,pitch:e.x};applyLook();
 }
-// The coordinate origin is the zero form: an ambient viewpoint, not a polynomial. Every line of sight from it is
-// one projective class, and looking along +Y the perspective image of the upper nappe is the Klein disk.
+// The coordinate origin is the zero polynomial: no unique root or projective point, and radial projection is
+// undefined. Every line of sight from it is one projective class of nonzero forms, and looking along +Y the perspective image of the upper nappe is the Klein disk.
 function enterOrigin() {
-  beginEgocentric();camera.fov=originFov;camera.updateProjectionMatrix();
+  beginEgocentric();originMode=true;glyphKey=null;camera.fov=originFov;camera.updateProjectionMatrix();
   camera.position.copy(world.position);look={yaw:0,pitch:Math.PI/2};applyLook();
 }
 function leaveInhabit() {
   if(!inhabited)return;
-  inhabited=false;controls.enabled=true;camera.near=0.05;camera.fov=overviewFov;camera.updateProjectionMatrix();
+  inhabited=false;originMode=false;glyphKey=null;controls.enabled=true;camera.near=0.05;camera.fov=overviewFov;camera.updateProjectionMatrix();
   if(overviewView)restoreView(overviewView,camera,controls);overviewView=null;
   $('navigation').hidden=true;$('inhabit').textContent='Inhabit';$('view').disabled=false;
   $('origin').setAttribute('aria-pressed','false');render();

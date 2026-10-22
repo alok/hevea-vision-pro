@@ -47,14 +47,41 @@ export function gradientCSS() {
   return `linear-gradient(to right,${stops.join(',')})`;
 }
 
-// Glyphs are drawn as flat discs whose on-screen radius stays within these CSS-pixel bounds:
-// near points stop growing (point-like), far points stay large enough to show their color.
-// Centers never move; only the drawn radius changes.
+// Dot sizes reproduce the causes in Stange's viewer (constants from its public bundle, read 2026-10-22):
+// a world-space star radius, perspective (radius · focal / depth), and a minimum footprint below which
+// the dot keeps that size and dims by (px/min)². In her whole-lattice mode the world radius is 0.15 for
+// every primitive point, 0.72 of that for a nonprimitive upper star, ×1.35 for upper stars on a selected
+// plane, and with the eye at the origin 0.06·|Δ|^¼/√(a+c) for upper stars (off-cone points fade out there). Seen from the origin along the axis,
+// depth is a+c, so apparent radius ∝ |Δ|^¼/(a+c)^{3/2} = |Δ|^{-½}·(1−|u|²)^{¾} at Klein position u:
+// 1/√|Δ| times a model-position factor, and exactly 1/√|Δ| along one ray of multiples.
+// Our departures: the base radius is relative to our smaller crop; above `knee` pixels the radius
+// grows only as the cube root, capped at `capPixels`, so near dots stay point-like; and the minimum
+// footprint is 1 CSS pixel instead of her 0.6 so colors stay readable; at the origin we keep off-cone
+// points visible at the standard radius and size the lower interior by the same rule through |a+c|.
 export const glyphRadius = 0.013;
-export const glyphPixels = { min: 1.25, max: 3 };
+export const sizePixels = { min: 1, knee: 2.5, cap: 9 };
 export const outlinePixels = 1.25;
-export function glyphScale(depth, viewportHeight, fovDegrees, zoom=1, extraPixels=0) {
+export function sourceRadiusFactor(point, { origin=false, onPlane=false, symmetric=false } = {}) {
+  const type=kind(point);
+  if(type==='null'||type==='exterior')return 1;
+  if(origin)return 0.4*Math.abs(discriminant(point))**0.25/Math.sqrt(Math.abs(point[0]+point[2]));
+  if(type==='lower'&&!symmetric)return 1;
+  const g=point.reduce((x,y)=>{x=Math.abs(x);y=Math.abs(y);while(y)[x,y]=[y,x%y];return x;},0);
+  return (g===1?1:0.72)*(onPlane?1.35:1);
+}
+// Maps a perspective radius to the drawn radius and the color factor that stands in for her alpha
+// (the background is black, so alpha over it is a scale of the color).
+export function drawnPixels(pixels) {
+  if(!(pixels>0))return { px: sizePixels.min, dim: 0 };
+  if(pixels<sizePixels.min)return { px: sizePixels.min, dim: (pixels/sizePixels.min)**2 };
+  const { knee, cap } = sizePixels;
+  return { px: Math.min(cap, pixels<=knee?pixels:knee*Math.cbrt(pixels/knee)), dim: 1 };
+}
+export const pixelsPerWorld = (depth, viewportHeight, fovDegrees, zoom=1) =>
+  viewportHeight*zoom/(2*depth*Math.tan(fovDegrees*Math.PI/360));
+// Scale applied to a glyph of radius glyphRadius so it draws at drawnPixels(...) plus extraPixels.
+export function glyphScale(depth, viewportHeight, fovDegrees, zoom=1, extraPixels=0, factor=1) {
   if(!(depth>0)||!(viewportHeight>0))return 1;
-  const pixels=glyphRadius*viewportHeight*zoom/(2*depth*Math.tan(fovDegrees*Math.PI/360));
-  return (clamp(pixels,glyphPixels.min,glyphPixels.max)+extraPixels)/pixels;
+  const base=glyphRadius*pixelsPerWorld(depth,viewportHeight,fovDegrees,zoom);
+  return (drawnPixels(base*factor).px+extraPixels)/base;
 }
