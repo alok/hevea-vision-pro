@@ -1,0 +1,9 @@
+{
+  "expectedNativeTestMethods": {
+    "Tests": 16,
+    "UITests": 17
+  },
+  "xcode": "Xcode 27.2\nBuild version 27B5028f",
+  "xcodegen": "Version: 2.46.0",
+  "macOS": "ProductName:\t\tmacOS\nProductVersion:\t\t27.0.1\nBuildVersion:\t\t26A434"
+}

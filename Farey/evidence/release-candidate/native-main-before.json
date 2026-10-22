@@ -1,0 +1,9 @@
+{
+  "CFBundleIdentifier": "com.alok.FareyVision",
+  "CFBundleDisplayName": "Farey \u2014 Into the Infinite",
+  "CFBundleVersion": "10",
+  "CFBundleShortVersionString": "0.8",
+  "CFBundleSupportedPlatforms": [
+    "XRSimulator"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "exact": "46368/28657 < 121393/75025 < 75025/46368",
+  "phoneNotice": {
+    "x": 26,
+    "y": 757.890625,
+    "width": 338,
+    "height": 36
+  },
+  "pageErrors": [],
+  "actualXRSession": false
+}

@@ -1,0 +1,23 @@
+{
+  "main-081-showcase.png": {
+    "sha256": "634b3b235cb6a1e1f44ec8b51e55b61642421d8b3c6e34e6666ebc7bb684c7b5",
+    "size": [
+      3840,
+      2160
+    ]
+  },
+  "offline-desktop.png": {
+    "sha256": "7b138e81c84f48cfb13c34f722ffbc3b091fb9203aa6ed97954a2157be82b698",
+    "size": [
+      1440,
+      1000
+    ]
+  },
+  "offline-mobile-390.png": {
+    "sha256": "27c8cb7f394f93ea2a6eb803e5d978e79e2aa7f53cc51ed2119c553a8826e347",
+    "size": [
+      390,
+      844
+    ]
+  }
+}

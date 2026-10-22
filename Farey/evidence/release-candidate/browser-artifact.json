@@ -1,0 +1,8 @@
+{
+  "version": "0.7.4",
+  "archive": "WebXR/output/Farey-WebXR-0.7.4.zip",
+  "archiveBytes": 501470,
+  "archiveSHA256": "c8f21411829e6ba16c03f9f19979448ab144f008268a7bf5b8e7cdee6521ff89",
+  "manifestSHA256": "017a82bfd7c3254a77722554c3b5d0f714522ca1e652c75e3d851db435079d9e",
+  "actualWebXRSession": false
+}

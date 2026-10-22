@@ -1,0 +1,85 @@
+{
+  "artifact": "/private/tmp/farey-rc-browser/Farey-WebXR-0.7.4",
+  "version": "0.7.4",
+  "static": {
+    "passed": true,
+    "payloadFiles": 44,
+    "runtimeScripts": 11,
+    "runtimeModules": 10,
+    "manifestSHA256": "017a82bfd7c3254a77722554c3b5d0f714522ca1e652c75e3d851db435079d9e"
+  },
+  "browser": {
+    "passed": true,
+    "browser": "155.0.8059.86",
+    "origin": "http://127.0.0.1:55162",
+    "path": "/Farey-WebXR-0.7.4/",
+    "freshProfile": true,
+    "savedPointAndGridRestored": true,
+    "malformedStorageRejected": true,
+    "loadedPageWorksWithBrowserOffline": true,
+    "offlineReloadError": "page.reload: net::ERR_INTERNET_DISCONNECTED",
+    "layouts": [
+      {
+        "width": 390,
+        "height": 844,
+        "scrollWidth": 390,
+        "sceneWidth": 390,
+        "sceneHeight": 284.796875,
+        "inputFontSize": 16
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "scrollWidth": 844,
+        "sceneWidth": 443.765625,
+        "sceneHeight": 300.703125,
+        "inputFontSize": 16
+      }
+    ],
+    "unavailableWebGL": "mocked context creation failure",
+    "missingModulesExplained": [
+      "app.js",
+      "view.js"
+    ],
+    "javaScriptDisabledExplained": true,
+    "expectedErrors": [
+      "WebGL unavailable"
+    ],
+    "xrStatus": "No immersive VR device is available in this browser. Desktop exploration is available.",
+    "runtimeRequests": 95,
+    "uniqueRuntimePaths": [
+      "/Farey-WebXR-0.7.4/",
+      "/Farey-WebXR-0.7.4/style.css",
+      "/Farey-WebXR-0.7.4/load-status.js",
+      "/Farey-WebXR-0.7.4/app.js",
+      "/Farey-WebXR-0.7.4/vendor/three.module.js",
+      "/Farey-WebXR-0.7.4/vendor/addons/controls/OrbitControls.js",
+      "/Farey-WebXR-0.7.4/core.js",
+      "/Farey-WebXR-0.7.4/xr-support.js",
+      "/Farey-WebXR-0.7.4/input.js",
+      "/Farey-WebXR-0.7.4/recovery.js",
+      "/Farey-WebXR-0.7.4/construction.js",
+      "/Farey-WebXR-0.7.4/view.js",
+      "/Farey-WebXR-0.7.4/vendor/three.core.js"
+    ],
+    "externalRequests": [],
+    "badResponses": [],
+    "mimeTypes": {
+      "/Farey-WebXR-0.7.4/": "text/html",
+      "/Farey-WebXR-0.7.4/style.css": "text/css",
+      "/Farey-WebXR-0.7.4/load-status.js": "text/javascript",
+      "/Farey-WebXR-0.7.4/app.js": "text/javascript",
+      "/Farey-WebXR-0.7.4/vendor/addons/controls/OrbitControls.js": "text/javascript",
+      "/Farey-WebXR-0.7.4/vendor/three.module.js": "text/javascript",
+      "/Farey-WebXR-0.7.4/core.js": "text/javascript",
+      "/Farey-WebXR-0.7.4/xr-support.js": "text/javascript",
+      "/Farey-WebXR-0.7.4/recovery.js": "text/javascript",
+      "/Farey-WebXR-0.7.4/input.js": "text/javascript",
+      "/Farey-WebXR-0.7.4/view.js": "text/javascript",
+      "/Farey-WebXR-0.7.4/construction.js": "text/javascript",
+      "/Farey-WebXR-0.7.4/vendor/three.core.js": "text/javascript"
+    },
+    "errors": [],
+    "actualXRSession": false
+  }
+}

@@ -2,6 +2,31 @@
 import XCTest
 
 extension FareyUITests {
+  func testShowcaseLaunchAndReadback() throws {
+    #if DEBUG
+    continueAfterFailure = false
+    app = XCUIApplication()
+    app.launchArguments = ["--showcase"]
+    app.launch()
+    Self.launched = true
+    XCTAssertEqual(require("word-state").label, "RLR")
+    XCTAssertTrue(require("fraction-state").label.contains("3/5"))
+    XCTAssertTrue(require("space-toggle").label.contains("Lattice"))
+    XCTAssertEqual(require("viewpoint").label, "Left")
+    XCTAssertTrue(require("render-receipt").wait(for: \.label, toEqual: "168 lattice points", timeout: 20))
+    XCTAssertFalse(element("precision-notice").exists)
+    try captureDeepState("showcase", word: "RLR", target: "3/5")
+    require("step-L").tap()
+    XCTAssertTrue(require("fraction-state").label.contains("5/8"))
+    require("undo").tap()
+    XCTAssertTrue(require("fraction-state").label.contains("3/5"))
+    require("reset").tap()
+    exit()
+    #else
+    throw XCTSkip("The showcase launch argument is available in Debug builds only.")
+    #endif
+  }
+
   func testPrecisionNoticeAppearsOnlyForIndistinguishableDirections() throws {
     app = XCUIApplication()
     app.terminate()

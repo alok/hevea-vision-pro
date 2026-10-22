@@ -1,0 +1,7 @@
+{
+  "result": "readiness timeout on first smoke invocation",
+  "timeoutMs": 30000,
+  "condition": "#xr visible with VR unavailable here or Enter VR",
+  "runtimeStateAtFailure": "not collected",
+  "followup": "Diagnostic root and subdirectory checks passed; the unchanged original smoke command passed on retry. Cause remains unknown."
+}

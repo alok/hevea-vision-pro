@@ -14,4 +14,4 @@ The two native screenshots are unaltered 3840×2160 simulator captures. Browser 
 
 The local archive is `Farey/WebXR/output/Farey-WebXR-0.7.4.zip` (501,470 bytes). It passed the static manifest/module check and archive integrity check. It has not been publicly deployed or uploaded.
 
-The temporary notice-check simulator was removed. The main showcase remains on its existing native 0.8 build; it was not replaced while the user may be inspecting it. The earlier capture uncertainty and pending approvals are unchanged.
+The temporary notice-check simulator was removed. During this earlier check the main showcase remained on native 0.8. The subsequent [release-candidate integration](../release-candidate/README.md) updates it to 0.8.1 and restores the same 3/5 presentation. The earlier capture uncertainty and pending approvals are unchanged.
