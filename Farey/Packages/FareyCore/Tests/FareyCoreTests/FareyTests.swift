@@ -3,6 +3,35 @@ import XCTest
 @testable import FareyCore
 
 final class FareyTests: XCTestCase {
+  func testSelectEveryVisibleLatticeFraction() {
+    for p in 1...14 {
+      for q in 1...14 {
+        var state = FareyState()
+        XCTAssertTrue(state.select(Rational(Int64(p), Int64(q))))
+        XCTAssertEqual(state.mediant.p * Int64(q), state.mediant.q * Int64(p))
+        XCTAssertEqual(state.determinant, 1)
+        XCTAssertLessThanOrEqual(state.word.count, FareyState.maxSteps)
+      }
+    }
+    var state = FareyState()
+    XCTAssertTrue(state.select(Rational(3, 5)))
+    XCTAssertEqual(state.wordLabel, "RLR")
+    let previous = state
+    XCTAssertFalse(state.select(Rational(0, 1)))
+    XCTAssertFalse(state.select(Rational(1, 0)))
+    XCTAssertFalse(state.select(Rational(1000, 1)))
+    XCTAssertEqual(state, previous)
+  }
+
+  func testLatticeBudgetAndExactRayIncidence() {
+    XCTAssertEqual(LatticePoint.grid(bound: 99).count, 224)
+    XCTAssertEqual(LatticePoint.grid(bound: 12).count, 168)
+    let ray = Rational(3, 5)
+    let points = LatticePoint.grid(bound: 14).filter { $0.isOnRay(ray) }
+    XCTAssertEqual(Set(points), Set([LatticePoint(p: 3, q: 5), LatticePoint(p: 6, q: 10)]))
+    XCTAssertTrue(points[0].isPrimitive)
+    XCTAssertFalse(LatticePoint(p: 6, q: 10).isPrimitive)
+  }
   func testExactConventionAndUndo() {
     var s = FareyState()
     XCTAssertEqual(s.mediant, Rational(1, 1))

@@ -61,6 +61,18 @@ public struct FareyState: Equatable, Sendable {
     for turn in prefix { step(turn) }
   }
   public mutating func reset() { self = Self() }
+  /// Select a positive rational by its finite Stern–Brocot interval path.
+  /// The visible fraction is M(1); appending R would put it in M(∞).
+  @discardableResult public mutating func select(_ target: Rational) -> Bool {
+    guard target.p > 0, target.q > 0, target.p <= 1000, target.q <= 1000 else { return false }
+    var candidate = Self()
+    while candidate.mediant.p * target.q != target.p * candidate.mediant.q {
+      guard candidate.canStep else { return false }
+      candidate.step(candidate.mediant.p * target.q < target.p * candidate.mediant.q ? .l : .r)
+    }
+    self = candidate
+    return true
+  }
   public var history: [FareyEdge] {
     var state = Self()
     var result = [FareyEdge(left: state.left, right: state.right, depth: 0)]
@@ -69,6 +81,32 @@ public struct FareyState: Equatable, Sendable {
       result.append(FareyEdge(left: state.left, right: state.right, depth: result.count))
     }
     return result
+  }
+}
+
+/// Integer lattice coordinates are (q,p), so a rational is a direction p/q.
+public struct LatticePoint: Hashable, Sendable {
+  public let p: Int64
+  public let q: Int64
+  public init(p: Int64, q: Int64) {
+    self.p = p
+    self.q = q
+  }
+  public var rational: Rational { Rational(p, q) }
+  public func isOnRay(_ direction: Rational) -> Bool {
+    p * direction.q == q * direction.p
+  }
+  public var isPrimitive: Bool {
+    var a = p
+    var b = q
+    while b != 0 { (a, b) = (b, a % b) }
+    return a == 1
+  }
+  public static func grid(bound: Int) -> [Self] {
+    let n = Int64(min(14, max(6, bound)))
+    return (0...n).flatMap { q in
+      (0...n).compactMap { p in p == 0 && q == 0 ? nil : Self(p: p, q: q) }
+    }
   }
 }
 
