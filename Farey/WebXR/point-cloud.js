@@ -10,7 +10,9 @@ const vertexShader = `
 attribute float aFactor;
 attribute vec3 color;
 uniform float uGlyph, uHalfH, uDpr, uOrigin;
-uniform vec3 uFog, uSize;
+uniform vec3 uFog, uSize, uKeep;
+uniform vec4 uFocus;
+uniform vec2 uFocusFade;
 varying vec3 vColor;
 varying float vPx, vSize, vFaint, vAlpha;
 void main() {
@@ -27,14 +29,21 @@ void main() {
   else if (px > uSize.y) px = uSize.y * pow(px / uSize.y, 1.0 / 3.0);
   px = min(px, uSize.z);
   dim *= 1.0 - uFog.z * smoothstep(uFog.x, uFog.y, depth);
+  // Optional plane focus (a viewing aid): uFocus.xyz is the unit display normal, w enables it. Opacity falls
+  // with Euclidean display distance to the plane over uFocusFade.x, to the floor uFocusFade.y; members stay 1.
+  if (uFocus.w > 0.5 && position != uKeep) {
+    float fade = mix(1.0, uFocusFade.y, smoothstep(0.0, uFocusFade.x, abs(dot(uFocus.xyz, position))));
+    dim *= fade;
+    if (fade < 0.999) vFaint = 1.0;
+  }
   vColor = color;
   vAlpha = dim;
   vPx = px * uDpr;
   vSize = 2.0 * vPx + 2.0;
   gl_PointSize = vSize;
 }`;
-// Dimmed sub-minimum dots write far-plane depth: they still hide behind nearer full-size dots, but
-// accumulate with each other like her depth-test-free transparent sprites, so dense crops read as dust.
+// Dimmed sub-minimum dots and focus-faded context write far-plane depth: they still hide behind nearer
+// full-size dots but never occlude them, and accumulate like her depth-test-free transparent sprites.
 const fragmentShader = `
 varying vec3 vColor;
 varying float vPx, vSize, vFaint, vAlpha;
@@ -49,7 +58,8 @@ void main() {
 export function pointCloudMaterial() {
   return new THREE.ShaderMaterial({
     uniforms: {
-      uGlyph: { value: glyphRadius }, uHalfH: { value: 300 }, uDpr: { value: 1 }, uOrigin: { value: 0 },
+      uGlyph: { value: glyphRadius }, uHalfH: { value: 300 }, uDpr: { value: 1 }, uOrigin: { value: 0 }, uKeep: { value: new THREE.Vector3(1e9, 0, 0) },
+      uFocus: { value: new THREE.Vector4(0, 1, 0, 0) }, uFocusFade: { value: new THREE.Vector2(1, 0.12) },
       uFog: { value: new THREE.Vector3(0, 1, 0) }, uSize: { value: new THREE.Vector3(sizePixels.min, sizePixels.knee, sizePixels.cap) },
     },
     vertexShader, fragmentShader, transparent: true,

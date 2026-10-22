@@ -15,7 +15,7 @@ let selected = examples[0], lattice = null, cloudMesh, imageMesh;
 let session = null, savedView = null, startingXR = false;
 let inhabited=false, overviewView=null, lookDrag=null, look={yaw:0,pitch:0};
 const overviewFov=45, originFov=100;
-let categories='contrast', glyphKey=null, focusGlyphs=[], sigma=1;
+let categories='contrast', glyphKey=null, focusGlyphs=[], sigma=1, planeFocus=false;
 let secondSelection=null, pairMessage='', pairGlyphs=[], planeMembers=new Set(), originMode=false, timings={}, colorKey='', factorKey='';
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ antialias: true }); }
@@ -144,7 +144,10 @@ function updatePair() {
   $('pair-status').textContent=pairMessage;$('pair-status').hidden=!pairMessage;
   const plane=currentPlane();
   $('pair-details').hidden=!plane;$('pair-clear').hidden=!secondSelection;
+  const focusUniform=cloudMaterial.uniforms.uFocus.value;focusUniform.w=0;
   if(!plane){refreshFactors('');return;}
+  if(planeFocus){const [A,B,C]=plane.normal,n=new THREE.Vector3(-B,-A-C,C-A).normalize();focusUniform.set(n.x,n.y,n.z,1);cloudMaterial.uniforms.uFocusFade.value.x=0.5*radius;}
+  cloudMaterial.uniforms.uKeep.value.set(...vector(selected));
   const members=planeInteriorMembers(plane.normal);
   planeMembers=new Set(members.map(p=>p.join()));refreshFactors(plane.normal.join());
   if(secondSelection){
@@ -283,6 +286,7 @@ function resize(){if(session)return;const r=$('viewport').getBoundingClientRect(
 $('next').onclick=()=>{const sequence=[...examples,[-1,1,-2],[1,2,1],[1,3,1]];const i=sequence.findIndex(p=>p.every((x,j)=>x===selected[j]));selectPoint(sequence[(i+1)%sequence.length]);};
 // Her Star size control (0.4–2.5) scales every star radius.
 $('star-size').oninput=()=>{sigma=Number($('star-size').value);$('star-size-value').textContent=sigma.toFixed(2);glyphKey=null;render();};
+$('plane-focus').onchange=()=>{planeFocus=$('plane-focus').checked;update();};
 $('palette').onchange=()=>{categories=$('palette').value;update();};
 $('projection').onchange=()=>{projectionVisible=$('projection').checked;update();};
 $('cone').onchange=update;
