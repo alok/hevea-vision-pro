@@ -58,7 +58,8 @@ summary { cursor: pointer; color: #8bd7e3; }
 #cf-inspector[open] { max-height: none; overflow: visible; }
 #cf-path { max-height: 170px; overflow-y: auto; margin: 8px 0; padding-left: 28px; }
 details p { max-width: 60ch; } details[open] { max-height: 200px; overflow-y: auto; }
-#fatal { position: absolute; top: 160px; left: 32px; right: 32px; background: #452526; padding: 20px; }
+#fatal, .startup-error { position: absolute; top: 160px; left: 32px; right: 32px; background: #452526; padding: 20px; }
+body:has(.startup-error) .controls { display: none; }
 #hover { position: fixed; pointer-events: none; background: #11232fec; border: 1px solid #5a8099; border-radius: 7px; padding: 5px 10px; font: 13px ui-monospace, monospace; }
 body.immersive header, body.immersive .controls { display: none; }
 @media(max-width: 700px) { header { left: 20px; top: 18px; right: 16px; } .credit { font-size: 11px; } .controls { left: 12px; bottom: 12px; width: calc(100% - 24px); padding: 13px; } .hint { display: none; } .row { gap: 6px; } button { padding: 7px 10px; } }

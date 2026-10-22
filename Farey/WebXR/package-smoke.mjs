@@ -39,8 +39,9 @@ export async function auditPackage(directory) {
     ensure(name in manifest, `Missing local asset: ${specifier} from ${relative(root, from)}`);
     return file;
   };
-  const visited = new Set();
-  const visit = async file => {
+  const visited = new Set(), modules = new Set();
+  const visit = async (file, isModule = true) => {
+    if (isModule) modules.add(file);
     if (visited.has(file)) return;
     visited.add(file);
     const code = await readFile(file, 'utf8');
@@ -58,7 +59,7 @@ export async function auditPackage(directory) {
   for (const match of html.matchAll(/<(script|link)\b[^>]*(?:src|href)="([^"]+)"[^>]*>/g)) {
     if (match[2].startsWith('data:')) continue;
     const file = localFile(match[2], resolve(root, 'index.html'));
-    if (match[1] === 'script') await visit(file);
+    if (match[1] === 'script') await visit(file, match[0].includes('type="module"'));
     else {
       const css = await readFile(file, 'utf8');
       for (const asset of css.matchAll(/url\(\s*['"]?([^'"\)]+)['"]?\s*\)/g)) {
@@ -66,7 +67,7 @@ export async function auditPackage(directory) {
       }
     }
   }
-  for (const name of ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js']) {
+  for (const name of ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js']) {
     const code = await readFile(resolve(root, name), 'utf8');
     ensure(!/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon)\s*\(/.test(code), `Review new network API in ${name}`);
   }
@@ -75,7 +76,7 @@ export async function auditPackage(directory) {
   ensure(html.includes('Inspired by <strong>Katherine Stange</strong>') && html.includes('https://doi.org/10.1112/jlms/s2-31.1.69'), 'Missing in-app credit');
   ensure((await readFile(resolve(root, 'COPYING.txt'), 'utf8')).includes('GNU GENERAL PUBLIC LICENSE'), 'Missing GPL text');
   ensure((await readFile(resolve(root, 'vendor/THREE-LICENSE.txt'), 'utf8')).includes('Permission is hereby granted'), 'Missing MIT text');
-  return { passed: true, payloadFiles: Object.keys(manifest).length, runtimeModules: visited.size,
+  return { passed: true, payloadFiles: Object.keys(manifest).length, runtimeScripts: visited.size, runtimeModules: modules.size,
     manifestSHA256: createHash('sha256').update(await readFile(resolve(root, 'manifest.json'))).digest('hex') };
 }
 

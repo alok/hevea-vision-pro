@@ -110,6 +110,24 @@ async (page) => {
     ensure(await unavailable.tab.getByRole('link', { name: 'Original talk' }).isVisible(), 'Fallback hides the source reference');
     ensure(expectedErrors.every(message => message.includes('WebGL unavailable')), `Unexpected fallback error: ${expectedErrors}`);
     await unavailable.tab.screenshot({ path: 'output/playwright/offline-no-webgl.png' });
+    const missingModules = [];
+    for (const name of ['app.js', 'view.js']) {
+      const blocked = await fresh();
+      await blocked.tab.route(`**/${name}*`, route => route.abort());
+      await blocked.tab.goto(url.href);
+      await blocked.tab.locator('#fatal').waitFor({ state: 'visible' });
+      ensure((await blocked.tab.locator('#fatal').textContent()).includes('spatial view could not load'), `Missing ${name} leaves no explanation`);
+      ensure(await blocked.tab.locator('.controls button:not([disabled]),.controls input:not([disabled]),.controls select:not([disabled])').count() === 0, 'Failed module leaves live-looking controls');
+      ensure(await blocked.tab.getByRole('link', { name: 'Original talk' }).isVisible(), 'Load failure hides attribution');
+      missingModules.push(name);
+      await blocked.tab.screenshot({ path: 'output/playwright/offline-no-module.png' });
+    }
+    const noScript = await fresh({ javaScriptEnabled: false });
+    await noScript.tab.goto(url.href);
+    ensure(await noScript.tab.locator('.startup-error').isVisible(), 'JavaScript-disabled page has no explanation');
+    ensure(await noScript.tab.locator('.controls').isHidden(), 'JavaScript-disabled page shows unusable controls');
+    ensure(await noScript.tab.getByRole('link', { name: 'Original talk' }).isVisible(), 'JavaScript-disabled page hides attribution');
+    await noScript.tab.screenshot({ path: 'output/playwright/offline-no-js.png' });
     const xrStatus = await tab.locator('#xr-status').textContent();
     ensure(await tab.locator('#xr').isDisabled() && xrStatus.length > 10, 'Expected a useful unsupported-XR fallback in this browser');
     ensure(externalRequests.length === 0, `External runtime requests: ${externalRequests}`);
@@ -119,7 +137,8 @@ async (page) => {
     return { passed: true, browser: browser.version(), origin: url.origin, path: url.pathname,
       freshProfile: true, savedPointAndGridRestored: true, malformedStorageRejected: true,
       loadedPageWorksWithBrowserOffline: true, offlineReloadError, layouts,
-      unavailableWebGL: 'mocked context creation failure', expectedErrors, xrStatus,
+      unavailableWebGL: 'mocked context creation failure', missingModulesExplained: missingModules,
+      javaScriptDisabledExplained: true, expectedErrors, xrStatus,
       runtimeRequests: requests.length, uniqueRuntimePaths: [...new Set(requests.map(value => new URL(value).pathname))],
       externalRequests, badResponses, mimeTypes, errors, actualXRSession: false };
   } finally {

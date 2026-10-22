@@ -21,6 +21,7 @@ after(async () => { if (temporary) await rm(temporary, { recursive: true, force:
 test('built package resolves its complete local runtime graph', async () => {
   const result = await auditPackage(resolve(root, 'dist'));
   assert.equal(result.passed, true);
+  assert.equal(result.runtimeScripts, 11);
   assert.equal(result.runtimeModules, 10);
 });
 

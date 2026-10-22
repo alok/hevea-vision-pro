@@ -1,6 +1,6 @@
 # Farey lattice — browser and WebXR companion
 
-[Safari and compact-view audit](../MOBILE_SAFARI.md) — browser 0.7.2. [Offline package audit](../OFFLINE_PACKAGE.md). [Native integration check](../INTEGRATION_08.md). [Crowded projected selection](../PROJECTED_SELECTION.md). [Source-fidelity audit](../SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](../CONSTRUCTION.md). [Previous release audit](../DEMO_READINESS.md).
+[First-use readiness audit](../READER_READINESS.md) — browser 0.7.3. [Safari and compact-view audit](../MOBILE_SAFARI.md). [Offline package audit](../OFFLINE_PACKAGE.md). [Native integration check](../INTEGRATION_08.md). [Crowded projected selection](../PROJECTED_SELECTION.md). [Source-fidelity audit](../SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](../CONSTRUCTION.md). [Previous release audit](../DEMO_READINESS.md).
 
 An original Three.js implementation of the same integer lattice and L/R state as the native visionOS app. Inspired by **[Katherine Stange](https://katestange.net/talks/math-exploration/)** and her [visualization catalog](https://www.katestange.net/code/), with underlying [Caroline Series L/R geodesic coding (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 
@@ -14,6 +14,8 @@ npm start
 ```
 
 Open **http://127.0.0.1:8080**. The server binds only to this Mac and disables development caching so edits cannot mix stale styles with new code. Node.js, npm and Python 3 are required. Three.js is pinned to 0.180.0 with an integrity hash in the lockfile. No network dependency is used at runtime after installation.
+
+Try **3/5 example**, then **L**: the selected fraction becomes **5/8**, between **3/5** and **2/3**. **Undo** returns to **3/5**, and **Reset** returns to **1/1**. **Learn a move** provides a guided path starting at **1/2**. The packaged ZIP needs only Python 3 and a WebGL2 browser to view; Node/npm are for rebuilding. A localhost address works only on the computer serving it, not as a public link for other readers.
 
 Drag to orbit, scroll to zoom, right-drag to pan. Hover a sphere to read its coordinates and click to select its rational direction. L/R, Undo, Reset, the 3/5 example and fraction entry share one exact state. Grid size is capped at 14 (224 nonzero points). On narrow screens the lattice occupies a separate visible area above the controls, and the lesson keeps only its relevant actions visible. Rendering is event-driven on desktop; XR uses the headset animation loop. Reset restores the initial geometry and view.
 

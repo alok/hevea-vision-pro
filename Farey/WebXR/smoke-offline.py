@@ -68,7 +68,7 @@ def main():
         result = {'artifact': str(artifact), 'version': json.loads((artifact / 'source/package.json').read_text())['version'],
                   'static': static, 'browser': browser}
         (output / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
-        for name in ['offline-desktop.png', 'offline-mobile-390.png', 'offline-mobile-844.png', 'offline-no-webgl.png']:
+        for name in ['offline-desktop.png', 'offline-mobile-390.png', 'offline-mobile-844.png', 'offline-no-webgl.png', 'offline-no-module.png', 'offline-no-js.png']:
             shutil.copy2(root / 'output/playwright' / name, output / name)
         print(json.dumps(result, indent=2))
     finally:

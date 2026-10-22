@@ -14,7 +14,7 @@ let license = resolve(root, 'LICENSE');
 try { await access(license); } catch { license = resolve(root, '../../LICENSE'); }
 await rm(destination, { recursive: true, force: true });
 await mkdir(resolve(destination, 'vendor/addons/controls'), { recursive: true });
-const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'style.css'];
+const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css'];
 for (const name of files) await copyFile(resolve(root, name), resolve(destination, name));
 const hash = content => createHash('sha256').update(content).digest('hex');
 const assetHash = async name => hash(await readFile(resolve(destination, name)));
@@ -30,6 +30,7 @@ const html = (await readFile(resolve(root, 'index.html'), 'utf8'))
   .replace('./node_modules/three/build/three.module.js', './vendor/three.module.js')
   .replace('./node_modules/three/examples/jsm/', './vendor/addons/')
   .replace('href="style.css"', `href="style.css?v=${await assetHash('style.css')}"`)
+  .replace('src="load-status.js"', `src="load-status.js?v=${await assetHash('load-status.js')}"`)
   .replace('src="app.js"', `src="app.js?v=${await assetHash('app.js')}"`);
 await writeFile(resolve(destination, 'index.html'), html);
 for (const name of ['three.module.js', 'three.core.js']) {
@@ -63,7 +64,7 @@ Three.js ${dependency.version} is included under MIT; see vendor/THREE-LICENSE.t
 `);
 files.push('index.html', 'COPYING.txt', 'SOURCE.txt', 'README.txt', 'serve.py', 'vendor/three.module.js', 'vendor/three.core.js', 'vendor/addons/controls/OrbitControls.js', 'vendor/THREE-LICENSE.txt');
 await mkdir(resolve(destination, 'source'), { recursive: true });
-const sources = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'style.css', 'index.html',
+const sources = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css', 'index.html',
   'build.mjs', 'package.json', 'package-lock.json', 'serve.py', 'PACKAGE_README.txt', 'package-smoke.mjs', 'smoke-offline.py', 'offline-checks.js',
   'core.test.js', 'xr-support.test.js', 'input.test.js', 'recovery.test.js', 'construction.test.js', 'view.test.js', 'package-smoke.test.js'];
 for (const name of sources) {

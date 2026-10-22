@@ -1,0 +1,85 @@
+{
+  "artifact": "Farey/WebXR/dist",
+  "version": "0.7.3",
+  "static": {
+    "passed": true,
+    "payloadFiles": 44,
+    "runtimeScripts": 11,
+    "runtimeModules": 10,
+    "manifestSHA256": "b6dd1268ee904e38feffa23d145e5faa554c958cf027af5baff84a9137c96822"
+  },
+  "browser": {
+    "passed": true,
+    "browser": "155.0.8059.86",
+    "origin": "http://127.0.0.1:58676",
+    "path": "/dist/",
+    "freshProfile": true,
+    "savedPointAndGridRestored": true,
+    "malformedStorageRejected": true,
+    "loadedPageWorksWithBrowserOffline": true,
+    "offlineReloadError": "page.reload: net::ERR_INTERNET_DISCONNECTED",
+    "layouts": [
+      {
+        "width": 390,
+        "height": 844,
+        "scrollWidth": 390,
+        "sceneWidth": 390,
+        "sceneHeight": 284.796875,
+        "inputFontSize": 16
+      },
+      {
+        "width": 844,
+        "height": 390,
+        "scrollWidth": 844,
+        "sceneWidth": 443.765625,
+        "sceneHeight": 300.703125,
+        "inputFontSize": 16
+      }
+    ],
+    "unavailableWebGL": "mocked context creation failure",
+    "missingModulesExplained": [
+      "app.js",
+      "view.js"
+    ],
+    "javaScriptDisabledExplained": true,
+    "expectedErrors": [
+      "WebGL unavailable"
+    ],
+    "xrStatus": "No immersive VR device is available in this browser. Desktop exploration is available.",
+    "runtimeRequests": 95,
+    "uniqueRuntimePaths": [
+      "/dist/",
+      "/dist/style.css",
+      "/dist/load-status.js",
+      "/dist/app.js",
+      "/dist/vendor/three.module.js",
+      "/dist/vendor/addons/controls/OrbitControls.js",
+      "/dist/core.js",
+      "/dist/xr-support.js",
+      "/dist/input.js",
+      "/dist/recovery.js",
+      "/dist/construction.js",
+      "/dist/view.js",
+      "/dist/vendor/three.core.js"
+    ],
+    "externalRequests": [],
+    "badResponses": [],
+    "mimeTypes": {
+      "/dist/": "text/html",
+      "/dist/style.css": "text/css",
+      "/dist/load-status.js": "text/javascript",
+      "/dist/app.js": "text/javascript",
+      "/dist/xr-support.js": "text/javascript",
+      "/dist/core.js": "text/javascript",
+      "/dist/input.js": "text/javascript",
+      "/dist/vendor/addons/controls/OrbitControls.js": "text/javascript",
+      "/dist/recovery.js": "text/javascript",
+      "/dist/construction.js": "text/javascript",
+      "/dist/vendor/three.module.js": "text/javascript",
+      "/dist/view.js": "text/javascript",
+      "/dist/vendor/three.core.js": "text/javascript"
+    },
+    "errors": [],
+    "actualXRSession": false
+  }
+}

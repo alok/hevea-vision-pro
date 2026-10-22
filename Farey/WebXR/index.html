@@ -9,6 +9,9 @@
   <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
 </head>
 <body>
+  <noscript>
+    <p class="startup-error" role="alert">JavaScript is required to draw and explore this lattice. Enable it for this page to use the demo. The source links remain available: <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series, underlying L/R coding</a>.</p>
+  </noscript>
   <main id="viewport" aria-label="Interactive three-dimensional integer lattice">
     <section id="graphics-notice" class="graphics-notice" role="status" hidden>
       <strong>3D graphics paused</strong>
@@ -93,6 +96,7 @@
     </details>
   </section>
   <p id="fatal" role="alert" hidden></p>
-  <script type="module" src="app.js"></script>
+  <script src="load-status.js"></script>
+  <script type="module" id="farey-app" src="app.js"></script>
 </body>
 </html>

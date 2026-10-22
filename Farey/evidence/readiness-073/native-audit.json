@@ -1,0 +1,13 @@
+{
+  "version": "0.8",
+  "build": "10",
+  "bundle": "com.alok.FareyVision",
+  "sdk": "xrsimulator27.2",
+  "freshReleaseSimulatorBuild": "passed",
+  "codeSigningAllowed": false,
+  "platformNeutralTestsPassed": 27,
+  "installedVersionReadOnly": "0.8 (10)",
+  "newSimulatorLaunchPerformed": false,
+  "newHardwareExecutionPerformed": false,
+  "nativeRuntimeSourcesChanged": false
+}

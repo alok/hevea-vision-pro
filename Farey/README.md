@@ -1,12 +1,14 @@
 # Farey — Into the Infinite
 
-[Safari and compact-view audit](MOBILE_SAFARI.md) — native 0.8 / browser 0.7.2. [Lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) · [Native integration check](INTEGRATION_08.md). [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
+[First-use readiness audit](READER_READINESS.md) — native 0.8 / browser 0.7.3. [Safari and compact-view audit](MOBILE_SAFARI.md). [Lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) · [Native integration check](INTEGRATION_08.md). [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
 
 **Inspired by [Katherine Stange’s mathematical visualizations](https://www.katestange.net/code/) and her [Illustrating Mathematics for Math 2.0 talk](https://katestange.net/talks/math-exploration/).** Underlying L/R geodesic coding: [Caroline Series (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 
 A native visionOS experience of the integer lattice behind the Farey tessellation. Shaded spheres occupy actual integer coordinates in space; a translucent plane follows the selected rational direction, and a parallelogram shows how the mediant adds two integer vectors. The linked Poincaré disk uses the same exact state. The surrounding immersive space is fully black. The viewer is stationary by default.
 
 ## Run on this Mac
+
+The native route requires macOS, Xcode with a visionOS simulator runtime, and XcodeGen at `/opt/homebrew/bin/xcodegen`. This Mac was checked with Xcode 27.2 beta 2, visionOS 27.2 and XcodeGen 2.46.0. For a reader on another computer, the [browser package](WebXR/README.md) is the simpler starting point and does not need Xcode.
 
 ```sh
 cd /Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/FareyVision/Farey
@@ -17,7 +19,11 @@ This generates the checked-in XcodeGen project, builds Release with three jobs, 
 
 The scripts first copy the source and build specification into a fresh `/tmp/farey-build-*` directory. This avoids stalled reads and Finder metadata in the synced Documents checkout. To open the 3/5 lattice scene directly for inspection, run `./scripts/run-simulator.sh --showcase`. This uses a Debug-only launch option; ordinary launches still start at the entry window.
 
+On another configured Mac, select a visionOS simulator with `xcrun simctl list devices available`, then pass its identifier as `SIMULATOR_UDID=YOUR_ID ./scripts/run-simulator.sh`. The default identifier above is specific to this Mac. The script builds, installs and opens the app; it is not a read-only check.
+
 The [browser/WebXR companion](WebXR/README.md) uses the same exact lattice and L/R convention. It has desktop orbit, sphere selection, finite grid controls and an immersive-VR entry path. Desktop behavior is verified; actual headset WebXR sessions remain untested.
+
+For a first visit, enter the void, choose **3/5 example**, then press **L**. The selected fraction becomes **5/8**, between **3/5** and **2/3**. **Undo** returns to **3/5**; **Reset** returns to **1/1**. **Learn** guides a different path, starting at **1/2**. **Exit** returns to the launch window. The disk preview on the launch window is a preview; the entered space starts with the spatial lattice.
 
 Xcode 27.2 beta 2 and visionOS 27.2 are installed; the simulator is `D2ECE520-ED92-4A38-A990-AE65431DF562`. Xcode 27 uses Device Hub. In its normal interaction mode, click a control or sphere. For simulator camera navigation, release captured input with Escape, then use A/D for sideways motion and W/S for forward/backward; Reset Camera restores the view. See [Apple's Device Hub controls](https://developer.apple.com/documentation/xcode/interacting-with-your-visionos-app-in-device-hub).
 

@@ -1,0 +1,22 @@
+{
+  "version": "0.7.2",
+  "archiveSHA256": "af002239448bac939aab081f7e5b0306b75497ea49fd9ce130f3aec581196510",
+  "cases": [
+    {
+      "mode": "javascript-disabled",
+      "canvasCount": 0,
+      "fatalVisible": false,
+      "visibleExplanation": 0,
+      "enabledLeft": true,
+      "xrText": "Checking WebXR\u2026"
+    },
+    {
+      "mode": "module-unavailable",
+      "canvasCount": 0,
+      "fatalVisible": false,
+      "visibleExplanation": 0,
+      "enabledLeft": true,
+      "xrText": "Checking WebXR\u2026"
+    }
+  ]
+}

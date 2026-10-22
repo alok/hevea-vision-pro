@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "offlineNpmInstall": true,
+  "tests": 36,
+  "identicalManifest": true,
+  "payloadFiles": 44,
+  "manifestSHA256": "b6dd1268ee904e38feffa23d145e5faa554c958cf027af5baff84a9137c96822"
+}
