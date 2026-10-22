@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { examples, vector, project, upperRoot, discriminant, height, kind, positiveRepresentative } from './starscape-core.js';
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
 import { TapSelection, nearestToRayPacked } from './input.js';
+import { HoverQueries } from './hover-queries.js';
 import { cameraPlaneLabel } from './camera-planes.js';
 import { coefficientColor, gradientCSS, paletteRange, categoryPalettes, glyphRadius, glyphScale, outlinePixels, sourceRadiusFactor, drawnPixels } from './appearance.js';
 import { enumerateLattice, inBall, isUpper, tripleAt, latticeRadii, ballCount } from './lattice.js';
@@ -77,7 +78,8 @@ function surface(h,isDisk,opacity) {
 }
 const matrix = new THREE.Matrix4();
 function rebuild() {
-  glyphKey=null;latticeGeneration++;
+  // A new lattice generation: worker answers still in flight for the old one are dropped on arrival.
+  glyphKey=null;latticeGeneration++;hoverQueries.reset();
   disposeChildren(cloud); disposeChildren(disk); disposeChildren(cone);
   let t=performance.now();
   lattice = enumerateLattice(radius, !whole);
@@ -251,8 +253,12 @@ function showDebug(){
     ['Size factors (measured CPU)',ms(timings.factors)],
     ['Klein images (measured CPU)',ms(timings.images)],
     ['Last click pick (measured CPU)',ms(timings.pick)],
+    ['XR hover queries',lattice.count<hoverWorkerPoints?'main thread (small crop)':hoverQueries.failed?'main thread (worker unavailable)':'worker'],
+    ['Worker scan / round trip (measured)',`${ms(hoverQueries.lastQueryMs)} / ${ms(hoverQueries.lastLatencyMs)}`],
+    ['Lattice copy for worker (measured CPU)',ms(hoverQueries.copyMs)],
+    ['Last transferred worker buffer',`${hoverQueries.copyBytes.toLocaleString()} bytes`],
     ['Lattice + point buffers (estimated)',`${(bytes/1048576).toFixed(1)} MB`],
-    ['JS heap (measured, Chrome only)',performance.memory?`${(performance.memory.usedJSHeapSize/1048576).toFixed(0)} MB`:'unavailable'],
+    ['Main-realm JS heap (Chrome; excludes worker)',performance.memory?`${(performance.memory.usedJSHeapSize/1048576).toFixed(0)} MB`:'unavailable'],
     ['Frame interval, 60 frames (measured, vsync-capped)',frameMeasure??'not measured'],
     ['GL renderer',ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER)],
   ];
@@ -356,12 +362,14 @@ $('pair-add').onclick=()=>selectEntered(true);
 $('pair-clear').onclick=()=>{secondSelection=null;pairMessage='';update();$('pair-add').focus({preventScroll:true});};
 const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2(),tap=new TapSelection();
 // The ray is mapped into lattice units (a uniform scale and translation keep angles), then searched exactly.
-function pickIndex(ray,maxAngle){
-  const t=performance.now();
+function rayInLattice(ray){
   cloudMesh.updateMatrixWorld(true);
   const inverse=new THREE.Matrix4().copy(cloudMesh.matrixWorld).invert();
-  const o=ray.origin.clone().applyMatrix4(inverse), d=ray.direction.clone().transformDirection(inverse);
-  const i=nearestToRayPacked(o.toArray(),d.toArray(),lattice.xyz,lattice.count,maxAngle,session?0:camera.near/scale);
+  return {origin:ray.origin.clone().applyMatrix4(inverse).toArray(),direction:ray.direction.clone().transformDirection(inverse).toArray(),minDistance:session?0:camera.near/scale};
+}
+function pickIndex(ray,maxAngle){
+  const t=performance.now(), local=rayInLattice(ray);
+  const i=nearestToRayPacked(local.origin,local.direction,lattice.xyz,lattice.count,maxAngle,local.minDistance);
   timings.pick=performance.now()-t;
   return i;
 }
@@ -398,14 +406,22 @@ function showReadout(lines){
   ctx.font='28px ui-monospace,Menlo,monospace';lines.forEach((line,i)=>{ctx.fillStyle=line.includes(' aim ')?'#9fdcff':'#f0f5f8';ctx.fillText(line,18,40+i*44);});
   readoutTexture.needsUpdate=true;
 }
+// Crops at least this large answer hover in a module worker; smaller ones scan in well under a millisecond.
+const hoverWorkerPoints=50000;
+const hoverQueries=new HoverQueries(()=>new Worker(new URL('./aim-worker.js',import.meta.url),{type:'module'}));
+function pointTarget(index,ray){
+  const point=new THREE.Vector3().fromArray(lattice.xyz,3*index).applyMatrix4(cloudMesh.matrixWorld);
+  return {index,point,distance:point.distanceTo(ray.origin)};
+}
+const rayMoved=(ray,from,distance=1)=>ray.direction.angleTo(from.direction)>aimStale||ray.origin.distanceTo(from.origin)>aimStale*distance;
+// One staleness test for a hand: the preview is hidden, and a dense hand re-queries, under exactly the same condition.
+const aimStaleFor=(aim,ray)=>rayMoved(ray,aim.scanned,aim.target?.distance??1);
 function aimTarget(controller){
   controllerRay(controller,raycaster);
   const hit=raycaster.intersectObjects(xrTargets)[0];
   if(hit)return {button:hit.object,distance:hit.distance};
   const index=pickIndex(raycaster.ray,aimAngle);
-  if(index<0)return null;
-  const point=new THREE.Vector3().fromArray(lattice.xyz,3*index).applyMatrix4(cloudMesh.matrixWorld);
-  return {index,point,distance:point.distanceTo(raycaster.ray.origin)};
+  return index<0?null:pointTarget(index,raycaster.ray);
 }
 const aims=[0,1].map(i=>{
   const controller=renderer.xr.getController(i);scene.add(controller);
@@ -423,20 +439,36 @@ const aims=[0,1].map(i=>{
   });
   return aim;
 });
+let hoverGeneration=null;
 function updateAims(){
   const now=performance.now(), eye=renderer.xr.getCamera();
+  // Once per rebuilt lattice (radius, filter or reset), drop both hands' in-flight and answered worker queries.
+  if(hoverGeneration!==latticeGeneration){hoverQueries.reset();hoverGeneration=latticeGeneration;}
   for(const aim of aims){
     aim.shown=null;
     if(!aim.source){aim.line.visible=aim.ring.visible=false;continue;}
     // A rebuilt lattice (radius, filter or reset) invalidates cached indices, positions and scan deadlines.
     if(aim.generation!==latticeGeneration){aim.target=null;aim.next=0;}
     aim.controller.updateWorldMatrix(true,false);cloudMesh.updateMatrixWorld();
-    // Hover picking is O(points); in dense crops it waits in proportion to its own measured cost. A preview is
-    // shown only for the ray it was computed from: once the ray has moved more than aimStale it is hidden until
-    // the next scan, while the trigger always recomputes on the current ray with the same rule.
+    // A preview is shown only for the ray it was computed from: once the ray has moved more than aimStale it is
+    // hidden until a newer answer arrives, while the trigger always recomputes on the current ray with the same
+    // rule. Small crops, or a browser without a working module worker, scan here on the UI thread, waiting in
+    // proportion to the scan's measured cost.
     controllerRay(aim.controller,raycaster);
-    if(now>=aim.next){const t=performance.now();aim.target=aimTarget(aim.controller);aim.scanned.copy(raycaster.ray);aim.generation=latticeGeneration;const cost=performance.now()-t;aim.next=now+(cost>4?8*cost:0);}
-    const stale=raycaster.ray.direction.angleTo(aim.scanned.direction)>aimStale||raycaster.ray.origin.distanceTo(aim.scanned.origin)>aimStale*(aim.target?.distance??1);
+    if(lattice.count>=hoverWorkerPoints&&hoverQueries.available){
+      // Dense crops: buttons are hit-tested here (cheap, and they take priority); the point query runs in the worker.
+      // The preview shows the latest answer for this generation, judged stale against the ray it was asked for.
+      const hit=raycaster.intersectObjects(xrTargets)[0], result=hoverQueries.result(aim.index);
+      if(hit){aim.target={button:hit.object,distance:hit.distance};aim.scanned.copy(raycaster.ray);}
+      else if(result?.generation===latticeGeneration){aim.target=result.index<0?null:pointTarget(result.index,result.ray);aim.scanned.copy(result.ray);}
+      else{aim.target=null;aim.scanned.copy(raycaster.ray);}
+      aim.generation=latticeGeneration;
+      if(!hit&&!hoverQueries.busy(aim.index)&&(result?.generation!==latticeGeneration||aimStaleFor(aim,raycaster.ray))){
+        const local=rayInLattice(raycaster.ray);
+        hoverQueries.request(aim.index,latticeGeneration,lattice,local.origin,local.direction,aimAngle,local.minDistance,raycaster.ray.clone());
+      }
+    } else if(now>=aim.next){const t=performance.now();aim.target=aimTarget(aim.controller);aim.scanned.copy(raycaster.ray);aim.generation=latticeGeneration;const cost=performance.now()-t;aim.next=now+(cost>4?8*cost:0);}
+    const stale=aimStaleFor(aim,raycaster.ray);
     const target=aim.shown=stale?null:aim.target;
     aim.line.visible=true;aim.line.scale.z=target?target.distance:0.6;
     aim.ring.visible=!!target?.point;
@@ -454,8 +486,8 @@ function updateAims(){
 }
 async function checkXR(){const availability=await xrAvailability(navigator.xr,isSecureContext);$('xr').disabled=!availability.supported;$('xr').textContent=availability.supported?'Enter VR':'VR unavailable here';$('xr-status').textContent=availability.message;}
 $('xr').onclick=async()=>{if(startingXR||session)return;startingXR=true;$('xr').disabled=true;savedView=captureView(camera,controls);try{session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor']});await renderer.xr.setSession(session);controls.enabled=false;xrPanel.visible=true;document.body.classList.add('immersive');renderer.setAnimationLoop(render);}catch{await session?.end().catch(()=>{});session=null;$('status').textContent='VR entry was cancelled or unavailable. The browser scene remains usable.';checkXR();}finally{startingXR=false;}};
-renderer.xr.addEventListener('sessionend',()=>{session=null;for(const aim of aims){aim.target=null;aim.line.visible=aim.ring.visible=false;}controls.enabled=!inhabited;xrPanel.visible=false;document.body.classList.remove('immersive');renderer.setAnimationLoop(null);if(savedView)restoreView(savedView,camera,controls);savedView=null;resize();checkXR();});
-renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();$('fatal').hidden=false;$('fatal').textContent='3D graphics paused. Waiting for the browser to restore the graphics context; reload if it does not recover.';controls.enabled=false;$('xr').disabled=true;session?.end().catch(()=>{});});
+renderer.xr.addEventListener('sessionend',()=>{session=null;hoverQueries.reset();for(const aim of aims){aim.target=null;aim.line.visible=aim.ring.visible=false;}controls.enabled=!inhabited;xrPanel.visible=false;document.body.classList.remove('immersive');renderer.setAnimationLoop(null);if(savedView)restoreView(savedView,camera,controls);savedView=null;resize();checkXR();});
+renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();hoverQueries.reset();$('fatal').hidden=false;$('fatal').textContent='3D graphics paused. Waiting for the browser to restore the graphics context; reload if it does not recover.';controls.enabled=false;$('xr').disabled=true;session?.end().catch(()=>{});});
 renderer.domElement.addEventListener('webglcontextrestored',()=>{$('fatal').hidden=true;controls.enabled=!session&&!inhabited;resize();update();checkXR();});
 for(const option of $('radius').querySelectorAll('optgroup option'))option.textContent=`${option.value} · ${ballCount(Number(option.value)).toLocaleString()} points`;
 rebuild();resetView();resize();update();checkXR();

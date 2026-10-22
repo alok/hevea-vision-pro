@@ -1,0 +1,104 @@
+{
+  "R6 moving": {
+    "points": 480,
+    "frames": 120,
+    "rotation": 0.002,
+    "updateAimsMs": {
+      "median": 0.1,
+      "p95": 0.3,
+      "max": 1.3
+    },
+    "framesOver4ms": 0,
+    "totalMainMs": 17.8,
+    "frameGapMs": {
+      "median": 16.7,
+      "p95": 16.8,
+      "max": 25.6
+    },
+    "longTasks": [],
+    "freshPreviewFrames": 100,
+    "mainRealmHeapMB": 105,
+    "worker": {
+      "used": false,
+      "ownedBytes": 0
+    }
+  },
+  "R6 held": {
+    "points": 480,
+    "frames": 120,
+    "rotation": 0,
+    "updateAimsMs": {
+      "median": 0.1,
+      "p95": 0.2,
+      "max": 0.3
+    },
+    "framesOver4ms": 0,
+    "totalMainMs": 14,
+    "frameGapMs": {
+      "median": 16.7,
+      "p95": 16.8,
+      "max": 18.1
+    },
+    "longTasks": [],
+    "freshPreviewFrames": 120,
+    "mainRealmHeapMB": 15,
+    "worker": {
+      "used": false,
+      "ownedBytes": 0
+    }
+  },
+  "R96 moving": {
+    "points": 1852484,
+    "frames": 120,
+    "rotation": 0.002,
+    "updateAimsMs": {
+      "median": 0,
+      "p95": 0.1,
+      "max": 7.6
+    },
+    "framesOver4ms": 1,
+    "totalMainMs": 13.2,
+    "frameGapMs": {
+      "median": 16.7,
+      "p95": 16.8,
+      "max": 16.8
+    },
+    "longTasks": [],
+    "freshPreviewFrames": 0,
+    "mainRealmHeapMB": 57,
+    "worker": {
+      "used": true,
+      "scanMs": 25,
+      "roundTripMs": 25.1,
+      "oneTimeCopyMs": 7,
+      "ownedBytes": 22229808
+    }
+  },
+  "R96 held": {
+    "points": 1852484,
+    "frames": 120,
+    "rotation": 0,
+    "updateAimsMs": {
+      "median": 0,
+      "p95": 0.1,
+      "max": 5.4
+    },
+    "framesOver4ms": 1,
+    "totalMainMs": 11,
+    "frameGapMs": {
+      "median": 16.7,
+      "p95": 16.8,
+      "max": 17.2
+    },
+    "longTasks": [],
+    "freshPreviewFrames": 117,
+    "mainRealmHeapMB": 101,
+    "worker": {
+      "used": true,
+      "scanMs": 27.1,
+      "roundTripMs": 27.3,
+      "oneTimeCopyMs": 5.3,
+      "ownedBytes": 22229808
+    }
+  }
+}

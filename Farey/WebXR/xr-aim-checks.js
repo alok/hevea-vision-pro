@@ -20,8 +20,11 @@ window.__aim={
   frame:()=>{cloudMesh.updateMatrixWorld();updateAims();
     return {aims:aims.map(a=>({ring:a.ring.visible?a.ring.position.toArray():null,ringRadius:a.ring.scale.x,line:a.line.scale.z,
       shown:a.shown?.button?a.shown.button.userData.label:a.shown?tripleAt(lattice,a.shown.index):null,deferredMs:a.next-performance.now()})),
-      lines:readoutText.split(String.fromCharCode(10)),selected:[...selected],buttonColors:xrTargets.map(b=>b.material.color.r)};},
+      lines:readoutText.split(String.fromCharCode(10)),busy:aims.map(a=>hoverQueries.busy(a.index)),selected:[...selected],buttonColors:xrTargets.map(b=>b.material.color.r)};},
   defer:k=>{aims[k].next=performance.now()+1e6;},
+  // Dense crops answer hover in the real module worker; wait (bounded) for this hand's answer to arrive.
+  settle:async k=>{for(let i=0;i<120;i++){cloudMesh.updateMatrixWorld();updateAims();if(aims[k].shown&&!hoverQueries.busy(k))break;await new Promise(r=>requestAnimationFrame(r));}
+    return {shown:aims[k].shown?.index!==undefined?tripleAt(lattice,aims[k].shown.index):null,ring:aims[k].ring.visible,worker:!hoverQueries.failed,copyBytes:hoverQueries.copyBytes,points:lattice.count};},
   freshPick:k=>{controllerRay(aims[k].controller,raycaster);const i=pickIndex(raycaster.ray,aimAngle);return i<0?null:tripleAt(lattice,i);},
   trigger:k=>{aims[k].controller.dispatchEvent({type:'select'});return [...selected];},
   buttonWorld:i=>{xrPanel.updateMatrixWorld(true);return new THREE.Vector3().setFromMatrixPosition(xrTargets[i].matrixWorld).toArray();},
@@ -55,17 +58,20 @@ window.__aim={
   if(movedOff.buttonColors[0]!==1||movedOff.lines[0]!=='Left aim  —')throw Error('stale button highlight '+JSON.stringify(movedOff));
   out.button={hover:onButton.lines[0],afterMove:movedOff.lines[0]};
 
-  // Dense crop: scans back off by their own cost; after the ray moves the stale ring hides and the trigger uses the current ray.
+  // Dense crop: hover is answered by the module worker. Once its answer arrives the ring shows it; after the ray
+  // moves the ring hides at once (the answer belongs to the old ray), a new query is sent, and the trigger still
+  // picks synchronously on its current ray.
   await page.locator('#radius').selectOption('96');
   await call('mockPose',0,left,await call('world',[2,1,1]));
-  const dense=await call('frame');
+  const dense=await call('settle',0);
+  if(String(dense.shown)!=='2,1,1'||!dense.ring||!dense.worker)throw Error('dense worker preview '+JSON.stringify(dense));
+  if(dense.copyBytes!==12*dense.points)throw Error('worker lattice copy is '+dense.copyBytes+' bytes');
   await call('mockRotate',0,0.005);
   const nudged=await call('frame'), fresh=await call('freshPick',0);
-  if(dense.aims[0].shown?.join()!=='2,1,1'||!(dense.aims[0].deferredMs>0&&dense.aims[0].deferredMs<1e5))throw Error('dense scan did not run and back off '+JSON.stringify(dense.aims[0]));
-  if(!(nudged.aims[0].deferredMs>0)||nudged.aims[0].ring)throw Error('dense stale preview '+JSON.stringify(nudged.aims[0]));
+  if(nudged.aims[0].ring||!nudged.busy[0])throw Error('dense stale preview '+JSON.stringify(nudged));
   const denseSelected=await call('trigger',0);
   if(denseSelected.join()!==fresh?.join())throw Error('trigger did not recompute on the current ray');
-  out.dense={previewed:dense.aims[0].shown,backoffMs:+dense.aims[0].deferredMs.toFixed(1),selectedAfterMove:denseSelected};
+  out.dense={previewed:dense.shown,workerCopyBytes:dense.copyBytes,selectedAfterMove:denseSelected};
 
   // Reset rebuilds the lattice (R96 to R6) while a dense hover is cached; the cached index must not be reused.
   await call('defer',0);

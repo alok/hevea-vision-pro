@@ -1,0 +1,19 @@
+{
+  "version": "0.13.1",
+  "runtime": "IWE 2.0.0, actual XRSession/XRFrame",
+  "visibility": "hidden",
+  "entries": 1,
+  "ends": 1,
+  "queries": 0,
+  "answers": 0,
+  "samples": [],
+  "blocker": "Error: No actual XRFrame within 3 seconds while tab hidden",
+  "restored": {
+    "radius": "6",
+    "coefficient": "1,0,-1",
+    "origin": "true",
+    "activeXR": false,
+    "mode": "manual"
+  },
+  "phase": "Before close-range correction; no worker query or XR frame ran"
+}

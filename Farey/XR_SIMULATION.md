@@ -1,3 +1,47 @@
+# Browser 0.13.1 dense-hover verification
+
+October 22, 2026. Dense crops (at least 50,000 points) now query hover in a local module worker. It runs the unchanged `nearestToRayPacked` over the same Float32 coordinates and thresholds. The trigger still recomputes synchronously on its current ray. Small crops and worker failure retain the synchronous path. No points are sampled, duplicated or moved.
+
+The protocol permits one physically outstanding query per hand. Rebuild, context loss and session end invalidate results; obsolete replies drain without creating an unbounded queue. One copied lattice generation is transferred to the worker, leaving the renderer's array intact. At radius 96 that copy occupies 22,229,808 bytes, retained for reuse while the worker is idle. Main-realm Chrome heap excludes this worker data, GPU and process memory. Debug distinguishes these measurements.
+
+## Matched desktop measurement
+
+The committed 0.13.0 runtime and final worker candidate used the same 120-frame pose sequence, one mock controller, the same camera and exact point counts in isolated headless Chrome on this M4 Max. `WebXR/hover-performance-checks.js` specifies the pose and records timing. These are CPU/browser scheduling measurements with mocked XR input, **no XRSession**, and no headset or GPU frame-rate claim.
+
+| R96, 1,852,484 points | Previous runtime | Worker runtime |
+| --- | ---: | ---: |
+| Moving 2 mrad/frame: `updateAims` p95 | 27.9 ms | 0.1 ms |
+| Moving: total main-thread aim work / 120 frames | 271.4 ms | 13.2 ms |
+| Moving: frames with aim work above 4 ms | 9 | 1 |
+| Moving: frame interval p95 | 28.2 ms | 16.8 ms |
+| Moving: fresh-preview frames | 9 | 0 |
+| Held: `updateAims` p95 | 32.1 ms | 0.1 ms |
+| Held: fresh-preview frames | 120 | 117 |
+
+The worker still spent 25–28 ms per dense scan. One-time transfer setup cost 5.3–7.0 ms in these samples; the moving run's maximum main-thread aim work was 7.6 ms. At R6 (480 points), both paths remained at 0.3 ms p95 while moving, with the worker unused. [Before](evidence/browser-0.13.1/before.json) and [after](evidence/browser-0.13.1/after.json) retain all measured values.
+
+To repeat against either local runtime, open its coefficient page with a separate Playwright CLI session, then run `playwright-cli run-code --filename hover-performance-checks.js` from `WebXR/` (or the extracted package's `source/`). The harness drives identical held and rotating rays at R6 and R96, reports actual counts, and never requests XR. Close that test session afterward. Timing varies with browser scheduling, garbage collection and other Mac work; heap samples do not establish a memory improvement.
+
+**Tradeoff:** a ray moving faster than the 1 mrad staleness threshold can keep the ring hidden until it settles. This measured run showed no fresh moving previews in the worker case. The worker removes repeated dense scans from the UI thread; it does not solve continuous-motion preview latency, dense directional ambiguity, or the trigger's remaining synchronous scan cost.
+
+## Correctness and integration evidence
+
+All 79 unit/package tests passed in an isolated copy. An independent actual-browser run loaded the real module worker: 40/40 R48 rays and 40/40 R96 rays matched the original synchronous point index. Both hands, current-ray trigger selection, reset/session-end with queries in flight, transferred byte count and a real worker-load failure fallback passed. [Worker results](evidence/browser-0.13.1/hover-worker-checks.json) and [aim regression](evidence/browser-0.13.1/xr-aim-checks.json) explicitly label their XR inputs as mocked.
+
+Review reproduced and fixed a close-range starvation bug: at 0.2 m, a 0.5 mm translation hid the preview but never refreshed it because refresh and display used different distance thresholds. Both now use the same predicate. The regression fails on the pre-fix runtime and recovers on the fixed runtime, matching the synchronous oracle. Below-threshold and distant controls retain their previews without unnecessary queries. A below-threshold preview can still differ from a fresh pick in this dense cloud; the trigger recomputes rather than selecting a cached preview.
+
+The local 0.13.1 package was promoted and only the known background mathematics tab was refreshed. Its `(1,0,−1)`, R6 and Origin state were restored; the user's active tab index remained 1. This is a background DOM/version readback, not a screenshot of the user's foreground. [Promotion receipt](evidence/browser-0.13.1/promotion.json).
+
+A bounded test before the close-range correction on the already-installed IWE entered and ended one real session, but received **no XRFrame within three seconds while the tab was hidden**. It restored R6, the selected normal, Origin and manual emulator mode, with no active session. [Exact result](evidence/browser-0.13.1/background-emulator.json). Foreground 0.13.1 stereo, controller-worker integration and repeated entry remain unverified. The actual 0.13.0 emulator evidence below remains historical evidence for that version.
+
+## Final local package
+
+`WebXR/output/Farey-WebXR-0.13.1.zip` is 612763 bytes, SHA-256 `59f0807bde48ccb504bba09c0594e04e82a4077e6e8d945f8fcce7202889dcd8`. Its 81-file manifest SHA-256 is `50f5c05687f3340eb86aab01cb0746cda24fd085d0e3cefc6135176714c3c73c`. The exact ZIP was extracted outside the checkout and both pages passed local/offline/mobile/state/failure checks with no external runtime requests or page errors. No private-path or credential markers were found. [Package receipt](evidence/browser-0.13.1/package.json). Launch with `python3 serve.py --port 8778` in the extracted folder, then open `http://127.0.0.1:8778/`. This is a local package; it has not been deployed or uploaded.
+
+Next: when the comparison tab is foreground and available for testing, repeat the actual IWE two-hand/exit/re-entry sequence at R48, then investigate continuous-motion latency with the same selection oracle. Physical headset input, GPU performance and comfort remain separate. The freshly signed native 0.9.0 (12) candidate is ready; the paired physical Vision Pro's tunnel was still unavailable at this checkpoint, so no installation or hardware test has occurred.
+
+---
+
 # Browser 0.13.0 spatial interaction verification
 
 October 22, 2026. The current double-cone browser adds app-owned controller aim rays, depth-tested cyan hover rings and a compact in-world readout: Left aim, Right aim, Selected, and the current plane. Hover does not change the mathematical selection. Each trigger recomputes on that controller's current ray; a ray movement can change the result from the last preview. The viewer-facing ring is an approximate angular-scale cue, not a mathematical locus.

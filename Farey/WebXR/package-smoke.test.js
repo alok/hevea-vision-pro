@@ -21,8 +21,8 @@ after(async () => { if (temporary) await rm(temporary, { recursive: true, force:
 test('built package resolves its complete local runtime graph', async () => {
   const result = await auditPackage(resolve(root, 'dist'));
   assert.equal(result.passed, true);
-  assert.equal(result.runtimeScripts, 19);
-  assert.equal(result.runtimeModules, 18);
+  assert.equal(result.runtimeScripts, 21);
+  assert.equal(result.runtimeModules, 20);
 });
 
 const faults = [
@@ -31,6 +31,7 @@ const faults = [
   { name: 'root-relative asset URLs', file: 'index.html', edit: text => text.replace('src="starscape.js', 'src="/starscape.js'), expected: /escapes package/ },
   { name: 'external stylesheets', file: 'index.html', edit: text => text.replace('href="style.css', 'href="https://example.invalid/style.css'), expected: /External asset/ },
   { name: 'unresolved module imports', file: 'app.js', edit: text => `${text}\nimport './missing.js';`, expected: /Missing local asset/ },
+  { name: 'bare import inside the hover worker', file: 'aim-worker.js', edit: text => text.replace(/from '\.\/input\.js[^']*'/, "from 'three'"), expected: /Bare import inside a module worker/ },
   { name: 'new telemetry APIs', file: 'app.js', edit: text => `${text}\nnavigator.sendBeacon('/metrics', 'data');`, expected: /network API/ }
 ];
 for (const fault of faults) test(`rejects ${fault.name}`, async () => {

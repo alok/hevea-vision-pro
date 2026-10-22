@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "mocked": "XR input and poses are mocked; no XRSession",
+  "oneHand": {
+    "readout": [
+      "Left aim  (2, 1, 1) \u00b7 \u0394 = -7",
+      "Selected    (1, -1, 2) \u00b7 \u0394 = -7"
+    ],
+    "selected": [
+      2,
+      1,
+      1
+    ]
+  },
+  "button": {
+    "hover": "Left aim  Next",
+    "afterMove": "Left aim  \u2014"
+  },
+  "dense": {
+    "previewed": [
+      2,
+      1,
+      1
+    ],
+    "workerCopyBytes": 22229808,
+    "selectedAfterMove": [
+      43,
+      12,
+      -34
+    ]
+  },
+  "reset": {
+    "shownAfterReset": [
+      2,
+      1,
+      1
+    ]
+  },
+  "twoHands": {
+    "readout": [
+      "Left aim  (1, 0, 1) \u00b7 \u0394 = -4",
+      "Right aim (2, 1, 1) \u00b7 \u0394 = -7",
+      "Selected    (1, -1, 2) \u00b7 \u0394 = -7"
+    ],
+    "rightSelected": [
+      2,
+      1,
+      1
+    ],
+    "leftSelected": [
+      1,
+      0,
+      1
+    ]
+  }
+}

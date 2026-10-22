@@ -1,10 +1,10 @@
 # Browser-first coefficient space
 
-Browser **0.12.0** is the current desktop demo. Native **0.9.0** retains the upper-cone projection view in [COEFFICIENT_CONE.md](COEFFICIENT_CONE.md); the dense signed lattice, Origin and newer cutting-plane controls are browser features.
+Browser **0.13.1** is the current desktop demo. Native **0.9.0** retains the upper-cone projection view in [COEFFICIENT_CONE.md](COEFFICIENT_CONE.md); the dense signed lattice, Origin and newer cutting-plane controls are browser features.
 
 ## Open and explore
 
-Unpack `WebXR/output/Farey-WebXR-0.12.0.zip`, open a terminal in the unpacked folder and run `python3 serve.py --port 8080`. Open `http://127.0.0.1:8080/`. All runtime assets are local. This loopback address only serves the computer running the command; it is not a published link or a headset-accessible deployment.
+Unpack `WebXR/output/Farey-WebXR-0.13.1.zip`, open a terminal in the unpacked folder and run `python3 serve.py --port 8080`. Open `http://127.0.0.1:8080/`. All runtime assets are local. This loopback address only serves the computer running the command; it is not a published link or a headset-accessible deployment.
 
 The initial view is a stationary, oblique overview of a genuinely noncoplanar integer coefficient lattice and both halves of the discriminant cone. Drag to orbit, scroll to zoom and click to inspect. **Inhabit** enters near the selected point; **Overview** restores the saved camera. **Origin** places the eye exactly at the apex. Look up/Level/Look down, drag to look, and W/A/S/D plus Q/E or the onscreen buttons move explicitly. **Reset** restores the initial scene. There is no automatic motion.
 
@@ -66,4 +66,4 @@ Compare [Stange's whole-lattice scene](https://katestange.net/starscape-lattice/
 
 Browser WebXR code requests `immersive-vr` with local-floor support and renders using Three.js XR camera/controller paths. **Actual IWE-emulated immersive sessions, stereo frames, programmed head poses, controller-ray selection and repeated exit/re-entry are verified.** See [the exact evidence and limits](XR_SIMULATION.md). Physical tracking, headset controls, GPU performance and comfort remain unverified. No OS permission or security setting was changed for this increment. Physical-device signing/install, public hosting and private video uploads remain separate steps.
 
-Browser 0.13 adds app-owned XR rays, per-hand hover labels and a selected-point/plane readout. Hover and selection remain distinct; the trigger uses a fresh ray. The depth-tested cyan ring is an approximate angular-scale annotation. Linear hover scans at the largest crop can still hitch; [current evidence and limits](XR_SIMULATION.md) distinguish actual emulator observations from mocked regressions and physical hardware.
+Browser 0.13 adds app-owned XR rays, per-hand hover labels and a selected-point/plane readout. Hover and selection remain distinct; the trigger uses a fresh ray. The depth-tested cyan ring is an approximate angular-scale annotation. Version 0.13.1 moves dense hover scans to a bounded module worker while keeping the trigger on the exact current ray. Moving rays can hide previews until they settle; scans and trigger selection still have finite CPU cost. The [current evidence and limits](XR_SIMULATION.md) distinguish real worker tests, mocked XR performance measurements, actual emulator observations and physical hardware.

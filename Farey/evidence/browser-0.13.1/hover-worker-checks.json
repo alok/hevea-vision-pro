@@ -1,0 +1,163 @@
+{
+  "passed": true,
+  "mocked": "XR input mocked; real module worker",
+  "nearHeld": {
+    "distance": 0.2,
+    "shift": 0.0005,
+    "targetDistance": 0.20000000000000018,
+    "threshold": 0.00020000000000000017,
+    "before": [
+      2,
+      1,
+      1
+    ],
+    "after": [
+      25,
+      1,
+      -22
+    ],
+    "exactOnCurrentRay": [
+      25,
+      1,
+      -22
+    ],
+    "requeried": true,
+    "shownEveryFrame": false,
+    "recoveredAt": 1,
+    "busy": false,
+    "queryOriginDelta": 0,
+    "selectedUnchanged": true
+  },
+  "nearHeldBelowThreshold": {
+    "distance": 0.2,
+    "shift": 0.0001,
+    "targetDistance": 0.20000000000000018,
+    "threshold": 0.00020000000000000017,
+    "before": [
+      2,
+      1,
+      1
+    ],
+    "after": [
+      2,
+      1,
+      1
+    ],
+    "exactOnCurrentRay": [
+      25,
+      1,
+      -22
+    ],
+    "requeried": false,
+    "shownEveryFrame": true,
+    "recoveredAt": null,
+    "busy": false,
+    "queryOriginDelta": 9.999999999998899e-05,
+    "selectedUnchanged": true
+  },
+  "farHeld": {
+    "distance": 20,
+    "shift": 0.0005,
+    "targetDistance": 12.319999999999999,
+    "threshold": 0.01232,
+    "before": [
+      -22,
+      1,
+      25
+    ],
+    "after": [
+      -22,
+      1,
+      25
+    ],
+    "exactOnCurrentRay": [
+      25,
+      1,
+      -22
+    ],
+    "requeried": false,
+    "shownEveryFrame": true,
+    "recoveredAt": null,
+    "busy": false,
+    "queryOriginDelta": 0.0005000000000000004,
+    "selectedUnchanged": true
+  },
+  "exactR48": {
+    "rays": 40,
+    "sameIndex": 40,
+    "raysWithAPoint": 40,
+    "roundTripMs": {
+      "median": 5.1,
+      "max": 9.9
+    },
+    "scanMs": 3.9,
+    "copyMs": 0.3,
+    "workerBufferBytes": 2776176,
+    "points": 231348
+  },
+  "exactR96": {
+    "rays": 40,
+    "sameIndex": 40,
+    "raysWithAPoint": 40,
+    "roundTripMs": {
+      "median": 28.9,
+      "max": 30.7
+    },
+    "scanMs": 25.6,
+    "copyMs": 3.1,
+    "workerBufferBytes": 22229808,
+    "points": 1852484
+  },
+  "twoHands": {
+    "shown": [
+      [
+        1,
+        0,
+        1
+      ],
+      [
+        2,
+        1,
+        1
+      ]
+    ],
+    "rightSelects": [
+      2,
+      1,
+      1
+    ],
+    "leftSelects": [
+      1,
+      0,
+      1
+    ]
+  },
+  "resetInFlight": {
+    "wasBusy": true,
+    "countAfter": 480,
+    "resultAfter": null,
+    "shownAfter": [
+      2,
+      -1,
+      1
+    ]
+  },
+  "sessionEnd": {
+    "wasBusy": true,
+    "visualsHidden": true,
+    "resultAfter": null
+  },
+  "workerFailure": {
+    "failed": true,
+    "fallbackShown": [
+      2,
+      1,
+      1
+    ],
+    "selected": [
+      2,
+      1,
+      1
+    ]
+  }
+}

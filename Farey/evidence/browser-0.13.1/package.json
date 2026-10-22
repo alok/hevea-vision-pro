@@ -1,0 +1,56 @@
+{
+  "version": "0.13.1",
+  "bytes": 612763,
+  "sha256": "59f0807bde48ccb504bba09c0594e04e82a4077e6e8d945f8fcce7202889dcd8",
+  "payloadFiles": 81,
+  "manifestSHA256": "50f5c05687f3340eb86aab01cb0746cda24fd085d0e3cefc6135176714c3c73c",
+  "archive": "WebXR/output/Farey-WebXR-0.13.1.zip",
+  "unitTests": {
+    "pass": 79,
+    "fail": 0
+  },
+  "packageSmoke": {
+    "static": {
+      "passed": true,
+      "payloadFiles": 81,
+      "runtimeScripts": 21,
+      "runtimeModules": 20,
+      "manifestSHA256": "50f5c05687f3340eb86aab01cb0746cda24fd085d0e3cefc6135176714c3c73c"
+    },
+    "farey": {
+      "passed": true,
+      "errors": [],
+      "externalRequests": [],
+      "actualXRSession": false
+    },
+    "coefficient": {
+      "passed": true,
+      "browser": "156.0.8078.48",
+      "primaryLoadedPageWorksOffline": true,
+      "moduleFailureExplained": true,
+      "webGLFailure": "mocked context creation failure",
+      "noJSExplained": true,
+      "temporaryCoefficientStateNotPersisted": true,
+      "layouts": [
+        {
+          "width": 390,
+          "height": 844,
+          "scrollWidth": 390,
+          "sceneWidth": 390,
+          "sceneHeight": 318.890625
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "scrollWidth": 844,
+          "sceneWidth": 452,
+          "sceneHeight": 234
+        }
+      ],
+      "externalRequests": [],
+      "errors": [],
+      "actualXRSession": false
+    }
+  },
+  "privatePathOrCredentialMarkerFindings": []
+}

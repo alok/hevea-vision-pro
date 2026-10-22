@@ -40,20 +40,24 @@ export async function auditPackage(directory) {
     return file;
   };
   const visited = new Set(), modules = new Set();
-  const visit = async (file, isModule = true) => {
+  // Module workers are followed too; they do not inherit the page's import map, so bare imports fail there.
+  const visit = async (file, isModule = true, inWorker = false) => {
     if (isModule) modules.add(file);
     if (visited.has(file)) return;
     visited.add(file);
     const code = await readFile(file, 'utf8');
+    for (const match of code.matchAll(/new\s+Worker\(\s*new\s+URL\(\s*['"]([^'"]+)['"]\s*,\s*import\.meta\.url\s*\)/g))
+      await visit(localFile(match[1], file), true, true);
     for (const match of code.matchAll(/\b(?:import|export)\s+(?:[^;'"]*?\s+from\s*)?['"]([^'"]+)['"]/g)) {
       let specifier = match[1], from = file;
+      ensure(!inWorker || specifier.startsWith('.'), `Bare import inside a module worker: ${specifier}`);
       if (!specifier.startsWith('.')) {
         const key = Object.keys(importMap).find(key => specifier === key || key.endsWith('/') && specifier.startsWith(key));
         ensure(key, `Unresolved bare import: ${specifier}`);
         specifier = importMap[key] + specifier.slice(key.length);
         from = resolve(root, 'index.html');
       }
-      await visit(localFile(specifier, from));
+      await visit(localFile(specifier, from), true, inWorker);
     }
   };
   for (const match of html.matchAll(/<(script|link)\b[^>]*(?:src|href)="([^"]+)"[^>]*>/g)) {
@@ -67,7 +71,7 @@ export async function auditPackage(directory) {
       }
     }
   }
-  for (const name of ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'starscape.js', 'starscape-core.js', 'appearance.js', 'camera-planes.js', 'lattice.js', 'point-cloud.js', 'viridis.js', 'pair-plane.js']) {
+  for (const name of ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'starscape.js', 'starscape-core.js', 'appearance.js', 'camera-planes.js', 'lattice.js', 'point-cloud.js', 'hover-queries.js', 'aim-worker.js', 'viridis.js', 'pair-plane.js']) {
     const code = await readFile(resolve(root, name), 'utf8');
     ensure(!/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon)\s*\(/.test(code), `Review new network API in ${name}`);
   }

@@ -94,9 +94,16 @@ and controller poses, cutting-plane selection and repeated exit/re-entry.
 Camera field of view and first-person pose recover after exit. Version 0.13.0
 also verifies per-hand aim/readout and actual emulator trigger selection.
 Faint rays and cyan rings preview targets; white marks the selection.
-The trigger recomputes on its current ray. Dense crops still have ambiguity
-and roughly 25 ms CPU hover scans in one test; physical XR performance
-is unverified. Emulation
+The trigger recomputes on its current ray. Version 0.13.1 moves dense hover scans to a module worker. The trigger
+still scans the exact current ray synchronously. While moving, stale
+previews hide until a fresh answer arrives. Below the staleness threshold,
+a cached preview can differ from the fresh trigger pick. At radius 96 the
+worker keeps
+a separate 22,229,808-byte lattice copy; its CPU scans still take roughly
+25 ms in one desktop test. Worker failure falls back to the main thread.
+The new worker passes real-browser tests with mocked XR input; a hidden-tab
+emulator check entered and ended a session but received no XR frames.
+Current-version foreground XR frames and physical performance remain unverified. Emulation
 is not physical headset tracking, input, performance or comfort evidence.
 No browser security changes are needed or recommended for local desktop use.
 WebGL creation failure shows an explanation. The coefficient page pauses
