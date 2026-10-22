@@ -28,8 +28,10 @@ import XCTest
     let button = require("enter-void")
     XCTAssertTrue(button.wait(for: \.isEnabled, toEqual: true, timeout: 20))
     button.tap()
+    if element("show-farey").exists { require("show-farey").tap() }
     require("word-state")
-    let rendered = NSPredicate(format: "label CONTAINS %@ OR label CONTAINS %@ OR label CONTAINS %@",
+    let rendered = NSPredicate(
+      format: "label CONTAINS %@ OR label CONTAINS %@ OR label CONTAINS %@",
       "lattice points", "Farey edges", "projected direction dots")
     expectation(for: rendered, evaluatedWith: require("render-receipt"))
     waitForExpectations(timeout: 20)
@@ -287,7 +289,8 @@ extension FareyUITests {
     let word = require("word-state").label
     let fraction = require("fraction-state").label
     require("space-toggle").tap()
-    XCTAssertTrue(require("render-receipt").wait(for: \.label, toEqual: "253 Farey edges", timeout: 20))
+    XCTAssertTrue(
+      require("render-receipt").wait(for: \.label, toEqual: "253 Farey edges", timeout: 20))
     capture("30-max-path-disk", holdFor: 3)
     for _ in 0..<3 {
       XCUIDevice.shared.press(.home)

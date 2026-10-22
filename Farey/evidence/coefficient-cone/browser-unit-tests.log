@@ -1,0 +1,54 @@
+
+> farey-into-the-infinite@0.8.0 test
+> node --test starscape-core.test.js core.test.js xr-support.test.js input.test.js recovery.test.js construction.test.js view.test.js package-smoke.test.js
+
+✔ q=1 projection preserves the ray and identifies positive multiples (1.544916ms)
+✔ infinity is not silently moved to a finite boundary point (0.082375ms)
+✔ Float32 direction collision is detected for the known deep path at every grid bound (4.683375ms)
+✔ Ordinary and close-but-distinct directions do not trigger the precision notice (0.211875ms)
+✔ Unreduced inspection is not a collision and the plane endpoint keeps its original formula (0.12825ms)
+✔ L/R convention, mediant and unimodular basis (0.105833ms)
+✔ every visible positive lattice pair selects its exact reduced direction (1.804708ms)
+✔ bounds reject invalid or unreachable selection without changing state (0.188833ms)
+✔ spatial embedding preserves vector addition and ray incidence (0.098167ms)
+✔ inspected multiples keep their point identity and canonical path (0.306417ms)
+✔ axes and invalid selections preserve inspection; navigation selects a new direction (0.172708ms)
+✔ canonical convergents differ from intermediate mediants and the alternate finite form (0.390167ms)
+✔ both finite expansions end at the rational and agree with the endpoint L/R convention (15.893875ms)
+✔ spotlight is separate from target and inspection, and reconciles row identity (0.281167ms)
+✔ projected preview navigates exact adjacent primitive directions without changing the target (0.695583ms)
+✔ hidden projected-lattice markers cannot intercept a visible point (4.614458ms)
+✔ a primary tap selects once (0.105291ms)
+✔ two fingers never select, regardless of lift order (0.068416ms)
+✔ a drag returning to its start is still a drag (0.062292ms)
+✔ cancelled gestures do not select and a later tap recovers (0.057792ms)
+✔ secondary mouse buttons do not select (0.043375ms)
+✔ built package resolves its complete local runtime graph (127.387708ms)
+✔ rejects unrecorded payload changes (11.14675ms)
+✔ rejects missing vendor modules (10.02875ms)
+✔ rejects root-relative asset URLs (12.197458ms)
+✔ rejects external stylesheets (11.73725ms)
+✔ rejects unresolved module imports (17.419334ms)
+✔ rejects new telemetry APIs (14.403542ms)
+✔ reload restores the exact word and finite grid (0.772ms)
+✔ untrusted saved state cannot exceed navigation or geometry limits (0.611834ms)
+✔ corrupt or unavailable storage does not break the live demo (0.082208ms)
+✔ reload preserves a multiple only when it matches the canonical word (0.134459ms)
+✔ every coefficient point lies strictly inside the 3D cone and projects along its ray (2.274041ms)
+✔ scalar multiples have distinct spatial positions and the same projection/root (0.363083ms)
+✔ the displayed set is noncoplanar and rejects nonstars (0.096959ms)
+✔ compact framing contains the maximum grid and direction plane at phone aspect ratios (2.178334ms)
+✔ axis letters retain their screen size across depth, zoom and viewport height (0.306084ms)
+✔ short wide windows use a separate scene while portrait and full desktop retain their layouts (0.057667ms)
+✔ missing, insecure and unsupported XR preserve a useful desktop fallback (0.436666ms)
+✔ support detection handles browser rejection and reports supported devices (0.118916ms)
+✔ a transient ray uses its new pose before the next rendered frame (0.75425ms)
+✔ desktop camera and orbit target recover after XR changes the camera pose (0.400375ms)
+ℹ tests 42
+ℹ suites 0
+ℹ pass 42
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 370.204917

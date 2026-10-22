@@ -1,0 +1,148 @@
+Building for debugging...
+[Planning deferred tasks]
+[28 / 52]
+[29 / 53] FareyCore
+[34 / 97]
+[38 / 97]
+[41 / 97]
+[44 / 97]
+[47 / 97]
+[48 / 97]
+[52 / 97]
+[54 / 97]
+[57 / 97]
+[60 / 97]
+[61 / 97]
+[62 / 97]
+[63 / 97]
+[65 / 97] FareyCore
+[66 / 97] FareyCore
+[75 / 97] FareyCore
+[77 / 97] FareyCore
+[81 / 97] FareyCore
+[87 / 98] FareyCoreTests-product
+[90 / 143]
+[93 / 143]
+[98 / 143]
+[101 / 143]
+[105 / 143]
+[108 / 143]
+[110 / 143]
+[114 / 143]
+[116 / 143]
+[119 / 143]
+[120 / 143]
+[124 / 143] FareyCoreTests-product
+[127 / 143] FareyCoreTests-product
+[133 / 143] FareyCoreTests-product
+[135 / 143] FareyCoreTests-product
+[137 / 143] FareyCoreTests-product
+[137 / 143] AllIncludingTests
+[139 / 143] FareyCoreTests-product
+Build complete! (11.61 sec)
+Test Suite 'All tests' started at 2026-10-22 11:30:24.113.
+Test Suite 'FareyCoreTests.xctest' started at 2026-10-22 11:30:24.115.
+Test Suite 'ApproximantSpotlightTests' started at 2026-10-22 11:30:24.115.
+Test Case '-[FareyCoreTests.ApproximantSpotlightTests testOutsideGridCoordinatesAreRetainedWithoutClamping]' started.
+Test Case '-[FareyCoreTests.ApproximantSpotlightTests testOutsideGridCoordinatesAreRetainedWithoutClamping]' passed (0.001 seconds).
+Test Case '-[FareyCoreTests.ApproximantSpotlightTests testRemovedBoundaryAndChangedTargetClearTheSpotlight]' started.
+Test Case '-[FareyCoreTests.ApproximantSpotlightTests testRemovedBoundaryAndChangedTargetClearTheSpotlight]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.ApproximantSpotlightTests testSpotlightIsIndependentAndSurvivesAReclassification]' started.
+Test Case '-[FareyCoreTests.ApproximantSpotlightTests testSpotlightIsIndependentAndSurvivesAReclassification]' passed (0.000 seconds).
+Test Suite 'ApproximantSpotlightTests' passed at 2026-10-22 11:30:24.116.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'BoundaryConstructionTests' started at 2026-10-22 11:30:24.116.
+Test Case '-[FareyCoreTests.BoundaryConstructionTests testInfinityHasNoFiniteChartPoint]' started.
+Test Case '-[FareyCoreTests.BoundaryConstructionTests testInfinityHasNoFiniteChartPoint]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.BoundaryConstructionTests testProjectionPreservesDirectionAndIdentifiesMultiples]' started.
+Test Case '-[FareyCoreTests.BoundaryConstructionTests testProjectionPreservesDirectionAndIdentifiesMultiples]' passed (0.000 seconds).
+Test Suite 'BoundaryConstructionTests' passed at 2026-10-22 11:30:24.117.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test Suite 'ContinuedFractionTests' started at 2026-10-22 11:30:24.117.
+Test Case '-[FareyCoreTests.ContinuedFractionTests testBothFiniteExpansionsAndEndpointWordsAcrossTheSupportedGrid]' started.
+Test Case '-[FareyCoreTests.ContinuedFractionTests testBothFiniteExpansionsAndEndpointWordsAcrossTheSupportedGrid]' passed (0.057 seconds).
+Test Case '-[FareyCoreTests.ContinuedFractionTests testCanonicalTruncationsDistinguishTheIntermediateMediant]' started.
+Test Case '-[FareyCoreTests.ContinuedFractionTests testCanonicalTruncationsDistinguishTheIntermediateMediant]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.ContinuedFractionTests testIntegersUnitFractionsAndImproperFractions]' started.
+Test Case '-[FareyCoreTests.ContinuedFractionTests testIntegersUnitFractionsAndImproperFractions]' passed (0.000 seconds).
+Test Suite 'ContinuedFractionTests' passed at 2026-10-22 11:30:24.175.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.058 (0.058) seconds
+Test Suite 'DisplayPrecisionTests' started at 2026-10-22 11:30:24.175.
+Test Case '-[FareyCoreTests.DisplayPrecisionTests testInspectedMultipleDoesNotIntroduceACollision]' started.
+Test Case '-[FareyCoreTests.DisplayPrecisionTests testInspectedMultipleDoesNotIntroduceACollision]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.DisplayPrecisionTests testKnownDeepCollisionAndNativeRoundingBoundary]' started.
+Test Case '-[FareyCoreTests.DisplayPrecisionTests testKnownDeepCollisionAndNativeRoundingBoundary]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.DisplayPrecisionTests testOrdinaryAndCloseButDistinctCoordinatesStayQuiet]' started.
+Test Case '-[FareyCoreTests.DisplayPrecisionTests testOrdinaryAndCloseButDistinctCoordinatesStayQuiet]' passed (0.000 seconds).
+Test Suite 'DisplayPrecisionTests' passed at 2026-10-22 11:30:24.175.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test Suite 'FareyTests' started at 2026-10-22 11:30:24.175.
+Test Case '-[FareyCoreTests.FareyTests testBoundsAndRepeatedReset]' started.
+Test Case '-[FareyCoreTests.FareyTests testBoundsAndRepeatedReset]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.FareyTests testEveryWordThroughDepth12IsUnimodularAndReduced]' started.
+Test Case '-[FareyCoreTests.FareyTests testEveryWordThroughDepth12IsUnimodularAndReduced]' passed (0.007 seconds).
+Test Case '-[FareyCoreTests.FareyTests testExactConventionAndUndo]' started.
+Test Case '-[FareyCoreTests.FareyTests testExactConventionAndUndo]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.FareyTests testKnownCircularGeodesic]' started.
+Test Case '-[FareyCoreTests.FareyTests testKnownCircularGeodesic]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.FareyTests testLatticeBudgetAndExactRayIncidence]' started.
+Test Case '-[FareyCoreTests.FareyTests testLatticeBudgetAndExactRayIncidence]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.FareyTests testSelectEveryVisibleLatticeFraction]' started.
+Test Case '-[FareyCoreTests.FareyTests testSelectEveryVisibleLatticeFraction]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.FareyTests testTessellationBudgetAndHyperbolicArcs]' started.
+Test Case '-[FareyCoreTests.FareyTests testTessellationBudgetAndHyperbolicArcs]' passed (0.037 seconds).
+Test Suite 'FareyTests' passed at 2026-10-22 11:30:24.222.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.046 (0.046) seconds
+Test Suite 'FractionEntryTests' started at 2026-10-22 11:30:24.222.
+Test Case '-[FareyCoreTests.FractionEntryTests testBoundsAreCheckedBeforeReductionAndOverflowDoesNotTrap]' started.
+Test Case '-[FareyCoreTests.FractionEntryTests testBoundsAreCheckedBeforeReductionAndOverflowDoesNotTrap]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.FractionEntryTests testMalformedAndNonPositiveInput]' started.
+Test Case '-[FareyCoreTests.FractionEntryTests testMalformedAndNonPositiveInput]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.FractionEntryTests testReductionAndBoundaryPaths]' started.
+Test Case '-[FareyCoreTests.FractionEntryTests testReductionAndBoundaryPaths]' passed (0.000 seconds).
+Test Suite 'FractionEntryTests' passed at 2026-10-22 11:30:24.223.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'GeodesicStabilityTests' started at 2026-10-22 11:30:24.223.
+Test Case '-[FareyCoreTests.GeodesicStabilityTests testCircleEquationAndDiameterArePreserved]' started.
+Test Case '-[FareyCoreTests.GeodesicStabilityTests testCircleEquationAndDiameterArePreserved]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.GeodesicStabilityTests testDeepHistoryDoesNotCollapseTubeSegments]' started.
+Test Case '-[FareyCoreTests.GeodesicStabilityTests testDeepHistoryDoesNotCollapseTubeSegments]' passed (0.001 seconds).
+Test Case '-[FareyCoreTests.GeodesicStabilityTests testNearCoincidentAndNearAntipodalBoundariesStayFinite]' started.
+Test Case '-[FareyCoreTests.GeodesicStabilityTests testNearCoincidentAndNearAntipodalBoundariesStayFinite]' passed (0.000 seconds).
+Test Suite 'GeodesicStabilityTests' passed at 2026-10-22 11:30:24.225.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.002 (0.002) seconds
+Test Suite 'PointInspectionTests' started at 2026-10-22 11:30:24.225.
+Test Case '-[FareyCoreTests.PointInspectionTests testAxesOriginAndRejectedSelectionsDoNotReplaceInspection]' started.
+Test Case '-[FareyCoreTests.PointInspectionTests testAxesOriginAndRejectedSelectionsDoNotReplaceInspection]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.PointInspectionTests testGridAndInputBoundariesPreserveTheUnreducedPoint]' started.
+Test Case '-[FareyCoreTests.PointInspectionTests testGridAndInputBoundariesPreserveTheUnreducedPoint]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.PointInspectionTests testMultiplesKeepTheirIdentityAndShareTheExactDirection]' started.
+Test Case '-[FareyCoreTests.PointInspectionTests testMultiplesKeepTheirIdentityAndShareTheExactDirection]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.PointInspectionTests testNavigationClearsPointIdentityAndRejectedMovePreservesIt]' started.
+Test Case '-[FareyCoreTests.PointInspectionTests testNavigationClearsPointIdentityAndRejectedMovePreservesIt]' passed (0.000 seconds).
+Test Suite 'PointInspectionTests' passed at 2026-10-22 11:30:24.225.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.000 (0.001) seconds
+Test Suite 'ProjectedSelectionTests' started at 2026-10-22 11:30:24.225.
+Test Case '-[FareyCoreTests.ProjectedSelectionTests testDenseNeighborsFollowExactFractionOrder]' started.
+Test Case '-[FareyCoreTests.ProjectedSelectionTests testDenseNeighborsFollowExactFractionOrder]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.ProjectedSelectionTests testOnlyDisplayedPrimitiveDirectionsAndSaturatingNavigation]' started.
+Test Case '-[FareyCoreTests.ProjectedSelectionTests testOnlyDisplayedPrimitiveDirectionsAndSaturatingNavigation]' passed (0.001 seconds).
+Test Suite 'ProjectedSelectionTests' passed at 2026-10-22 11:30:24.227.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'StarscapeTests' started at 2026-10-22 11:30:24.227.
+Test Case '-[FareyCoreTests.StarscapeTests testActualCoefficientPointsAreNoncoplanar]' started.
+Test Case '-[FareyCoreTests.StarscapeTests testActualCoefficientPointsAreNoncoplanar]' passed (0.000 seconds).
+Test Case '-[FareyCoreTests.StarscapeTests testConeProjectionAndQuadraticRoot]' started.
+Test Case '-[FareyCoreTests.StarscapeTests testConeProjectionAndQuadraticRoot]' passed (0.001 seconds).
+Test Case '-[FareyCoreTests.StarscapeTests testDistinctDepthsShareAnImageAndNullPointsAreExcluded]' started.
+Test Case '-[FareyCoreTests.StarscapeTests testDistinctDepthsShareAnImageAndNullPointsAreExcluded]' passed (0.000 seconds).
+Test Suite 'StarscapeTests' passed at 2026-10-22 11:30:24.228.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'FareyCoreTests.xctest' passed at 2026-10-22 11:30:24.228.
+	 Executed 33 tests, with 0 failures (0 unexpected) in 0.110 (0.113) seconds
+Test Suite 'All tests' passed at 2026-10-22 11:30:24.228.
+	 Executed 33 tests, with 0 failures (0 unexpected) in 0.110 (0.114) seconds
+◇ Test run started.
+↳ Testing Library Version: 2401
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Farey — Into the Infinite</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+  <noscript>
+    <p class="startup-error" role="alert">JavaScript is required to draw and explore this lattice. Enable it for this page to use the demo. The source links remain available: <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series, underlying L/R coding</a>.</p>
+  </noscript>
+  <main id="viewport" aria-label="Interactive three-dimensional integer lattice">
+    <section id="graphics-notice" class="graphics-notice" role="status" hidden>
+      <strong>3D graphics paused</strong>
+      <p id="graphics-message"></p>
+      <p>Waiting for the browser to restore graphics. The mathematics controls still work.</p>
+      <button id="reload-graphics">Reload page</button>
+    </section>
+  </main>
+  <div id="hover" aria-hidden="true" hidden></div>
+  <header>
+    <p class="eyebrow">INTO THE INFINITE · A SPATIAL MATHEMATICS STUDY</p>
+    <h1>The Farey lattice</h1><p><a href="index.html">← 3D coefficient cone</a></p>
+    <p class="credit">Inspired by <strong>Katherine Stange</strong> · <a href="https://katestange.net/talks/math-exploration/">Original talk ↗</a> · <a href="https://www.katestange.net/code/">Visualizations ↗</a></p>
+  </header>
+  <section class="controls" aria-label="Farey controls">
+    <div class="selection-head">
+      <div class="state" aria-live="polite"><span id="word">Start</span><strong id="fraction">0/1 &lt; 1/1 &lt; ∞</strong></div>
+      <div id="spotlight-readout" hidden><span id="spotlight-status" role="status"></span> <button id="clear-spotlight">Clear spotlight</button></div>
+    </div>
+    <div class="row">
+      <button id="left" class="cyan" aria-describedby="left-help">L</button><button id="right" class="purple" aria-describedby="right-help">R</button>
+      <button id="undo">Undo</button><button id="reset">Reset</button>
+      <button id="example">3/5 example</button><button id="xr" disabled>Checking WebXR…</button>
+    </div>
+    <div class="row secondary">
+      <label>Grid <select id="bound"><option>6</option><option>8</option><option>10</option><option selected>12</option><option>14</option></select></label>
+      <form id="select-form"><label>p/q <input id="rational" value="3/5" aria-label="Positive rational p/q" pattern="[0-9]+/[0-9]+" required></label><button>Select</button></form>
+      <button id="view">Front view</button>
+      <button id="learn">Learn a move</button>
+    </div>
+    <p id="matrix"></p><p id="vector-state"></p>
+    <button id="construction-start">Construct this direction</button>
+    <section id="construction" aria-label="Boundary to lattice construction" hidden>
+      <strong id="construction-heading"></strong>
+      <p id="construction-explanation" role="status"></p>
+      <div class="row"><button id="construction-back">Back</button><button id="construction-next">Next</button>
+        <button id="construction-stop" disabled>Stop</button><button id="construction-reset">Restart construction</button><button id="construction-close">Done</button></div>
+      <label><input type="checkbox" id="construction-motion"> <span id="construction-motion-label">Animate lattice reveal</span></label>
+      <p>q=1 is a projective chart of directions, not the Poincaré disk. Steps never move the camera. <a href="https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html">Stange's staged demonstration ↗</a></p>
+    </section>
+    <section id="projected-choice" aria-label="Choose a projected direction" hidden>
+      <strong>Choose a projected direction</strong>
+      <p>Dots overlap here. Preview a fraction, then select it. Previous and Next follow exact fraction order.</p>
+      <p id="projected-preview" tabindex="-1" role="status"></p>
+      <p id="projected-point"></p><p id="projected-current"></p>
+      <div class="row"><button id="projected-previous">Previous fraction</button><button id="projected-next">Next fraction</button></div>
+      <div class="row"><button id="projected-confirm">Select preview</button><button id="projected-cancel">Cancel preview</button></div>
+    </section>
+    <details id="point-inspection"><summary id="point-equation"></summary><p id="point-detail"></p></details>
+    <details id="cf-inspector">
+      <summary id="cf-summary">Continued fraction</summary>
+      <label><input type="checkbox" id="cf-alternate"> Use equivalent finite form ending in 1</label>
+      <p>Choose a row to locate it with double white rings. The target and inspected point stay fixed.</p>
+      <ol id="cf-path"></ol>
+      <details id="cf-explanation">
+        <summary>Definition and conventions</summary>
+        <p>Convergents are truncations of the chosen expansion. Canonical form ends in at least 2, except for an integer. The other form replaces the last term a with a−1, 1.</p>
+        <p>Gold rings mark convergents; gray rings mark other visited mediants. Rings mark primitive lattice points. Changing the target or removing a row clears its spotlight; the camera stays still.</p>
+        <p id="cf-convention"></p>
+        <p><a href="https://dlmf.nist.gov/1.12.ii">Convergent definition ↗</a> · <a href="https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html">Stange’s demonstration ↗</a></p>
+      </details>
+    </details>
+    <p id="receipt" role="status"></p>
+    <p id="precision-notice" role="status" hidden></p>
+    <p id="geometry-description" class="sr-only"></p>
+    <p id="left-help" class="sr-only">Replace the lower endpoint with the current mediant.</p>
+    <p id="right-help" class="sr-only">Replace the upper endpoint with the current mediant.</p>
+    <p id="view-help" class="sr-only">One finger rotates; two fingers pan or pinch to zoom. With the scene focused, arrow keys pan, Shift and arrow keys rotate, plus and minus zoom, and Home restores the front view. Use the fraction field to select any supported direction without pointing at a sphere.</p>
+    <section id="lesson" aria-label="Worked Farey moves" hidden>
+      <strong id="lesson-question"></strong>
+      <div id="lesson-choices" class="row"></div>
+      <p id="lesson-explanation" role="status"></p>
+      <div class="row"><button id="lesson-apply" disabled>Apply L</button><button id="lesson-next" hidden>Predict R next</button><button id="lesson-restart">Restart lesson</button><button id="lesson-close">Close lesson</button></div>
+      <a href="https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html">Katherine Stange’s original L/R and lattice demonstration ↗</a>
+    </section>
+    <p class="hint">Drag to orbit · scroll to zoom · right-drag to pan · click a sphere to select.<br>Focus the scene for keyboard controls: arrows pan, Shift + arrows rotate, +/− zoom, Home restores the view.<br><span id="geometry-hint">Cyan + purple = orange mediant. The green plane contains its integer multiples.</span></p>
+    <details><summary>Mathematics & sources</summary>
+      <p id="xr-status" role="status"></p>
+      <p>In the ordinary lattice, each sphere is an integer pair (q,p). The fraction p/q is its direction. Neighbor vectors form a parallelogram of area one in integer coordinates; adding them gives their mediant. The finite green plane stands perpendicular to the lattice through that direction.</p>
+      <p>Construction projects directions onto q=1. Its optional dot motion is an illustration, not a hyperbolic map. Stange's original stages move the camera around fixed lattice points.</p>
+      <p>This is original code inspired by Stange’s L/R lattice viewer, not a copy of her source or a reconstruction of her separate hyperboloid. Our word displays M(1); append R to send M(∞) to the same fraction.</p>
+      <p>Underlying geodesic coding: <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series (1985) ↗</a>. Independent prototype by Alok Singh. No endorsement implied. Finite geometry; no forced camera motion.</p>
+    </details>
+  </section>
+  <p id="fatal" role="alert" hidden></p>
+  <script src="load-status.js"></script>
+  <script type="module" id="farey-app" src="app.js"></script>
+</body>
+</html>

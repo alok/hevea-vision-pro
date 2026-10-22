@@ -5,6 +5,7 @@ import XCTest
 @MainActor final class ModelTests: XCTestCase {
   func testPrecisionNoticeTracksTheViewWithoutChangingExactState() {
     let model = GalleryModel()
+    model.starscapeMode = false
     model.preset()
     XCTAssertNil(model.precisionNotice)
     model.reset()

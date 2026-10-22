@@ -54,7 +54,7 @@ def main():
     thread.start()
     session = f'farey-offline-{uuid.uuid4().hex[:10]}'
     path = '/' if args.at_root else f'/{quote(artifact.name)}/'
-    url = f'http://127.0.0.1:{server.server_port}{path}'
+    url = f'http://127.0.0.1:{server.server_port}{path}farey.html'
     try:
         # No --persistent or --headed: this cannot take over the user's profile/window.
         run([*cli, f'-s={session}', 'open', url], 'open')

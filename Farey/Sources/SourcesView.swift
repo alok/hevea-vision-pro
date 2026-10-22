@@ -6,7 +6,8 @@ struct SourcesView: View {
   static let talkURL = URL(string: "https://katestange.net/talks/math-exploration/")!
   static let catalogURL = URL(string: "https://www.katestange.net/code/")!
   static let seriesURL = URL(string: "https://doi.org/10.1112/jlms/s2-31.1.69")!
-  static let latticeURL = URL(string: "https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html")!
+  static let latticeURL = URL(
+    string: "https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html")!
   @Environment(\.dismiss) private var dismiss
 
   var body: some View {
@@ -31,6 +32,15 @@ struct SourcesView: View {
         Link("Visualization catalog ↗", destination: Self.catalogURL)
       }.font(.headline)
       Link("Original L/R and lattice demonstration ↗", destination: Self.latticeURL)
+      Link(
+        "Original 3D Starscape / Lattice ↗",
+        destination: URL(string: "https://www.katestange.net/starscape-lattice/")!)
+      Text(
+        "The coefficient cone shows integer triples (a,b,c) with b²−4ac<0 and a>0. "
+          + "Its radial projection onto a+c=4 is the Klein disk. This is distinct from the planar Farey L/R lattice. "
+          + "The quadratic formula gives the upper-half-plane root. "
+          + "Our finite bound, stationary oblique views and point sizes are presentation choices."
+      )
       Divider()
       Text("Caroline Series").font(.title2.weight(.medium))
       Link("The modular surface and continued fractions (1985) ↗", destination: Self.seriesURL)
@@ -39,9 +49,11 @@ struct SourcesView: View {
           + "In the ordinary lattice, (q, p) represents p/q. Its direction plane contains its integer multiples. "
           + "Orange edges show vector addition. Sphere radii, colors, plane height and the scene's tilt are presentation choices."
       )
-      Text("Construction projects directions onto q = 1. Its optional dot motion is an illustration, "
-        + "not a hyperbolic map; Stange's original stages move the camera around fixed lattice points.")
-        .font(.callout)
+      Text(
+        "Construction projects directions onto q = 1. Its optional dot motion is an illustration, "
+          + "not a hyperbolic map; Stange's original stages move the camera around fixed lattice points."
+      )
+      .font(.callout)
       Text(
         "Independent native implementation by Alok Singh. "
           + "No source code or media from Stange’s demo is bundled. This is not an official port or endorsement."

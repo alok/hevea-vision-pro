@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import SwiftUI
+
 #if canImport(FareyCore)
-import FareyCore
+  import FareyCore
 #endif
 
 struct ControlsWindowView: View {
@@ -31,6 +32,9 @@ struct ControlsView: View {
   @State private var showPointInspection = false
   @State private var showContinuedFraction = false
   var body: some View {
+    if model.starscapeMode { StarscapeControls() } else { fareyControls }
+  }
+  private var fareyControls: some View {
     VStack(spacing: 12) {
       HStack(alignment: .firstTextBaseline) {
         Text(model.state.wordLabel).font(.system(.headline, design: .monospaced))
@@ -74,13 +78,23 @@ struct ControlsView: View {
       }
       .buttonStyle(.borderedProminent).controlSize(.large)
       HStack(spacing: 10) {
-        Button(model.constructionStage != nil
-          ? (model.latticeMode ? "Back to Lattice" : "Back to Disk")
-          : (model.latticeMode ? "Space: Lattice" : "Space: Disk")) {
+        Button("3D starscape") {
+          model.starscapeMode = true
+          model.revision += 1
+        }
+        .accessibilityIdentifier("show-starscape")
+        Button(
+          model.constructionStage != nil
+            ? (model.latticeMode ? "Back to Lattice" : "Back to Disk")
+            : (model.latticeMode ? "Space: Lattice" : "Space: Disk")
+        ) {
           if model.constructionStage != nil { model.endConstruction() } else { model.toggleSpace() }
         }
-          .accessibilityIdentifier("space-toggle")
-        Text(model.latticeMode || model.constructionStage != nil ? "Grid \(model.depth * 2)" : "Detail \(model.depth)").font(.caption)
+        .accessibilityIdentifier("space-toggle")
+        Text(
+          model.latticeMode || model.constructionStage != nil
+            ? "Grid \(model.depth * 2)" : "Detail \(model.depth)"
+        ).font(.caption)
         Button {
           model.changeDepth(-1)
         } label: {
@@ -108,11 +122,13 @@ struct ControlsView: View {
         Button("Sources") { showSources = true }.accessibilityIdentifier("sources")
       }.buttonStyle(.bordered).controlSize(.small)
       Text(
-        model.constructionStage != nil ? model.constructionExplanation : model.latticeMode
-          ? (model.state.mediant.p > model.depth * 2 || model.state.mediant.q > model.depth * 2
-            ? "Direction plane shown. The primitive point lies beyond this finite grid."
-            : "Tap a point for p/q. Green plane: multiples of (q, p). Orange: the mediant.")
-          : "Green: ∞ to p/q. Orange: the L/R path. Both views share the same exact interval."
+        model.constructionStage != nil
+          ? model.constructionExplanation
+          : model.latticeMode
+            ? (model.state.mediant.p > model.depth * 2 || model.state.mediant.q > model.depth * 2
+              ? "Direction plane shown. The primitive point lies beyond this finite grid."
+              : "Tap a point for p/q. Green plane: multiples of (q, p). Orange: the mediant.")
+            : "Green: ∞ to p/q. Orange: the L/R path. Both views share the same exact interval."
       )
       .font(.caption).foregroundStyle(.secondary)
       .fixedSize(horizontal: false, vertical: true)
@@ -125,19 +141,25 @@ struct ControlsView: View {
       if let inspection = model.state.inspection {
         if model.constructionStage != nil {
           ConstructionControls()
-        } else { HStack {
-          Button("Point (q, p): \(inspection.equation) · Inspect") { showPointInspection = true }
-            .font(.caption.monospaced()).foregroundStyle(.cyan).buttonStyle(.plain)
-            .lineLimit(1).minimumScaleFactor(0.7).accessibilityIdentifier("inspect-point")
-            .popover(isPresented: $showPointInspection, arrowEdge: .bottom) { PointInspectionView() }
-          Spacer()
-          Button("Convergents / mediants") { showContinuedFraction = true }
-            .font(.caption).foregroundStyle(.yellow).buttonStyle(.plain)
-            .accessibilityIdentifier("show-cf")
-            .popover(isPresented: $showContinuedFraction, arrowEdge: .bottom) { ContinuedFractionView() }
-          Button("Construct") { model.startConstruction() }
-            .font(.caption).accessibilityIdentifier("construction-start")
-        } }
+        } else {
+          HStack {
+            Button("Point (q, p): \(inspection.equation) · Inspect") { showPointInspection = true }
+              .font(.caption.monospaced()).foregroundStyle(.cyan).buttonStyle(.plain)
+              .lineLimit(1).minimumScaleFactor(0.7).accessibilityIdentifier("inspect-point")
+              .popover(isPresented: $showPointInspection, arrowEdge: .bottom) {
+                PointInspectionView()
+              }
+            Spacer()
+            Button("Convergents / mediants") { showContinuedFraction = true }
+              .font(.caption).foregroundStyle(.yellow).buttonStyle(.plain)
+              .accessibilityIdentifier("show-cf")
+              .popover(isPresented: $showContinuedFraction, arrowEdge: .bottom) {
+                ContinuedFractionView()
+              }
+            Button("Construct") { model.startConstruction() }
+              .font(.caption).accessibilityIdentifier("construction-start")
+          }
+        }
       }
       if model.spotlight.rational != nil { SpotlightReadout() }
       Text(
@@ -156,10 +178,12 @@ struct ControlsView: View {
     .glassBackgroundEffect()
     .accessibilityElement(children: .contain)
     .sheet(isPresented: $showSources) { SourcesView() }
-    .popover(isPresented: Binding(
-      get: { model.projectedSelection != nil },
-      set: { if !$0 { model.projectedSelection = nil } }
-    )) { ProjectedSelectionView() }
+    .popover(
+      isPresented: Binding(
+        get: { model.projectedSelection != nil },
+        set: { if !$0 { model.projectedSelection = nil } }
+      )
+    ) { ProjectedSelectionView() }
 
   }
 }

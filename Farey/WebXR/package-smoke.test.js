@@ -21,14 +21,14 @@ after(async () => { if (temporary) await rm(temporary, { recursive: true, force:
 test('built package resolves its complete local runtime graph', async () => {
   const result = await auditPackage(resolve(root, 'dist'));
   assert.equal(result.passed, true);
-  assert.equal(result.runtimeScripts, 11);
-  assert.equal(result.runtimeModules, 10);
+  assert.equal(result.runtimeScripts, 13);
+  assert.equal(result.runtimeModules, 12);
 });
 
 const faults = [
   { name: 'unrecorded payload changes', file: 'app.js', edit: text => `${text}\n// altered`, expected: /Hash mismatch/, rehash: false },
   { name: 'missing vendor modules', file: 'vendor/three.core.js', remove: true, expected: /exact payload/ },
-  { name: 'root-relative asset URLs', file: 'index.html', edit: text => text.replace('src="app.js', 'src="/app.js'), expected: /escapes package/ },
+  { name: 'root-relative asset URLs', file: 'index.html', edit: text => text.replace('src="starscape.js', 'src="/starscape.js'), expected: /escapes package/ },
   { name: 'external stylesheets', file: 'index.html', edit: text => text.replace('href="style.css', 'href="https://example.invalid/style.css'), expected: /External asset/ },
   { name: 'unresolved module imports', file: 'app.js', edit: text => `${text}\nimport './missing.js';`, expected: /Missing local asset/ },
   { name: 'new telemetry APIs', file: 'app.js', edit: text => `${text}\nnavigator.sendBeacon('/metrics', 'data');`, expected: /network API/ }

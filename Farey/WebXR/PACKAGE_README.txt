@@ -13,12 +13,17 @@ Stop the server with Control-C. It listens only on this computer's loopback.
 Use another --port if 8080 is occupied. Keep every file in the folder together.
 Do not double-click index.html: browser module security requires an HTTP URL.
 
-TRY THIS FIRST
-Choose "3/5 example": the selected orange vector is (q,p) = (5,3).
-The green plane follows that direction and contains its integer multiples.
-Press L: the interval becomes 3/5 < 5/8 < 2/3. Undo returns to 3/5.
-Reset returns to 1/1 and the starting view. "Learn a move" offers a short
-predict-and-apply path from 1/2 through 2/3 to 3/5.
+TRY THIS FIRST — COEFFICIENT CONE
+The opening page shows a true 3D coefficient lattice inside a cone, and a
+separate radial projection disk. Next point changes (1,-1,2) to (2,-2,4):
+the spatial location moves but its projected image and quadratic root do not.
+Hide projection to see the volume alone; Other side changes your viewpoint.
+Reset restores the default example and oblique view. Reload starts fresh.
+
+FAREY L/R — SEPARATE VIEW
+Follow the Farey L/R link, or open /farey.html. This intrinsically planar
+rational-pair lattice retains the 3/5 example, L/R, Undo, Reset and lesson.
+The saved-state and detailed L/R controls below refer to this separate page.
 
 OFFLINE BOUNDARY
 The local server and all graphics assets work without an internet connection.

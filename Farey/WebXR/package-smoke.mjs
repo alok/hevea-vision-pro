@@ -27,7 +27,7 @@ export async function auditPackage(directory) {
   for (const name of ['README.txt', 'serve.py', 'SOURCE.txt', 'COPYING.txt', 'vendor/THREE-LICENSE.txt', 'source/build.mjs', 'source/package-lock.json']) {
     ensure(name in manifest, `Missing distributable input: ${name}`);
   }
-  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  const html = (await Promise.all(['index.html', 'farey.html'].map(name => readFile(resolve(root,name),'utf8')))).join('\n');
   const importMap = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
   const localFile = (specifier, from) => {
     const target = new URL(specifier, pathToFileURL(from));
@@ -67,7 +67,7 @@ export async function auditPackage(directory) {
       }
     }
   }
-  for (const name of ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js']) {
+  for (const name of ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'starscape.js', 'starscape-core.js']) {
     const code = await readFile(resolve(root, name), 'utf8');
     ensure(!/\b(?:fetch|XMLHttpRequest|WebSocket|EventSource|sendBeacon)\s*\(/.test(code), `Review new network API in ${name}`);
   }

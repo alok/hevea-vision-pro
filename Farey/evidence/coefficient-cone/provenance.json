@@ -1,0 +1,29 @@
+{
+  "inspectedUTC": "2026-10-22T18:26:00Z",
+  "references": [
+    {
+      "url": "https://katestange.net/talks/math-exploration/",
+      "sha256": "e8628c5aad7a95367e93ecdb8fbec5bd85105242868fff4e23736892625c62a7"
+    },
+    {
+      "url": "https://www.katestange.net/starscape-lattice/?talk",
+      "sha256": "fe845b75f2e049c06e98c8439ff3e2ae3396fbfcc21c981229239ecd36a53ced"
+    },
+    {
+      "url": "https://www.katestange.net/_astro/index.astro_astro_type_script_index_0_lang.kfTP0QEk.js",
+      "sha256": "f22013e04c8de068f6d74ccf4b4a16d76218c53d6f236eb9f64b435697c1174b"
+    }
+  ],
+  "referenceMediaBundled": false,
+  "implementation": "Original finite coefficient-space construction; formulas independently tested.",
+  "versions": {
+    "native": "0.9.0 (12)",
+    "browser": "0.8.0"
+  },
+  "mainSimulator": "D2ECE520-ED92-4A38-A990-AE65431DF562",
+  "mainVerification": {
+    "deviceHubWindow": "main-devicehub.png",
+    "simctlStillIncomplete": "main-simctl-incomplete.png",
+    "conclusion": "Visible window contains coefficient geometry; compositor capture discrepancy persists."
+  }
+}

@@ -9,6 +9,10 @@ extension FareyUITests {
     app.launchArguments = ["--showcase"]
     app.launch()
     Self.launched = true
+    XCTAssertTrue(require("coefficient-state").label.contains("(1, -1, 2)"))
+    XCTAssertTrue(require("render-receipt").label.contains("280 coefficient points"))
+    capture("showcase-coefficient-cone")
+    require("show-farey").tap()
     XCTAssertEqual(require("word-state").label, "RLR")
     XCTAssertTrue(require("fraction-state").label.contains("3/5"))
     XCTAssertTrue(require("space-toggle").label.contains("Lattice"))

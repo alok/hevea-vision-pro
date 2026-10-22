@@ -7,10 +7,30 @@ import SwiftUI
 #endif
 
 @MainActor @Observable final class GalleryModel {
-  var state = FareyState() { didSet { constructionMoving = false; projectedSelection = nil } }
+  var state = FareyState() {
+    didSet {
+      constructionMoving = false
+      projectedSelection = nil
+    }
+  }
   var depth = 6 { didSet { projectedSelection = nil } }
   var viewpoint = 0
   var latticeMode = true
+  var starscapeMode = true
+  var coefficient = Starscape.examples[0]
+  var coefficientView = 0
+  var showProjection = true
+  func nextCoefficient() {
+    let index = Starscape.examples.firstIndex(of: coefficient) ?? -1
+    coefficient = Starscape.examples[(index + 1) % Starscape.examples.count]
+    revision += 1
+  }
+  func resetStarscape() {
+    coefficient = Starscape.examples[0]
+    coefficientView = 0
+    showProjection = true
+    revision += 1
+  }
   var immersionOpen = false
   var transitioning = false
   var immersionSession = 0
@@ -29,18 +49,24 @@ import SwiftUI
   var animateConstruction = false
   var constructionMoving = false
   var precisionNotice: String? {
-    guard constructionStage == nil else { return nil }
-    let overlaps = latticeMode
+    guard !starscapeMode, constructionStage == nil else { return nil }
+    let overlaps =
+      latticeMode
       ? DisplayPrecision.latticeOverlaps(state, bound: depth * 2)
       : DisplayPrecision.diskOverlaps(state)
     guard overlaps else { return nil }
-    return "Display overlap: distinct fractions can look identical here. Read the exact values above."
+    return
+      "Display overlap: distinct fractions can look identical here. Read the exact values above."
   }
   func spotlightPoint(_ point: Rational) {
     constructionMoving = false
     if spotlight.focus(point, in: state, alternate: alternateCF) { revision += 1 }
   }
-  func clearSpotlight() { constructionMoving = false; spotlight.clear(); revision += 1 }
+  func clearSpotlight() {
+    constructionMoving = false
+    spotlight.clear()
+    revision += 1
+  }
   func setAlternateCF(_ value: Bool) {
     guard value != alternateCF else { return }
     constructionMoving = false
@@ -182,8 +208,9 @@ struct LaunchView: View {
         VStack(alignment: .leading, spacing: 7) {
           Text("INTO THE INFINITE").font(.caption.weight(.semibold)).tracking(4).foregroundStyle(
             .cyan)
-          Text("The Farey universe").font(.system(size: 40, weight: .light, design: .serif))
-          Text("Two moves. Every positive rational.").font(.title3).foregroundStyle(.secondary)
+          Text("See the mathematics in space").font(
+            .system(size: 40, weight: .light, design: .serif))
+          Text("A 3D lattice. A cone. Its 2D image.").font(.title3).foregroundStyle(.secondary)
           Text("Inspired by Katherine Stange").font(.title3.weight(.semibold))
             .foregroundStyle(.cyan)
             .accessibilityIdentifier("entry-credit")
@@ -196,10 +223,10 @@ struct LaunchView: View {
         Text("L  R").font(.system(size: 42, weight: .ultraLight, design: .monospaced))
           .foregroundStyle(.cyan)
       }
-      DiskPreview().frame(height: 280)
+      StarscapePreview().frame(height: 280)
       Text(
-        "Step into the integer lattice behind the Farey tessellation.\n"
-          + "Choose a rational, follow its direction plane, and build its mediants in a full-immersion void."
+        "Explore quadratic coefficients (a,b,c) at genuinely different depths.\n"
+          + "See their projection onto a disk, or switch to the separate Farey L/R lattice."
       )
       .multilineTextAlignment(.center).foregroundStyle(.secondary)
       Button(action: enter) {

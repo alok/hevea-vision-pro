@@ -1,6 +1,6 @@
 # Farey — Into the Infinite
 
-[Release-candidate readiness](READER_READINESS.md) — native 0.8.1 / browser 0.7.4. [Precision notice](PRECISION_NOTICE.md). [Safari and compact-view audit](MOBILE_SAFARI.md). [Lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) · [Native integration check](INTEGRATION_08.md). [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
+[Coefficient-cone update](COEFFICIENT_CONE.md) — native 0.9.0 / browser 0.8.0. [Previous release-candidate readiness](READER_READINESS.md) — native 0.8.1 / browser 0.7.4. [Precision notice](PRECISION_NOTICE.md). [Safari and compact-view audit](MOBILE_SAFARI.md). [Lifecycle capture audit](LIFECYCLE_CAPTURE_AUDIT.md) · [Native integration check](INTEGRATION_08.md). [Crowded projected selection](PROJECTED_SELECTION.md). [Source-fidelity audit](SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](CONSTRUCTION.md). [Previous release audit](DEMO_READINESS.md). [Recorded demonstration outline](DEMONSTRATION_OUTLINE.md).
 
 [Independent mathematical consistency audit](MATHEMATICAL_AUDIT.md): exact rational state agrees across implementations; very close deep disk curves can merge at display precision. Read exact fractions when interpreting overlapping arcs.
 
@@ -8,7 +8,9 @@
 
 **Inspired by [Katherine Stange’s mathematical visualizations](https://www.katestange.net/code/) and her [Illustrating Mathematics for Math 2.0 talk](https://katestange.net/talks/math-exploration/).** Underlying L/R geodesic coding: [Caroline Series (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 
-A native visionOS experience of the integer lattice behind the Farey tessellation. Shaded spheres occupy actual integer coordinates in space; a translucent plane follows the selected rational direction, and a parallelogram shows how the mediant adds two integer vectors. The linked Poincaré disk uses the same exact state. The surrounding immersive space is fully black. The viewer is stationary by default.
+The default scene is now the noncoplanar **coefficient lattice** from Stange’s Starscape / Lattice construction: 280 integer triples `(a,b,c)` inside the discriminant cone, alongside their radial projection onto a Klein disk. Selecting `(1,−1,2)` then its multiple `(2,−2,4)` changes the spatial point while keeping the projected point and quadratic root fixed. A stationary oblique view exposes depth immediately. The immersive surroundings are black.
+
+The separate **Farey L/R** view retains the rational-pair lattice, mediants and linked Poincaré disk. That lattice is intrinsically planar; the new coefficient scene does not relabel it as a three-dimensional lattice. See [exact formulas and evidence](COEFFICIENT_CONE.md).
 
 ## Run on this Mac
 
@@ -21,17 +23,17 @@ cd /Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/FareyVision/Farey
 
 This generates the checked-in XcodeGen project, builds Release with three jobs, boots the existing simulator if needed, installs the app, and opens Device Hub. Select **Apple Vision Pro — Simulator**, then **Enter the void**. The app's displayed name is **Farey — Into the Infinite**.
 
-The scripts first copy the source and build specification into a fresh `/tmp/farey-build-*` directory. This avoids stalled reads and Finder metadata in the synced Documents checkout. To open the 3/5 lattice scene directly for inspection, run `./scripts/run-simulator.sh --showcase`. This uses a Debug-only launch option; ordinary launches still start at the entry window.
+The scripts first copy the source and build specification into a fresh `/tmp/farey-build-*` directory. This avoids stalled reads and Finder metadata in the synced Documents checkout. To open the default coefficient-cone scene directly for inspection, run `./scripts/run-simulator.sh --showcase`. This uses a Debug-only launch option; ordinary launches still start at the entry window.
 
 On another configured Mac, select a visionOS simulator with `xcrun simctl list devices available`, then pass its identifier as `SIMULATOR_UDID=YOUR_ID ./scripts/run-simulator.sh`. The default identifier above is specific to this Mac. The script builds, installs and opens the app; it is not a read-only check.
 
 The [browser/WebXR companion](WebXR/README.md) uses the same exact lattice and L/R convention. It has desktop orbit, sphere selection, finite grid controls and an immersive-VR entry path. Desktop behavior is verified; actual headset WebXR sessions remain untested.
 
-For a first visit, enter the void, choose **3/5 example**, then press **L**. The selected fraction becomes **5/8**, between **3/5** and **2/3**. **Undo** returns to **3/5**; **Reset** returns to **1/1**. **Learn** guides a different path, starting at **1/2**. **Exit** returns to the launch window. The disk preview on the launch window is a preview; the entered space starts with the spatial lattice.
+For a first visit, enter the void and inspect the 3D coefficient cloud. **Next point** selects a scalar multiple at a different depth; **Hide projection** reveals the cloud alone. **Other side** changes the view without animation. **Farey L/R** switches to the previous rational-pair scene. There, choose **3/5 example**, then press **L**. The selected fraction becomes **5/8**, between **3/5** and **2/3**. **Undo** returns to **3/5**; **Reset** returns to **1/1**. **Learn** guides a different path, starting at **1/2**. **Exit** returns to the launch window. The launch preview is a perspective sketch; the entered space uses actual 3D RealityKit entities.
 
 Xcode 27.2 beta 2 and visionOS 27.2 are installed; the simulator is `D2ECE520-ED92-4A38-A990-AE65431DF562`. Xcode 27 uses Device Hub. In its normal interaction mode, click a control or sphere. For simulator camera navigation, release captured input with Escape, then use A/D for sideways motion and W/S for forward/backward; Reset Camera restores the view. See [Apple's Device Hub controls](https://developer.apple.com/documentation/xcode/interacting-with-your-visionos-app-in-device-hub).
 
-## Explore
+## Explore the Farey L/R view
 
 - Tap a lattice sphere or a floating rational label to select its positive rational p/q, including reducible pairs such as 6/10.
 - **Inspect** below the geometry hint explains the actual selected point: `(10,6) = 2 × (5,3)`, `gcd(10,6) = 2`, and `6/10 = 3/5`. The point remains distinct from its reduced direction across lattice/disk switches and immersive re-entry. White marks a non-primitive inspected point; orange marks the primitive mediant. L/R, Undo and Reset choose a new direction and clear the previous point identity.

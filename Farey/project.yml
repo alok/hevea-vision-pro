@@ -27,8 +27,8 @@ targets:
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
         INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
-        CURRENT_PROJECT_VERSION: 11
-        MARKETING_VERSION: '0.8.1'
+        CURRENT_PROJECT_VERSION: 12
+        MARKETING_VERSION: '0.9.0'
         TARGETED_DEVICE_FAMILY: '7'
     scheme:
       testTargets: [FareyVisionTests, FareyVisionUITests]

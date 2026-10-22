@@ -14,7 +14,7 @@ let license = resolve(root, 'LICENSE');
 try { await access(license); } catch { license = resolve(root, '../../LICENSE'); }
 await rm(destination, { recursive: true, force: true });
 await mkdir(resolve(destination, 'vendor/addons/controls'), { recursive: true });
-const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css'];
+const files = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css', 'starscape.js', 'starscape-core.js'];
 for (const name of files) await copyFile(resolve(root, name), resolve(destination, name));
 const hash = content => createHash('sha256').update(content).digest('hex');
 const assetHash = async name => hash(await readFile(resolve(destination, name)));
@@ -26,13 +26,21 @@ for (const name of ['core.js', 'xr-support.js', 'input.js', 'recovery.js', 'cons
   app = app.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
 }
 await writeFile(resolve(destination, 'app.js'), app);
+let starscape = await readFile(resolve(destination, 'starscape.js'), 'utf8');
+for (const name of ['starscape-core.js', 'xr-support.js', 'input.js']) starscape = starscape.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
+await writeFile(resolve(destination, 'starscape.js'), starscape);
 const html = (await readFile(resolve(root, 'index.html'), 'utf8'))
   .replace('./node_modules/three/build/three.module.js', './vendor/three.module.js')
   .replace('./node_modules/three/examples/jsm/', './vendor/addons/')
   .replace('href="style.css"', `href="style.css?v=${await assetHash('style.css')}"`)
   .replace('src="load-status.js"', `src="load-status.js?v=${await assetHash('load-status.js')}"`)
-  .replace('src="app.js"', `src="app.js?v=${await assetHash('app.js')}"`);
+  .replace('src="app.js"', `src="app.js?v=${await assetHash('app.js')}"`)
+  .replace('src="starscape.js"', `src="starscape.js?v=${await assetHash('starscape.js')}"`);
 await writeFile(resolve(destination, 'index.html'), html);
+let farey = await readFile(resolve(root, 'farey.html'), 'utf8');
+farey = farey.replace('src="app.js"', `src="app.js?v=${await assetHash('app.js')}"`).replace('href="style.css"', `href="style.css?v=${await assetHash('style.css')}"`).replace('./node_modules/three/build/three.module.js', './vendor/three.module.js').replace('./node_modules/three/examples/jsm/', './vendor/addons/');
+await writeFile(resolve(destination, 'farey.html'), farey);
+
 for (const name of ['three.module.js', 'three.core.js']) {
   await copyFile(resolve(vendor, 'build', name), resolve(destination, 'vendor', name));
 }
@@ -49,9 +57,10 @@ records their SHA-256 hashes. Rebuild instructions are in README.txt.
 Project repository: https://github.com/alok/hevea-vision-pro
 The bundled source, rather than a moving branch, identifies this artifact.
 
-Inspired by Katherine Stange's L/R lattice visualization and talk:
+Inspired by Katherine Stange's coefficient-cone and L/R visualizations and talk:
 https://katestange.net/talks/math-exploration/
 https://www.katestange.net/code/
+https://www.katestange.net/starscape-lattice/
 https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html
 Underlying geodesic coding: Caroline Series, The Modular Surface and
 Continued Fractions (1985), https://doi.org/10.1112/jlms/s2-31.1.69
@@ -62,10 +71,10 @@ permission to redistribute her code or an endorsement. This is a finite
 independent lattice illustration, not her separate hyperboloid visualization.
 Three.js ${dependency.version} is included under MIT; see vendor/THREE-LICENSE.txt.
 `);
-files.push('index.html', 'COPYING.txt', 'SOURCE.txt', 'README.txt', 'serve.py', 'vendor/three.module.js', 'vendor/three.core.js', 'vendor/addons/controls/OrbitControls.js', 'vendor/THREE-LICENSE.txt');
+files.push('index.html', 'farey.html', 'COPYING.txt', 'SOURCE.txt', 'README.txt', 'serve.py', 'vendor/three.module.js', 'vendor/three.core.js', 'vendor/addons/controls/OrbitControls.js', 'vendor/THREE-LICENSE.txt');
 await mkdir(resolve(destination, 'source'), { recursive: true });
 const sources = ['app.js', 'core.js', 'xr-support.js', 'input.js', 'recovery.js', 'construction.js', 'view.js', 'load-status.js', 'style.css', 'index.html',
-  'build.mjs', 'package.json', 'package-lock.json', 'serve.py', 'PACKAGE_README.txt', 'package-smoke.mjs', 'smoke-offline.py', 'offline-checks.js',
+  'starscape.js', 'starscape-core.js', 'starscape-core.test.js', 'farey.html', 'build.mjs', 'package.json', 'package-lock.json', 'serve.py', 'PACKAGE_README.txt', 'package-smoke.mjs', 'smoke-offline.py', 'offline-checks.js',
   'core.test.js', 'xr-support.test.js', 'input.test.js', 'recovery.test.js', 'construction.test.js', 'view.test.js', 'package-smoke.test.js'];
 for (const name of sources) {
   await copyFile(resolve(root, name), resolve(destination, 'source', name));

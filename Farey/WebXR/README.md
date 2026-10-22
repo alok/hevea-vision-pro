@@ -1,4 +1,12 @@
-# Farey lattice — browser and WebXR companion
+# Browser companion — coefficient cone and Farey L/R
+
+Version 0.8.0 opens the **3D coefficient cone** at `index.html`. The previous rational-pair lattice remains at `farey.html`; the two pages link to one another. See [the coefficient-cone guide](../COEFFICIENT_CONE.md) for exact coordinates, projection, source provenance and current evidence. No real WebXR session or headset execution has been verified.
+
+For the new scene: select a source point, compare its scalar multiple with **Next point**, hide/show the projection disk, then use **Other side** or drag to inspect depth. Invalid coefficient entries preserve the current state. Reload starts the coefficient scene at its default example. The Farey page retains its per-tab saved rational state.
+
+The following earlier walkthroughs apply to **farey.html**. Their historical simulator/Safari evidence does not establish testing of the new coefficient scene.
+
+## Farey lattice — browser and WebXR companion
 
 [Release-candidate readiness](../READER_READINESS.md) — browser 0.7.4. [Precision notice](../PRECISION_NOTICE.md). [Safari and compact-view audit](../MOBILE_SAFARI.md). [Offline package audit](../OFFLINE_PACKAGE.md). [Native integration check](../INTEGRATION_08.md). [Crowded projected selection](../PROJECTED_SELECTION.md). [Source-fidelity audit](../SOURCE_FIDELITY.md). [Optional boundary-to-lattice construction](../CONSTRUCTION.md). [Previous release audit](../DEMO_READINESS.md).
 
@@ -56,7 +64,7 @@ Choose **Learn a move** to begin at 1/2. Predict the result of L, apply the actu
 With the local server running, the optional Playwright CLI walkthrough checks keyboard-only lesson completion, focus retention, phone layout, exact reset/undo state, invalid input, reducible fractions and the 24-move limit:
 
 ```sh
-playwright-cli open http://127.0.0.1:8080/
+playwright-cli open http://127.0.0.1:8080/farey.html
 playwright-cli run-code "$(cat browser-checks.js)"
 ```
 
@@ -75,7 +83,7 @@ If WebGL is lost, a visible notice replaces the invalid canvas while the exact m
 The repeatable recovery check uses the browser’s actual `WEBGL_lose_context` extension, not hand-dispatched context events:
 
 ```sh
-playwright-cli open http://127.0.0.1:8080/
+playwright-cli open http://127.0.0.1:8080/farey.html
 playwright-cli run-code --filename recovery-checks.js
 ```
 

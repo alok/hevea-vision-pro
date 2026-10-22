@@ -1,0 +1,11 @@
+{
+  "CFBundleDisplayName": "Farey \u2014 Into the Infinite",
+  "CFBundleShortVersionString": "0.9.0",
+  "CFBundleVersion": "12",
+  "CFBundleIdentifier": "com.alok.FareyVision",
+  "binarySHA256": "e053fccc0662df288062a55c5d52752fde6e1acf15fe88e29b773299aedfa685",
+  "debugLibrarySHA256": "b0ba0120bd87b09b42c30525cc5fe4bf90f6c4e8afbb7b956173d813520c3aa7",
+  "launchArguments": [
+    "--showcase"
+  ]
+}

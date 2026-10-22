@@ -10,13 +10,15 @@ import SwiftUI
   @Environment(GalleryModel.self) private var model
   @State private var renderer = FareyRenderer()
   @State private var lattice = LatticeRenderer()
+  @State private var starscape = StarscapeRenderer()
   @State private var activation: EventSubscription?
   var body: some View {
     RealityView { content, attachments in
       content.add(renderer.root)
       content.add(lattice.root)
+      content.add(starscape.root)
       activation = content.subscribe(to: AccessibilityEvents.Activate.self) { [model] event in
-        if let point = Self.latticePoint(for: event.entity) { model.activatePoint(point) }
+        Self.activate(event.entity, model: model)
       }
       for rational in LatticeRenderer.landmarks {
         if let label = attachments.entity(for: "lattice-\(rational.p)-\(rational.q)") {
@@ -47,18 +49,29 @@ import SwiftUI
             .tint(landmarkColor(rational))
             .foregroundStyle(
               rational == model.state.selectedPoint?.rational && rational != model.state.mediant
-                ? Color.black : Color.white)
+                ? Color.black : Color.white
+            )
             .accessibilityIdentifier("lattice-\(rational.p)-\(rational.q)")
         }
       }
       Attachment(id: "title") {
         VStack(spacing: 4) {
-          Text(model.constructionStage != nil ? "BOUNDARY TO LATTICE" : model.latticeMode ? "THE FAREY LATTICE" : "THE FAREY UNIVERSE")
-            .font(.headline).tracking(4).foregroundStyle(.cyan)
           Text(
-            model.constructionStage != nil ? "q = 1 · a projective chart of the same rational direction" : model.latticeMode
-              ? "p/q is the direction (q, p) · mediants add integer vectors"
-              : "Exact rational edges · finite hyperbolic tessellation"
+            model.starscapeMode
+              ? "THE COEFFICIENT CONE"
+              : model.constructionStage != nil
+                ? "BOUNDARY TO LATTICE"
+                : model.latticeMode ? "THE FAREY LATTICE" : "THE FAREY UNIVERSE"
+          )
+          .font(.headline).tracking(4).foregroundStyle(.cyan)
+          Text(
+            model.starscapeMode
+              ? "Integer triples in 3D → radial projection to a Klein disk"
+              : model.constructionStage != nil
+                ? "q = 1 · a projective chart of the same rational direction"
+                : model.latticeMode
+                  ? "p/q is the direction (q, p) · mediants add integer vectors"
+                  : "Exact rational edges · finite hyperbolic tessellation"
           ).font(.caption)
             .foregroundStyle(.secondary)
         }
@@ -72,14 +85,21 @@ import SwiftUI
     .task(id: [model.revision, model.immersionSession, model.immersionOpen ? 1 : 0]) {
       guard model.immersionOpen else { return }
       do {
-        let showingLattice = model.latticeMode || model.constructionStage != nil
-        renderer.root.isEnabled = !showingLattice
-        renderer.labels.isEnabled = !showingLattice && model.viewpoint == 0
+        let showingLattice =
+          !model.starscapeMode && (model.latticeMode || model.constructionStage != nil)
+        starscape.root.isEnabled = model.starscapeMode
+        renderer.root.isEnabled = !showingLattice && !model.starscapeMode
+        renderer.labels.isEnabled = !model.starscapeMode && !showingLattice && model.viewpoint == 0
         lattice.root.isEnabled = showingLattice
-        if showingLattice {
+        if model.starscapeMode {
+          model.renderReceipt = try starscape.render(
+            selected: model.coefficient,
+            showProjection: model.showProjection, viewpoint: model.coefficientView)
+        } else if showingLattice {
           model.renderReceipt = try lattice.render(
             state: model.state, bound: model.depth * 2,
-            viewpoint: model.viewpoint, alternateCF: model.alternateCF, spotlight: model.spotlight.rational,
+            viewpoint: model.viewpoint, alternateCF: model.alternateCF,
+            spotlight: model.spotlight.rational,
             construction: model.constructionStage, animateReveal: model.constructionMoving)
         } else {
           model.renderReceipt = try renderer.render(
@@ -96,7 +116,7 @@ import SwiftUI
     }
     .gesture(
       SpatialTapGesture().targetedToAnyEntity().onEnded { value in
-        if let point = Self.latticePoint(for: value.entity) { model.activatePoint(point) }
+        Self.activate(value.entity, model: model)
       }
     )
     .onAppear {
@@ -113,6 +133,18 @@ import SwiftUI
       model.transitioning = false
     }
 
+  }
+  private static func activate(_ entity: Entity, model: GalleryModel) {
+    if model.starscapeMode {
+      let parts = entity.name.split(separator: ":")
+      if parts.count == 4, parts[0] == "coefficient", let a = Int(parts[1]),
+        let b = Int(parts[2]), let c = Int(parts[3]) {
+        model.coefficient = CoefficientPoint(a, b, c)
+        model.revision += 1
+      }
+    } else if let point = latticePoint(for: entity) {
+      model.activatePoint(point)
+    }
   }
   private static func latticePoint(for entity: Entity) -> LatticePoint? {
     let parts = entity.name.split(separator: ":")
@@ -143,7 +175,8 @@ import SwiftUI
     root.addChild(selection)
   }
   func render(
-    state: FareyState, depth: Int, viewpoint: Int, alternateCF: Bool = false, spotlight: Rational? = nil
+    state: FareyState, depth: Int, viewpoint: Int, alternateCF: Bool = false,
+    spotlight: Rational? = nil
   ) throws -> String {
     let start = ContinuousClock.now
     var vertices = 0
@@ -199,19 +232,23 @@ import SwiftUI
 
   private func addCFRings(_ state: FareyState, alternate: Bool) throws {
     for convergent in [true, false] {
-      let circles = state.cfPoints(alternate: alternate).filter { $0.isConvergent == convergent }.map { point in
-        let center = point.rational.diskPoint
-        let radius = convergent ? 0.028 : 0.022
-        return (0...24).map { index in
-          let angle = Double(index) * 2 * .pi / 24
-          return Point2(center.x + cos(angle) * radius, center.y + sin(angle) * radius)
+      let circles = state.cfPoints(alternate: alternate).filter { $0.isConvergent == convergent }
+        .map { point in
+          let center = point.rational.diskPoint
+          let radius = convergent ? 0.028 : 0.022
+          return (0...24).map { index in
+            let angle = Double(index) * 2 * .pi / 24
+            return Point2(center.x + cos(angle) * radius, center.y + sin(angle) * radius)
+          }
         }
-      }
       if !circles.isEmpty {
         let rings = try tubeMesh(lines: circles, radius: 0.0025)
-        selection.addChild(ModelEntity(mesh: rings.0, materials: [
-          UnlitMaterial(color: convergent ? UIColor.systemYellow : UIColor.lightGray)
-        ]))
+        selection.addChild(
+          ModelEntity(
+            mesh: rings.0,
+            materials: [
+              UnlitMaterial(color: convergent ? UIColor.systemYellow : UIColor.lightGray)
+            ]))
       }
     }
   }
