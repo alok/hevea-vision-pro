@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { FareyState, grid, inspectPoint, onRay, position, primitive } from './core.js';
+import { FareyState, continuedFraction, grid, inspectPoint, onRay, position, primitive } from './core.js';
 
 test('L/R convention, mediant and unimodular basis', () => {
   const s = new FareyState();
@@ -64,4 +64,32 @@ test('axes and invalid selections preserve inspection; navigation selects a new 
   state.select(25, 1); const limit = JSON.stringify(state);
   assert.equal(state.step('L'), false); assert.equal(JSON.stringify(state), limit);
   state.reset(); assert.equal(state.selectedPoint, null); assert.deepEqual(state.inspection.primitive, { p: 1, q: 1 });
+});
+test('canonical convergents differ from intermediate mediants and the alternate finite form', () => {
+  const state = new FareyState(); state.select(6, 10);
+  assert.deepEqual(continuedFraction(state.mediant).terms, [0, 1, 1, 2]);
+  assert.deepEqual(continuedFraction({ p: 6, q: 10 }), continuedFraction({ p: 3, q: 5 }));
+  assert.deepEqual(continuedFraction(state.mediant, true).terms, [0, 1, 1, 1, 1]);
+  assert.equal(state.cfPoints().find(p => p.rational.p === 2 && p.rational.q === 3).isConvergent, false);
+  assert.equal(state.cfPoints(true).find(p => p.rational.p === 2 && p.rational.q === 3).isConvergent, true);
+  assert.deepEqual(state.selectedPoint, { p: 6, q: 10 });
+});
+test('both finite expansions end at the rational and agree with the endpoint L/R convention', () => {
+  for (let p = 1; p <= 30; p++) for (let q = 1; q <= 30; q++) {
+    const state = new FareyState(); if (!state.select(p, q)) continue;
+    const cf = continuedFraction(state.mediant);
+    assert.ok(cf.terms.length === 1 || cf.terms.at(-1) >= 2);
+    const endpoint = continuedFraction(state.mediant, cf.terms.length % 2 === 1);
+    assert.equal(endpoint.terms.map((n, i) => (i % 2 ? 'R' : 'L').repeat(n)).join(''), state.word + 'R');
+    for (const alternate of [false, true]) {
+      const convergents = continuedFraction(state.mediant, alternate).convergents;
+      assert.deepEqual(convergents.at(-1), state.mediant);
+      for (let i = 1; i < convergents.length; i++) {
+        const a = convergents[i - 1], b = convergents[i]; assert.equal(Math.abs(a.p * b.q - a.q * b.p), 1);
+      }
+      assert.ok(state.cfPoints(alternate).length <= 26);
+      for (const c of convergents) assert.ok(state.cfPoints(alternate).some(p => p.rational.p === c.p && p.rational.q === c.q));
+    }
+  }
+  for (const [p, q] of [[0, 1], [1, 0], [-1, 2]]) assert.equal(continuedFraction({ p, q }), null);
 });

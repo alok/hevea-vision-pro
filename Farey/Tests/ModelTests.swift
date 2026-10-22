@@ -49,6 +49,20 @@ import XCTest
     XCTAssertEqual(model.state.inspection?.primitive, Rational(1, 2))
     XCTAssertEqual(model.state.inspection?.divisor, 1)
   }
+  func testChangingFiniteExpansionPreservesTheMathematicsAndLesson() {
+    let model = GalleryModel()
+    model.startLesson()
+    let state = model.state
+    let lesson = model.lesson
+    model.setAlternateCF(true)
+    XCTAssertTrue(model.alternateCF)
+    XCTAssertEqual(model.state, state)
+    XCTAssertEqual(model.lesson, lesson)
+    model.toggleSpace()
+    XCTAssertTrue(model.alternateCF)
+    model.reset()
+    XCTAssertFalse(model.alternateCF)
+  }
   func testWorkedPathUsesExactStateAndRejectsMissingPrediction() {
     let model = GalleryModel()
     model.startLesson()

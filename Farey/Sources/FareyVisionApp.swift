@@ -22,6 +22,12 @@ import SwiftUI
   var renderReceipt = "Preparing geometry"
   var revision = 0
   var lesson: LessonProgress?
+  var alternateCF = false
+  func setAlternateCF(_ value: Bool) {
+    guard value != alternateCF else { return }
+    alternateCF = value
+    revision += 1
+  }
   func step(_ turn: Turn) {
     if state.step(turn) {
       lesson = nil
@@ -34,6 +40,7 @@ import SwiftUI
     revision += 1
   }
   func reset() {
+    alternateCF = false
     lesson = nil
     state.reset()
     depth = 6
@@ -260,6 +267,7 @@ struct ControlsView: View {
   @State private var showLesson = false
   @State private var showFractionEntry = false
   @State private var showPointInspection = false
+  @State private var showContinuedFraction = false
   var body: some View {
     VStack(spacing: 12) {
       HStack(alignment: .firstTextBaseline) {
@@ -342,10 +350,17 @@ struct ControlsView: View {
       .font(.caption).foregroundStyle(.secondary)
       .accessibilityIdentifier("geometry-explanation")
       if let inspection = model.state.inspection {
-        Button("Point (q, p): \(inspection.equation) · Inspect") { showPointInspection = true }
-          .font(.caption.monospaced()).foregroundStyle(.cyan).buttonStyle(.plain)
-          .accessibilityIdentifier("inspect-point")
-          .popover(isPresented: $showPointInspection, arrowEdge: .bottom) { PointInspectionView() }
+        HStack {
+          Button("Point (q, p): \(inspection.equation) · Inspect") { showPointInspection = true }
+            .font(.caption.monospaced()).foregroundStyle(.cyan).buttonStyle(.plain)
+            .lineLimit(1).minimumScaleFactor(0.7).accessibilityIdentifier("inspect-point")
+            .popover(isPresented: $showPointInspection, arrowEdge: .bottom) { PointInspectionView() }
+          Spacer()
+          Button("Convergents / mediants") { showContinuedFraction = true }
+            .font(.caption).foregroundStyle(.yellow).buttonStyle(.plain)
+            .accessibilityIdentifier("show-cf")
+            .popover(isPresented: $showContinuedFraction, arrowEdge: .bottom) { ContinuedFractionView() }
+        }
       }
       Text(
         "M = \(model.state.matrixLabel)    det M = \(model.state.determinant)    •    \(model.state.word.count)/24 moves"

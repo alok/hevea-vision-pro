@@ -235,4 +235,35 @@ import XCTest
     XCTAssertTrue(require("inspect-point").label.contains("(1, 1) = 1 × (1, 1)"))
     exit()
   }
+
+}
+
+extension FareyUITests {
+  func testContinuedFractionConventionsAndLinkedDisk() {
+    launch()
+    enter()
+    require("reset").tap()
+    require("example").tap()
+    require("show-cf").tap()
+    XCTAssertEqual(require("cf-expansion").label, "3/5 = [0; 1, 1, 2]")
+    XCTAssertEqual(require("cf-kind-2-3").label, "Intermediate mediant")
+    XCTAssertEqual(require("cf-kind-1-2").label, "Convergent")
+    capture("18-canonical-convergents", holdFor: 4)
+    require("cf-alternate").tap()
+    XCTAssertEqual(require("cf-expansion").label, "3/5 = [0; 1, 1, 1, 1]")
+    XCTAssertEqual(require("cf-kind-2-3").label, "Convergent")
+    capture("19-alternate-convergents", holdFor: 4)
+    require("close-cf").tap()
+    XCTAssertEqual(require("word-state").label, "RLR")
+    require("space-toggle").tap()
+    capture("20-convergent-disk", holdFor: 4)
+    require("show-cf").tap()
+    XCTAssertEqual(require("cf-kind-2-3").label, "Convergent")
+    require("close-cf").tap()
+    require("reset").tap()
+    require("show-cf").tap()
+    XCTAssertEqual(require("cf-expansion").label, "1/1 = [1]")
+    require("close-cf").tap()
+    exit()
+  }
 }

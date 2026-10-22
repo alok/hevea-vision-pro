@@ -16,6 +16,19 @@ export function inspectPoint(point) {
     equation: `(${point.q}, ${point.p}) = ${a} × (${primitive.q}, ${primitive.p})`,
     reduction: `${fraction(point)} = ${fraction(primitive)}` };
 }
+export function continuedFraction({ p, q }, alternate = false) {
+  if (![p, q].every(n => Number.isSafeInteger(n) && n > 0)) return null;
+  const terms = [];
+  while (q) { terms.push(Math.floor(p / q)); [p, q] = [q, p % q]; }
+  if (alternate) terms.splice(terms.length - 1, 1, terms.at(-1) - 1, 1);
+  let previous = { p: 1, q: 0 }, before = { p: 0, q: 1 };
+  const convergents = terms.map(term => {
+    const next = { p: term * previous.p + before.p, q: term * previous.q + before.q };
+    before = previous; previous = next; return next;
+  });
+  const label = terms.length === 1 ? `[${terms[0]}]` : `[${terms[0]}; ${terms.slice(1).join(', ')}]`;
+  return { terms, convergents, label };
+}
 export function position({ p, q }) {
   const s = 0.25 / Math.sqrt(2);
   return [(p - q) * s, 0, -(p + q) * s];
@@ -33,6 +46,14 @@ export class FareyState {
   reset() { this.word = ''; this.left = { p: 0, q: 1 }; this.right = { p: 1, q: 0 }; this.selectedPoint = null; }
   get mediant() { return add(this.left, this.right); }
   get inspection() { return inspectPoint(this.selectedPoint ?? this.mediant); }
+  cfPoints(alternate = false) {
+    const convergents = continuedFraction(this.mediant, alternate).convergents;
+    const walk = new FareyState(), visited = [walk.mediant];
+    for (const turn of this.word) { walk.step(turn); visited.push(walk.mediant); }
+    return [...convergents.filter(point => point.p === 0), ...visited].map(rational => ({
+      rational, isConvergent: convergents.some(c => c.p === rational.p && c.q === rational.q)
+    }));
+  }
   get determinant() { return this.right.p * this.left.q - this.left.p * this.right.q; }
   step(turn) {
     if (!['L', 'R'].includes(turn) || this.word.length >= MAX_STEPS) return false;

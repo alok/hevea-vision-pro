@@ -23,6 +23,7 @@ Xcode 27.2 beta 2 and visionOS 27.2 are installed; the simulator is `D2ECE520-ED
 
 - Tap a lattice sphere or a floating rational label to select its positive rational p/q, including reducible pairs such as 6/10.
 - **Inspect** below the geometry hint explains the actual selected point: `(10,6) = 2 × (5,3)`, `gcd(10,6) = 2`, and `6/10 = 3/5`. The point remains distinct from its reduced direction across lattice/disk switches and immersive re-entry. White marks a non-primitive inspected point; orange marks the primitive mediant. L/R, Undo and Reset choose a new direction and clear the previous point identity.
+- **Convergents / mediants** explains the selected rational's finite continued fraction. Gold rings mark convergents of the chosen expansion; gray rings mark other visited L/R mediants. The toggle compares canonical form with the equivalent form ending in 1 without changing the rational, inspected point, L/R path or lesson. The same markings appear in the lattice and disk. Reset restores canonical form.
 - **p/q** opens direct entry. Positive numerator and denominator values must each be at most 1000 before reduction, and the exact path must fit within 24 moves. `6/10` selects `3/5`; invalid, zero, negative, overflow and over-limit entries leave the current selection and lesson intact. Selection rebuilds the L/R path, so Undo removes its last move.
 - **Learn** opens a worked path: predict and apply L at 1/2 to reach 2/3, then R to reach 3/5. Its vector explanation and linked disk use the same selected state.
 - **L** and **R** update the exact interval. **Undo** reverses one step. **3/5 example** reproduces the selected fraction used in our reference inspection.
@@ -51,6 +52,10 @@ The lattice is a rigidly placed copy of Z²: (q,p) is mapped to a physical plane
 
 The disk places p/q at (2pq/(p²+q²), (p²−q²)/(p²+q²)), joining Farey neighbors by sampled circular arcs orthogonal to the boundary. It is a finite tessellation, not the infinite object or a reconstructed Stange fractal.
 
+A convergent is a truncation of the selected continued fraction ([definition and recurrence](https://dlmf.nist.gov/1.12.ii)). Canonical finite simple expansions end in a term at least 2, except for integers; replacing a final term `a` by `a−1, 1` gives the same rational but can change the convergent list. For `3/5`, canonical `[0;1,1,2]` has convergents `0/1, 1/1, 1/2, 3/5`; the visited `2/3` is an intermediate mediant. It becomes a convergent in `[0;1,1,1,1]`. The boundary `0/1` may be a convergent even though this interface only selects positive rationals. Rings identify primitive points, not every scalar multiple. Ring size and color are annotations, not geometric claims.
+
+Stange's endpoint word uses the even-length expansion so its final block is R. Our interval word still displays M(1); appending R sends M(∞) to that same rational. Choosing the other expansion for labeling does not rewrite the stored interval word.
+
 ## Bounds and verification
 
 Navigation is capped at 24 moves. The lattice grid spans 0…2×detail on each axis, with detail 3…7: at most 224 nonzero points and 196 selectable positive pairs. Sphere meshes are shared. Static lattice geometry rebuilds only when its bounds change; selection changes recolor points and rebuild a small plane and vector overlay. The disk retains its 509-edge cap. There is no per-frame geometry generation.
@@ -69,7 +74,7 @@ See [simulator evidence](evidence/README.md). The controls use a pushed native w
 
 The device target uses development team `5795ZPYZ2T` and the already-installed wildcard profile **Lean Calculator Vision Pro 20261008** (expires 2027-10-08). Its certificate matches the installed development identity, its wildcard covers `com.alok.FareyVision`, and it includes the paired Vision Pro. No new certificate, app identifier or provisioning profile was created. These device-only settings do not change the unsigned simulator workflow.
 
-A signed Release build of native 0.4 and strict signature verification succeeded on 2026-10-22. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
+A signed Release build of native 0.5 and strict signature verification succeeded on 2026-10-22. Use a local temporary build directory to avoid Finder metadata being attached to generated app bundles in the synced Documents workspace:
 
 ```sh
 build_root="$(python3 scripts/prepare-local-build.py)"

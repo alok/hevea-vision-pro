@@ -1,3 +1,17 @@
+# Native 0.5 / browser 0.4: convergents and intermediate mediants
+
+[Native canonical form](convergents/native-canonical.png) · [Native alternate form](convergents/native-alternate.png) · [Linked disk](convergents/native-disk.png) · [Browser canonical form](convergents/browser-canonical.png) · [Browser alternate form](convergents/browser-alternate.png) · [Validation](convergents/validation.json) · [Simulator results](convergents/simulator-summary.json) · [Current showcase](convergents/showcase.png)
+
+Convergents are truncations of the chosen finite simple continued fraction. The default canonical form ends in at least 2, except for an integer. Replacing the final term `a` by `a−1, 1` preserves the rational but can change its convergent list. For `3/5`, the visited `2/3` is intermediate under `[0;1,1,2]` and a convergent under `[0;1,1,1,1]`. Gold rings mark convergents and gray rings mark other visited L/R mediants. The `0/1` boundary is listed when it is a convergent; it remains non-selectable. Neither representation identifies lattice distances with hyperbolic distances.
+
+The [cross-platform comparison](convergents/parity.json) agrees on coefficients, convergents and classifications for both expansions of 881 accepted numerator/denominator pairs: 1,762 comparisons. Integer, unit-fraction, improper-fraction, reducible-input and finite endpoint cases are covered. These are bounded tests, not a formal proof. Stange's endpoint convention uses an even-length expansion ending in an R block; the app still displays M(1), and appending R sends M(∞) to the same rational.
+
+[Browser source](convergents/browser-source.json) and [built artifact](convergents/browser-static.json) checks verified the `2/3` label change and actual changes in an unobscured 3D image region without changing `RLR` or the inspected point. Existing [keyboard/lesson](convergents/browser-regression.json), [point identity](convergents/point-regression.json), and [real context-loss recovery](convergents/graphics-recovery.json) checks passed. A separate instrumented local copy exposed renderer counters for [200 programmatic moves and expansion toggles](convergents/browser-resources.json): counts remained at 16 geometries, 2 textures and 6 programs. This is not an FPS or headset-performance claim.
+
+Seventeen Swift core tests, fourteen native model/UI tests, and twenty-one JavaScript tests passed. Signed device and clean simulator builds passed with the existing signing assets. Native 0.5 is installed on the original showcase simulator at 3/5 in the Left view.
+
+Definitions and recurrence were checked against [DLMF §1.12(ii)](https://dlmf.nist.gov/1.12.ii); endpoint context comes from [Stange's viewer](https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html). New implementation code is original. Physical headset execution and an actual WebXR session remain unverified, and no pending permission was granted.
+
 # Native 0.4 / browser 0.3: points and primitive directions
 
 [Native inspector](point-inspection/native-multiple.png) · [Linked disk](point-inspection/native-disk.png) · [Browser inspector](point-inspection/browser-multiple.png) · [Simulator results](point-inspection/simulator-summary.json) · [Cross-platform comparison](point-inspection/parity.json) · [Validation](point-inspection/validation.json) · [Current showcase](point-inspection/showcase.png)

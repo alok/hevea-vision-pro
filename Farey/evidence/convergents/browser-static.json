@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "canonical": "[0; 1, 1, 2]",
+  "alternate": "[0; 1, 1, 1, 1]",
+  "twoThirdsChangesClassification": true,
+  "exactStatePreserved": true,
+  "unobscuredRingPixelsChanged": true,
+  "integersUnitFractionsAndImproperFractions": true,
+  "lessonSynchronized": true,
+  "layouts": [
+    {
+      "width": 390,
+      "sceneHeight": 285,
+      "overflow": false
+    },
+    {
+      "width": 844,
+      "sceneHeight": 301,
+      "overflow": false
+    },
+    {
+      "width": 1440,
+      "sceneHeight": 1000,
+      "overflow": false
+    }
+  ],
+  "pageErrors": [],
+  "actualXRSession": false
+}

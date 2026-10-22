@@ -78,10 +78,11 @@ import SwiftUI
         if model.latticeMode {
           model.renderReceipt = try lattice.render(
             state: model.state, bound: model.depth * 2,
-            viewpoint: model.viewpoint)
+            viewpoint: model.viewpoint, alternateCF: model.alternateCF)
         } else {
           model.renderReceipt = try renderer.render(
-            state: model.state, depth: model.depth, viewpoint: model.viewpoint)
+            state: model.state, depth: model.depth, viewpoint: model.viewpoint,
+            alternateCF: model.alternateCF)
         }
         model.record("Rendered session \(model.immersionSession): \(model.renderReceipt)")
       } catch { model.renderReceipt = "Geometry error: \(error.localizedDescription)" }
@@ -132,7 +133,7 @@ import SwiftUI
     root.addChild(base)
     root.addChild(selection)
   }
-  func render(state: FareyState, depth: Int, viewpoint: Int) throws -> String {
+  func render(state: FareyState, depth: Int, viewpoint: Int, alternateCF: Bool = false) throws -> String {
     let start = ContinuousClock.now
     var vertices = 0
     if previousDepth != depth {
@@ -167,6 +168,7 @@ import SwiftUI
         mesh: direction.0,
         materials: [UnlitMaterial(color: UIColor.systemGreen)]))
     try addHistory(state)
+    try addCFRings(state, alternate: alternateCF)
     for rational in [state.left, state.right, state.mediant] {
       let point = rational.diskPoint
       let dot = ModelEntity(
@@ -181,6 +183,25 @@ import SwiftUI
     let edgeCount = Geometry.tessellation(depth: depth).count
     return
       "\(edgeCount) Farey edges · \(base.children.count + selection.children.count) draw groups · \(elapsed) update · stationary"
+  }
+
+  private func addCFRings(_ state: FareyState, alternate: Bool) throws {
+    for convergent in [true, false] {
+      let circles = state.cfPoints(alternate: alternate).filter { $0.isConvergent == convergent }.map { point in
+        let center = point.rational.diskPoint
+        let radius = convergent ? 0.028 : 0.022
+        return (0...24).map { index in
+          let angle = Double(index) * 2 * .pi / 24
+          return Point2(center.x + cos(angle) * radius, center.y + sin(angle) * radius)
+        }
+      }
+      if !circles.isEmpty {
+        let rings = try tubeMesh(lines: circles, radius: 0.0025)
+        selection.addChild(ModelEntity(mesh: rings.0, materials: [
+          UnlitMaterial(color: convergent ? UIColor.systemYellow : UIColor.lightGray)
+        ]))
+      }
+    }
   }
 
   private func addHistory(_ state: FareyState) throws {

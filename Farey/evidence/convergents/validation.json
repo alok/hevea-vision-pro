@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-22",
+  "nativeVersion": "0.5",
+  "browserVersion": "0.4.0",
+  "swiftCoreTestsPassed": 17,
+  "nativeModelAndUITestsPassed": 14,
+  "javascriptTestsPassed": 21,
+  "finiteExpansionsCompared": 1762,
+  "acceptedInputPairs": 881,
+  "comparisonDifferences": 0,
+  "conventions": [
+    "canonical final term at least 2, except integers",
+    "equivalent finite form ending in 1"
+  ],
+  "verifiedNativeBehavior": [
+    "changing convention preserves rational, point and word",
+    "canonical 2/3 is intermediate for target 3/5",
+    "alternate 2/3 is a convergent for target 3/5",
+    "lattice/disk classification agrees",
+    "Reset restores canonical form",
+    "existing lesson and immersion lifecycle pass"
+  ],
+  "browserSourceAndStaticChecks": "passed; actual unobscured ring pixels changed with the convention",
+  "browserRegressionAndRecovery": "passed",
+  "desktopResourceStress": {
+    "moves": 200,
+    "geometries": 16,
+    "textures": 2,
+    "programs": 6,
+    "countsStable": true,
+    "fpsMeasured": false
+  },
+  "staticFileHashesVerified": 13,
+  "strictSwiftLint": "passed",
+  "cleanDebugSimulatorBuild": "passed",
+  "signedReleaseDeviceBuild": "passed",
+  "strictSignature": "passed using existing signing assets",
+  "installedShowcase": "native 0.5 build 5 at 3/5, Left view",
+  "physicalHeadsetExecution": false,
+  "actualWebXRSession": false,
+  "newSigningAssetsOrGrants": false,
+  "references": [
+    "https://dlmf.nist.gov/1.12.ii",
+    "https://katestange.net/talks/math-exploration/viewers/farey-cf-lattice.html"
+  ],
+  "formalProof": false
+}

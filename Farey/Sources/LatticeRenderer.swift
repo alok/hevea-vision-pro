@@ -76,7 +76,7 @@ import SwiftUI
     return position(p: Float(rational.p) * scale, q: Float(rational.q) * scale)
   }
 
-  func render(state: FareyState, bound: Int, viewpoint: Int) throws -> String {
+  func render(state: FareyState, bound: Int, viewpoint: Int, alternateCF: Bool = false) throws -> String {
     let start = ContinuousClock.now
     if bound != previousBound { try rebuildBase(bound: bound) }
     for (rational, label) in landmarkLabels {
@@ -85,6 +85,7 @@ import SwiftUI
 
     selection.children.removeAll()
     updatePointColors(for: state)
+    try addCFRings(state.cfPoints(alternate: alternateCF), bound: bound)
     let end = planeEndpoint(state.mediant, bound: bound)
     let height: SIMD3<Float> = [0, 0.65, 0]
     var descriptor = MeshDescriptor(name: "Exact rational direction plane")
@@ -263,4 +264,27 @@ import SwiftUI
     mesh.primitives = .triangles(indices)
     return ModelEntity(mesh: try .generate(from: [mesh]), materials: [UnlitMaterial(color: color)])
   }
+}
+
+extension LatticeRenderer {
+  private func addCFRings(_ points: [CFPoint], bound: Int) throws {
+    for convergent in [true, false] {
+      var paths: [[SIMD3<Float>]] = []
+      for point in points where point.isConvergent == convergent
+        && point.rational.p <= bound && point.rational.q <= bound {
+        let center = position(point.rational) + [0, 0.015, 0]
+        let radius: Float = convergent ? 0.075 : 0.055
+        let ring = (0...20).map { index in
+          let angle = Float(index) * 2 * .pi / 20
+          return center + SIMD3<Float>(cos(angle) * radius, 0, sin(angle) * radius)
+        }
+        paths += zip(ring, ring.dropFirst()).map { [$0, $1] }
+      }
+      if !paths.isEmpty {
+        selection.addChild(try lines(paths, radius: 0.003,
+          color: convergent ? UIColor.systemYellow : UIColor.lightGray))
+      }
+    }
+  }
+
 }

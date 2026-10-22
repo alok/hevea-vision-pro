@@ -2,6 +2,7 @@
 import SwiftUI
 
 struct SourcesView: View {
+  static let cfURL = URL(string: "https://dlmf.nist.gov/1.12.ii")!
   static let talkURL = URL(string: "https://katestange.net/talks/math-exploration/")!
   static let catalogURL = URL(string: "https://www.katestange.net/code/")!
   static let seriesURL = URL(string: "https://doi.org/10.1112/jlms/s2-31.1.69")!
