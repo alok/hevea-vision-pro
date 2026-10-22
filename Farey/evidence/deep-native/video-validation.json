@@ -1,0 +1,86 @@
+{
+  "video": "evidence/demo-package/deep-path-control.mp4",
+  "sha256": "c33256a1ec182f3ef302ff7161c109a303c42676d7b7a261fe389b91288a7c80",
+  "metadata": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1920,
+        "height": 1080,
+        "avg_frame_rate": "30/1"
+      }
+    ],
+    "format": {
+      "duration": "82.000000",
+      "size": "1690602"
+    }
+  },
+  "fullDecodeExit": 0,
+  "audioStreams": 0,
+  "rawVideo": "/tmp/farey-deep-video-20261022/native-raw.mp4",
+  "rawSHA256": "7769ef1049f84e42bedbefdad1a14760f3decbd64ce065d29bb6a94945eae33c",
+  "sourceRangeSeconds": [
+    34.5,
+    116.5
+  ],
+  "screeningMethod": "Seven decoded frames, each 0.4 seconds after a native marker relative to recording command; exact displayed labels visually confirmed. Not every video frame was inspected.",
+  "samples": [
+    {
+      "name": "deep-baseline",
+      "sampleSeconds": 35.981,
+      "geometryAndControlsPresent": true,
+      "titleComplete": true,
+      "sha256": "b30026480abb2ccb8e5f94c5559651428d1ee3e26e878edca63dfd0692db2aa8"
+    },
+    {
+      "name": "deep-counterexample-front",
+      "sampleSeconds": 56.426,
+      "geometryAndControlsPresent": true,
+      "titleComplete": true,
+      "sha256": "ba2c6423079fed54c2bf50c6cee226f328f6b1b1a0cbb00c2df154a7ac67bcb3"
+    },
+    {
+      "name": "deep-counterexample-left",
+      "sampleSeconds": 61.141,
+      "geometryAndControlsPresent": true,
+      "titleComplete": false,
+      "sha256": "c9d0ced37b62a3bf32aaab0762381b851484a8de7ae8951494b9389e888b775b"
+    },
+    {
+      "name": "deep-counterexample-lattice",
+      "sampleSeconds": 66.241,
+      "geometryAndControlsPresent": true,
+      "titleComplete": true,
+      "sha256": "9dc2e41e82b7b3b183f2c047037c6b6fc89a7717879b49561f424c4ee28313e8"
+    },
+    {
+      "name": "deep-limit-front",
+      "sampleSeconds": 91.444,
+      "geometryAndControlsPresent": true,
+      "titleComplete": false,
+      "sha256": "a354742780aaf17d9e3612b34dddc2db48442106ad5395809e87ff883940a0f9"
+    },
+    {
+      "name": "deep-limit-reentered",
+      "sampleSeconds": 103.15400000000001,
+      "geometryAndControlsPresent": true,
+      "titleComplete": true,
+      "sha256": "137b82ce1f879445553cb70be7aea0b663c81cb73cb41864e0ee991e499eef28"
+    },
+    {
+      "name": "deep-repeated-L",
+      "sampleSeconds": 114.81700000000001,
+      "geometryAndControlsPresent": true,
+      "titleComplete": false,
+      "sha256": "ac879e06671c12de8dfda0708c892226aa91a0a787bd36c11b7c18ae98d23354"
+    }
+  ],
+  "runtimeUnchanged": true,
+  "newTestSources": {
+    "Tests/DeepPathRendererTests.swift": "644890bfd2cdd374bba24e01f4fad2a1ee854c76cd51856b3ec2d4648070e871",
+    "UITests/DeepPathUITests.swift": "5211a3882ea0c596046fd1d2ff46d477f0f7dd3b6d50b8e7b34cd3c4cc09857d"
+  }
+}

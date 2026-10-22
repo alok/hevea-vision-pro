@@ -30,6 +30,8 @@ The actual headless browser renderer was inspected separately through a temporar
 
 Native lattice-renderer formulas were inspected against this same coordinate convention, but RealityKit rendering was not executed in this headless pass. Earlier native renderer/UI tests are documented in [the integration audit](INTEGRATION_08.md). This audit does not convert those earlier tests into a new simulator or hardware run.
 
+The subsequent [native deep-path follow-up](NATIVE_PRECISION_AUDIT.md) executes the generated meshes and UI in isolated simulators; it records that separate evidence and the capture uncertainty.
+
 ## Reproduced precision limit
 
 **23,634 checked endpoint pairs had at least one adjacent sampled center that rounded to the same Float32 coordinate.** This is a display-precision limit of deep disk curves, not a disagreement between rational models. It does not mean all those arcs collapse entirely.

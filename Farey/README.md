@@ -4,6 +4,8 @@
 
 [Independent mathematical consistency audit](MATHEMATICAL_AUDIT.md): exact rational state agrees across implementations; very close deep disk curves can merge at display precision. Read exact fractions when interpreting overlapping arcs.
 
+[Native deep-path rendering follow-up](NATIVE_PRECISION_AUDIT.md): isolated simulator screenshots, generated-mesh checks and the unresolved capture limitation.
+
 **Inspired by [Katherine Stange’s mathematical visualizations](https://www.katestange.net/code/) and her [Illustrating Mathematics for Math 2.0 talk](https://katestange.net/talks/math-exploration/).** Underlying L/R geodesic coding: [Caroline Series (1985)](https://doi.org/10.1112/jlms/s2-31.1.69).
 
 A native visionOS experience of the integer lattice behind the Farey tessellation. Shaded spheres occupy actual integer coordinates in space; a translucent plane follows the selected rational direction, and a parallelogram shows how the mediant adds two integer vectors. The linked Poincaré disk uses the same exact state. The surrounding immersive space is fully black. The viewer is stationary by default.

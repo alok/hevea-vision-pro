@@ -1,0 +1,50 @@
+{
+  "buildRoot": "/tmp/farey-build-dkcc3_cw",
+  "simulator": "C29A0119-7070-40E7-9E1B-7F2D17430E8F",
+  "markers": [
+    {
+      "name": "deep-baseline",
+      "markerAt": 1792691158.98312,
+      "seconds": 35.581
+    },
+    {
+      "name": "deep-counterexample-front",
+      "markerAt": 1792691179.428096,
+      "seconds": 56.026
+    },
+    {
+      "name": "deep-counterexample-left",
+      "markerAt": 1792691184.143147,
+      "seconds": 60.741
+    },
+    {
+      "name": "deep-counterexample-lattice",
+      "markerAt": 1792691189.243857,
+      "seconds": 65.841
+    },
+    {
+      "name": "deep-limit-front",
+      "markerAt": 1792691214.446695,
+      "seconds": 91.044
+    },
+    {
+      "name": "deep-limit-reentered",
+      "markerAt": 1792691226.156907,
+      "seconds": 102.754
+    },
+    {
+      "name": "deep-repeated-L",
+      "markerAt": 1792691237.819696,
+      "seconds": 114.417
+    }
+  ],
+  "recordingCommandAt": 1792691123.402408,
+  "selectedTests": [
+    "FareyVisionTests",
+    "FareyVisionUITests/FareyUITests/testDeepDiskPathsAndExactLabels"
+  ],
+  "testExit": 0,
+  "stillImagesRequested": false,
+  "videoTimeReference": "Native marker timestamp relative to host recording command; first-frame alignment is approximate",
+  "resultBundle": "/tmp/farey-build-dkcc3_cw/Demo.xcresult"
+}

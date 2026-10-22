@@ -1,0 +1,47 @@
+{
+  "002-deep-counterexample-front.png": {
+    "sha256": "6dfb261159aa9c4fd29c74c16787158b09aca15c82acaa2e3e339d6c2a2632ea",
+    "size": [
+      3840,
+      2160
+    ]
+  },
+  "003-deep-counterexample-left.png": {
+    "sha256": "073fcc8646e3280b0346d7e582796a83f84e7a4c7769dd334849e84737023111",
+    "size": [
+      3840,
+      2160
+    ]
+  },
+  "004-deep-counterexample-lattice.png": {
+    "sha256": "6b6337ca53cb2ea1be7fac029dd88f7f62c9bca458f032dce041704d10d6e269",
+    "size": [
+      3840,
+      2160
+    ]
+  },
+  "005-deep-limit-front.png": {
+    "sha256": "b81573f0ba543e797891ec67768f2b94ae409e08ee56c1d388f99402daa2f0df",
+    "size": [
+      3840,
+      2160
+    ]
+  },
+  "007-deep-repeated-L.png": {
+    "sha256": "c9354f1b9ddee9b1923158ee04b9745a1db1d274e986e4dac9932d8ca29547d2",
+    "size": [
+      3840,
+      2160
+    ]
+  },
+  "008-video-counterexample-front.png": {
+    "sha256": "ba2c6423079fed54c2bf50c6cee226f328f6b1b1a0cbb00c2df154a7ac67bcb3",
+    "size": [
+      3840,
+      2160
+    ],
+    "source": "/tmp/farey-deep-video-20261022/native-raw.mp4",
+    "sampleSeconds": 56.426,
+    "alignment": "approximate; exact visible fraction and word manually confirmed"
+  }
+}

@@ -1,0 +1,79 @@
+[
+  {
+    "explanation": "Green: \u221e to p/q. Orange: the L/R path. Both views share the same exact interval.",
+    "fraction": "1/2  <  3/5  <  2/3",
+    "matrix": "M = [2  1; 3  2]    det M = 1    \u2022    3/24 moves",
+    "name": "baseline",
+    "receipt": "253 Farey edges",
+    "recordedAt": 1792690988.876384,
+    "space": "Space: Disk",
+    "viewpoint": "Front",
+    "word": "RLR"
+  },
+  {
+    "explanation": "Green: \u221e to p/q. Orange: the L/R path. Both views share the same exact interval.",
+    "fraction": "762/487  <  2419/1546  <  1657/1059",
+    "matrix": "M = [1657  762; 1059  487]    det M = 1    \u2022    19/24 moves",
+    "name": "counterexample-front",
+    "receipt": "253 Farey edges",
+    "recordedAt": 1792691010.4919019,
+    "space": "Space: Disk",
+    "viewpoint": "Front",
+    "word": "LRLRRRLLRLLRLLLLLRR"
+  },
+  {
+    "explanation": "Green: \u221e to p/q. Orange: the L/R path. Both views share the same exact interval.",
+    "fraction": "762/487  <  2419/1546  <  1657/1059",
+    "matrix": "M = [1657  762; 1059  487]    det M = 1    \u2022    19/24 moves",
+    "name": "counterexample-left",
+    "receipt": "253 Farey edges",
+    "recordedAt": 1792691014.9238992,
+    "space": "Space: Disk",
+    "viewpoint": "Left",
+    "word": "LRLRRRLLRLLRLLLLLRR"
+  },
+  {
+    "explanation": "Direction plane shown. The primitive point lies beyond this finite grid.",
+    "fraction": "762/487  <  2419/1546  <  1657/1059",
+    "matrix": "M = [1657  762; 1059  487]    det M = 1    \u2022    19/24 moves",
+    "name": "counterexample-lattice",
+    "receipt": "168 lattice points",
+    "recordedAt": 1792691019.370654,
+    "space": "Space: Lattice",
+    "viewpoint": "Left",
+    "word": "LRLRRRLLRLLRLLLLLRR"
+  },
+  {
+    "explanation": "Green: \u221e to p/q. Orange: the L/R path. Both views share the same exact interval.",
+    "fraction": "46368/28657  <  121393/75025  <  75025/46368",
+    "matrix": "M = [75025  46368; 46368  28657]    det M = 1    \u2022    24/24 moves",
+    "name": "limit-front",
+    "receipt": "253 Farey edges",
+    "recordedAt": 1792691048.239881,
+    "space": "Space: Disk",
+    "viewpoint": "Front",
+    "word": "LRLRLRLRLRLRLRLRLRLRLRLR"
+  },
+  {
+    "explanation": "Green: \u221e to p/q. Orange: the L/R path. Both views share the same exact interval.",
+    "fraction": "46368/28657  <  121393/75025  <  75025/46368",
+    "matrix": "M = [75025  46368; 46368  28657]    det M = 1    \u2022    24/24 moves",
+    "name": "limit-reentered",
+    "receipt": "253 Farey edges",
+    "recordedAt": 1792691059.197857,
+    "space": "Space: Disk",
+    "viewpoint": "Front",
+    "word": "LRLRLRLRLRLRLRLRLRLRLRLR"
+  },
+  {
+    "explanation": "Green: \u221e to p/q. Orange: the L/R path. Both views share the same exact interval.",
+    "fraction": "24/1  <  25/1  <  \u221e",
+    "matrix": "M = [1  24; 0  1]    det M = 1    \u2022    24/24 moves",
+    "name": "repeated-L",
+    "receipt": "253 Farey edges",
+    "recordedAt": 1792691070.70386,
+    "space": "Space: Disk",
+    "viewpoint": "Front",
+    "word": "LLLLLLLLLLLLLLLLLLLLLLLL"
+  }
+]

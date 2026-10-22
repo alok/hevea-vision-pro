@@ -12,6 +12,8 @@ import time
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--output", type=Path, help="New capture directory; existing raw video is never overwritten")
+parser.add_argument("--only-testing", action="append", default=[],
+    help="Record existing test identifiers instead of adding the default demonstration tour")
 args = parser.parse_args()
 source = Path(__file__).resolve().parent.parent
 output = (args.output or source / "evidence/demo-package").resolve()
@@ -19,8 +21,9 @@ output.mkdir(parents=True, exist_ok=True)
 if (output / "native-raw.mp4").exists():
     raise SystemExit("Capture already exists. Choose a fresh directory with --output.")
 root = Path(subprocess.check_output(["python3", str(source / "scripts/prepare-local-build.py")], text=True).strip())
-tests = root / "UITests/FareyUITests.swift"
-tests.write_text(tests.read_text() + "\n" + (source / "scripts/demo-tour.swift").read_text())
+if not args.only_testing:
+    tests = root / "UITests/FareyUITests.swift"
+    tests.write_text(tests.read_text() + "\n" + (source / "scripts/demo-tour.swift").read_text())
 sim = subprocess.check_output(["xcrun", "simctl", "create", "Farey Demo Recording",
     "com.apple.CoreSimulator.SimDeviceType.Apple-Vision-Pro-4K",
     "com.apple.CoreSimulator.SimRuntime.xrOS-27-2"], text=True).strip()
@@ -48,15 +51,17 @@ try:
         time.sleep(0.1)
     else:
         raise RuntimeError("Simulator recorder did not become ready")
+    selected_tests = args.only_testing or ["FareyVisionUITests/FareyUITests/testRecordedDemonstration"]
+    state["selectedTests"] = selected_tests
     command = common + ["test-without-building", "-collect-test-diagnostics", "never",
-        "-only-testing:FareyVisionUITests/FareyUITests/testRecordedDemonstration",
         "-resultBundlePath", str(root / "Demo.xcresult")]
+    command += ["-only-testing:" + target for target in selected_tests]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
     with (output / "native-test.log").open("w") as log:
         for line in process.stdout:
             log.write(line)
             log.flush()
-            marker = re.search(r"FAREY_CAPTURE:(demo-[A-Za-z0-9-]+)", line)
+            marker = re.search(r"FAREY_CAPTURE:([A-Za-z0-9-]+)", line)
             timestamp = re.match(r"(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d+[-+]\d{4})", line)
             if marker and timestamp:
                 marker_time = datetime.datetime.strptime(timestamp[1], "%Y-%m-%d %H:%M:%S.%f%z").timestamp()

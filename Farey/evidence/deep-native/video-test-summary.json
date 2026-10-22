@@ -1,0 +1,49 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "C29A0119-7070-40E7-9E1B-7F2D17430E8F",
+        "deviceName" : "Farey Demo Recording",
+        "modelName" : "Apple Vision Pro",
+        "osBuildNumber" : "24N5093f",
+        "osVersion" : "27.2",
+        "platform" : "visionOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 0,
+      "passedTests" : 16,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "FareyVision · Built with macOS 27.0.1",
+  "expectedFailures" : 0,
+  "failedTests" : 0,
+  "finishTime" : 1792691244.566,
+  "passedTests" : 16,
+  "result" : "Passed",
+  "runtimeWarnings" : [
+
+  ],
+  "skippedTests" : 0,
+  "startTime" : 1792691124.246,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+
+  ],
+  "title" : "Test - FareyVision",
+  "topInsights" : [
+    {
+      "category" : "Longest Test Runs",
+      "impact" : "92% of duration",
+      "text" : "1 longest test run with outlier durations exceeding 1.88s (three standard deviations)"
+    }
+  ],
+  "totalTestCount" : 16
+}
