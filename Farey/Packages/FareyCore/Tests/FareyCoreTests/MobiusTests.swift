@@ -130,4 +130,27 @@ final class MobiusTests: XCTestCase {
     XCTAssertThrowsError(try IntegralMobius.identity.image(of: CoefficientPoint(Int.min, 0, 1)))
     XCTAssertEqual(try IntegralMobius(p: 1, q: 1, r: 0, s: 1).image(of: CoefficientPoint(1, 0, 1)), CoefficientPoint(1, -2, 2))
   }
+  /// Base values stay exact identities; what is shown under g is their image, with ∞ handled. The matched fixture
+  /// g = [[3, 1], [1, 2]]/√5 takes the pair plane's endpoints −1, 1 to −2, 4/3 and the root i to 1 + i.
+  func testShownValuesUnderGForTheMatchedFixture() throws {
+    let g = try XCTUnwrap(Mobius(3, 1, 1, 2))
+    let plane = try CuttingPlane.pair(CoefficientPoint(1, 0, 1), CoefficientPoint(1, 1, 1)).get()
+    let shown = g.shown(real: plane.endpoints.map(\.value))
+    XCTAssertEqual(shown[0], -2, accuracy: 1e-12)
+    XCTAssertEqual(shown[1], 4.0 / 3, accuracy: 1e-12)
+    XCTAssertEqual(shown.map(Mobius.approximateLabel), ["-2.000", "1.333"])
+    XCTAssertEqual(simd_distance(g.act([0, 1]), [1, 1]), 0, accuracy: 1e-12)
+    XCTAssertEqual(Mobius.approximateLabel(g.act([0, 1])), "1.000 + 1.000i")
+    // The root of x² + 1 is −0/2, negative zero; it and tiny negatives print as 0.000.
+    XCTAssertEqual(Mobius.approximateLabel(SIMD2(-0.0, 1)), "0.000 + 1.000i")
+    XCTAssertEqual(Mobius.approximateLabel(-1e-17), "0.000")
+    XCTAssertEqual(g.image(of: plane.normal).x, 3.0 / 5, accuracy: 1e-12)
+    // Projective infinity: x has roots 0 and ∞; T moves them to 1 and ∞, S to ∞ and 0.
+    let x = try XCTUnwrap(CoefficientPoint(0, 1, 0).realRootValues)
+    XCTAssertEqual(Mobius.t.shown(real: x).map(Mobius.approximateLabel), ["1.000", "∞"])
+    XCTAssertEqual(Mobius.sGenerator.shown(real: x).map(Mobius.approximateLabel), ["∞", "0.000"])
+    XCTAssertEqual(CoefficientPoint(0, 0, 1).realRootValues, [.infinity, .infinity])
+    XCTAssertEqual(CoefficientPoint(1, -2, 1).realRootValues, [1, 1])
+    XCTAssertNil(CoefficientPoint(1, 0, 1).realRootValues)
+  }
 }

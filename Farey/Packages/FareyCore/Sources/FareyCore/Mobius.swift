@@ -188,3 +188,28 @@ public func kleinToUpper(_ u: Double, _ v: Double) -> SIMD2<Double>? {
   guard h > 0, 1 - v > 0 else { return nil }
   return SIMD2(u / (1 - v), h.squareRoot() / (1 - v))
 }
+
+extension Mobius {
+  /// A real projective point under g, as shown (g moves the base roots; the base values stay the exact identity).
+  public func shown(real values: [Double]) -> [Double] { values.map { act(real: $0) } }
+  /// A compact approximate label for a real projective point: three decimals, or ∞. Values that round to zero print as
+  /// 0.000, never −0.000 (the root of x² + 1 is −0/2, which is negative zero).
+  public static func approximateLabel(_ t: Double) -> String {
+    t.isFinite ? String(format: "%.3f", abs(t) < 5e-4 ? 0 : t) : "∞"
+  }
+  /// A compact approximate label for a point of the upper half-plane, x + yi.
+  public static func approximateLabel(_ z: SIMD2<Double>) -> String {
+    "\(approximateLabel(z.x)) + \(approximateLabel(z.y))i"
+  }
+}
+
+extension CoefficientPoint {
+  /// The real roots of a boundary or exterior form as projective values (∞ for a root at infinity); nil otherwise.
+  public var realRootValues: [Double]? {
+    switch kind {
+    case .null?: return a == 0 ? [.infinity, .infinity] : Array(repeating: -Double(b) / Double(2 * a), count: 2)
+    case .exterior?: return (try? CuttingPlane.fromNormal(self).get())?.endpoints.map(\.value)
+    default: return nil
+    }
+  }
+}

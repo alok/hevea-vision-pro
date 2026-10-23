@@ -31,9 +31,12 @@ extension FareyUITests {
     print("MOBIUS-G \(gExact)")
     // Exact base identities are unchanged; the receipt reports g.
     XCTAssertTrue(require("coefficient-state").label.contains("(1, 0, 1)"))
-    XCTAssertTrue(require("plane-state").label.contains("2a −2c = 0"))
     XCTAssertTrue(require("plane-detail").label.contains("Paired with (1, 1, 1)"))
     XCTAssertTrue(require("render-receipt").label.contains(" · g = ["), require("render-receipt").label)
+    // Under g the readouts name the exact base data as base and add what is shown.
+    let planeLabel = require("plane-state").label, rootLabel = require("coefficient-root").label
+    XCTAssertTrue(planeLabel.hasPrefix("Base plane 2a −2c = 0 · geodesic endpoints -1 and 1 · shown under g ≈ "), planeLabel)
+    XCTAssertTrue(rootLabel.hasPrefix("base upper root 0.000 + 1.000i · shown under g "), rootLabel)
     // Close only Roots; then the transformed scene from several views, unobstructed.
     require("roots-close").tap()
     XCTAssertTrue(pane.waitForNonExistence(timeout: 10), "Roots did not close")
@@ -75,6 +78,8 @@ extension FareyUITests {
     require("group-identity").tap()
     waitFor("group-state", containing: "g = identity")
     XCTAssertTrue(require("plane-detail").label.contains("Paired with (1, 1, 1)"))
+    XCTAssertTrue(require("plane-state").label.hasPrefix("Plane 2a −2c = 0"), require("plane-state").label)
+    XCTAssertFalse(require("plane-state").label.contains("shown under g"))
     require("group-t").tap()
     waitFor("coefficient-state", containing: "(1, -2, 2)")
     XCTAssertTrue(require("plane-detail").label.contains("Paired with (1, -1, 1)"), require("plane-detail").label)

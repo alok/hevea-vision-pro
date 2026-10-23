@@ -146,13 +146,21 @@ struct StarscapeControls: View {
   }
   private func planeReadout(_ plane: CuttingPlane) -> some View {
     VStack(alignment: .leading, spacing: 2) {
-      Text("Plane \(plane.equation) · geodesic endpoints \(plane.endpoints.map(\.label).joined(separator: " and "))")
-        .font(.caption.monospaced()).accessibilityIdentifier("plane-state")
+      Text(planeText(plane)).font(.caption.monospaced()).accessibilityIdentifier("plane-state")
       Text(
         model.coefficientSecond.map { "Paired with \($0.label) · normal \(plane.normal.label)" }
           ?? "The selected exterior triple is this plane's Lorentz normal \(plane.normal.label)."
       ).font(.caption2).foregroundStyle(.secondary).accessibilityIdentifier("plane-detail")
     }
+  }
+  /// The exact plane is the base one; under a non-identity g the drawn plane has moved, so the readout says which is
+  /// which and adds the shown endpoints (approximate, ∞ handled).
+  private func planeText(_ plane: CuttingPlane) -> String {
+    let base = "\(plane.equation) · geodesic endpoints \(plane.endpoints.map(\.label).joined(separator: " and "))"
+    let g = model.coefficientGroup
+    guard !g.isIdentity else { return "Plane " + base }
+    let shown = g.shown(real: plane.endpoints.map(\.value)).map(Mobius.approximateLabel).joined(separator: " and ")
+    return "Base plane " + base + " · shown under g ≈ " + shown
   }
   private var placementRow: some View {
     VStack(alignment: .leading, spacing: 4) {
@@ -236,15 +244,23 @@ struct StarscapeControls: View {
       }
     }.accessibilityElement(children: .combine).accessibilityIdentifier("coefficient-legend")
   }
+  /// The selected form's exact root(s); under a non-identity g these are labelled base and followed by where they are
+  /// shown (approximate, ∞ handled).
   private var rootLabel: String {
-    let point = model.coefficient
+    let point = model.coefficient, g = model.coefficientGroup
     let hidden = model.coefficientShown ? "" : "  ·  hidden by this radius or filter"
+    let prefix = g.isIdentity ? "" : "base "
     switch point.kind {
     case .upper?, .lower?:
       guard let root = point.representativeRoot else { return "" }
       let flipped = point.kind == .lower ? " (sign-flipped representative)" : ""
-      return String(format: "upper root %.3f + %.3fi", root.x, root.y) + flipped + hidden
-    case .null?, .exterior?: return (point.realRootDescription ?? "") + hidden
+      let shown = g.isIdentity ? "" : " · shown under g " + Mobius.approximateLabel(g.act([root.x, root.y]))
+      return prefix + "upper root " + Mobius.approximateLabel([root.x, root.y]) + flipped + shown + hidden
+    case .null?, .exterior?:
+      let shown = g.isIdentity ? "" : point.realRootValues.map {
+        " · shown under g ≈ " + g.shown(real: $0).map(Mobius.approximateLabel).joined(separator: " and ")
+      } ?? ""
+      return prefix + (point.realRootDescription ?? "") + shown + hidden
     case nil: return hidden
     }
   }
