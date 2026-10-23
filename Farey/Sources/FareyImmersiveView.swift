@@ -136,9 +136,9 @@ import SwiftUI
       DragGesture().targetedToAnyEntity()
         .updating($dragging) { _, state, _ in state = true }
         .onChanged { value in
-          // The gesture value converts its location straight into the object's frame. The earlier path through the
-          // scene used `root`'s ordinary world transform, which under the once-tracked head anchor may not include the
-          // anchor's pose; a real Device Hub drag measured through it came out off the interior from the first step.
+          // The gesture's location in the object's frame. In a real Device Hub drag (87d4f0f) this direct conversion
+          // and the earlier path through the scene agreed exactly, and every step was off the interior: neither puts
+          // the eye at the coefficient origin. The cause is still being measured (see the opt-in ray diagnostics).
           let direction = Self.double(value.convert(value.location3D, from: .local, to: starscape.root))
           let outcome = model.originDragStep(to: direction)
           guard InputDiagnostics.shared.enabled else { return }
@@ -156,6 +156,20 @@ import SwiftUI
           model.endOriginDrag(completed: true)
         }
     )
+    // Opt-in only: the system's selection ray for an indirect pinch, the one input that carries where the eye was,
+    // recorded in the object's frame beside the location; it changes nothing.
+    .simultaneousGesture(
+      SpatialEventGesture().targetedToAnyEntity().onChanged { value in
+        guard let event = value.gestureValue.first(where: { $0.kind == .indirectPinch }) else { return }
+        let ray = event.selectionRay.map { ray in
+          (Self.double(value.convert(ray.origin, from: .local, to: starscape.root)),
+           Self.double(value.convert(ray.direction, from: .local, to: starscape.root)))
+        }
+        let location = Self.double(value.convert(event.location3D, from: .local, to: starscape.root))
+        InputDiagnostics.shared.recordPinch(
+          entity: event.targetedEntity?.name ?? "none", location: location, rayOrigin: ray?.0, rayDirection: ray?.1)
+      },
+      including: InputDiagnostics.shared.enabled ? .all : .none)
     // A cancelled gesture never calls onEnded; the gesture state's reset still does.
     .onChange(of: dragging) { _, live in
       guard !live else { return }

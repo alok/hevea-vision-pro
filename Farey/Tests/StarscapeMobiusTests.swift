@@ -262,7 +262,11 @@ import XCTest
     XCTAssertTrue(diagnostics.summary.contains("direction first (0.000, 2.400, 0.000) last (0.000, 2.400, 0.000)"), diagnostics.summary)
     XCTAssertTrue(diagnostics.summary.contains("two-hop first (0.000, 2.000, 0.000)"))
     XCTAssertTrue(diagnostics.summary.contains("start (0.000, 2.400, 0.000) · translation last (0.000, 0.000, 0.000)"))
-    XCTAssertTrue(diagnostics.summary.hasSuffix("outcomes [first direction recorded 1]"), diagnostics.summary)
+    XCTAssertTrue(diagnostics.summary.contains("outcomes [first direction recorded 1]"), diagnostics.summary)
+    diagnostics.recordPinch(entity: "origin-sky", location: [0, 2.4, 0], rayOrigin: [0, 0, 1.5], rayDirection: [0, 1, 0])
+    XCTAssertTrue(diagnostics.summary.hasSuffix(
+      "pinch events 1 entity origin-sky location (0.000, 2.400, 0.000) · ray origin (0.000, 0.000, 1.500) direction (0.000, 1.000, 0.000)"),
+      diagnostics.summary)
     XCTAssertEqual(diagnostics.dragChanges, 1)
     XCTAssertTrue(diagnostics.summary.contains("last drag entity origin-sky"), diagnostics.summary)
     XCTAssertTrue(diagnostics.summary.contains("outcome first direction recorded · taps 1 · last tap entity unnamed"))

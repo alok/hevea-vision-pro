@@ -32,6 +32,13 @@ import Observation
   private(set) var start: SIMD3<Double>?
   private(set) var lastTranslation: SIMD3<Double>?
   private(set) var outcomes: [String: Int] = [:]
+  /// The first indirect pinch of a gesture: its targeted entity, location and the system's selection ray, all in the
+  /// object's frame (nil ray if the event carries none).
+  private(set) var pinches = 0
+  private(set) var pinchEntity = "none"
+  private(set) var pinchLocation: SIMD3<Double>?
+  private(set) var rayOrigin: SIMD3<Double>?
+  private(set) var rayDirection: SIMD3<Double>?
   init(enabled: Bool) { self.enabled = enabled }
   struct DragSample {
     var direction: SIMD3<Double>, twoHop: SIMD3<Double>, start: SIMD3<Double>, translation: SIMD3<Double>
@@ -44,6 +51,13 @@ import Observation
     (lastDirection, lastTwoHop, lastTranslation) = (sample.direction, sample.twoHop, sample.translation)
     lastOutcome = outcome.rawValue
     outcomes[outcome.rawValue, default: 0] += 1
+  }
+  func recordPinch(entity: String, location: SIMD3<Double>, rayOrigin: SIMD3<Double>?, rayDirection: SIMD3<Double>?) {
+    guard enabled else { return }
+    pinches += 1
+    guard pinchLocation == nil else { return }                       // keep the first pinch of the run
+    pinchEntity = entity.isEmpty ? "unnamed" : entity
+    (pinchLocation, self.rayOrigin, self.rayDirection) = (location, rayOrigin, rayDirection)
   }
   func recordDragEnd() { if enabled { dragEnds += 1 } }
   func recordDragReset() { if enabled { dragResets += 1 } }
@@ -66,5 +80,7 @@ import Observation
       + " · activations \(activations) · last activate entity \(lastActivateEntity) · sky \(sky)"
       + " · direction first \(f(firstDirection)) last \(f(lastDirection)) · two-hop first \(f(firstTwoHop)) last \(f(lastTwoHop))"
       + " · start \(f(start)) · translation last \(f(lastTranslation)) · outcomes [\(tally)]"
+      + " · pinch events \(pinches) entity \(pinchEntity) location \(f(pinchLocation))"
+      + " · ray origin \(f(rayOrigin)) direction \(f(rayDirection))"
   }
 }
