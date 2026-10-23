@@ -63,5 +63,5 @@ Euclidean camera motions in both platforms remain separate from g: they change n
 ## Versions referenced
 
 - Browser 0.15.8, served locally (0.15.5–0.15.7 were packaging and server fixes; 0.15.8 fits the XR desktop mirror). The silent pointer walkthrough at `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/browser-demo-0154/browser-0154-walkthrough.mp4` is browser 0.15.4 footage.
-- Native 0.13.0 (17), in the main simulator.
+- Native 0.14.0 (18), in the main simulator.
 - The source was observed live on 2026-10-23.

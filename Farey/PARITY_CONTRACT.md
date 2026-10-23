@@ -46,13 +46,13 @@ The fixture file contains:
 
 ## Behavior matrix
 
-| Behavior | Stange's source viewer | Browser 0.15.8 | Native 0.13.0 (17) |
+| Behavior | Stange's source viewer | Browser 0.15.8 | Native 0.14.0 (18) |
 | --- | --- | --- | --- |
 | Signed ball, both nappes, categories | Her own crop and palette | Yes; exact fixtures | Yes; exact fixtures, R ≤ 12 |
 | Exact entry; rejected entry changes nothing | — | Yes | Yes (UI-tested) |
-| Hover names the exact signed polynomial | Root pane only; 3D hover only highlights | Our extension: desktop hover names the point a click there would select and never mutates state; dense crops use a worker | **Missing** |
-| Select a point spatially | Click | Desktop click; XR trigger on its current ray (both hands matched a ray oracle in actual IWE sessions) | Coded (tap and the accessibility activate action call selection); **unverified**: XCUITest's element tap fails with a nil activation point transform |
-| Pair a second point | Shift-click | Shift-click or entry | Entry only; **spatial pairing missing** |
+| Hover names the exact signed polynomial | Root pane only; 3D hover only highlights | Our extension: desktop hover names the point a click there would select and never mutates state; dense crops use a worker | Roots window: a pointer hover rings and labels (base polynomial) the star a tap would pick; **not exercised** by an automated route. 3D spatial hover: **missing** |
+| Select a point spatially | Click | Desktop click; XR trigger on its current ray (both hands matched a ray oracle in actual IWE sessions) | Roots window: real coordinate taps select (UI-tested). 3D: a public Device Hub Select click selected (3,0,3) in 0.13.0 (coordinator receipt, `native-direct-input-0130/`); XCUITest's element tap still fails with a nil activation point transform (an automation-route limit). Physical gaze/pinch untested |
+| Pair a second point | Shift-click | Shift-click or entry | Entry, or Pair next then a pick: Roots-window coordinate taps pair (UI-tested, with refusals); a 3D sphere pick uses the same path, **not yet exercised** by a spatial input |
 | Plane: normal, equation, endpoints, members | Yes | Yes; fixtures | Yes; fixtures, members ringed |
 | Drawn plane | — | A finite viewing patch clipped to the cone's bounding cylinder, plus the two null endpoint directions; not the plane's intersection with the cone | Same patch and directions |
 | Exterior selection is its own normal | Yes | Yes | Yes |
@@ -79,5 +79,5 @@ Record app-only, without audio. Each receipt should note the version, commit, fi
 
 Current evidence boundaries:
 
-- Browser 0.14.0: foreground immersive frames are unverified.
-- Native: tested in visionOS Simulator only; the physical headset is untested.
+- Browser 0.15.8: actual Immersive Web Emulator sessions (real XRFrames; emulated poses and buttons, not physical tracking); no physical headset. 0.14.0's round trips are historical.
+- Native 0.14.0 (18): visionOS Simulator only. Roots-window input by XCUITest coordinate taps and swipes; 3D entities only by a public Device Hub Select click (0.13.0); pointer hover not yet exercised; the physical headset (0.9.0 (12)) is untested.

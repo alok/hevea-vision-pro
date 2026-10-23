@@ -1,3 +1,19 @@
+# Native 0.14.0 (18): Pair next and Roots-window picking
+
+**Status (2026-10-23):** installed in the main simulator (D2ECE520), replacing 0.13.0 (17); the installed bundle is file-for-file the focused final run's build of `b3bd1fc`, and the screen was captured after launch and inspected (`task-7/main-simulator-0140b18/`). Full suite on `60dbbdd` plus the version: 61 passed, 2 skipped (opt-in probes), 0 failed. The final source differs from that snapshot only in the Roots close (cancels Pair next) and its test; the focused run on it passed 41/41 (all unit tests, the Pair next Roots test, the coefficient-space lifecycle).
+
+**Implemented and tested:**
+
+- **Pair next / Cancel:** one control arms a direct pick, from the Roots window or the immersive scene, to pair with the selection; a one-line state shows only while armed. Refusals (same direction including multiples and sign partners, exterior, outside the ball, filtered out) change nothing and stay armed; success disarms; Cancel, closing Roots, Reset and leaving the space disarm.
+- **Roots window:** one deterministic picker (the largest of coincident multiples) serves tap and pointer hover; the hover ring and its exact base-polynomial label follow the pointer and cannot go stale.
+- **Real input (XCUITest, Roots window):** coordinate taps through the measured visionOS 27.2 window mapping (normalized offsets centred, y up; from the separately owned Lean app's probes) picked (1,0,1), refused as the same direction, then (1,1,1), paired: plane 2a −2c = 0, disarmed. A silent 15.9 s recording of that sequence is local at `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/native-pairing-0140-video/recording.mp4`.
+
+**Not verified:**
+
+- Roots-window pointer hover (no visionOS XCUITest hover route; a Device Hub pointer check is pending). Predicted, not observed: with a multiple such as (2,0,2) selected, hovering its root may draw the hover and selection labels at the same place.
+- A 3D sphere pick into Pair next. An opt-in operator-assisted diagnostic (`testDeviceHubSpherePairing`, `--spatial-probe`) arms it through the controls and waits for a public Device Hub click on (3,0,3), expecting plane 2a −2b −2c = 0 with 18 members; it has not been run.
+- 3D spatial hover (a grouped hover-effect label prototype is next), physical gaze, pinch and drag.
+
 # Native 0.13.0 (17): the eye-at-origin drag
 
 **Status (2026-10-23):** installed in the main simulator (D2ECE520), replacing 0.12.0 (16); the installed bundle is file-for-file the tested build of `bd01480`, and the screen was captured after launch and inspected (`task-7/main-simulator-0130b17/`). Full suite on exactly that source: 58 passed, 2 skipped (the opt-in probes), 0 failed (simulator 64C1E8CA). The opt-in spatial tap probe itself **failed** (below); its skip in the suite is not a pass.
