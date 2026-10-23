@@ -101,7 +101,8 @@ import SwiftUI
             selected: model.coefficient, showProjection: model.showProjection,
             viewpoint: model.coefficientView, crop: model.coefficientCrop,
             cuttingPlane: model.cuttingPlane, second: model.coefficientSecond, placement: model.coefficientPlacement,
-            placementEpoch: model.coefficientPlacementEpoch, group: model.coefficientGroup)
+            placementEpoch: model.coefficientPlacementEpoch, group: model.coefficientGroup,
+            devicePose: model.currentDevicePose)
           InputDiagnostics.shared.recordSky(starscape.skyState)
         } else if showingLattice {
           model.renderReceipt = try lattice.render(
@@ -121,6 +122,22 @@ import SwiftUI
           if !Task.isCancelled && revision == model.revision { model.stopConstruction() }
         }
       } catch { model.renderReceipt = "Geometry error: \(error.localizedDescription)" }
+    }
+    // One device-pose query per anchored placement; changing placement or closing the space cancels it, and the
+    // query stops its session on every path.
+    .task(id: model.coefficientPlacement.anchored ? model.coefficientPlacementEpoch : -1) {
+      guard model.starscapeMode, model.coefficientPlacement.anchored else { return }
+      let epoch = model.coefficientPlacementEpoch
+      model.coefficientInput.devicePoseStatus = "querying world tracking"
+      let result = await DevicePoseQuery.once()
+      guard !Task.isCancelled, epoch == model.coefficientPlacementEpoch, model.coefficientPlacement.anchored else { return }
+      switch result {
+      case .success(let matrix):
+        model.coefficientInput.devicePose = DevicePose(epoch: epoch, originFromDevice: matrix)
+        model.coefficientInput.devicePoseStatus = "device pose for placement \(epoch)"
+      case .failure(let failure): model.coefficientInput.devicePoseStatus = "no device pose: \(failure)"
+      }
+      model.revision += 1
     }
     .gesture(
       SpatialTapGesture().targetedToAnyEntity().onEnded { value in

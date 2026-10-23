@@ -34,7 +34,9 @@ extension StarscapeRenderer {
   var placementReceipt: String {
     switch placement {
     case .overview: return ""
-    case .origin(let lower): return " · origin at head center, \(lower ? "lower" : "upper") nappe ahead"
+    case .origin(let lower):
+      return " · origin, \(lower ? "lower" : "upper") nappe ahead"
+        + (posedFromDevice ? " · placed from the device pose" : " · placed by the head anchor (no device pose)")
     case .inhabit(let point): return " · inhabiting \(point.label)"
     }
   }

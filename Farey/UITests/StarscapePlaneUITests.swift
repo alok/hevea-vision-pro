@@ -65,11 +65,11 @@ extension FareyUITests {
     checkPlacement()
     // Leaving the immersive space ends the head placement; re-entry starts at the overview.
     require("placement-origin").tap()
-    waitForReceipt(containing: "origin at head center")
+    waitForReceipt(containing: " · origin, ")
     exit()
     require("enter-void").tap()
     XCTAssertEqual(require("placement-inhabit").label, "Inhabit")
-    XCTAssertFalse(require("render-receipt").label.contains("origin at head center"))
+    XCTAssertFalse(require("render-receipt").label.contains(" · origin, "))
     exit()
   }
   /// From an open keyboard: Inhabit closes it; collapsed controls still offer Overview; the exact primary and second
@@ -112,12 +112,12 @@ extension FareyUITests {
     capture("plane-origin-01-overview")
     require("controls-toggle").tap()
     require("placement-origin").tap()
-    waitForReceipt(containing: planeReceipt + " · origin at head center, upper nappe ahead")
+    waitForReceipt(containing: planeReceipt + " · origin, upper nappe ahead")
     require("controls-toggle").tap()
     capture("plane-origin-02-origin-upper")
     require("controls-toggle").tap()
     require("origin-nappe").tap()
-    waitForReceipt(containing: planeReceipt + " · origin at head center, lower nappe ahead")
+    waitForReceipt(containing: planeReceipt + " · origin, lower nappe ahead")
     require("controls-toggle").tap()
     capture("plane-origin-03-origin-lower")
     require("placement-inhabit").tap()  // Overview, from the collapsed header
@@ -133,16 +133,16 @@ extension FareyUITests {
   private func checkPlacement() {
     type("1,-1,2", into: "coefficient-entry", then: "coefficient-select")
     require("placement-origin").tap()
-    waitForReceipt(containing: " · origin at head center, upper nappe ahead")
+    waitForReceipt(containing: " · origin, upper nappe ahead")
     XCTAssertTrue(require("placement-state").label.contains("zero polynomial"))
     XCTAssertFalse(require("coefficient-view").isEnabled)
     capture("placement-01-origin-upper")
     require("origin-nappe").tap()
-    waitForReceipt(containing: " · origin at head center, lower nappe ahead")
+    waitForReceipt(containing: " · origin, lower nappe ahead")
     capture("placement-02-origin-lower")
     // Origin again re-centers (a new one-time anchor; identity is unit-tested) and faces the upper nappe.
     require("placement-origin").tap()
-    waitForReceipt(containing: " · origin at head center, upper nappe ahead")
+    waitForReceipt(containing: " · origin, upper nappe ahead")
     require("placement-inhabit").tap()  // labelled Overview while anchored
     XCTAssertEqual(require("placement-inhabit").label, "Inhabit")
     require("placement-inhabit").tap()

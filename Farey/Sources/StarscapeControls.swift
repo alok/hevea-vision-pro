@@ -193,19 +193,6 @@ struct StarscapeControls: View {
       }
     }
   }
-  /// Exact placement semantics: set once from the head center when chosen, world-stationary afterwards.
-  private var placementDescription: String? {
-    switch model.coefficientPlacement {
-    case .overview: return nil
-    case .origin(let lower):
-      return "Origin: the coefficient origin (the zero polynomial, not a point of the picture) was placed at your "
-        + "head center when you chose it; the \(lower ? "lower" : "upper") nappe's axis is turned toward where you "
-        + "looked. This turns the object; it is not hyperbolic navigation."
-    case .inhabit(let point):
-      return "Inhabiting \(point.label): placed 35 cm ahead of your head center when chosen. Selecting other points "
-        + "does not move you; Overview or Reset returns."
-    }
-  }
   /// Explicit navigation and Reset close any open keyboard so it does not cover the scene.
   private func dismissKeyboard() {
     entryFocused = false
@@ -272,6 +259,27 @@ struct StarscapeControls: View {
       } ?? ""
       return prefix + (point.realRootDescription ?? "") + shown + hidden
     case nil: return hidden
+    }
+  }
+}
+
+// Placement explanations, shown under the placement controls.
+extension StarscapeControls {
+  /// Shown only when no device pose was measured: the placement falls back to the head anchor and Origin drags are off.
+  private var poseNote: String {
+    model.currentDevicePose != nil ? "" : " (\(model.coefficientInput.devicePoseStatus); placed at the head center, drags off)"
+  }
+  /// Exact placement semantics: set once from the device pose when chosen, world-stationary afterwards.
+  private var placementDescription: String? {
+    switch model.coefficientPlacement {
+    case .overview: return nil
+    case .origin(let lower):
+      return "Origin: the coefficient origin (the zero polynomial, not a point of the picture) was placed at the "
+        + "device's position when you chose it; the \(lower ? "lower" : "upper") nappe's axis is turned toward where "
+        + "it faced. This turns the object; it is not hyperbolic navigation." + poseNote
+    case .inhabit(let point):
+      return "Inhabiting \(point.label): placed 35 cm ahead of the device when chosen. Selecting other points does "
+        + "not move you; Overview or Reset returns." + poseNote
     }
   }
 }

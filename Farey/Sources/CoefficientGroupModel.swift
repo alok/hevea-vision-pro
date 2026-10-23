@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import Foundation
+import simd
 
 #if canImport(FareyCore)
   import FareyCore
@@ -10,12 +11,19 @@ import Foundation
 struct CoefficientInput {
   var originDrag: OriginDragAnchor?
   var pairNext = false
+  /// The device pose measured for one placement (epoch); see DevicePoseQuery. Directions are measured from it.
+  var devicePose: DevicePose?
+  var devicePoseStatus = "not requested"
+}
+struct DevicePose {
+  let epoch: Int
+  let originFromDevice: simd_float4x4
 }
 
 /// What one Origin drag step did, for the opt-in input diagnostics; the step's effect does not depend on it.
 enum OriginDragOutcome: String {
   case notOrigin = "not at Origin", firstAnchor = "first direction recorded", offInterior = "off the cone's interior"
-  case refused = "refused (out of range)", moved = "moved g"
+  case refused = "refused (out of range)", moved = "moved g", noDevicePose = "no device pose for this placement"
 }
 
 /// An Origin drag in progress: its previous display direction and the placement it began under. A step under any
@@ -53,6 +61,11 @@ extension GalleryModel {
       originDragAnchor = nil
       return .notOrigin
     }
+    // Without the measured pose the object's frame is unknown to the app, so a direction cannot be read; nothing moves.
+    guard currentDevicePose != nil else {
+      originDragAnchor = nil
+      return .noDevicePose
+    }
     var moved = false, outcome = OriginDragOutcome.firstAnchor
     if let anchor = originDragAnchor, anchor.placement == coefficientPlacement, anchor.epoch == coefficientPlacementEpoch {
       let before = revision
@@ -74,6 +87,12 @@ extension GalleryModel {
       endRootsDrag()
     }
     originDragAnchor = nil
+  }
+  /// The measured device pose if it belongs to the current placement (a new Origin or Inhabit needs a new one).
+  var currentDevicePose: simd_float4x4? {
+    guard coefficientPlacement.anchored, let pose = coefficientInput.devicePose, pose.epoch == coefficientPlacementEpoch
+    else { return nil }
+    return pose.originFromDevice
   }
   func endRootsDrag() { if coefficientSnap { snapGroup() } }
   /// Her Snap: settle on the nearest integer γ and absorb it.

@@ -23,6 +23,8 @@ import SwiftUI
   /// Holds the current one-time head anchor, as in Apple's head-and-device-transform sample.
   let anchorHost = Entity()
   private(set) var headAnchor: AnchorEntity?
+  /// Whether the current anchored placement uses a measured device pose (else the head anchor, or Overview).
+  private(set) var posedFromDevice = false
   private(set) var placement = Placement.overview
   /// The placement epoch the current anchor was made for; see GalleryModel.coefficientPlacementEpoch.
   private(set) var anchorEpoch = 0
@@ -78,12 +80,12 @@ import SwiftUI
   func render(
     selected: CoefficientPoint, showProjection: Bool, viewpoint: Int, crop next: Crop = Crop(),
     cuttingPlane: CuttingPlane? = nil, second: CoefficientPoint? = nil, placement nextPlacement: Placement = .overview,
-    placementEpoch: Int = 0, group nextGroup: Mobius = .identity
+    placementEpoch: Int = 0, group nextGroup: Mobius = .identity, devicePose: simd_float4x4? = nil
   ) throws -> String {
     let rebuilt = crop != next
     if rebuilt { try build(next) }
     if rebuilt || nextGroup != group { applyGroup(nextGroup, colorLower: next.colorLower) }
-    place(nextPlacement, epoch: placementEpoch, viewpoint: viewpoint)
+    place(nextPlacement, epoch: placementEpoch, viewpoint: viewpoint, devicePose: devicePose)
     sizeForOrigin(nextPlacement.isOrigin, colorLower: next.colorLower)
     projection.isEnabled = showProjection
     let planeReceipt = try renderPlane(cuttingPlane, second: second, showProjection: showProjection, crop: next)
@@ -272,43 +274,50 @@ extension StarscapeRenderer {
   /// Moves the object between the stationary overview and a one-time head anchor; see `Placement`. A new anchor,
   /// set from the head center now, is made for a new explicit request (epoch) or a change of anchored mode; the
   /// Origin nappe flip and ordinary renders keep the current one.
-  func place(_ next: Placement, epoch: Int, viewpoint: Int) {
-    let reanchor =
-      next.anchored && (headAnchor == nil || epoch != anchorEpoch || !next.sharesAnchor(with: placement))
-    if reanchor || (!next.anchored && headAnchor != nil) {
+  func place(_ next: Placement, epoch: Int, viewpoint: Int, devicePose: simd_float4x4? = nil) {
+    let fresh = epoch != anchorEpoch || !next.sharesAnchor(with: placement)
+    if !next.anchored {
       headAnchor?.removeFromParent()
       headAnchor = nil
+      if root.parent !== stage { stage.addChild(root) }
+    } else if devicePose != nil {
+      // Explicit: under the world-stationary host at the measured device pose, a transform the app can read back.
+      headAnchor?.removeFromParent()
+      headAnchor = nil
+      if root.parent !== anchorHost { anchorHost.addChild(root) }
+      if fresh { inhabitAddress = nil }
+    } else if headAnchor == nil || fresh {
+      // Until a device pose is measured: the one-time head anchor, which renders at the head but whose transform
+      // the app cannot read.
+      headAnchor?.removeFromParent()
+      let anchor = AnchorEntity(.head)
+      anchor.anchoring.trackingMode = .once
+      anchor.name = "head-anchor-once"
+      anchorHost.addChild(anchor)
+      anchor.addChild(root)
+      headAnchor = anchor
       inhabitAddress = nil
-      if next.anchored {
-        let anchor = AnchorEntity(.head)
-        anchor.anchoring.trackingMode = .once
-        anchor.name = "head-anchor-once"
-        anchorHost.addChild(anchor)
-        anchor.addChild(root)
-        headAnchor = anchor
-        anchorEpoch = epoch
-      } else {
-        stage.addChild(root)
-      }
     }
+    if next.anchored { anchorEpoch = epoch }
     placement = next
+    posedFromDevice = next.anchored && devicePose != nil
     sky.isEnabled = next.isOrigin
+    var local = Transform()
     switch next {
     case .overview:
-      root.position = Self.center
-      root.orientation =
+      local.translation = Self.center
+      local.rotation =
         simd_quatf(angle: Self.viewPitch[viewpoint], axis: [1, 0, 0])
         * simd_quatf(angle: -Self.viewYaw[viewpoint], axis: [0, 1, 0])
     case .origin(let lower):
-      root.position = .zero
-      root.orientation = simd_quatf(angle: lower ? .pi / 2 : -.pi / 2, axis: [1, 0, 0])
+      local.rotation = simd_quatf(angle: lower ? .pi / 2 : -.pi / 2, axis: [1, 0, 0])
     case .inhabit(let point):
-      root.orientation = simd_quatf(angle: 0, axis: [0, 1, 0])
       // Fixed at the moment of choosing (under the g of that moment); later changes of g or selection do not move it.
       let address = inhabitAddress ?? Self.inhabitEye - position(viewVector(point))
       inhabitAddress = address
-      root.position = address
+      local.translation = address
     }
+    root.transform = devicePose.map { Transform(matrix: $0 * local.matrix) } ?? local
   }
 
   /// The browser's plane rendering: amber rings on displayed interior points lying exactly in the plane (upper

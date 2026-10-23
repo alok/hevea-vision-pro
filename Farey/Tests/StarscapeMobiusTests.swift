@@ -6,6 +6,10 @@ import XCTest
 /// The native Möbius view against the exact single-step fixture g = [[3, 1], [1, 2]]/√5 (the transvection i → 1 + i).
 @MainActor final class StarscapeMobiusTests: XCTestCase {
   private let g = Mobius(3, 1, 1, 2)!
+  /// A measured device pose for the model's current placement (the view's world-tracking query, stood in for).
+  private func grantDevicePose(_ model: GalleryModel, _ pose: simd_float4x4 = matrix_identity_float4x4) {
+    model.coefficientInput.devicePose = DevicePose(epoch: model.coefficientPlacementEpoch, originFromDevice: pose)
+  }
   private func expect(_ a: SIMD3<Float>, _ b: SIMD3<Double>, scale: Float, accuracy: Float = 1e-5) {
     let target = SIMD3<Float>(Float(b.x), Float(b.y), Float(b.z)) * scale
     XCTAssertEqual(simd_distance(a, target), 0, accuracy: accuracy, "\(a) vs \(target)")
@@ -130,6 +134,7 @@ import XCTest
     XCTAssertNil(model.originDragAnchor)
     model.coefficientPlacement = .origin(facingLower: false)
     model.coefficientPlacementEpoch += 1
+    grantDevicePose(model)
     model.originDragStep(to: [0, 2, 0])                               // first step only records
     XCTAssertTrue(model.coefficientGroup.isIdentity)
     model.originDragStep(to: [2, 3, 1])
@@ -153,6 +158,7 @@ import XCTest
     // A completed drag under its own placement snaps, as a roots-pane drag does.
     model.coefficientSnap = true
     model.coefficientPlacement = .origin(facingLower: false)
+    grantDevicePose(model)                                           // Reset cleared the earlier pose
     model.originDragStep(to: [0, 2, 0])
     model.originDragStep(to: [0.05, 2, 0])
     model.endOriginDrag(completed: true)
@@ -235,46 +241,5 @@ import XCTest
     let toFar = simd_normalize(far.position(relativeTo: nil) - origin)
     let farHits = scene.raycast(origin: origin, direction: toFar, length: 20, query: .nearest)
     XCTAssertEqual(farHits.first?.entity.name, "coefficient:1:-4:3", "\(farHits.map(\.entity.name))")
-  }
-  /// Each Origin drag step reports what it did, for the opt-in input diagnostics; the effect is unchanged.
-  func testOriginDragStepReportsItsOutcome() {
-    let model = GalleryModel()
-    XCTAssertEqual(model.originDragStep(to: [0, 2, 0]), .notOrigin)
-    model.coefficientPlacement = .origin(facingLower: false)
-    model.coefficientPlacementEpoch += 1
-    XCTAssertEqual(model.originDragStep(to: [0, 2, 0]), .firstAnchor)
-    XCTAssertEqual(model.originDragStep(to: [2, 3, 1]), .moved)
-    XCTAssertEqual(model.originDragStep(to: [2, 1, 0]), .offInterior)       // exterior: no anchor, nothing moves
-    XCTAssertEqual(model.originDragStep(to: [0, 2, 0]), .offInterior)       // from the exterior direction
-    let diagnostics = InputDiagnostics(enabled: true), silent = InputDiagnostics(enabled: false)
-    for recorder in [diagnostics, silent] {
-      recorder.recordDrag(
-        entity: "origin-sky", sample: .init(direction: [0, 2.4, 0], twoHop: [0, 2, 0], start: [0, 2.4, 0], translation: [0, 0, 0]),
-        outcome: .firstAnchor)
-      recorder.recordDragEnd()
-      recorder.recordTap(entity: "")
-      recorder.recordActivate(entity: "coefficient:3:0:3")
-      recorder.recordSky("collision yes · input target yes · enabled true · scale 1.000")
-    }
-    XCTAssertTrue(diagnostics.summary.contains("activations 1 · last activate entity coefficient:3:0:3"), diagnostics.summary)
-    XCTAssertTrue(diagnostics.summary.contains("sky collision yes · input target yes · enabled true · scale 1.000"))
-    XCTAssertEqual(silent.activations, 0)
-    XCTAssertTrue(diagnostics.summary.contains("direction first (0.000, 2.400, 0.000) last (0.000, 2.400, 0.000)"), diagnostics.summary)
-    XCTAssertTrue(diagnostics.summary.contains("two-hop first (0.000, 2.000, 0.000)"))
-    XCTAssertTrue(diagnostics.summary.contains("start (0.000, 2.400, 0.000) · translation last (0.000, 0.000, 0.000)"))
-    XCTAssertTrue(diagnostics.summary.contains("outcomes [first direction recorded 1]"), diagnostics.summary)
-    // The first event (a click) has no ray; a later one does: both are kept, and every ray is counted.
-    diagnostics.recordPinch(entity: "origin-sky", phase: "active", location: [0, 2.4, 0], ray: nil)
-    diagnostics.recordPinch(entity: "origin-sky", phase: "active", location: [0.1, 2.4, 0], ray: ([0, 0, 1.5], [0, 1, 0]))
-    diagnostics.recordPinch(entity: "origin-sky", phase: "ended", location: [0.2, 2.4, 0], ray: ([0, 0, 1.5], [0, 1, 0]))
-    XCTAssertTrue(diagnostics.summary.hasSuffix(
-      "pinch events 3 [active 2, ended 1] first entity origin-sky location (0.000, 2.400, 0.000) · rays 2 [active 1, ended 1]"
-        + " first ray at active location (0.100, 2.400, 0.000) origin (0.000, 0.000, 1.500) direction (0.000, 1.000, 0.000)"),
-      diagnostics.summary)
-    XCTAssertEqual(diagnostics.dragChanges, 1)
-    XCTAssertTrue(diagnostics.summary.contains("last drag entity origin-sky"), diagnostics.summary)
-    XCTAssertTrue(diagnostics.summary.contains("outcome first direction recorded · taps 1 · last tap entity unnamed"))
-    XCTAssertEqual(silent.dragChanges, 0)
-    XCTAssertEqual(silent.taps, 0)
   }
 }

@@ -24,6 +24,16 @@ extension FareyUITests {
     return XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: predicate, object: element("input-diagnostics"))], timeout: seconds)
       == .completed
   }
+  /// READY only once the app itself measured a device pose for this placement (world tracking); never injected. A
+  /// missing pose fails here with the app's own status.
+  private func waitForDevicePose() {
+    let posed = XCTWaiter().wait(
+      for: [XCTNSPredicateExpectation(predicate: NSPredicate(format: "label CONTAINS %@", "placed from the device pose"),
+        object: require("render-receipt"))], timeout: 15) == .completed
+    print("DEVICEHUB-ORIGIN pose \(posed ? "measured" : "NOT measured") · receipt \(require("render-receipt").label)"
+      + " · placement \(element("placement-state").exists ? element("placement-state").label : "none")")
+    XCTAssertTrue(posed, "no device pose within 15 s: \(element("placement-state").exists ? element("placement-state").label : "none")")
+  }
   private func checkBaseState(nappe: String) {
     XCTAssertTrue(require("coefficient-state").label.contains("(1, 0, 1)"), require("coefficient-state").label)
     XCTAssertTrue(require("plane-detail").label.contains("Paired with (1, 1, 1)"), require("plane-detail").label)
@@ -31,7 +41,7 @@ extension FareyUITests {
     let plane = require("plane-state").label
     XCTAssertTrue(plane.hasPrefix("Plane 2a −2c = 0") || plane.hasPrefix("Base plane 2a −2c = 0"), plane)
     XCTAssertEqual(plane.hasPrefix("Plane"), require("group-state").label.contains("g = identity"), plane)
-    XCTAssertTrue(require("render-receipt").label.contains("origin at head center, \(nappe) nappe ahead"), require("render-receipt").label)
+    XCTAssertTrue(require("render-receipt").label.contains("origin, \(nappe) nappe ahead"), require("render-receipt").label)
     let g = groupEntries()
     XCTAssertEqual(g.count, 4, "g readout \(g)")
     XCTAssertTrue(g.allSatisfy(\.isFinite), "g readout \(g)")
@@ -44,6 +54,7 @@ extension FareyUITests {
     let ask = phase == "0" ? "click empty sky once" : "drag on empty sky now"
     print("DEVICEHUB-ORIGIN READY phase \(phase) simulator \(simulator) at \(at) g \(groupEntries()): \(ask)")
     print("DEVICEHUB-ORIGIN phase \(phase) diagnostics at READY: \(diagnostics())")
+    print("DEVICEHUB-ORIGIN phase \(phase) receipt at READY: \(require("render-receipt").label)")
   }
   /// The app's opt-in input diagnostics line (callback counts, last entity, direction and outcome).
   private func diagnostics() -> String {
@@ -67,6 +78,7 @@ extension FareyUITests {
     print("DEVICEHUB-ORIGIN snap value \(require("group-snap").value ?? "nil")")  // Snap starts off; a drag would otherwise settle
     require("placement-origin").tap()
     XCTAssertTrue(require("render-receipt").label.contains("upper nappe ahead"), require("render-receipt").label)
+    waitForDevicePose()
     // Phase 0, a targeting check that is reported, not asserted: one plain click on empty sky. A tap callback naming
     // origin-sky shows system targeting reaches the sky; none in 60 s points at targeting rather than at the drag.
     print("DEVICEHUB-ORIGIN phase 0 diagnostics before: \(diagnostics())")
@@ -80,6 +92,8 @@ extension FareyUITests {
     print("DEVICEHUB-ORIGIN phase 1 diagnostics after wait: \(diagnostics())")
     if !moved { capture("devicehub-origin-1-failed") }
     XCTAssertTrue(moved, "no non-integer g within 90 s: \(require("group-state").label) · \(diagnostics())")
+    // The drag must have ended before the capture and the nappe flip: wait on the observed end, not a delay.
+    XCTAssertTrue(waitForDiagnostics(containing: " · ends 1 · ", seconds: 30), "phase 1 drag never ended: \(diagnostics())")
     let first = groupEntries()
     print("DEVICEHUB-ORIGIN phase 1 g \(first) · receipt \(require("render-receipt").label)")
     checkBaseState(nappe: "upper")
@@ -90,6 +104,9 @@ extension FareyUITests {
     announce("2")
     let movedAgain = waitForGroup { $0.count == 4 && $0 != first }
     print("DEVICEHUB-ORIGIN phase 2 diagnostics after wait: \(diagnostics())")
+    if movedAgain {
+      XCTAssertTrue(waitForDiagnostics(containing: " · ends 2 · ", seconds: 30), "phase 2 drag never ended: \(diagnostics())")
+    }
     if !movedAgain { capture("devicehub-origin-2-failed") }
     XCTAssertTrue(movedAgain, "g did not change within 90 s after the nappe flip · \(diagnostics())")
     print("DEVICEHUB-ORIGIN phase 2 g \(groupEntries()) · receipt \(require("render-receipt").label)")
@@ -104,7 +121,7 @@ extension FareyUITests {
       XCTAssertTrue(require("group-state").label.contains("g = identity"), "\(when): \(require("group-state").label)")
       XCTAssertTrue(require("coefficient-state").label.contains("(1, -1, 2)"), "\(when): \(require("coefficient-state").label)")
       XCTAssertFalse(element("plane-state").exists, "\(when): a plane remains")
-      XCTAssertFalse(require("render-receipt").label.contains("origin at head center"), "\(when): \(require("render-receipt").label)")
+      XCTAssertFalse(require("render-receipt").label.contains(" · origin, "), "\(when): \(require("render-receipt").label)")
       XCTAssertEqual(require("placement-inhabit").label, "Inhabit", "\(when): not in Overview")
     }
     checkDefaults("after Reset")
