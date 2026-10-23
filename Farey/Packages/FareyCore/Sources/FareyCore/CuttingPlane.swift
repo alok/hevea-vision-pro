@@ -109,9 +109,10 @@ public struct CuttingPlane: Equatable, Sendable {
   }
 
   /// Unit-height null directions (X, Y, Z) of the two endpoints: t ↦ (sin 2θ, 1, −cos 2θ) with t = tan θ, ∞ ↦ (0, 1, 1).
-  public var coneDirections: [SIMD3<Double>] {
-    endpoints.map { endpoint in
-      let t = endpoint.value
+  public var coneDirections: [SIMD3<Double>] { Self.coneDirections(endpointValues: endpoints.map(\.value)) }
+  /// The same for any real endpoints, such as a plane's endpoints moved by a Möbius g.
+  public static func coneDirections(endpointValues: [Double]) -> [SIMD3<Double>] {
+    endpointValues.map { t in
       guard t.isFinite else { return SIMD3(0, 1, 1) }
       let angle = 2 * atan(t)
       return SIMD3(sin(angle), 1, -cos(angle))
@@ -122,10 +123,17 @@ public struct CuttingPlane: Equatable, Sendable {
   /// loop of display-coordinate points around the origin; empty for a non-finite or nonpositive radius or a segment
   /// count outside 1...maximumSegments.
   public func section(radius: Double, segments: Int = 64) -> [SIMD3<Double>] {
-    guard radius.isFinite, radius > 0, (1...Self.maximumSegments).contains(segments) else { return [] }
-    let (na, nb, nc) = (Double(normal.a), Double(normal.b), Double(normal.c))
+    Self.section(normal: SIMD3(Double(normal.a), Double(normal.b), Double(normal.c)), radius: radius, segments: segments)
+  }
+  /// The same patch for a real normal (A, B, C), such as a normal moved by a Möbius g; empty for a degenerate normal.
+  public static func section(normal: SIMD3<Double>, radius: Double, segments: Int = 64) -> [SIMD3<Double>] {
+    guard radius.isFinite, radius > 0, (1...maximumSegments).contains(segments), normal.x.isFinite, normal.y.isFinite,
+      normal.z.isFinite
+    else { return [] }
+    let (na, nb, nc) = (normal.x, normal.y, normal.z)
     let (x, y, z) = (-nb, -na - nc, nc - na)
     let horizontal = (x * x + z * z).squareRoot(), length = (x * x + y * y + z * z).squareRoot()
+    guard horizontal > 0 else { return [] }
     let u = SIMD3(-z / horizontal, 0, x / horizontal)
     let v = SIMD3(-x * y / (horizontal * length), horizontal / length, -z * y / (horizontal * length))
     return (0...segments).map { i in

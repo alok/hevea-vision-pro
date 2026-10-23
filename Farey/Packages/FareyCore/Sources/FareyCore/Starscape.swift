@@ -25,6 +25,18 @@ public struct CoefficientPoint: Hashable, Sendable {
     return SIMD2(-Double(b) / Double(2 * a), sqrt(Double(-discriminant)) / Double(2 * a))
   }
   public var label: String { "(\(a), \(b), \(c))" }
+  /// The exact signed polynomial in her viewer's typography (x² + x + 1, 2x² − 2x + 4, −x² + x − 2): spaced
+  /// operators, a leading minus without a space, implicit unit coefficients, zero terms dropped. A multiple is never
+  /// reduced to its primitive form.
+  public var polynomial: String {
+    let terms = [(a, "x²"), (b, "x"), (c, "")].filter { $0.0 != 0 }
+    guard !terms.isEmpty else { return "0" }
+    return terms.enumerated().map { index, term in
+      let (k, power) = term, magnitude = k.magnitude
+      let body = (!power.isEmpty && magnitude == 1 ? "" : "\(magnitude)") + power
+      return index == 0 ? (k < 0 ? "−" : "") + body : (k < 0 ? " − " : " + ") + body
+    }.joined()
+  }
 }
 
 public enum Starscape {

@@ -8,6 +8,7 @@ import SwiftUI
 struct StarscapeControls: View {
   @Environment(GalleryModel.self) private var model
   @Environment(\.dismissImmersiveSpace) private var dismissImmersiveSpace
+  @Environment(\.openWindow) private var openWindow
   @State private var showSources = false
   @State private var entry = "1,-1,2"
   @State private var collapsed = false
@@ -92,6 +93,7 @@ struct StarscapeControls: View {
         }.disabled(model.coefficientPlacement.anchored).accessibilityIdentifier("coefficient-view")
         Button("Sources") { showSources = true }.accessibilityIdentifier("sources")
       }.buttonStyle(.bordered)
+      symmetryRow
       pairRow
       if let plane = model.cuttingPlane { planeReadout(plane) }
       placementRow
@@ -99,6 +101,35 @@ struct StarscapeControls: View {
       Text("Inspired by Katherine Stange’s Starscape / Lattice · \(model.renderReceipt)")
         .font(.caption).foregroundStyle(.cyan).accessibilityIdentifier("render-receipt")
     }
+  }
+  /// Her Symmetry controls: generators compose on the left and are absorbed when integral; Identity returns to g = 1
+  /// without undoing an absorption; Snap settles a drag on SL₂(ℤ). The Roots window is where g is dragged.
+  private var symmetryRow: some View {
+    VStack(alignment: .leading, spacing: 4) {
+      HStack {
+        Button("Roots…") { openWindow(id: "roots") }.accessibilityIdentifier("roots-open")
+        Button("T⁻¹") { dismissKeyboard(); model.applyGenerator(.tInverse) }.accessibilityIdentifier("group-tinv")
+        Button("S") { dismissKeyboard(); model.applyGenerator(.sGenerator) }.accessibilityIdentifier("group-s")
+        Button("T") { dismissKeyboard(); model.applyGenerator(.t) }.accessibilityIdentifier("group-t")
+        Button("Identity") { dismissKeyboard(); model.identityGroup() }.accessibilityIdentifier("group-identity")
+        Toggle("Snap", isOn: Binding(get: { model.coefficientSnap }, set: { model.coefficientSnap = $0; if $0 { model.snapGroup() } }))
+          .toggleStyle(.button).accessibilityIdentifier("group-snap")
+      }.buttonStyle(.bordered)
+      // The visible readout is rounded; its accessibility value carries g to full precision, so a capture's g can be
+      // reproduced exactly (for example in the browser, as a matched-state capture).
+      Text(groupText).font(.caption.monospaced()).accessibilityIdentifier("group-state")
+        .accessibilityValue(model.coefficientGroup.entries.map { "\($0)" }.joined(separator: ","))
+      if let error = model.coefficientGroupError {
+        Text(error).font(.caption).foregroundStyle(.orange).accessibilityIdentifier("group-error")
+      }
+    }
+  }
+  private var groupText: String {
+    let g = model.coefficientGroup
+    if g.isIdentity { return "g = identity" }
+    let entries = g.entries.map { String(format: "%.2f", $0) }
+    let nearest = g.nearestIntegral.map { " (nearest γ = [\($0.p), \($0.q); \($0.r), \($0.s)])" } ?? ""
+    return "g = [\(entries[0]), \(entries[1]); \(entries[2]), \(entries[3])] · off SL₂(ℤ)\(nearest); points keep their identities"
   }
   private var pairRow: some View {
     HStack {

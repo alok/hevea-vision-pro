@@ -16,29 +16,6 @@ import SwiftUI
     var upperOnly = false
     var colorLower = false
   }
-  /// Where the coefficient object sits relative to the viewer. Overview is the stationary default. Origin and
-  /// Inhabit place it once, relative to the head center at the moment they are chosen (a `.once` head anchor: the
-  /// system uses the head pose that once; the app reads no tracking transform and needs no additional sensing
-  /// authorization; the object stays world-stationary afterwards, so real head motion gives parallax). Origin puts the coefficient origin, the zero polynomial, at that head center; it is not a
-  /// point of the projective picture, and the two eyes sit a few centimetres either side of it. Origin also turns
-  /// the object so the upper nappe's axis (+Y) points where the viewer was looking (Rx(−π/2)), or the lower
-  /// nappe's (Rx(π/2)): a presentation rotation of the object, not a walk in hyperbolic space. Inhabit puts a
-  /// chosen point `inhabitEye` from the head center, upright in the anchor's frame.
-  enum Placement: Equatable {
-    case overview
-    case origin(facingLower: Bool)
-    case inhabit(CoefficientPoint)
-    var anchored: Bool { self != .overview }
-    var isOrigin: Bool { if case .origin = self { true } else { false } }
-    /// Same anchor: an Origin nappe flip keeps the anchor; any other change re-anchors at the current head.
-    func sharesAnchor(with other: Placement) -> Bool {
-      switch (self, other) {
-      case (.origin, .origin): return true
-      case (.inhabit(let a), .inhabit(let b)): return a == b
-      default: return false
-      }
-    }
-  }
   /// The inhabited point sits slightly below and 35 cm ahead of the head center when Inhabit is chosen.
   static let inhabitEye: SIMD3<Float> = [0, -0.08, -0.35]
   /// Parent of `root` in Overview; add it and `anchorHost` to the scene.
@@ -58,6 +35,12 @@ import SwiftUI
   private var emphasized: Set<CoefficientPoint> = []
   /// Whether dots are sized by the Origin rule (CoefficientPalette.originRadiusFactor) rather than the overview's.
   private(set) var originSized = false
+  /// The Möbius view g. Points keep their identities; their drawn centers are J·ρ(g)·(a, b, c), updated entity by
+  /// entity (a Lorentz boost is a shear, which an entity transform cannot express). Cached entities are reused.
+  private(set) var group = Mobius.identity
+  private var images: [CoefficientPoint: ModelEntity] = [:]
+  /// The Inhabit address, fixed when Inhabit is chosen so a later change of g or selection never moves the viewer.
+  private var inhabitAddress: SIMD3<Float>?
   /// Physical ball radius in metres for every crop; at R6 this is the browser's 0.16 m per lattice unit.
   static let ballRadius: Float = 0.96
   /// Base glyph radius in metres; nonprimitive ramp-colored forms use 0.72 of it. The browser's base is 0.013 but it
@@ -87,9 +70,11 @@ import SwiftUI
   func render(
     selected: CoefficientPoint, showProjection: Bool, viewpoint: Int, crop next: Crop = Crop(),
     cuttingPlane: CuttingPlane? = nil, second: CoefficientPoint? = nil, placement nextPlacement: Placement = .overview,
-    placementEpoch: Int = 0
+    placementEpoch: Int = 0, group nextGroup: Mobius = .identity
   ) throws -> String {
-    if crop != next { try build(next) }
+    let rebuilt = crop != next
+    if rebuilt { try build(next) }
+    if rebuilt || nextGroup != group { applyGroup(nextGroup, colorLower: next.colorLower) }
     place(nextPlacement, epoch: placementEpoch, viewpoint: viewpoint)
     sizeForOrigin(nextPlacement.isOrigin, colorLower: next.colorLower)
     projection.isEnabled = showProjection
@@ -97,7 +82,7 @@ import SwiftUI
     selection.children.removeAll()
     let shown = dots[selected] != nil
     if shown {
-      let end = position(selected.vector)
+      let end = position(viewVector(selected))
       line(from: .zero, to: end, rgb: CoefficientPalette.selectionRay, opacity: 0.35, parent: selection)
       let factor = effectiveFactor(selected, colorLower: next.colorLower)
       let outline = ModelEntity(
@@ -105,7 +90,7 @@ import SwiftUI
       outline.position = end
       outline.name = "selection-outline"
       selection.addChild(outline)
-      if showProjection, let image = selected.radialImage(height: Starscape.screenHeight) {
+      if showProjection, let image = projectedView(selected) {
         let projected = position(image)
         line(from: .zero, to: projected, rgb: [1, 1, 1], opacity: 1, parent: selection)
         let marker = ModelEntity(mesh: meshes[0], materials: [UnlitMaterial(color: .white)])
@@ -116,12 +101,21 @@ import SwiftUI
     }
     return "\(dots.count) coefficient points · radius \(next.radius) (native cap \(CoefficientBall.maximumRadius))"
       + (next.upperOnly ? " · upper only" : "") + (shown ? "" : " · selected point hidden by this filter")
-      + planeReceipt + placementReceipt
+      + planeReceipt + placementReceipt + groupReceipt
+  }
+  /// Moves every cached dot and projection image to its position under g; Origin sizes follow the moved height.
+  private func applyGroup(_ next: Mobius, colorLower: Bool) {
+    group = next
+    for (point, dot) in dots { dot.position = position(viewVector(point)) }
+    for (point, image) in images { if let projected = projectedView(point) { image.position = position(projected) } }
+    if originSized { for (point, dot) in dots { dot.scale = .one * baseScale(point, colorLower: colorLower) } }
   }
 
   private func build(_ next: Crop) throws {
     for group in [cloud, cone, projection] { group.children.removeAll() }
     dots.removeAll()
+    images.removeAll()
+    inhabitAddress = nil
     // New dots start at scale 1; Origin sizing and plane emphasis are reapplied to them.
     originSized = false
     emphasized = []
@@ -148,6 +142,7 @@ import SwiftUI
         projected.position = position(image)
         projected.name = "image:\(point.a):\(point.b):\(point.c)"
         projection.addChild(projected)
+        images[point] = projected
       }
     }
     try buildCone(radius: next.radius)
@@ -248,8 +243,13 @@ extension StarscapeRenderer {
   /// Origin rule to the overview factor already built into its mesh.
   private func baseScale(_ point: CoefficientPoint, colorLower: Bool) -> Float {
     guard originSized else { return 1 }
-    return Float(
-      CoefficientPalette.originRadiusFactor(for: point) / CoefficientPalette.radiusFactor(for: point, colorLower: colorLower))
+    return Float(originFactor(point) / CoefficientPalette.radiusFactor(for: point, colorLower: colorLower))
+  }
+  /// Her origin rule with the base Δ (invariant under g) and the current, moved height a′ + c′.
+  func originFactor(_ point: CoefficientPoint) -> Double {
+    guard !group.isIdentity else { return CoefficientPalette.originRadiusFactor(for: point) }
+    guard point.discriminant < 0 else { return 1 }
+    return 0.4 * pow(Double(abs(point.discriminant)), 0.25) / abs(viewVector(point).y).squareRoot()
   }
   private func sizeForOrigin(_ origin: Bool, colorLower: Bool) {
     guard origin != originSized else { return }
@@ -257,14 +257,6 @@ extension StarscapeRenderer {
     for (point, dot) in dots { dot.scale = .one * baseScale(point, colorLower: colorLower) }
     emphasized = []
   }
-  private var placementReceipt: String {
-    switch placement {
-    case .overview: return ""
-    case .origin(let lower): return " · origin at head center, \(lower ? "lower" : "upper") nappe ahead"
-    case .inhabit(let point): return " · inhabiting \(point.label)"
-    }
-  }
-
   /// Moves the object between the stationary overview and a one-time head anchor; see `Placement`. A new anchor,
   /// set from the head center now, is made for a new explicit request (epoch) or a change of anchored mode; the
   /// Origin nappe flip and ordinary renders keep the current one.
@@ -274,6 +266,7 @@ extension StarscapeRenderer {
     if reanchor || (!next.anchored && headAnchor != nil) {
       headAnchor?.removeFromParent()
       headAnchor = nil
+      inhabitAddress = nil
       if next.anchored {
         let anchor = AnchorEntity(.head)
         anchor.anchoring.trackingMode = .once
@@ -298,7 +291,10 @@ extension StarscapeRenderer {
       root.orientation = simd_quatf(angle: lower ? .pi / 2 : -.pi / 2, axis: [1, 0, 0])
     case .inhabit(let point):
       root.orientation = simd_quatf(angle: 0, axis: [0, 1, 0])
-      root.position = Self.inhabitEye - position(point.vector)
+      // Fixed at the moment of choosing (under the g of that moment); later changes of g or selection do not move it.
+      let address = inhabitAddress ?? Self.inhabitEye - position(viewVector(point))
+      inhabitAddress = address
+      root.position = address
     }
   }
 
@@ -328,19 +324,24 @@ extension StarscapeRenderer {
       ring.name = "plane-member:\(point.a):\(point.b):\(point.c)"
       plane.addChild(ring)
     }
-    let boundary = cutting.section(radius: Double(crop.radius)).map { position($0) }
+    // Under g the plane's normal moves by the same ρ(g) (it preserves the Lorentz form) and its endpoints by g;
+    // membership stays exact on the base triples.
+    let normal = group.isIdentity
+      ? SIMD3(Double(cutting.normal.a), Double(cutting.normal.b), Double(cutting.normal.c)) : group.image(of: cutting.normal)
+    let directions = CuttingPlane.coneDirections(endpointValues: cutting.endpoints.map { group.act(real: $0.value) })
+    let boundary = CuttingPlane.section(normal: normal, radius: Double(crop.radius)).map { position($0) }
     let sheet = try fan([.zero] + boundary, rgb: amber, opacity: 0.045)
     sheet.name = "plane-sheet"
     plane.addChild(sheet)
-    for i in 1..<boundary.count {
+    for i in boundary.indices.dropFirst() {
       line(from: boundary[i - 1], to: boundary[i], rgb: amber, opacity: 0.35, parent: plane)
     }
     let reach = Double(crop.radius)
-    for direction in cutting.coneDirections {
+    for direction in directions {
       line(from: position(-reach * direction), to: position(reach * direction), rgb: amber, opacity: 0.7, parent: plane)
     }
     if showProjection {
-      let ends = cutting.coneDirections.map { position(Starscape.screenHeight * $0) }
+      let ends = directions.map { position(Starscape.screenHeight * $0) }
       line(from: ends[0], to: ends[1], rgb: amber, opacity: 0.9, parent: plane)
     }
     var secondReceipt = ""
@@ -357,11 +358,5 @@ extension StarscapeRenderer {
     }
     // Counts displayed coefficient triples, multiples and sign partners included, not distinct roots.
     return " · plane \(cutting.equation) · \(members.count) displayed interior triples" + secondReceipt
-  }
-  private func ringMaterial(_ rgb: SIMD3<Double>) -> UnlitMaterial {
-    var ring = UnlitMaterial(applyPostProcessToneMap: false)
-    ring.color = .init(tint: UIColor(red: rgb.x, green: rgb.y, blue: rgb.z, alpha: 1))
-    ring.faceCulling = .front
-    return ring
   }
 }

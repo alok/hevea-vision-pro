@@ -97,7 +97,7 @@ import SwiftUI
             selected: model.coefficient, showProjection: model.showProjection,
             viewpoint: model.coefficientView, crop: model.coefficientCrop,
             cuttingPlane: model.cuttingPlane, second: model.coefficientSecond, placement: model.coefficientPlacement,
-            placementEpoch: model.coefficientPlacementEpoch)
+            placementEpoch: model.coefficientPlacementEpoch, group: model.coefficientGroup)
         } else if showingLattice {
           model.renderReceipt = try lattice.render(
             state: model.state, bound: model.depth * 2,

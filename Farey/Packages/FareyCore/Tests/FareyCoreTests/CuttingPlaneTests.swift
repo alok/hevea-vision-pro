@@ -127,4 +127,22 @@ final class CuttingPlaneTests: XCTestCase {
     ]
     for (point, text) in cases { XCTAssertEqual(point.realRootDescription, text, point.label) }
   }
+  /// The real-normal patch and directions agree with the integer ones, and follow a moved plane.
+  func testRealNormalGeometryMatchesAndMovesWithG() throws {
+    let plane = try CuttingPlane.pair(CoefficientPoint(1, 0, 1), CoefficientPoint(1, 1, 1)).get()
+    let real = SIMD3(Double(plane.normal.a), Double(plane.normal.b), Double(plane.normal.c))
+    XCTAssertEqual(CuttingPlane.section(normal: real, radius: 6), plane.section(radius: 6))
+    XCTAssertEqual(CuttingPlane.coneDirections(endpointValues: plane.endpoints.map(\.value)), plane.coneDirections)
+    let g = try XCTUnwrap(Mobius.transvection(from: [0, 1], to: [0.4, 1.3]))
+    let moved = g.image(of: plane.normal), (na, nb, nc) = (moved.x, moved.y, moved.z)
+    // Every moved member lies on the moved plane, and the moved endpoints are the moved normal's roots.
+    for member in [CoefficientPoint(1, 0, 1), CoefficientPoint(1, 1, 1), CoefficientPoint(2, 2, 2)] {
+      let p = g.image(of: member)
+      XCTAssertEqual(-2 * nc * p.x + nb * p.y - 2 * na * p.z, 0, accuracy: 1e-9)
+    }
+    for t in plane.endpoints.map({ g.act(real: $0.value) }) { XCTAssertEqual(na * t * t + nb * t + nc, 0, accuracy: 1e-9) }
+    let patch = CuttingPlane.section(normal: moved, radius: 6)
+    XCTAssertEqual(patch.count, 65)
+    for v in patch { XCTAssertEqual(-nb * v.x - (na + nc) * v.y + (nc - na) * v.z, 0, accuracy: 1e-9) }
+  }
 }

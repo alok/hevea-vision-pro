@@ -18,6 +18,7 @@ private struct FixturePoint: Decodable {
   let discriminant: Int
   let vector: [Int]
   let primitive: Bool
+  let polynomial: String
   let upperRootApprox: [Double]?
   let upperRootExact: ExactUpperRoot?
   let realRoots: [String]?
@@ -80,6 +81,7 @@ final class ParityContractTests: XCTestCase {
       XCTAssertEqual(p.discriminant, fixture.discriminant, fixture.id)
       XCTAssertEqual([p.vector.x, p.vector.y, p.vector.z].map { Int($0) }, fixture.vector, fixture.id)
       XCTAssertEqual(p.isPrimitive, fixture.primitive, fixture.id)
+      XCTAssertEqual(p.polynomial, fixture.polynomial, fixture.id)
       // Browser-only radii (96) are beyond native's cap, which contains() refuses by design.
       for (radius, inside) in fixture.inBall where (Int(radius) ?? 0) <= CoefficientBall.maximumRadius {
         XCTAssertEqual(CoefficientBall.contains(p, radius: Int(radius) ?? 0), inside, "\(fixture.id) R\(radius)")

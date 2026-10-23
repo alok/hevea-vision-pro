@@ -8,7 +8,7 @@ extension FareyUITests {
     let expectation = XCTNSPredicateExpectation(predicate: predicate, object: require("render-receipt"))
     XCTAssertEqual(XCTWaiter().wait(for: [expectation], timeout: 20), .completed, "\(message) receipt: \(require("render-receipt").label)")
   }
-  private func type(_ text: String, into field: String, then button: String) {
+  func type(_ text: String, into field: String, then button: String) {
     let entry = require(field)
     entry.tap()
     entry.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 30) + text)

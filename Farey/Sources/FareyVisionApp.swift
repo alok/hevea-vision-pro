@@ -34,6 +34,11 @@ import SwiftUI
   /// Counts explicit Origin and Inhabit requests: each one re-anchors at the current head center, even when the
   /// placement is unchanged. Renders, selection changes and the Origin nappe flip keep the existing anchor.
   var coefficientPlacementEpoch = 0
+  /// The view's Möbius transformation g (her viewer's group element). Points keep their exact identities; g moves
+  /// where they are drawn. Only an integer g is absorbed, relabelling the selection and pair exactly.
+  var coefficientGroup = Mobius.identity
+  var coefficientSnap = false
+  var coefficientGroupError: String?
   /// The pair's plane, else the selection's own plane when it is exterior (as in Stange's viewer), else none.
   var cuttingPlane: CuttingPlane? {
     if let second = coefficientSecond { return try? CuttingPlane.pair(coefficient, second).get() }
@@ -110,6 +115,9 @@ import SwiftUI
     coefficientSecond = nil
     coefficientPairError = nil
     coefficientPlacement = .overview
+    coefficientGroup = .identity
+    coefficientSnap = false
+    coefficientGroupError = nil
     revision += 1
   }
   var immersionOpen = false
@@ -270,6 +278,14 @@ import SwiftUI
     .defaultWindowPlacement { _, _ in WindowPlacement(.utilityPanel) }
     .windowStyle(.plain)
     .persistentSystemOverlays(.hidden)
+    .defaultLaunchBehavior(.suppressed)
+    .restorationBehavior(.disabled)
+    // Her right-hand diagram, beside the controls panel and never over it (overlapping, it hid Reset and Exit).
+    Window("Roots", id: "roots") { RootsPaneView().environment(model) }
+      .defaultSize(width: 560, height: 560)
+      .defaultWindowPlacement { _, context in
+        WindowPlacement(context.windows.first { $0.id == "controls" }.map { .trailing($0) } ?? .utilityPanel)
+      }
     .defaultLaunchBehavior(.suppressed)
     .restorationBehavior(.disabled)
     ImmersiveSpace(id: "farey-void") {
