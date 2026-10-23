@@ -2,7 +2,7 @@
 
 Current browser: [0.12.0 signed lattice, Origin, dense rendering and cutting planes](DOUBLE_CONE.md). [Release verification](BROWSER_012_READINESS.md). The historical native and browser baselines below retain their stated version limits.
 
-This guide describes native 0.9.0 and the earlier browser 0.8.0. [The current browser](DOUBLE_CONE.md) extends the scene to the full signed lattice, both cone halves and an ambient first-person mode. The original versions open a noncoplanar mathematical object. The previous Farey L/R lattice remains available as a separate view.
+**Historical.** Current native 0.10.0 (13) draws the browser's signed radius-6 ball instead of these 280 points; see [visual parity](VISUAL_PARITY.md). This guide describes native 0.9.0 and the earlier browser 0.8.0. [The current browser](DOUBLE_CONE.md) extends the scene to the full signed lattice, both cone halves and an ambient first-person mode. The original versions open a noncoplanar mathematical object. The previous Farey L/R lattice remains available as a separate view.
 
 The distinction matters: Stange’s L/R slide starts with a **two-dimensional rational-pair lattice**. Its spheres and upright direction plane do not make it a three-dimensional lattice. The talk’s **Starscape / Lattice** sequence starts with integer polynomial coefficients `(a,b,c)` filling three-dimensional space, restricts them to a discriminant cone, then projects their rays to a disk. This update implements that coefficient construction in original code. It does not extrude the old Farey diagram.
 

@@ -1,5 +1,7 @@
 # Browser 0.13.1 dense-hover verification
 
+**Current status (2026-10-23):** this page is historical 0.13.1 evidence. Browser 0.14.0 adds exact polynomial hover and clears it across XR entry and exit, tested with a mocked session only; its foreground XR rendering is pending. Native 0.10.0 (13) is installed and rendered in the main simulator; the physical headset still has 0.9.0 (12), installed but not functionally tested.
+
 October 22, 2026. Dense crops (at least 50,000 points) now query hover in a local module worker. It runs the unchanged `nearestToRayPacked` over the same Float32 coordinates and thresholds. The trigger still recomputes synchronously on its current ray. Small crops and worker failure retain the synchronous path. No points are sampled, duplicated or moved.
 
 The protocol permits one physically outstanding query per hand. Rebuild, context loss and session end invalidate results; obsolete replies drain without creating an unbounded queue. One copied lattice generation is transferred to the worker, leaving the renderer's array intact. At radius 96 that copy occupies 22,229,808 bytes, retained for reuse while the worker is idle. Main-realm Chrome heap excludes this worker data, GPU and process memory. Debug distinguishes these measurements.
