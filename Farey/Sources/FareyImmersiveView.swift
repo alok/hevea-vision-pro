@@ -122,6 +122,7 @@ import SwiftUI
     }
     .gesture(
       SpatialTapGesture().targetedToAnyEntity().onEnded { value in
+        InputDiagnostics.shared.recordTap(entity: value.entity.name)
         Self.activate(value.entity, model: model)
       }
     )
@@ -133,13 +134,22 @@ import SwiftUI
       DragGesture().targetedToAnyEntity()
         .updating($dragging) { _, state, _ in state = true }
         .onChanged { value in
-          model.originDragStep(
-            to: starscape.displayDirection(ofScenePoint: value.convert(value.location3D, from: .local, to: .scene)))
+          let direction = starscape.displayDirection(
+            ofScenePoint: value.convert(value.location3D, from: .local, to: .scene))
+          let outcome = model.originDragStep(to: direction)
+          InputDiagnostics.shared.recordDrag(entity: value.entity.name, direction: direction, outcome: outcome)
         }
-        .onEnded { _ in model.endOriginDrag(completed: true) }
+        .onEnded { _ in
+          InputDiagnostics.shared.recordDragEnd()
+          model.endOriginDrag(completed: true)
+        }
     )
     // A cancelled gesture never calls onEnded; the gesture state's reset still does.
-    .onChange(of: dragging) { _, live in if !live { model.endOriginDrag(completed: false) } }
+    .onChange(of: dragging) { _, live in
+      guard !live else { return }
+      InputDiagnostics.shared.recordDragReset()
+      model.endOriginDrag(completed: false)
+    }
     .onAppear {
       model.record("Immersive view appeared session \(model.immersionSession)")
       model.error = nil

@@ -12,6 +12,7 @@
 **Not verified:**
 
 - Roots-window pointer hover (no visionOS XCUITest hover route; a Device Hub pointer check is pending). Predicted, not observed: with a multiple such as (2,0,2) selected, hovering its root may draw the hover and selection labels at the same place.
+- **The Origin drag did not move g under a public Device Hub drag (FAILED, cause unresolved).** `testDeviceHubOriginDrag` (opt-in) set (1,0,1) paired with (1,1,1), Snap off, Origin facing the upper nappe, and waited 90 s; the coordinator's Select-mode drag ran inside that window on the same disposable simulator (02D5C89D), from clear sky inside the upper nappe (64 drag events over 1.28 s after a 0.35 s hold), yet g stayed the identity and the scene did not change (`/tmp/farey-native-devicehub-origin-20261023T104240Z`; operator record and ready screenshot at `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/native-devicehub-origin-0140/`). Phase 2 was not reached. It is not known whether any gesture callback reached the app; the opt-in `--input-diagnostics` readout (callback counts, last entity, direction and outcome) now exists so a rerun can tell. The earlier offscreen raycast showed the sky shell is hittable from inside a RealityKit scene, not that the system's gesture targeting reaches it.
 - 3D spatial hover (a grouped hover-effect label prototype is next), physical gaze, pinch and drag.
 
 # Native 0.13.0 (17): the eye-at-origin drag

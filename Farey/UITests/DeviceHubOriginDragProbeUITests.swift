@@ -4,7 +4,8 @@ import XCTest
 /// only prepares state through the real controls; each drag must be an external public Device Hub Select-mode drag on
 /// empty sky in this disposable simulator while it is at Origin. It reads g from the panel's readout (the
 /// accessibility value carries g to full precision) and checks the exact base state is untouched. Each phase prints a
-/// READY line and waits up to 90 s; a drag that never arrives fails the test. Overview's no-effect is not checked here:
+/// READY line and waits up to 90 s; a drag that never arrives fails the test, after printing the app's opt-in input
+/// diagnostics (gesture callback counts and the last outcome) and capturing the state. Overview's no-effect is not checked here:
 /// without an observable drag event the test could not tell "ignored" from "never sent". Skipped in the ordinary suite.
 extension FareyUITests {
   private func groupEntries() -> [Double] {
@@ -33,14 +34,22 @@ extension FareyUITests {
     capture("devicehub-origin-ready-\(phase)")
     let at = Date().timeIntervalSince1970
     print("DEVICEHUB-ORIGIN READY phase \(phase) simulator \(simulator) at \(at) g \(groupEntries()): drag on empty sky now")
+    print("DEVICEHUB-ORIGIN phase \(phase) diagnostics at READY: \(diagnostics())")
+  }
+  /// The app's opt-in input diagnostics line (callback counts, last entity, direction and outcome).
+  private func diagnostics() -> String {
+    element("input-diagnostics").exists ? element("input-diagnostics").label : "input diagnostics not shown"
   }
   func testDeviceHubOriginDrag() throws {
     try XCTSkipUnless(
       ProcessInfo.processInfo.environment["FAREY_SPATIAL_PROBE"] == "1", "Opt-in diagnostic: run capture-tests.py --spatial-probe")
     app = XCUIApplication()
     app.terminate()
-    Self.launched = false
-    launch()
+    // Launched with the opt-in input diagnostics, so a failure can say whether any gesture callback arrived.
+    continueAfterFailure = false
+    app.launchArguments += ["--input-diagnostics"]
+    app.launch()
+    Self.launched = false                                            // later tests relaunch without the argument
     require("enter-void").tap()
     type("1,0,1", into: "coefficient-entry", then: "coefficient-select")
     type("1,1,1", into: "pair-entry", then: "pair-select")
@@ -51,9 +60,10 @@ extension FareyUITests {
     XCTAssertTrue(require("render-receipt").label.contains("upper nappe ahead"), require("render-receipt").label)
     // Phase 1, upper nappe ahead: one empty-sky drag should give a non-integer g and leave every base identity alone.
     announce("1")
-    XCTAssertTrue(
-      waitForGroup { $0.count == 4 && $0 != [1, 0, 0, 1] } && require("group-state").label.contains("off SL₂(ℤ)"),
-      "no non-integer g within 90 s: \(require("group-state").label)")
+    let moved = waitForGroup { $0.count == 4 && $0 != [1, 0, 0, 1] } && require("group-state").label.contains("off SL₂(ℤ)")
+    print("DEVICEHUB-ORIGIN phase 1 diagnostics after wait: \(diagnostics())")
+    if !moved { capture("devicehub-origin-1-failed") }
+    XCTAssertTrue(moved, "no non-integer g within 90 s: \(require("group-state").label) · \(diagnostics())")
     let first = groupEntries()
     print("DEVICEHUB-ORIGIN phase 1 g \(first) · receipt \(require("render-receipt").label)")
     checkBaseState(nappe: "upper")
@@ -62,7 +72,10 @@ extension FareyUITests {
     require("origin-nappe").tap()
     XCTAssertTrue(require("render-receipt").label.contains("lower nappe ahead"), require("render-receipt").label)
     announce("2")
-    XCTAssertTrue(waitForGroup { $0.count == 4 && $0 != first }, "g did not change within 90 s after the nappe flip")
+    let movedAgain = waitForGroup { $0.count == 4 && $0 != first }
+    print("DEVICEHUB-ORIGIN phase 2 diagnostics after wait: \(diagnostics())")
+    if !movedAgain { capture("devicehub-origin-2-failed") }
+    XCTAssertTrue(movedAgain, "g did not change within 90 s after the nappe flip · \(diagnostics())")
     print("DEVICEHUB-ORIGIN phase 2 g \(groupEntries()) · receipt \(require("render-receipt").label)")
     checkBaseState(nappe: "lower")
     capture("devicehub-origin-2-dragged")

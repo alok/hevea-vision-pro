@@ -12,6 +12,12 @@ struct CoefficientInput {
   var pairNext = false
 }
 
+/// What one Origin drag step did, for the opt-in input diagnostics; the step's effect does not depend on it.
+enum OriginDragOutcome: String {
+  case notOrigin = "not at Origin", firstAnchor = "first direction recorded", offInterior = "off the cone's interior"
+  case refused = "refused (out of range)", moved = "moved g"
+}
+
 /// An Origin drag in progress: its previous display direction and the placement it began under. A step under any
 /// other placement (a nappe flip, a new Origin, Reset, leaving the space) starts afresh rather than jumping.
 struct OriginDragAnchor {
@@ -42,19 +48,23 @@ extension GalleryModel {
   }
   /// One step of an Origin drag gesture, given the pointer's display direction. Only at Origin in the coefficient
   /// scene; a first step, or the first under a changed placement, only records the direction.
-  func originDragStep(to direction: SIMD3<Double>) {
+  @discardableResult func originDragStep(to direction: SIMD3<Double>) -> OriginDragOutcome {
     guard starscapeMode, coefficientPlacement.isOrigin else {
       originDragAnchor = nil
-      return
+      return .notOrigin
     }
-    var moved = false
+    var moved = false, outcome = OriginDragOutcome.firstAnchor
     if let anchor = originDragAnchor, anchor.placement == coefficientPlacement, anchor.epoch == coefficientPlacementEpoch {
       let before = revision
       dragOrigin(from: anchor.direction, to: direction)
       moved = anchor.moved || revision != before
+      outcome = revision != before ? .moved
+        : upperPoint(displayDirection: anchor.direction) == nil || upperPoint(displayDirection: direction) == nil
+          ? .offInterior : .refused
     }
     originDragAnchor = OriginDragAnchor(
       direction: direction, placement: coefficientPlacement, epoch: coefficientPlacementEpoch, moved: moved)
+    return outcome
   }
   /// Ends an Origin drag. Only a completed gesture that moved g under the placement it is still in may Snap; a
   /// cancelled one (`completed: false`) just forgets its direction.

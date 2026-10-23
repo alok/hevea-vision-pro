@@ -236,4 +236,26 @@ import XCTest
     let farHits = scene.raycast(origin: origin, direction: toFar, length: 20, query: .nearest)
     XCTAssertEqual(farHits.first?.entity.name, "coefficient:1:-4:3", "\(farHits.map(\.entity.name))")
   }
+  /// Each Origin drag step reports what it did, for the opt-in input diagnostics; the effect is unchanged.
+  func testOriginDragStepReportsItsOutcome() {
+    let model = GalleryModel()
+    XCTAssertEqual(model.originDragStep(to: [0, 2, 0]), .notOrigin)
+    model.coefficientPlacement = .origin(facingLower: false)
+    model.coefficientPlacementEpoch += 1
+    XCTAssertEqual(model.originDragStep(to: [0, 2, 0]), .firstAnchor)
+    XCTAssertEqual(model.originDragStep(to: [2, 3, 1]), .moved)
+    XCTAssertEqual(model.originDragStep(to: [2, 1, 0]), .offInterior)       // exterior: no anchor, nothing moves
+    XCTAssertEqual(model.originDragStep(to: [0, 2, 0]), .offInterior)       // from the exterior direction
+    let diagnostics = InputDiagnostics(enabled: true), silent = InputDiagnostics(enabled: false)
+    for recorder in [diagnostics, silent] {
+      recorder.recordDrag(entity: "origin-sky", direction: [0, 2, 0], outcome: .firstAnchor)
+      recorder.recordDragEnd()
+      recorder.recordTap(entity: "")
+    }
+    XCTAssertEqual(diagnostics.dragChanges, 1)
+    XCTAssertTrue(diagnostics.summary.contains("last drag entity origin-sky"), diagnostics.summary)
+    XCTAssertTrue(diagnostics.summary.contains("outcome first direction recorded · taps 1 · last tap entity unnamed"))
+    XCTAssertEqual(silent.dragChanges, 0)
+    XCTAssertEqual(silent.taps, 0)
+  }
 }

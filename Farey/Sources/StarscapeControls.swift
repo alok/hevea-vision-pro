@@ -97,6 +97,10 @@ struct StarscapeControls: View {
       pairRow
       if let plane = model.cuttingPlane { planeReadout(plane) }
       placementRow
+      if InputDiagnostics.shared.enabled {
+        Text(InputDiagnostics.shared.summary).font(.caption2.monospaced()).foregroundStyle(.secondary)
+          .accessibilityIdentifier("input-diagnostics")
+      }
       legend
       Text("Inspired by Katherine Stange’s Starscape / Lattice · \(model.renderReceipt)")
         .font(.caption).foregroundStyle(.cyan).accessibilityIdentifier("render-receipt")
