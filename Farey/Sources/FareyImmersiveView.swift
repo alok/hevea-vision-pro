@@ -136,10 +136,20 @@ import SwiftUI
       DragGesture().targetedToAnyEntity()
         .updating($dragging) { _, state, _ in state = true }
         .onChanged { value in
-          let direction = starscape.displayDirection(
-            ofScenePoint: value.convert(value.location3D, from: .local, to: .scene))
+          // The gesture value converts its location straight into the object's frame. The earlier path through the
+          // scene used `root`'s ordinary world transform, which under the once-tracked head anchor may not include the
+          // anchor's pose; a real Device Hub drag measured through it came out off the interior from the first step.
+          let direction = Self.double(value.convert(value.location3D, from: .local, to: starscape.root))
           let outcome = model.originDragStep(to: direction)
-          InputDiagnostics.shared.recordDrag(entity: value.entity.name, direction: direction, outcome: outcome)
+          guard InputDiagnostics.shared.enabled else { return }
+          let twoHop = starscape.displayDirection(ofScenePoint: value.convert(value.location3D, from: .local, to: .scene))
+          InputDiagnostics.shared.recordDrag(
+            entity: value.entity.name,
+            sample: .init(
+              direction: direction, twoHop: twoHop,
+              start: Self.double(value.convert(value.startLocation3D, from: .local, to: starscape.root)),
+              translation: Self.double(value.convert(value.translation3D, from: .local, to: starscape.root))),
+            outcome: outcome)
         }
         .onEnded { _ in
           InputDiagnostics.shared.recordDragEnd()
@@ -171,6 +181,7 @@ import SwiftUI
     }
 
   }
+  private static func double(_ v: SIMD3<Float>) -> SIMD3<Double> { SIMD3(Double(v.x), Double(v.y), Double(v.z)) }
   private static func activate(_ entity: Entity, model: GalleryModel) {
     if model.starscapeMode {
       let parts = entity.name.split(separator: ":")

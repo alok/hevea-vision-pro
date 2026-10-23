@@ -27,7 +27,10 @@ extension FareyUITests {
   private func checkBaseState(nappe: String) {
     XCTAssertTrue(require("coefficient-state").label.contains("(1, 0, 1)"), require("coefficient-state").label)
     XCTAssertTrue(require("plane-detail").label.contains("Paired with (1, 1, 1)"), require("plane-detail").label)
-    XCTAssertTrue(require("plane-state").label.hasPrefix("Base plane 2a −2c = 0"), require("plane-state").label)
+    // The exact base plane in either label form: "Plane …" at g = identity, "Base plane …" otherwise.
+    let plane = require("plane-state").label
+    XCTAssertTrue(plane.hasPrefix("Plane 2a −2c = 0") || plane.hasPrefix("Base plane 2a −2c = 0"), plane)
+    XCTAssertEqual(plane.hasPrefix("Plane"), require("group-state").label.contains("g = identity"), plane)
     XCTAssertTrue(require("render-receipt").label.contains("origin at head center, \(nappe) nappe ahead"), require("render-receipt").label)
     let g = groupEntries()
     XCTAssertEqual(g.count, 4, "g readout \(g)")
@@ -92,7 +95,23 @@ extension FareyUITests {
     print("DEVICEHUB-ORIGIN phase 2 g \(groupEntries()) · receipt \(require("render-receipt").label)")
     checkBaseState(nappe: "lower")
     capture("devicehub-origin-2-dragged")
+    checkResetAndReentry()
+  }
+  /// The actual Reset: g identity, the default point, the pair cleared, Overview; then Exit and re-entry keep that.
+  private func checkResetAndReentry() {
     require("coefficient-reset").tap()
+    func checkDefaults(_ when: String) {
+      XCTAssertTrue(require("group-state").label.contains("g = identity"), "\(when): \(require("group-state").label)")
+      XCTAssertTrue(require("coefficient-state").label.contains("(1, -1, 2)"), "\(when): \(require("coefficient-state").label)")
+      XCTAssertFalse(element("plane-state").exists, "\(when): a plane remains")
+      XCTAssertFalse(require("render-receipt").label.contains("origin at head center"), "\(when): \(require("render-receipt").label)")
+      XCTAssertEqual(require("placement-inhabit").label, "Inhabit", "\(when): not in Overview")
+    }
+    checkDefaults("after Reset")
+    print("DEVICEHUB-ORIGIN reset · \(require("render-receipt").label)")
+    exit()
+    require("enter-void").tap()
+    checkDefaults("after re-entry")
     exit()
   }
 }

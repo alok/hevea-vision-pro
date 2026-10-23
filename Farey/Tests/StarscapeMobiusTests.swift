@@ -248,15 +248,21 @@ import XCTest
     XCTAssertEqual(model.originDragStep(to: [0, 2, 0]), .offInterior)       // from the exterior direction
     let diagnostics = InputDiagnostics(enabled: true), silent = InputDiagnostics(enabled: false)
     for recorder in [diagnostics, silent] {
-      recorder.recordDrag(entity: "origin-sky", direction: [0, 2, 0], outcome: .firstAnchor)
+      recorder.recordDrag(
+        entity: "origin-sky", sample: .init(direction: [0, 2.4, 0], twoHop: [0, 2, 0], start: [0, 2.4, 0], translation: [0, 0, 0]),
+        outcome: .firstAnchor)
       recorder.recordDragEnd()
       recorder.recordTap(entity: "")
       recorder.recordActivate(entity: "coefficient:3:0:3")
       recorder.recordSky("collision yes · input target yes · enabled true · scale 1.000")
     }
     XCTAssertTrue(diagnostics.summary.contains("activations 1 · last activate entity coefficient:3:0:3"), diagnostics.summary)
-    XCTAssertTrue(diagnostics.summary.hasSuffix("sky collision yes · input target yes · enabled true · scale 1.000"))
+    XCTAssertTrue(diagnostics.summary.contains("sky collision yes · input target yes · enabled true · scale 1.000"))
     XCTAssertEqual(silent.activations, 0)
+    XCTAssertTrue(diagnostics.summary.contains("direction first (0.000, 2.400, 0.000) last (0.000, 2.400, 0.000)"), diagnostics.summary)
+    XCTAssertTrue(diagnostics.summary.contains("two-hop first (0.000, 2.000, 0.000)"))
+    XCTAssertTrue(diagnostics.summary.contains("start (0.000, 2.400, 0.000) · translation last (0.000, 0.000, 0.000)"))
+    XCTAssertTrue(diagnostics.summary.hasSuffix("outcomes [first direction recorded 1]"), diagnostics.summary)
     XCTAssertEqual(diagnostics.dragChanges, 1)
     XCTAssertTrue(diagnostics.summary.contains("last drag entity origin-sky"), diagnostics.summary)
     XCTAssertTrue(diagnostics.summary.contains("outcome first direction recorded · taps 1 · last tap entity unnamed"))

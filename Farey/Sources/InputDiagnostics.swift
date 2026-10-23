@@ -22,14 +22,28 @@ import Observation
   private(set) var lastDragEntity = "none"
   private(set) var lastTapEntity = "none"
   private(set) var lastOutcome = "none"
+  /// The direction used (the gesture value's own conversion into the object's frame) at the first and last step; the
+  /// earlier two-hop path through the scene at the same steps; the gesture's start location (same direct conversion)
+  /// and its last translation as a vector in the object's frame. Recorded, never used.
+  private(set) var firstDirection: SIMD3<Double>?
   private(set) var lastDirection: SIMD3<Double>?
+  private(set) var firstTwoHop: SIMD3<Double>?
+  private(set) var lastTwoHop: SIMD3<Double>?
+  private(set) var start: SIMD3<Double>?
+  private(set) var lastTranslation: SIMD3<Double>?
+  private(set) var outcomes: [String: Int] = [:]
   init(enabled: Bool) { self.enabled = enabled }
-  func recordDrag(entity: String, direction: SIMD3<Double>, outcome: OriginDragOutcome) {
+  struct DragSample {
+    var direction: SIMD3<Double>, twoHop: SIMD3<Double>, start: SIMD3<Double>, translation: SIMD3<Double>
+  }
+  func recordDrag(entity: String, sample: DragSample, outcome: OriginDragOutcome) {
     guard enabled else { return }
     dragChanges += 1
     lastDragEntity = entity.isEmpty ? "unnamed" : entity
-    lastDirection = direction
+    if firstDirection == nil { (firstDirection, firstTwoHop, start) = (sample.direction, sample.twoHop, sample.start) }
+    (lastDirection, lastTwoHop, lastTranslation) = (sample.direction, sample.twoHop, sample.translation)
     lastOutcome = outcome.rawValue
+    outcomes[outcome.rawValue, default: 0] += 1
   }
   func recordDragEnd() { if enabled { dragEnds += 1 } }
   func recordDragReset() { if enabled { dragResets += 1 } }
@@ -45,9 +59,12 @@ import Observation
     lastTapEntity = entity.isEmpty ? "unnamed" : entity
   }
   var summary: String {
-    let d = lastDirection.map { String(format: "(%.3f, %.3f, %.3f)", $0.x, $0.y, $0.z) } ?? "none"
+    func f(_ v: SIMD3<Double>?) -> String { v.map { String(format: "(%.3f, %.3f, %.3f)", $0.x, $0.y, $0.z) } ?? "none" }
+    let tally = outcomes.sorted { $0.key < $1.key }.map { "\($0.key) \($0.value)" }.joined(separator: ", ")
     return "input: drag changes \(dragChanges) · ends \(dragEnds) · resets \(dragResets) · last drag entity \(lastDragEntity)"
-      + " · direction \(d) · outcome \(lastOutcome) · taps \(taps) · last tap entity \(lastTapEntity)"
+      + " · outcome \(lastOutcome) · taps \(taps) · last tap entity \(lastTapEntity)"
       + " · activations \(activations) · last activate entity \(lastActivateEntity) · sky \(sky)"
+      + " · direction first \(f(firstDirection)) last \(f(lastDirection)) · two-hop first \(f(firstTwoHop)) last \(f(lastTwoHop))"
+      + " · start \(f(start)) · translation last \(f(lastTranslation)) · outcomes [\(tally)]"
   }
 }
