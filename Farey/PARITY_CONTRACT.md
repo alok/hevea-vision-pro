@@ -46,7 +46,7 @@ The fixture file contains:
 
 ## Behavior matrix
 
-| Behavior | Stange's source viewer | Browser 0.15.8 | Native 0.14.0 (18) |
+| Behavior | Stange's source viewer | Browser 0.15.8 | Native 0.15.0 (19) |
 | --- | --- | --- | --- |
 | Signed ball, both nappes, categories | Her own crop and palette | Yes; exact fixtures | Yes; exact fixtures, R ≤ 12 |
 | Exact entry; rejected entry changes nothing | — | Yes | Yes (UI-tested) |
@@ -56,11 +56,11 @@ The fixture file contains:
 | Plane: normal, equation, endpoints, members | Yes | Yes; fixtures | Yes; fixtures, members ringed |
 | Drawn plane | — | A finite viewing patch clipped to the cone's bounding cylinder, plus the two null endpoint directions; not the plane's intersection with the cone | Same patch and directions |
 | Exterior selection is its own normal | Yes | Yes | Yes |
-| Origin | Group-action navigation | Ambient camera at the coefficient origin, looking along +Y | Object placed once from the head center; Rx(−π/2) brings the upper nappe ahead, Rx(π/2) the lower; world-stationary afterwards; not hyperbolic navigation |
+| Origin | Group-action navigation | Ambient camera at the coefficient origin, looking along +Y | Object placed once at the device pose measured when Origin is chosen (world tracking, no authorization); Rx(−π/2) brings the upper nappe ahead, Rx(π/2) the lower; world-stationary afterwards; not hyperbolic navigation. Without a known pose it renders via the head anchor and the Origin drag is off |
 | Origin glyph size | 0.4·\|Δ\|^¼/√\|a+c\| | Same rule with a pixel knee and cap | Same rule on physical spheres (no knee or cap) |
-| Inhabit and Overview | — | Free camera near the point | Point placed 35 cm ahead once; selection never moves the viewer |
+| Inhabit and Overview | — | Free camera near the point | Point placed once 35 cm ahead in the measured device frame (the head anchor's frame when no pose is known); selection never moves the viewer |
 | Viewing rotations versus SL₂(ℝ) | Origin drag applies an SL₂(ℝ) action to the forms | Euclidean camera or object rotations; exact coefficients, discriminants, selections and planes never change, and this is not SL₂ or intrinsic hyperbolic navigation | Same as the browser |
-| Möbius drag (SL₂(ℝ) on roots, Lorentz map on coefficients) | Roots-pane drag; origin-eye 3D drag; Snap absorbs γ | Same, in a roots pane at widths ≥ 1000 px; drawn set is the base ball moved by g (hers recatalogues); fixtures in `mobius` | Roots window drag (tested by an XCUITest swipe), Symmetry and Snap with exact absorption, scene moved by g, base and shown readouts; origin-eye 3D drag coded and model-tested (same step as the Roots window); a public Device Hub drag at Origin did **not** move g (cause unresolved) |
+| Möbius drag (SL₂(ℝ) on roots, Lorentz map on coefficients) | Roots-pane drag; origin-eye 3D drag; Snap absorbs γ | Same, in a roots pane beside the 3D view at widths ≥ 1000 px and through the 3D \| Roots switch below that (real touch input tested at 390×844 and 844×390); drawn set is the base ball moved by g (hers recatalogues); fixtures in `mobius` | Roots window drag (tested by an XCUITest swipe), Symmetry and Snap with exact absorption, scene moved by g, base and shown readouts; origin-eye 3D drag from a measured device pose: public Device Hub drags at Origin moved g on both nappes, identities kept (simulator host input) |
 | Free view rotation | — | Right-handed display basis, C = Ry·Rx·Rz (YXZ); rotations do not commute | **Missing**: three fixed object poses only |
 | Reset | — | Clears the pair, Inhabit and the view | Clears the pair and the placement; restores defaults |
 
@@ -80,4 +80,4 @@ Record app-only, without audio. Each receipt should note the version, commit, fi
 Current evidence boundaries:
 
 - Browser 0.15.8: actual Immersive Web Emulator sessions (real XRFrames; emulated poses and buttons, not physical tracking); no physical headset. 0.14.0's round trips are historical.
-- Native 0.14.0 (18): visionOS Simulator only. Roots-window input by XCUITest coordinate taps and swipes; 3D entities only by a public Device Hub Select click (0.13.0); pointer hover not yet exercised; the physical headset (0.9.0 (12)) is untested.
+- Native 0.15.0 (19): visionOS Simulator only, host input through Device Hub and XCUITest. Origin sky drags on both nappes by public Device Hub Select-mode drags, from a measured device pose (device position, not head center) — 0.15. 3D sphere selection (0.13.0) and sphere pairing into Pair next (0.14.0) by public Device Hub Select clicks. Roots-window taps, pairing and swipes by XCUITest coordinate taps and swipes. Not exercised: Roots pointer hover, Inhabit under real input; the physical headset (0.9.0 (12)) is untested.

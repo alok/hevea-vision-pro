@@ -58,10 +58,12 @@ Durable notes on how Stange's Starscape/Lattice viewer behaves and how this proj
 
 **Native (0.13.0 (17)), eye-at-origin drag:** at Origin a drag reads the pointer's display direction from the coefficient origin, takes its Klein point (X/Y, Z/Y) to a root, and applies the same transvection as a Roots-window drag between successive roots; (0,2,0) → (2,3,1) is i → 1 + i, the fixture g = [[3,1],[1,2]]/√5. Off the cone's interior nothing moves (no clamping); in Overview a drag does nothing. The previous direction is tagged with its placement, so a nappe flip, a new Origin, Reset or leaving starts afresh; a cancelled gesture never Snaps. A sky shell (one static mesh, hit-testable only at Origin, scaled by its facet inradius beyond every star's collision sphere) catches drags on empty sky; a raycast in a real RealityKit scene confirmed a ray from inside hits it and a far star is hit before it. **Not exercised through a spatial gesture:** XCUITest's element tap on a star fails with "Received invalid activation point transform (nil) from Accessibility", and no route drives an entity drag; physical gaze, pinch and drag are untested.
 
+**Native (0.15.0 (19)), eye-at-origin drag by real input:** the 0.13–0.14 drag measured directions from the wrong place, consistent with Apple's [head and device transform guide](https://developer.apple.com/documentation/visionos/placing-entities-using-head-and-device-transform): a head anchor's transform reads as the identity to the app. The object is now placed at a device pose from world tracking (no authorization), queried once per Origin or Inhabit; a public Device Hub drag at Origin then moved g on the upper nappe and, after the flip, on the lower, with the exact selection, pair and base plane kept. Device position, not head center; simulator host input, not physical gaze or pinch.
+
 Euclidean camera motions in both platforms remain separate from g: they change no coefficients and are not SL₂ or hyperbolic navigation.
 
 ## Versions referenced
 
 - Browser 0.15.8, served locally (0.15.5–0.15.7 were packaging and server fixes; 0.15.8 fits the XR desktop mirror). The silent pointer walkthrough at `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/browser-demo-0154/browser-0154-walkthrough.mp4` is browser 0.15.4 footage.
-- Native 0.14.0 (18), in the main simulator.
+- Native 0.15.0 (19), candidate (main simulator 0.14.0 (18) until promoted).
 - The source was observed live on 2026-10-23.
