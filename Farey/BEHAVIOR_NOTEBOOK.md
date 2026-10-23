@@ -54,12 +54,12 @@ Durable notes on how Stange's Starscape/Lattice viewer behaves and how this proj
 - **Departures:** the drawn set is the base ball moved by g (the source recomputes its crop), there is no animation, and there is no pinch zoom in the pane.
 - **Tests:** `mobius-checks.js` checks all of this with real pointer input; the dragged root ends within 0.0001 px of the pointer.
 
-**Native (0.12.0 (16) candidate):** a Roots window beside the controls, with a Close that keeps all state, draws stars at g·root, and a drag applies the same transvection. The scene moves entity by entity: centers at J·ρ(g)·(a,b,c), with images, markers, the plane patch and its endpoint directions. T⁻¹, S, T, Identity and Snap follow the browser's absorption rules. Under a non-identity g the readouts label exact data as base and add the shown values. Tested through an XCUITest swipe on that window; coordinate routes did not reach it (see [VISUAL_PARITY](VISUAL_PARITY.md)). Not native: the origin-eye 3D sky drag and hover.
+**Native (0.12.0 (16)):** a Roots window beside the controls, with a Close that keeps all state, draws stars at g·root, and a drag applies the same transvection. The scene moves entity by entity: centers at J·ρ(g)·(a,b,c), with images, markers, the plane patch and its endpoint directions. T⁻¹, S, T, Identity and Snap follow the browser's absorption rules. Under a non-identity g the readouts label exact data as base and add the shown values. Tested through an XCUITest swipe on that window; coordinate routes did not reach it (see [VISUAL_PARITY](VISUAL_PARITY.md)). Not native: the origin-eye 3D sky drag and hover.
 
 Euclidean camera motions in both platforms remain separate from g: they change no coefficients and are not SL₂ or hyperbolic navigation.
 
 ## Versions referenced
 
 - Browser 0.15.5, served locally. Its packaging fix (cache versions now match the shipped modules) does not change behavior. The silent pointer walkthrough at `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/browser-demo-0154/browser-0154-walkthrough.mp4` is browser 0.15.4 footage.
-- Native 0.12.0 (16), a tested candidate; the main simulator has 0.11.0 (15) until promotion.
+- Native 0.12.0 (16), in the main simulator.
 - The source was observed live on 2026-10-23.

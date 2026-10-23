@@ -1,6 +1,6 @@
-# Native 0.12.0 (16) candidate: the Möbius view
+# Native 0.12.0 (16): the Möbius view
 
-**Status (2026-10-23):** a tested candidate, not yet in the main simulator, which keeps 0.11.0 (15) until promotion. Nothing here is a physical-headset claim; the headset still has 0.9.0 (12), installed but not functionally tested.
+**Status (2026-10-23):** installed in the main simulator (D2ECE520), replacing 0.11.0 (15). The installed bundle is file-for-file the tested build of `5833c7c`; the screen was captured after launch and inspected (`task-7/main-simulator-0120b16/`). A silent 64-second recording of the passing Möbius sequence (pair, Roots swipe, views, projection, both Origin directions, re-entry, Identity, T) is at `task-7/native-demo-0120b16-corrected/native-mobius-walkthrough.mp4`; an earlier partial recording (`native-demo-0120b16-final`) is from the failed `-0.000` run and is not evidence. Nothing here is a physical-headset claim; the headset still has 0.9.0 (12), installed but not functionally tested.
 
 - **Full suite:** 51 passed, 2 skipped (the opt-in probes), 0 failed, on `2ec43e8` (version 0.12.0 (16)), simulator 386D2449. This predates the label correction below.
 - **Final source `5833c7c`:** a focused run passed 34/34: every app unit test, the Möbius UI sequence, and the coefficient, plane and Origin UI tests (simulator 1A465576). FareyCore passes 60/60. Every one of the 49 tracked build inputs matches `5833c7c`; the app reports 0.12.0 (16), and its debug dylib's SHA-256 is `54956c00…`.

@@ -46,7 +46,7 @@ The fixture file contains:
 
 ## Behavior matrix
 
-| Behavior | Stange's source viewer | Browser 0.15.5 | Native 0.12.0 (16) candidate |
+| Behavior | Stange's source viewer | Browser 0.15.5 | Native 0.12.0 (16) |
 | --- | --- | --- | --- |
 | Signed ball, both nappes, categories | Her own crop and palette | Yes; exact fixtures | Yes; exact fixtures, R ≤ 12 |
 | Exact entry; rejected entry changes nothing | — | Yes | Yes (UI-tested) |
