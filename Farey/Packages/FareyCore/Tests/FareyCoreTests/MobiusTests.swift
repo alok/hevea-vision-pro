@@ -153,4 +153,16 @@ final class MobiusTests: XCTestCase {
     XCTAssertEqual(CoefficientPoint(1, -2, 1).realRootValues, [1, 1])
     XCTAssertNil(CoefficientPoint(1, 0, 1).realRootValues)
   }
+  /// A display direction names the root of the forms along it: J(1,0,1) = (0,2,0) is i, and (2,3,1), the display of
+  /// (1,0,1) under the fixture g, is 1 + i; off the interior there is no point.
+  func testUpperPointAlongADisplayDirection() throws {
+    XCTAssertEqual(simd_distance(try XCTUnwrap(upperPoint(displayDirection: [0, 2, 0])), [0, 1]), 0, accuracy: 1e-15)
+    XCTAssertEqual(simd_distance(try XCTUnwrap(upperPoint(displayDirection: [2, 3, 1])), [1, 1]), 0, accuracy: 1e-15)
+    XCTAssertEqual(simd_distance(try XCTUnwrap(upperPoint(displayDirection: [-2, -3, -1])), [1, 1]), 0, accuracy: 1e-15)
+    // J(1,−1,2) = (1,3,1): the root (1 + i√7)/2 of x² − x + 2.
+    XCTAssertEqual(simd_distance(try XCTUnwrap(upperPoint(displayDirection: [1, 3, 1])), [0.5, 7.0.squareRoot() / 2]), 0, accuracy: 1e-15)
+    for d: SIMD3<Double> in [[2, 1, 0], [1, 1, 0], [1, 0, 0], [0, 0, 0], [.nan, 1, 0], [0, .infinity, 0]] {
+      XCTAssertNil(upperPoint(displayDirection: d), "\(d)")
+    }
+  }
 }

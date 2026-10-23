@@ -8,10 +8,21 @@ extension FareyUITests {
     let expectation = XCTNSPredicateExpectation(predicate: predicate, object: require("render-receipt"))
     XCTAssertEqual(XCTWaiter().wait(for: [expectation], timeout: 20), .completed, "\(message) receipt: \(require("render-receipt").label)")
   }
+  /// Types into a field and presses its button only once the field holds exactly that text. One run lost both
+  /// entries' keystrokes (the fields kept their old text; the cause is not established), so a mismatch gets one
+  /// logged re-entry and then fails here, at the entry, rather than later. The acceptance signal is the public value.
   func type(_ text: String, into field: String, then button: String) {
     let entry = require(field)
-    entry.tap()
-    entry.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 30) + text)
+    func enter() -> Bool {
+      entry.tap()  // scrolls the field into view; isHittable reads false for these fields here, so it is no gate
+      entry.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 30) + text)
+      let typed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "value == %@", text), object: entry)
+      return XCTWaiter().wait(for: [typed], timeout: 5) == .completed
+    }
+    if !enter() {
+      print("TYPE-RETRY \(field): held \(entry.value ?? "nil") after typing \(text)")
+      XCTAssertTrue(enter(), "\(field) holds \(entry.value ?? "nil"), not \(text)")
+    }
     require(button).tap()
   }
   func testCoefficientPlanesAndPlacement() {

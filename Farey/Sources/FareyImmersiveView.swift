@@ -12,12 +12,15 @@ import SwiftUI
   @State private var lattice = LatticeRenderer()
   @State private var starscape = StarscapeRenderer()
   @State private var activation: EventSubscription?
+  /// True while a drag gesture is live; its reset on end or cancellation tells the model the drag is over.
+  @GestureState private var dragging = false
   var body: some View {
     RealityView { content, attachments in
       content.add(renderer.root)
       content.add(lattice.root)
       content.add(starscape.stage)
       content.add(starscape.anchorHost)
+      do { try await starscape.prepareSky() } catch { model.record("Origin sky unavailable: \(error.localizedDescription)") }
       activation = content.subscribe(to: AccessibilityEvents.Activate.self) { [model] event in
         Self.activate(event.entity, model: model)
       }
@@ -122,6 +125,21 @@ import SwiftUI
         Self.activate(value.entity, model: model)
       }
     )
+    .simultaneousGesture(
+      // At Origin, her eye-at-origin drag: the sky turns by the roots-pane step, never a camera move. Elsewhere a
+      // drag changes nothing.
+      // The direction is taken in the object's frame (`root`), which g never moves, so stars moving under the
+      // pointer do not feed back into it.
+      DragGesture().targetedToAnyEntity()
+        .updating($dragging) { _, state, _ in state = true }
+        .onChanged { value in
+          model.originDragStep(
+            to: starscape.displayDirection(ofScenePoint: value.convert(value.location3D, from: .local, to: .scene)))
+        }
+        .onEnded { _ in model.endOriginDrag(completed: true) }
+    )
+    // A cancelled gesture never calls onEnded; the gesture state's reset still does.
+    .onChange(of: dragging) { _, live in if !live { model.endOriginDrag(completed: false) } }
     .onAppear {
       model.record("Immersive view appeared session \(model.immersionSession)")
       model.error = nil
@@ -131,6 +149,7 @@ import SwiftUI
       model.stopConstruction()
       activation?.cancel()
       activation = nil
+      model.endOriginDrag(completed: false)
       model.record("Immersive view disappeared session \(model.immersionSession)")
       model.immersionOpen = false
       model.transitioning = false

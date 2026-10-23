@@ -5,6 +5,15 @@ import Foundation
   import FareyCore
 #endif
 
+/// An Origin drag in progress: its previous display direction and the placement it began under. A step under any
+/// other placement (a nappe flip, a new Origin, Reset, leaving the space) starts afresh rather than jumping.
+struct OriginDragAnchor {
+  var direction: SIMD3<Double>
+  var placement: StarscapeRenderer.Placement
+  var epoch: Int
+  var moved = false
+}
+
 /// The Möbius view: roots-pane drags, her Symmetry generators, Snap and Identity (see GalleryModel.coefficientGroup).
 extension GalleryModel {
   /// One roots-pane drag step: the root under the pointer at z0 follows it to z1. A step that would leave the
@@ -17,6 +26,37 @@ extension GalleryModel {
     coefficientGroup = next
     coefficientGroupError = nil
     revision += 1
+  }
+  /// Her drag with the eye at the origin: the forms along display direction `d0` follow to `d1`, the same step as a
+  /// roots-pane drag between their roots. A direction off the cone's interior has no anchor, so nothing moves.
+  func dragOrigin(from d0: SIMD3<Double>, to d1: SIMD3<Double>) {
+    guard let z0 = upperPoint(displayDirection: d0), let z1 = upperPoint(displayDirection: d1) else { return }
+    dragRoots(from: z0, to: z1)
+  }
+  /// One step of an Origin drag gesture, given the pointer's display direction. Only at Origin in the coefficient
+  /// scene; a first step, or the first under a changed placement, only records the direction.
+  func originDragStep(to direction: SIMD3<Double>) {
+    guard starscapeMode, coefficientPlacement.isOrigin else {
+      originDragAnchor = nil
+      return
+    }
+    var moved = false
+    if let anchor = originDragAnchor, anchor.placement == coefficientPlacement, anchor.epoch == coefficientPlacementEpoch {
+      let before = revision
+      dragOrigin(from: anchor.direction, to: direction)
+      moved = anchor.moved || revision != before
+    }
+    originDragAnchor = OriginDragAnchor(
+      direction: direction, placement: coefficientPlacement, epoch: coefficientPlacementEpoch, moved: moved)
+  }
+  /// Ends an Origin drag. Only a completed gesture that moved g under the placement it is still in may Snap; a
+  /// cancelled one (`completed: false`) just forgets its direction.
+  func endOriginDrag(completed: Bool) {
+    if completed, let anchor = originDragAnchor, anchor.moved, anchor.placement == coefficientPlacement,
+      anchor.epoch == coefficientPlacementEpoch {
+      endRootsDrag()
+    }
+    originDragAnchor = nil
   }
   func endRootsDrag() { if coefficientSnap { snapGroup() } }
   /// Her Snap: settle on the nearest integer γ and absorb it.

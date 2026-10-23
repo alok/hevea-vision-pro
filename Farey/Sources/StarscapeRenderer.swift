@@ -27,6 +27,8 @@ import SwiftUI
   /// The placement epoch the current anchor was made for; see GalleryModel.coefficientPlacementEpoch.
   private(set) var anchorEpoch = 0
   let root = Entity()
+  /// The Origin drag's hit target, so a drag that starts on empty sky still has an entity; see prepareSky().
+  let sky = Entity()
   private let cloud = Entity()
   private let cone = Entity()
   private let projection = Entity()
@@ -64,8 +66,14 @@ import SwiftUI
     root.position = Self.center
     stage.addChild(root)
     for child in [cone, cloud, projection, plane, selection] { root.addChild(child) }
+    sky.name = "origin-sky"
+    sky.isEnabled = false
+    root.addChild(sky)
   }
   var pointCount: Int { dots.count }
+  static let dotCollisionRadius: Float = 0.03
+  /// The farthest any star's collision sphere reaches from the coefficient origin, under the current g and sizes.
+  var collisionReach: Float { dots.values.map { simd_length($0.position) + Self.dotCollisionRadius * $0.scale.x }.max() ?? 0 }
 
   func render(
     selected: CoefficientPoint, showProjection: Bool, viewpoint: Int, crop next: Crop = Crop(),
@@ -79,6 +87,7 @@ import SwiftUI
     sizeForOrigin(nextPlacement.isOrigin, colorLower: next.colorLower)
     projection.isEnabled = showProjection
     let planeReceipt = try renderPlane(cuttingPlane, second: second, showProjection: showProjection, crop: next)
+    fitSky()
     selection.children.removeAll()
     let shown = dots[selected] != nil
     if shown {
@@ -127,11 +136,14 @@ import SwiftUI
       dot.position = position(point.vector)
       dot.name = "coefficient:\(point.a):\(point.b):\(point.c)"
       dot.components.set(InputTargetComponent())
-      dot.components.set(CollisionComponent(shapes: [.generateSphere(radius: 0.03)]))
+      dot.components.set(CollisionComponent(shapes: [.generateSphere(radius: Self.dotCollisionRadius)]))
       var accessibility = AccessibilityComponent()
       accessibility.label = "Coefficient point \(point.label), discriminant \(point.discriminant)"
       accessibility.isAccessibilityElement = true
       accessibility.traits = [.button]
+      // Declared, so an assistive activation reaches the view's AccessibilityEvents.Activate handler (a button trait
+      // alone does not offer the action).
+      accessibility.systemActions = .activate
       dot.components.set(accessibility)
       dots[point] = dot
       cloud.addChild(dot)
@@ -280,6 +292,7 @@ extension StarscapeRenderer {
       }
     }
     placement = next
+    sky.isEnabled = next.isOrigin
     switch next {
     case .overview:
       root.position = Self.center

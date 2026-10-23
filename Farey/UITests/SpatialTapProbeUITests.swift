@@ -1,15 +1,13 @@
 import XCTest
 
-/// Opt-in diagnostic (scripts/capture-tests.py --spatial-probe): can a public XCUITest coordinate tap select a
-/// coefficient dot? It reports the dot's accessibility frame, tries an app-anchored coordinate tap at the frame's
-/// center, then the element's own coordinate tap, and checks the actual inspected state after each. No model call,
+/// Opt-in diagnostic (scripts/capture-tests.py --spatial-probe): can a public XCUITest route select a coefficient
+/// dot? It reports the dot's accessibility frame, tries an app-anchored coordinate tap at the frame's center, the
+/// element's tap, and checks the actual inspected state after each. No model call,
 /// no direct activation, no private input injection. Skipped in the ordinary suite.
 extension FareyUITests {
   func testSpatialTapProbe() throws {
     try XCTSkipUnless(
       ProcessInfo.processInfo.environment["FAREY_SPATIAL_PROBE"] == "1", "Opt-in diagnostic: run capture-tests.py --spatial-probe")
-    // Both routes must be attempted and reported even if the first records an issue.
-    continueAfterFailure = true
     app = XCUIApplication()
     app.terminate()
     Self.launched = false
@@ -44,12 +42,13 @@ extension FareyUITests {
       print("SPATIAL-PROBE app-anchored tap not attempted: unusable frame \(frame)")
     }
     if !success {
-      // Known on 0.9: this route fails inside XCUITest; record that failure without aborting the diagnostic.
-      XCTExpectFailure("element coordinate tap may be unsupported for RealityKit entities", strict: false) {
-        dot.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
-      }
-      success = changed("element coordinate tap")
+      // XCUITest's element tap synthesizes a tap at the element's center. In 0.11 this route was not reached (an
+      // app-anchored tap failed first, with "Received invalid scene ID (nil)"); with the activate action declared it
+      // failed with "Received invalid activation point transform (nil) from Accessibility". A UI automation failure
+      // ends the test, so this route runs last and unwrapped: its actual failure is the diagnostic's result.
+      dot.tap()
+      success = changed("element tap")
     }
-    XCTAssertTrue(success, "no supported coordinate tap changed the selection")
+    XCTAssertTrue(success, "no supported XCUITest route changed the selection")
   }
 }

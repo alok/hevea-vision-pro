@@ -111,4 +111,13 @@ import XCTest
     XCTAssertEqual(Array(seen.prefix(8)), CoefficientBall.nextSequence)
     XCTAssertEqual(seen.last, CoefficientBall.nextSequence[0])
   }
+  /// Every star offers the accessibility activate action that the view's AccessibilityEvents.Activate handler selects.
+  func testStarsOfferAccessibilityActivation() throws {
+    let renderer = StarscapeRenderer()
+    _ = try renderer.render(selected: CoefficientPoint(1, -1, 2), showProjection: false, viewpoint: 0)
+    let dot = try XCTUnwrap(renderer.root.findEntity(named: "coefficient:1:-1:2"))
+    let accessibility = try XCTUnwrap(dot.components[AccessibilityComponent.self])
+    XCTAssertTrue(accessibility.isAccessibilityElement)
+    XCTAssertTrue(accessibility.systemActions.contains(.activate))
+  }
 }

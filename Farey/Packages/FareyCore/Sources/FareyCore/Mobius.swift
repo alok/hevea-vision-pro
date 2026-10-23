@@ -183,6 +183,14 @@ public enum MobiusError: Error, Equatable, Sendable {
 }
 
 /// Our Klein coordinates (u, v) = (X/Y, Z/Y) of display (X, Y, Z) to the upper root, or nil outside the disk.
+/// The upper half-plane point seen along a display direction from the coefficient origin, as in her eye-at-origin
+/// drag: the Klein point (X/Y, Z/Y) taken to H². Both signs of the line give the same point, since (a,b,c) and
+/// (−a,−b,−c) share their roots; nil off the cone's interior, on Y = 0, or for non-finite input.
+public func upperPoint(displayDirection d: SIMD3<Double>) -> SIMD2<Double>? {
+  guard d.y != 0, d.x.isFinite, d.y.isFinite, d.z.isFinite else { return nil }
+  return kleinToUpper(d.x / d.y, d.z / d.y)
+}
+
 public func kleinToUpper(_ u: Double, _ v: Double) -> SIMD2<Double>? {
   let h = 1 - u * u - v * v
   guard h > 0, 1 - v > 0 else { return nil }
