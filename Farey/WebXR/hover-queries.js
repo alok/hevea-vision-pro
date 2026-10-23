@@ -10,12 +10,14 @@
 //   ignored (they still clear the hand's outstanding slot);
 // - any worker error, or a throwing postMessage, marks the queries failed and terminates the worker; callers
 //   then use the synchronous path. Handlers are bound to their own worker and ignore it once replaced.
+// - onsettled(hand), if set, runs whenever a hand's outstanding query is answered, accepted or not, so a caller
+//   that renders on demand (desktop hover) can show the answer or ask again; it never runs for another worker.
 export class HoverQueries {
   constructor(createWorker) {
     this.createWorker = createWorker;
     this.worker = null; this.failed = false;
     this.sentGeneration = null; this.nextRequest = 1;
-    this.outstanding = new Map(); this.pending = new Map(); this.results = new Map();
+    this.outstanding = new Map(); this.pending = new Map(); this.results = new Map(); this.onsettled = null;
     this.copyMs = undefined; this.copyBytes = 0; this.lastQueryMs = undefined; this.lastLatencyMs = undefined;
   }
   get available() {
@@ -49,7 +51,12 @@ export class HoverQueries {
   }
   receive(message) {
     if (message?.type !== 'result') return;
-    if (this.outstanding.get(message.hand) === message.request) this.outstanding.delete(message.hand);
+    const settled = this.outstanding.get(message.hand) === message.request;
+    if (settled) this.outstanding.delete(message.hand);
+    this.accept(message);
+    if (settled) this.onsettled?.(message.hand);
+  }
+  accept(message) {
     const pending = this.pending.get(message.hand);
     if (!pending || pending.request !== message.request || pending.generation !== message.generation) return;
     this.pending.delete(message.hand);

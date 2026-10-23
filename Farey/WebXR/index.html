@@ -34,6 +34,7 @@
 <body>
   <noscript><style>.controls,#debug-toggle{display:none}</style><p class="startup-error">JavaScript is needed for the spatial scene. <a href="https://www.katestange.net/starscape-lattice/">See Katherine Stange’s original viewer.</a></p></noscript>
   <main id="viewport" aria-label="Three-dimensional coefficient lattice and its projection"></main>
+  <div id="hover-label" hidden aria-hidden="true"><span class="hover-ring"></span><span id="hover-text"></span></div>
   <button id="debug-toggle" aria-expanded="false" aria-controls="debug">☰ Debug</button>
   <section id="debug" role="dialog" aria-label="Debug counts and performance" hidden>
     <p><strong>Debug</strong> <button id="debug-close" aria-label="Close debug">×</button></p>
@@ -47,6 +48,7 @@
   </header>
   <section class="controls" aria-label="Coefficient space controls">
     <p id="point-state" aria-live="polite"></p>
+    <p id="polynomial-state" class="formula"></p>
     <p id="root-state" class="formula"></p>
     <div class="row" aria-label="View"><button id="inhabit">Inhabit</button><button id="origin" aria-pressed="false">Origin</button><button id="next">Next point</button><button id="view">Other side</button><button id="reset">Reset</button></div>
     <section id="navigation" hidden>
@@ -83,7 +85,7 @@
       <p>The optional screen y=4 cuts the upper cone in a disk. A lower-half triple is sign-flipped first; a polynomial and its negative have the same roots. Radial projection multiplies every coordinate by 4/(a+c). Multiples, such as (1,−1,2) and (2,−2,4), lie at different depths but share one image and one quadratic root.</p>
       <p>The normalized disk coordinates u=−b/(a+c), v=(c−a)/(a+c) map to the upper half-plane by u/(1−v) + i√(1−u²−v²)/(1−v), the quadratic root shown above.</p>
     </details>
-    <p class="hint">Drag to orbit · scroll to zoom · right-drag to pan. Focus the scene and use arrows to pan, +/− to zoom, Home to reset. No automatic motion.</p>
+    <p class="hint">Hover a point to read its exact polynomial; click to select it. Drag to orbit · scroll to zoom · right-drag to pan. Focus the scene and use arrows to pan, +/− to zoom, Home to reset. No automatic motion.</p>
     <p><button id="xr" disabled>Checking WebXR…</button></p><p id="xr-status" class="hint"></p>
     <p><a href="farey.html">Explore the separate Farey L/R lattice →</a></p>
     <details><summary>Sources and scope</summary><p>Original implementation of the coefficient-cone construction in Katherine Stange’s talk and Starscape / Lattice viewer. Our symmetric cone extent and origin-centered crop differ from the original viewer’s asymmetric framing. Interior color uses her fixed logarithmic 3–240 |Δ| range, so equal Δ has equal position in both viewers; nonprimitive multiples keep their own Δ. The default maps it onto Viridis (Smith, van der Walt and Firing; CC0, <a href="VIRIDIS-LICENSE.txt">license</a>) from 0.2 to 1, skipping the darkest fifth, which is too dark for single-pixel dots on black; its exterior, cone and lower colors are our choice, each at least 0.1 in OKLab from the ramp under normal, protan and deutan simulation. <em>Stange anchors</em> uses her six anchors with OKLab interpolation and the earlier gold, blue and gray categories; her viewer derives category colors from OKLCH lightness and chroma, and those exact values are not verified here. Lower-half coloring is an opt-in extension. Dots are flat, unlit discs with exact centers. Dot size follows the causes in her viewer: perspective and a fixed star radius (nonprimitive upper stars 0.72×, upper stars on a selected plane 1.35×), overview fog, and in Origin her eye-at-origin radius ∝ |Δ|^¼/√(a+c), so apparent size there is 1/√|Δ| times a Klein-position factor. Ours: radii above 2.5 px grow only as the cube root, capped at 9 px; below 1 px a dot keeps 1 px and dims; at the origin off-cone points stay visible. A click selects the nearest center within about 10 pixels. No source code or media from her viewer is bundled.</p><p>The separate Farey L/R demonstration credits <a href="https://doi.org/10.1112/jlms/s2-31.1.69">Caroline Series (1985)</a>. The two lattices have distinct meanings. Research background: <a href="https://arxiv.org/abs/2008.07655">Algebraic Number Starscapes — Harriss, Stange and Trettel</a>.</p></details>

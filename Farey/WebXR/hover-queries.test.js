@@ -114,3 +114,16 @@ test('a failed worker cannot deliver late results', () => {
   old.answer(query, 3);
   assert.equal(queries.result(0), null);
 });
+test('onsettled reports every answered query once, including one made obsolete by reset', () => {
+  const { queries, worker } = setup(), settled = [];
+  queries.onsettled = hand => settled.push([hand, queries.busy(hand), queries.result(hand)?.index ?? null]);
+  assert.ok(queries.request('pointer', 1, lattice, [0, 0, 0], [0, 1, 0], 0.02, 0, 'ray'));
+  worker().answer(worker().queries[0], 5);
+  assert.deepEqual(settled, [['pointer', false, 5]]);
+  assert.ok(queries.request('pointer', 1, lattice, [0, 0, 0], [1, 1, 0], 0.02, 0, 'ray2'));
+  queries.reset();
+  worker().answer(worker().queries[1], 9);
+  assert.deepEqual(settled[1], ['pointer', false, null]);
+  worker().answer(worker().queries[1], 9);
+  assert.equal(settled.length, 2);
+});

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { stars, vector, project, upperRoot, discriminant, kind, coefficientLattice, positiveRepresentative, projectedRepresentative } from './starscape-core.js';
+import { stars, vector, project, upperRoot, discriminant, kind, coefficientLattice, positiveRepresentative, projectedRepresentative, polynomial } from './starscape-core.js';
 test('every coefficient point lies strictly inside the 3D cone and projects along its ray', () => {
   for (const p of stars()) {
     const [x,y,z] = vector(p), image = project(p);
@@ -45,4 +45,14 @@ test('full coefficient ball contains both cone halves and exact sign partners', 
   assert.deepEqual(positiveRepresentative([-1,1,-2]),[1,-1,2]);
   assert.equal(projectedRepresentative([1,2,1]),null);
   assert.ok(coefficientLattice(12).length<4000);
+});
+test('polynomial names the exact signed form, never its primitive or sign-flipped representative', () => {
+  const cases = [
+    [[1,0,1],'x²+1'], [[1,1,1],'x²+x+1'], [[1,-1,2],'x²−x+2'], [[2,-2,4],'2x²−2x+4'], [[-1,1,-2],'−x²+x−2'],
+    [[-2,2,-4],'−2x²+2x−4'], [[1,-2,1],'x²−2x+1'], [[1,0,-1],'x²−1'], [[0,1,0],'x'], [[0,-1,0],'−x'],
+    [[0,0,-3],'−3'], [[0,0,1],'1'], [[0,2,1],'2x+1'], [[-3,0,0],'−3x²'], [[0,-1,-1],'−x−1'], [[12,-11,10],'12x²−11x+10'],
+    [[0,0,0],'0'],
+  ];
+  for (const [point, text] of cases) assert.equal(polynomial(point), text, point.join());
+  assert.notEqual(polynomial([2,-2,4]), polynomial([1,-1,2]));
 });

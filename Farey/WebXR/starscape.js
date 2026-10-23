@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { examples, vector, project, upperRoot, discriminant, height, kind, positiveRepresentative } from './starscape-core.js';
+import { examples, vector, project, upperRoot, discriminant, height, kind, positiveRepresentative, polynomial } from './starscape-core.js';
 import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
 import { TapSelection, nearestToRayPacked } from './input.js';
 import { HoverQueries } from './hover-queries.js';
@@ -15,6 +15,7 @@ let radius = 6, whole = true, symmetricColor = false, projectionVisible = false;
 let selected = examples[0], lattice = null, cloudMesh, imageMesh;
 let session = null, savedView = null, startingXR = false;
 let inhabited=false, overviewView=null, lookDrag=null, look={yaw:0,pitch:0};
+let hoverPointer=null, hoverFrame=0; // desktop pointer hover (see refreshHover)
 const overviewFov=45, originFov=100;
 let categories='viridis', glyphKey=null, focusGlyphs=[], sigma=1, planeFocus=false;
 let latticeGeneration=0, secondSelection=null, pairMessage='', pairGlyphs=[], planeMembers=new Set(), originMode=false, timings={}, colorKey='', factorKey='';
@@ -79,7 +80,7 @@ function surface(h,isDisk,opacity) {
 const matrix = new THREE.Matrix4();
 function rebuild() {
   // A new lattice generation: worker answers still in flight for the old one are dropped on arrival.
-  glyphKey=null;latticeGeneration++;hoverQueries.reset();
+  glyphKey=null;latticeGeneration++;hoverQueries.reset();showHover(null);
   disposeChildren(cloud); disposeChildren(disk); disposeChildren(cone);
   let t=performance.now();
   lattice = enumerateLattice(radius, !whole);
@@ -191,6 +192,7 @@ function update() {
     const marker=new THREE.Mesh(sphere,white);marker.position.copy(image);focus.add(marker);focusGlyphs.push({mesh:marker,extra:0});
   }
   $('point-state').textContent=`(a,b,c) = (${selected.join(', ')}) · Δ = ${discriminant(selected)}`;
+  $('polynomial-state').textContent=`f(x) = ${polynomial(selected)}`;
   const root=representative?upperRoot(representative):null;
   $('root-state').textContent=root?`Upper root: ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i${kind(selected)==='lower'?' · sign-flipped representative':''}`:kind(selected)==='null'?(selected[0]===0?'Boundary: double root at infinity':'Boundary: repeated real root'):'Exterior: real roots (outside the Klein disk)';
   $('coefficient').value=selected.join(',');$('projection').checked=projectionVisible;
@@ -233,7 +235,7 @@ function updateGlyphSizes(){
     item.mesh.scale.setScalar(session?(item.extra?1.4:1):glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,item.extra,item.point?radiusFactor(item.point):1));
   }
 }
-function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();if(session)updateAims();renderer.render(scene,camera);if(!$('debug').hidden)showDebug();}}
+function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();if(session)updateAims();renderer.render(scene,camera);if(!$('debug').hidden)showDebug();if(hoverPointer&&!session)scheduleHover();}}
 // Debug overlay: closed by default; reads only counters that already exist, and only while open.
 let frameMeasure=null, frameRequest=null;
 function showDebug(){
@@ -375,13 +377,18 @@ function pickIndex(ray,maxAngle){
 }
 function pickPoint(ray,maxAngle,asPair=false){const i=pickIndex(ray,maxAngle);if(i>=0)selectPoint(tripleAt(lattice,i),asPair);}
 // Desktop clicks select the nearest center within about 10 CSS pixels of the pointer.
-function selectAt(event){const r=renderer.domElement.getBoundingClientRect();pointer.set(2*(event.clientX-r.left)/r.width-1,1-2*(event.clientY-r.top)/r.height);raycaster.setFromCamera(pointer,camera);pickPoint(raycaster.ray,10*2*Math.tan(camera.fov*Math.PI/360)/(r.height*camera.zoom),event.shiftKey);}
-renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);if(inhabited){lookDrag={x:e.clientX,y:e.clientY};renderer.domElement.setPointerCapture(e.pointerId);}});renderer.domElement.addEventListener('pointermove',e=>{
-  tap.move(e);if(!inhabited||!lookDrag)return;
+const clickAngle=r=>10*2*Math.tan(camera.fov*Math.PI/360)/(r.height*camera.zoom);
+function pointerRay(x,y){const r=renderer.domElement.getBoundingClientRect();pointer.set(2*(x-r.left)/r.width-1,1-2*(y-r.top)/r.height);raycaster.setFromCamera(pointer,camera);return {ray:raycaster.ray.clone(),angle:clickAngle(r)};}
+function selectAt(event){const {ray,angle}=pointerRay(event.clientX,event.clientY);pickPoint(ray,angle,event.shiftKey);}
+renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);showHover(null);if(inhabited){lookDrag={x:e.clientX,y:e.clientY};renderer.domElement.setPointerCapture(e.pointerId);}});renderer.domElement.addEventListener('pointermove',e=>{
+  tap.move(e);
+  if(e.pointerType==='touch')hoverPointer=null;else hoverPointer={x:e.clientX,y:e.clientY};
+  if(e.buttons||lookDrag)showHover(null);else scheduleHover();
+  if(!inhabited||!lookDrag)return;
   look.yaw-=(e.clientX-lookDrag.x)*0.004;
   look.pitch=THREE.MathUtils.clamp(look.pitch-(e.clientY-lookDrag.y)*0.004,-Math.PI/2,Math.PI/2);
   lookDrag={x:e.clientX,y:e.clientY};applyLook();
-});renderer.domElement.addEventListener('pointerup',e=>{lookDrag=null;if(tap.end(e)&&!session)selectAt(e);});renderer.domElement.addEventListener('pointercancel',e=>{lookDrag=null;tap.cancel(e);});
+});renderer.domElement.addEventListener('pointerup',e=>{lookDrag=null;if(tap.end(e)&&!session)selectAt(e);scheduleHover();});renderer.domElement.addEventListener('pointerleave',()=>{hoverPointer=null;showHover(null);});renderer.domElement.addEventListener('pointercancel',e=>{lookDrag=null;tap.cancel(e);});
 renderer.domElement.addEventListener('keydown',e=>{const move={w:'forward',s:'back',a:'left',d:'right',q:'down',e:'up'}[e.key.toLowerCase()];if(inhabited&&move){e.preventDefault();moveEye(move);return;}if(e.key==='Escape'&&inhabited){leaveInhabit();return;}if(e.key==='Home'){e.preventDefault();leaveInhabit();resetView();}if(['+','=','-'].includes(e.key)){e.preventDefault();if(inhabited){moveEye(e.key==='-'?'back':'forward');return;}const d=camera.position.distanceTo(controls.target),n=THREE.MathUtils.clamp(d*(e.key==='-'?1.1:1/1.1),controls.minDistance,controls.maxDistance);camera.position.sub(controls.target).multiplyScalar(n/d).add(controls.target);controls.update();}});
 controls.addEventListener('change',render);window.addEventListener('resize',resize);new ResizeObserver(resize).observe($('viewport'));
 const xrPanel=new THREE.Group();xrPanel.position.set(0,1,-1.15);xrPanel.visible=false;scene.add(xrPanel);const xrTargets=[];
@@ -395,7 +402,7 @@ for(const [i,label] of ['Next','Projection','Reset','Exit'].entries()) {
 // crops are not fully disambiguated. The viewer-facing ring uses distance × tan(aimAngle) as an approximate angular-scale cue, not a mathematical locus.
 // Hover is cyan and never changes the selection; the selected point keeps its white outline.
 const aimAngle=0.02, aimStale=0.001, aimColor=0x9fdcff;
-const describe=p=>`(${p.join(', ')}) · Δ = ${discriminant(p)}`;
+const describe=p=>`(${p.join(', ')}) · ${polynomial(p)} · Δ = ${discriminant(p)}`;
 const readoutCanvas=document.createElement('canvas');readoutCanvas.width=1024;readoutCanvas.height=190;
 const readoutTexture=new THREE.CanvasTexture(readoutCanvas);
 const readout=new THREE.Mesh(new THREE.PlaneGeometry(0.94,0.175),new THREE.MeshBasicMaterial({map:readoutTexture,transparent:true}));
@@ -409,6 +416,32 @@ function showReadout(lines){
 // Crops at least this large answer hover in a module worker; smaller ones scan in well under a millisecond.
 const hoverWorkerPoints=50000;
 const hoverQueries=new HoverQueries(()=>new Worker(new URL('./aim-worker.js',import.meta.url),{type:'module'}));
+// Desktop pointer hover names the exact signed polynomial of the point a click there would select: the same
+// angular radius and nearest-center scan as selectAt. It never selects, pairs or moves the camera. Crops of
+// hoverWorkerPoints or more ask the worker on their own slot with one query in flight, so pointer motion never
+// scans a dense crop on the UI thread. As in XR, an answer is shown only for the ray it was computed from, so
+// orbiting, zooming, Inhabit, a rebuild, a press, leaving the canvas or a session hides it until recomputed.
+const pointerSlot='pointer';
+hoverQueries.onsettled=slot=>{if(slot===pointerSlot)scheduleHover();};
+function scheduleHover(){if(!hoverFrame)hoverFrame=requestAnimationFrame(refreshHover);}
+function refreshHover(){
+  hoverFrame=0;
+  if(!hoverPointer||session||lookDrag||tap.active.size||renderer.getContext().isContextLost()){showHover(null);return;}
+  const {ray,angle}=pointerRay(hoverPointer.x,hoverPointer.y);
+  if(lattice.count>=hoverWorkerPoints&&hoverQueries.available){
+    const result=hoverQueries.result(pointerSlot), fresh=result?.generation===latticeGeneration&&!rayMoved(ray,result.ray);
+    showHover(fresh&&result.index>=0?result.index:null);
+    if(!fresh&&!hoverQueries.busy(pointerSlot)){const local=rayInLattice(ray);hoverQueries.request(pointerSlot,latticeGeneration,lattice,local.origin,local.direction,angle,local.minDistance,ray);}
+  } else {const index=pickIndex(ray,angle);showHover(index>=0?index:null);}
+}
+function showHover(index){
+  const label=$('hover-label');
+  if(index===null){label.hidden=true;label.dataset.point='';return;}
+  const point=tripleAt(lattice,index), r=renderer.domElement.getBoundingClientRect();
+  const v=new THREE.Vector3().fromArray(lattice.xyz,3*index).applyMatrix4(cloudMesh.matrixWorld).project(camera);
+  $('hover-text').textContent=polynomial(point);label.dataset.point=point.join();
+  label.style.transform=`translate(${r.left+(v.x+1)*r.width/2}px,${r.top+(1-v.y)*r.height/2}px)`;label.hidden=false;
+}
 function pointTarget(index,ray){
   const point=new THREE.Vector3().fromArray(lattice.xyz,3*index).applyMatrix4(cloudMesh.matrixWorld);
   return {index,point,distance:point.distanceTo(ray.origin)};
