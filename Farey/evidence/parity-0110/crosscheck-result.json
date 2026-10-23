@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "cases": 6585,
+  "uniquePlanes": 774,
+  "exactNormalsEquationsEndpoints": "equal",
+  "exactPlaneMemberships": "equal",
+  "maximumDirectionOrSectionError": 5.329070518200751e-15,
+  "originSizePointsR4ThroughR12": 3608,
+  "maximumOriginSizeError": 0.0,
+  "sourceSHA256": {
+    "Starscape.swift": "6bd0dd98adb45d4390bca85ecfc5db09ffb7b6290f585a2a36e185b36cbe1319",
+    "CoefficientBall.swift": "34c7db0b07c0929cfcc1a8422eae0327f811811f53686b0f26ae53c2679e4d29",
+    "CoefficientPalette.swift": "c2931b12afd818a1c65651b08597d72faed288d861258b710fffb06daa261e3b",
+    "Viridis.swift": "1bf190966fd9938216a9f7bc75047609cabb97905d8d4c50f6b11733a00d9450",
+    "CuttingPlane.swift": "96c163a930adb14013ec667bc7b2130d5d0927bda1a1c57e9b79d2bf660cf8cc",
+    "pair-plane.js": "f5542cad732f3019b9351af07eb50630df7b1dab31ff3544cae0a5fb3cc9f2bc",
+    "appearance.js": "8a586faf0cfc9db656041d2b7d204fc06bab03ac3c691842a8988d64a3096894",
+    "starscape-core.js": "4408afa4d5799aec2adf3e2716ebe42b07a44fd055f197d34ac88b1aca9f1aa5"
+  },
+  "scope": "Frozen authored native core vs browser source data and rendered section inputs, not a screenshot, UI or XR test."
+}

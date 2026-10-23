@@ -1,3 +1,43 @@
+# Native 0.11.0 (15) candidate: cutting planes and Origin/Inhabit
+
+This stage adds the browser's cutting planes and an ambient Origin/Inhabit placement. The evidence is visionOS Simulator 27.2 screenshots taken by passing XCTests in a disposable simulator, plus an independent cross-check against the browser's code. The main simulator keeps the promoted 0.10.0 (13) showcase until this candidate passes its full regression. Nothing here is a physical-headset claim.
+
+**Implemented and tested**
+
+- **Exact planes, the same as the browser's:** an exterior selection is its own Lorentz normal, and an exactly entered second interior point pairs with the selection.
+  - An independent cross-check compared 6,585 cases (every interior pair at R6 plus every normal) against the browser code. Success or error, normal, equation and endpoint labels were identical, as were the R6 members of all 774 distinct planes.
+  - Endpoints stay exact (rationals, surds like `1 ± √2`, and `∞`).
+  - Collinear pairs, sign partners included, are rejected without changing anything.
+  - Extreme inputs to the helpers are refused, not trapped.
+- **Rendering:** amber rings mark the displayed interior triples that lie exactly in the plane; at R6, (1,0,−1) has 22 (11 upper and 11 lower, counting multiples and sign partners). A faint sheet, its boundary and the endpoint directions are drawn as viewing aids, not as a hyperbolic metric. Upper members are drawn 1.35× larger outside Origin. [Pair (1,0,1)/(1,1,1)](../docs/screenshots/parity-0110-native-plane-pair.png).
+- **Placement:**
+  - Overview is the stationary default. Origin and Inhabit place the object once from the head center through a `.once` head anchor (Apple's documented pattern). The app reads no tracking transform and needs no added authorization, and the object stays world-stationary afterwards.
+  - Origin turns the object so the upper nappe's axis faces where the viewer looked, with a toggle for the lower nappe ([upper](../docs/screenshots/parity-0110-native-origin-upper.png), [lower](../docs/screenshots/parity-0110-native-origin-lower.png)). This is a presentation rotation, not hyperbolic navigation. The zero polynomial at the head center is not a point of the picture, and the two eyes sit either side of it.
+  - The pair and plane are kept through Origin ([plane in Overview](../docs/screenshots/parity-0110-native-plane-origin-01-overview.png), [from Origin facing upper](../docs/screenshots/parity-0110-native-plane-origin-02-origin-upper.png), [and lower](../docs/screenshots/parity-0110-native-plane-origin-03-origin-lower.png), [Overview again](../docs/screenshots/parity-0110-native-plane-origin-04-overview-again.png)). Seen from the origin, the plane through the eye appears edge-on as one chord, the geodesic from −1 to 1, with its exact members ringed.
+  - At Origin, dots follow the browser's rule 0.4·|Δ|^¼/√|a+c|; the cross-check matched it exactly for all 3,608 points up to R12.
+  - Each explicit Origin or Inhabit press re-anchors. Renders, selection changes and the nappe flip keep the anchor, so selecting a point never moves an inhabited viewer ([after selecting (2,1,1) while inhabiting (1,−1,2)](../docs/screenshots/parity-0110-native-inhabit-other-selection.png)).
+- **Controls:**
+  - The header is pinned (Hide controls, Inhabit/Overview, Reset, Farey L/R, Exit) and the details scroll inside the 360 pt window. Before this fix, the taller panel pushed Reset and Exit out of the window.
+  - Overview stays reachable with the controls collapsed ([capture](../docs/screenshots/parity-0110-native-inhabit-compact.png)).
+  - Reset and the placement and view actions close open keyboards; rejected entries keep their text and focus.
+- **Root labels (corrected in build 15):** boundary and exterior forms now give exact roots and separate finite roots from the projective point ∞. Examples: "double root x = 1"; the constant 1 has no finite root and a double root at ∞; x has the finite root 0 and a second root at ∞. Build 14 had said "one repeated real root" and "two real roots" for these.
+
+**Still different or unverified**
+
+- Glyphs are physical spheres, with no browser pixel knee or cap, so near points look large, especially boundary and exterior points at Origin.
+- Native has no Stange-palette option and no plane-distance opacity focus.
+- **Spatial point selection is coded but unverified.** Tapping a coefficient entity calls the same selection as text entry. An opt-in probe (`capture-tests.py --spatial-probe`, public XCUITest routes only, run once on 0.11.0 (15)) found the following:
+  - The (3,0,3) entity reports a placeholder accessibility frame, (0, 0, 50, 50) in a 1280×1280 app frame, while claiming to be hittable.
+  - An app-anchored coordinate tap there failed with "Failed to synthesize event: Received invalid scene ID (nil) from Accessibility"; no event was delivered and the selection did not change.
+  - The element-coordinate route was not reached.
+  - The probe now refuses such unmapped frames.
+- **Spatial pairing is missing.** There is no native spatial second-point mode; pairing works only through exact text entry.
+- **Native polynomial hover is missing code**, not just a headset test gap. It has no hover effect or spatial label; the browser's 3D hover label is itself our extension of Stange's highlight-only 3D hover.
+- **Next supported manual route:** Device Hub's Select mode (pointer movement simulates eye hover, a click simulates tap, WASD/QE moves the viewpoint). It has not been run for this candidate.
+- The test checks re-anchoring as anchor identity in unit tests; actual head translation and return, and parallax, still need a simulator or physical check.
+- The source necklace count (71) comes from a different crop and is not comparable with native counts.
+- Physical headset: 0.9.0 (12) is installed but not functionally tested.
+
 # Native 0.10.0 (13) candidate versus browser 0.13.1
 
 This candidate corrects the first-priority gaps in the 0.9.0 baseline below, which is preserved unchanged. As before, the evidence is visionOS Simulator 27.2 screenshots taken by passing XCTests, compared with an actual browser render. The physical Vision Pro still has 0.9.0 (12) installed, so nothing here is a headset appearance, comfort or input claim.
