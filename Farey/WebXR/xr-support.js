@@ -32,3 +32,12 @@ export function restoreView(view, camera, controls) {
   // A disabled OrbitControls (first-person or Origin) would still clamp and re-aim the restored pose.
   if (controls.enabled !== false) controls.update();
 }
+
+// In a session three.js sizes the drawing buffer to the XR framebuffer without restyling the canvas, so the desktop
+// mirror would stretch it into its old CSS box. The largest box of the buffer's aspect inside the viewport, in CSS
+// pixels (letterboxed): a presentation fit of the mirror only, never a change to the XR views' projections.
+export function mirrorFit(buffer, viewport) {
+  if (!(buffer.width > 0 && buffer.height > 0 && viewport.width > 0 && viewport.height > 0)) return null;
+  const scale = Math.min(viewport.width / buffer.width, viewport.height / buffer.height);
+  return { width: buffer.width * scale, height: buffer.height * scale };
+}

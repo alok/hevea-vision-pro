@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
+import { xrAvailability, controllerRay, captureView, restoreView, mirrorFit } from './xr-support.js';
 
 test('missing, insecure and unsupported XR preserve a useful desktop fallback', async () => {
   const unavailable = await xrAvailability(undefined, true);
@@ -80,4 +80,18 @@ test('a disabled orbit controller does not move a restored first-person or Origi
   controls.enabled = true;
   restoreView(view, camera, controls);
   assert.equal(updates, 1, 'enabled controls still synchronize');
+});
+
+test('the XR mirror keeps the framebuffer aspect inside the viewport, letterboxed', () => {
+  const wide = mirrorFit({ width: 3664, height: 1920 }, { width: 1440, height: 900 });
+  assert.equal(wide.width, 1440);
+  assert.ok(Math.abs(wide.width / wide.height - 3664 / 1920) < 1e-12 && wide.height <= 900);
+  const tall = mirrorFit({ width: 3664, height: 1920 }, { width: 390, height: 844 });
+  assert.equal(tall.width, 390);
+  assert.ok(Math.abs(tall.width / tall.height - 3664 / 1920) < 1e-12);
+  const narrow = mirrorFit({ width: 1000, height: 2000 }, { width: 1440, height: 900 });
+  assert.equal(narrow.height, 900);
+  assert.equal(narrow.width, 450);
+  assert.equal(mirrorFit({ width: 0, height: 10 }, { width: 10, height: 10 }), null);
+  assert.equal(mirrorFit({ width: 10, height: 10 }, { width: 10, height: 0 }), null);
 });

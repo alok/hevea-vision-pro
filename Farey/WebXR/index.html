@@ -43,7 +43,7 @@
        Debug, and show the 3D container over the whole window. These rules follow the compact roots-view rules at
        equal specificity, so they win; leaving the session restores the chosen pane, g, selection and camera. */
     body.immersive #roots-pane, body.immersive #view-switch, body.immersive #debug, body.immersive #debug-toggle { display: none; }
-    body.immersive #viewport { visibility: visible; left: 0; right: 0; top: 0; bottom: 0; }
+    body.immersive #viewport { visibility: visible; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; }
     @media(max-width: 800px) {
       header { left: 16px; top: 12px; }
       h1 { font-size: 28px; margin: 4px 0 8px; }

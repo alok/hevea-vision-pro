@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { examples, vector, project, upperRoot, discriminant, height, kind, positiveRepresentative, polynomial } from './starscape-core.js';
-import { xrAvailability, controllerRay, captureView, restoreView } from './xr-support.js';
+import { xrAvailability, controllerRay, captureView, restoreView, mirrorFit } from './xr-support.js';
 import { TapSelection, nearestToRayPacked } from './input.js';
 import { HoverQueries } from './hover-queries.js';
 import { cameraPlaneLabel } from './camera-planes.js';
@@ -435,7 +435,9 @@ $('origin').onclick=enterOrigin;
 for(const button of document.querySelectorAll('[data-look]'))button.onclick=()=>{look.pitch={up:Math.PI/2,level:0,down:-Math.PI/2}[button.dataset.look];applyLook();renderer.domElement.focus({preventScroll:true});};
 for(const button of document.querySelectorAll('[data-move]'))button.onclick=()=>{moveEye(button.dataset.move);renderer.domElement.focus({preventScroll:true});};
 function resetView(){controls.target.copy(world.position);camera.position.copy(world.position).add(new THREE.Vector3(2.4,1.5,4.6).multiplyScalar(Math.max(1,radius/8)));controls.update();}
-function resize(){if(session)return;const r=$('viewport').getBoundingClientRect();if(r.width<=0||r.height<=0)return;camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setSize(r.width,r.height);render();}
+// During a session three.js owns the drawing buffer's size; only the mirror's CSS box is fitted to it.
+function fitMirror(){const c=renderer.domElement,f=mirrorFit(c,$('viewport').getBoundingClientRect());if(f){c.style.width=`${f.width}px`;c.style.height=`${f.height}px`;}}
+function resize(){if(session){fitMirror();return;}const r=$('viewport').getBoundingClientRect();if(r.width<=0||r.height<=0)return;camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setSize(r.width,r.height);render();}
 $('next').onclick=()=>{const sequence=[...examples,[-1,1,-2],[1,2,1],[1,3,1]];const i=sequence.findIndex(p=>p.every((x,j)=>x===selected[j]));selectPoint(sequence[(i+1)%sequence.length]);};
 // Her Star size control (0.4–2.5) scales every star radius.
 $('star-size').oninput=()=>{sigma=Number($('star-size').value);$('star-size-value').textContent=sigma.toFixed(2);glyphKey=null;rootsPane.setData({...rootsPane.data,sigma});render();};
@@ -648,7 +650,7 @@ function updateAims(){
   showReadout([...aimLines,`Selected    ${describe(selected)}`,...(plane?[`Plane       ${plane.equation}`]:[])]);
 }
 async function checkXR(){const availability=await xrAvailability(navigator.xr,isSecureContext);$('xr').disabled=!availability.supported;$('xr').textContent=availability.supported?'Enter VR':'VR unavailable here';$('xr-status').textContent=availability.message;}
-$('xr').onclick=async()=>{if(startingXR||session)return;startingXR=true;clearHover();$('xr').disabled=true;savedView=captureView(camera,controls);try{session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor']});await renderer.xr.setSession(session);controls.enabled=false;xrPanel.visible=true;document.body.classList.add('immersive');renderer.setAnimationLoop(render);}catch{await session?.end().catch(()=>{});session=null;$('status').textContent='VR entry was cancelled or unavailable. The browser scene remains usable.';checkXR();}finally{startingXR=false;}};
+$('xr').onclick=async()=>{if(startingXR||session)return;startingXR=true;clearHover();$('xr').disabled=true;savedView=captureView(camera,controls);try{session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor']});await renderer.xr.setSession(session);controls.enabled=false;xrPanel.visible=true;document.body.classList.add('immersive');fitMirror();renderer.setAnimationLoop(render);}catch{await session?.end().catch(()=>{});session=null;$('status').textContent='VR entry was cancelled or unavailable. The browser scene remains usable.';checkXR();}finally{startingXR=false;}};
 renderer.xr.addEventListener('sessionend',()=>{session=null;clearHover();hoverQueries.reset();for(const aim of aims){aim.target=null;aim.line.visible=aim.ring.visible=false;}controls.enabled=!inhabited;xrPanel.visible=false;document.body.classList.remove('immersive');renderer.setAnimationLoop(null);if(savedView)restoreView(savedView,camera,controls);savedView=null;resize();checkXR();});
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();hoverQueries.reset();$('fatal').hidden=false;$('fatal').textContent='3D graphics paused. Waiting for the browser to restore the graphics context; reload if it does not recover.';controls.enabled=false;$('xr').disabled=true;session?.end().catch(()=>{});});
 renderer.domElement.addEventListener('webglcontextrestored',()=>{$('fatal').hidden=true;controls.enabled=!session&&!inhabited;resize();update();checkXR();});
