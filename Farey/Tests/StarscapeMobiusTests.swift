@@ -263,9 +263,13 @@ import XCTest
     XCTAssertTrue(diagnostics.summary.contains("two-hop first (0.000, 2.000, 0.000)"))
     XCTAssertTrue(diagnostics.summary.contains("start (0.000, 2.400, 0.000) · translation last (0.000, 0.000, 0.000)"))
     XCTAssertTrue(diagnostics.summary.contains("outcomes [first direction recorded 1]"), diagnostics.summary)
-    diagnostics.recordPinch(entity: "origin-sky", location: [0, 2.4, 0], rayOrigin: [0, 0, 1.5], rayDirection: [0, 1, 0])
+    // The first event (a click) has no ray; a later one does: both are kept, and every ray is counted.
+    diagnostics.recordPinch(entity: "origin-sky", phase: "active", location: [0, 2.4, 0], ray: nil)
+    diagnostics.recordPinch(entity: "origin-sky", phase: "active", location: [0.1, 2.4, 0], ray: ([0, 0, 1.5], [0, 1, 0]))
+    diagnostics.recordPinch(entity: "origin-sky", phase: "ended", location: [0.2, 2.4, 0], ray: ([0, 0, 1.5], [0, 1, 0]))
     XCTAssertTrue(diagnostics.summary.hasSuffix(
-      "pinch events 1 entity origin-sky location (0.000, 2.400, 0.000) · ray origin (0.000, 0.000, 1.500) direction (0.000, 1.000, 0.000)"),
+      "pinch events 3 [active 2, ended 1] first entity origin-sky location (0.000, 2.400, 0.000) · rays 2 [active 1, ended 1]"
+        + " first ray at active location (0.100, 2.400, 0.000) origin (0.000, 0.000, 1.500) direction (0.000, 1.000, 0.000)"),
       diagnostics.summary)
     XCTAssertEqual(diagnostics.dragChanges, 1)
     XCTAssertTrue(diagnostics.summary.contains("last drag entity origin-sky"), diagnostics.summary)

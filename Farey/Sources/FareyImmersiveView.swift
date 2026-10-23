@@ -159,16 +159,9 @@ import SwiftUI
     // Opt-in only: the system's selection ray for an indirect pinch, the one input that carries where the eye was,
     // recorded in the object's frame beside the location; it changes nothing.
     .simultaneousGesture(
-      SpatialEventGesture().targetedToAnyEntity().onChanged { value in
-        guard let event = value.gestureValue.first(where: { $0.kind == .indirectPinch }) else { return }
-        let ray = event.selectionRay.map { ray in
-          (Self.double(value.convert(ray.origin, from: .local, to: starscape.root)),
-           Self.double(value.convert(ray.direction, from: .local, to: starscape.root)))
-        }
-        let location = Self.double(value.convert(event.location3D, from: .local, to: starscape.root))
-        InputDiagnostics.shared.recordPinch(
-          entity: event.targetedEntity?.name ?? "none", location: location, rayOrigin: ray?.0, rayDirection: ray?.1)
-      },
+      SpatialEventGesture().targetedToAnyEntity()
+        .onChanged { value in recordPinches(value) }
+        .onEnded { value in recordPinches(value) },
       including: InputDiagnostics.shared.enabled ? .all : .none)
     // A cancelled gesture never calls onEnded; the gesture state's reset still does.
     .onChange(of: dragging) { _, live in
@@ -196,6 +189,18 @@ import SwiftUI
 
   }
   private static func double(_ v: SIMD3<Float>) -> SIMD3<Double> { SIMD3(Double(v.x), Double(v.y), Double(v.z)) }
+  /// Every indirect-pinch event of a SpatialEventGesture update, into the opt-in diagnostics.
+  private func recordPinches(_ value: EntityTargetValue<SpatialEventCollection>) {
+    for event in value.gestureValue where event.kind == .indirectPinch {
+      let ray = event.selectionRay.map { ray in
+        (origin: Self.double(value.convert(ray.origin, from: .local, to: starscape.root)),
+         direction: Self.double(value.convert(ray.direction, from: .local, to: starscape.root)))
+      }
+      InputDiagnostics.shared.recordPinch(
+        entity: event.targetedEntity?.name ?? "none", phase: "\(event.phase)",
+        location: Self.double(value.convert(event.location3D, from: .local, to: starscape.root)), ray: ray)
+    }
+  }
   private static func activate(_ entity: Entity, model: GalleryModel) {
     if model.starscapeMode {
       let parts = entity.name.split(separator: ":")

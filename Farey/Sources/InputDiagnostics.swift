@@ -32,13 +32,16 @@ import Observation
   private(set) var start: SIMD3<Double>?
   private(set) var lastTranslation: SIMD3<Double>?
   private(set) var outcomes: [String: Int] = [:]
-  /// The first indirect pinch of a gesture: its targeted entity, location and the system's selection ray, all in the
-  /// object's frame (nil ray if the event carries none).
+  /// Indirect-pinch events: every one counted, with how many carried the system's selection ray, per event phase; the
+  /// first event's sample (as in a plain click), and the first sample that carried a ray, all in the object's frame.
   private(set) var pinches = 0
+  private(set) var rays = 0
+  private(set) var pinchPhases: [String: Int] = [:]
+  private(set) var rayPhases: [String: Int] = [:]
   private(set) var pinchEntity = "none"
   private(set) var pinchLocation: SIMD3<Double>?
-  private(set) var rayOrigin: SIMD3<Double>?
-  private(set) var rayDirection: SIMD3<Double>?
+  struct RaySample { var phase: String, location: SIMD3<Double>, origin: SIMD3<Double>, direction: SIMD3<Double> }
+  private(set) var firstRay: RaySample?
   init(enabled: Bool) { self.enabled = enabled }
   struct DragSample {
     var direction: SIMD3<Double>, twoHop: SIMD3<Double>, start: SIMD3<Double>, translation: SIMD3<Double>
@@ -52,12 +55,17 @@ import Observation
     lastOutcome = outcome.rawValue
     outcomes[outcome.rawValue, default: 0] += 1
   }
-  func recordPinch(entity: String, location: SIMD3<Double>, rayOrigin: SIMD3<Double>?, rayDirection: SIMD3<Double>?) {
+  func recordPinch(
+    entity: String, phase: String, location: SIMD3<Double>, ray: (origin: SIMD3<Double>, direction: SIMD3<Double>)?
+  ) {
     guard enabled else { return }
     pinches += 1
-    guard pinchLocation == nil else { return }                       // keep the first pinch of the run
-    pinchEntity = entity.isEmpty ? "unnamed" : entity
-    (pinchLocation, self.rayOrigin, self.rayDirection) = (location, rayOrigin, rayDirection)
+    pinchPhases[phase, default: 0] += 1
+    if pinchLocation == nil { (pinchEntity, pinchLocation) = (entity.isEmpty ? "unnamed" : entity, location) }
+    guard let ray else { return }
+    rays += 1
+    rayPhases[phase, default: 0] += 1
+    if firstRay == nil { firstRay = RaySample(phase: phase, location: location, origin: ray.origin, direction: ray.direction) }
   }
   func recordDragEnd() { if enabled { dragEnds += 1 } }
   func recordDragReset() { if enabled { dragResets += 1 } }
@@ -74,13 +82,18 @@ import Observation
   }
   var summary: String {
     func f(_ v: SIMD3<Double>?) -> String { v.map { String(format: "(%.3f, %.3f, %.3f)", $0.x, $0.y, $0.z) } ?? "none" }
-    let tally = outcomes.sorted { $0.key < $1.key }.map { "\($0.key) \($0.value)" }.joined(separator: ", ")
+    let tally = Self.tally(outcomes)
     return "input: drag changes \(dragChanges) · ends \(dragEnds) · resets \(dragResets) · last drag entity \(lastDragEntity)"
       + " · outcome \(lastOutcome) · taps \(taps) · last tap entity \(lastTapEntity)"
       + " · activations \(activations) · last activate entity \(lastActivateEntity) · sky \(sky)"
       + " · direction first \(f(firstDirection)) last \(f(lastDirection)) · two-hop first \(f(firstTwoHop)) last \(f(lastTwoHop))"
       + " · start \(f(start)) · translation last \(f(lastTranslation)) · outcomes [\(tally)]"
-      + " · pinch events \(pinches) entity \(pinchEntity) location \(f(pinchLocation))"
-      + " · ray origin \(f(rayOrigin)) direction \(f(rayDirection))"
+      + " · pinch events \(pinches) [\(Self.tally(pinchPhases))] first entity \(pinchEntity) location \(f(pinchLocation))"
+      + " · rays \(rays) [\(Self.tally(rayPhases))] first ray " + (firstRay.map {
+        "at \($0.phase) location \(f($0.location)) origin \(f($0.origin)) direction \(f($0.direction))"
+      } ?? "none")
+  }
+  private static func tally(_ counts: [String: Int]) -> String {
+    counts.sorted { $0.key < $1.key }.map { "\($0.key) \($0.value)" }.joined(separator: ", ")
   }
 }
