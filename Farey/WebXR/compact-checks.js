@@ -28,8 +28,9 @@ window.__compact={
     // One frame between moves, as a real finger delivers them; back-to-back moves can coalesce.
     for(let i=1;i<=steps;i++){await touch('touchMove',[{x:from.x+(to.x-from.x)*i/steps,y:from.y+(to.y-from.y)*i/steps}]);await settle();}
     await touch(cancel?'touchCancel':'touchEnd',[]);
-    // A lift straight after movement starts the browser's fling handling, which consumes the next touch start;
-    // a person pauses between gestures, and so does this check.
+    // Gestures are spaced 400 ms apart, as a person's are. Without the pause, a contact started right after a
+    // completed drag produced no pointer events here; the cause (harness or browser gesture handling) is not
+    // established, so rapid consecutive contacts remain untested rather than fixed.
     await page.waitForTimeout(400);
   };
   const ensure=(condition,message)=>{if(!condition)throw Error(message);};
@@ -69,10 +70,12 @@ window.__compact={
     const g1=s.g;
     // A touch tap selects the tapped root's form.
     const tap=await page.evaluate(()=>__compact.rootScreen([1,0,1]));
+    let tapRun='skipped: (1,0,1) root outside the pane';
     if(inside({left:tap.x,top:tap.y,right:tap.x,bottom:tap.y},s.paneRect,-8)){
       await page.evaluate(()=>{window.__tapLog=[];const c=document.getElementById('roots-pane');for(const t of ['pointerdown','pointermove','pointerup','pointercancel','click'])c.addEventListener(t,e=>__tapLog.push(`${t}:${e.pointerType}:${Math.round(e.clientX)},${Math.round(e.clientY)}`));});
       touchId++;await touch('touchStart',[tap]);await touch('touchEnd',[]);await settle();
       ensure(same((await state()).selected,[1,0,1]),`${tag}: touch tap did not select (1,0,1): selected ${(await state()).selected} at ${JSON.stringify(tap)} log ${await page.evaluate(()=>__tapLog.join(' '))}`);
+      tapRun='passed';
     }
     const gRoots=(await state()).g, selectedRoots=(await state()).selected;
     // Back to 3D: same g, selection and camera.
@@ -83,9 +86,11 @@ window.__compact={
     // Origin in the compact 3D view: a touch drag moves the sky by g; Return restores the overview camera.
     await page.locator('#origin').click();await settle();await settle();
     const sky=await page.evaluate(()=>__compact.screen([1,0,1])), gSky=(await state()).g;
+    let originRun='skipped: (1,0,1) outside the 3D view at Origin';
     if(inside({left:sky.x,top:sky.y,right:sky.x,bottom:sky.y},(await state()).viewRect,-20)){
       await touchDrag(sky,{x:sky.x+30,y:sky.y+12});await settle();
       ensure(!same((await state()).g,gSky),`${tag}: the origin touch drag did not move the sky`);
+      originRun='passed';
     }
     await page.locator('#inhabit').click();await settle();
     s=await state();
@@ -96,7 +101,7 @@ window.__compact={
     s=await state();
     ensure(same(s.g,[1,0,0,1])&&same(s.selected,[1,-1,2]),`${tag}: Reset did not restore g and the selection`);
     await page.locator('#show-3d').click();await settle();
-    report[tag]={g:gRoots,selected:selectedRoots,switchRect:s.switchRect};
+    report[tag]={tap:tapRun,originDrag:originRun,g:gRoots,selected:selectedRoots,switchRect:s.switchRect};
   }
   ensure(!errors.length,errors.join('; '));
   return report;
