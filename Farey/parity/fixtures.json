@@ -73,7 +73,7 @@
     1
    ],
    "parityYZ": 0,
-   "polynomial": "x²−x+2",
+   "polynomial": "x² − x + 2",
    "primitive": true,
    "upperRootExact": {
     "realNumerator": 1,
@@ -115,7 +115,7 @@
     -1
    ],
    "parityYZ": 0,
-   "polynomial": "−x²+x−2",
+   "polynomial": "−x² + x − 2",
    "primitive": true,
    "upperRootExact": {
     "realNumerator": 1,
@@ -157,7 +157,7 @@
     0
    ],
    "parityYZ": 0,
-   "polynomial": "x²+1",
+   "polynomial": "x² + 1",
    "primitive": true,
    "upperRootExact": {
     "realNumerator": 0,
@@ -199,7 +199,7 @@
     0
    ],
    "parityYZ": 0,
-   "polynomial": "2x²+2",
+   "polynomial": "2x² + 2",
    "primitive": false,
    "upperRootExact": {
     "realNumerator": 0,
@@ -241,7 +241,7 @@
     2
    ],
    "parityYZ": 0,
-   "polynomial": "2x²−2x+4",
+   "polynomial": "2x² − 2x + 4",
    "primitive": false,
    "upperRootExact": {
     "realNumerator": 2,
@@ -283,7 +283,7 @@
     0
    ],
    "parityYZ": 0,
-   "polynomial": "x²+x+1",
+   "polynomial": "x² + x + 1",
    "primitive": true,
    "upperRootExact": {
     "realNumerator": -1,
@@ -325,7 +325,7 @@
     0
    ],
    "parityYZ": 0,
-   "polynomial": "x²−2x+1",
+   "polynomial": "x² − 2x + 1",
    "primitive": true,
    "upperRootExact": null,
    "upperRootApprox": null,
@@ -454,7 +454,7 @@
     -3
    ],
    "parityYZ": 0,
-   "polynomial": "x²−2",
+   "polynomial": "x² − 2",
    "primitive": true,
    "upperRootExact": null,
    "upperRootApprox": null,

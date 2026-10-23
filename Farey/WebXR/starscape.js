@@ -457,9 +457,10 @@ function showHover(index,key=null){
   const x=r.left+(v.x+1)*r.width/2, y=r.top+(1-v.y)*r.height/2, text=$('hover-text');
   text.textContent=polynomial(point);label.dataset.point=point.join();
   label.style.transform=`translate(${x}px,${y}px)`;label.hidden=false;
-  // The ring stays on the center; the text sits above right, flipping and then clamping to stay on the canvas.
+  // The ring stays on the center; the text sits just right of it (as in the source), flipping left at the right
+  // edge and clamping to stay on the canvas.
   const w=text.offsetWidth, h=text.offsetHeight, margin=4;
-  let left=x+12+w>r.right-margin?-12-w:12, top=y-26<r.top+margin?12:-26;
+  let left=x+9+w>r.right-margin?-9-w:9, top=-4;
   left=Math.min(Math.max(left,r.left+margin-x),r.right-margin-w-x);top=Math.min(Math.max(top,r.top+margin-y),r.bottom-margin-h-y);
   text.style.left=`${left}px`;text.style.top=`${top}px`;
 }

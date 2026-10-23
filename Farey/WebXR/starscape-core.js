@@ -3,14 +3,15 @@
 export const height = 4;
 export const examples = [[1, -1, 2], [2, -2, 4], [2, 1, 1], [1, 0, 1], [3, 2, 2]];
 export const discriminant = ([a, b, c]) => b * b - 4 * a * c;
-// The exact signed polynomial ax²+bx+c in compact form (x²+x+1, 2x²−2x+4, −x²+x−2): a multiple is never reduced
-// to its primitive form, zero terms are dropped, and unit coefficients are implicit.
+// The exact signed polynomial ax²+bx+c in the source viewer's typography (x² + x + 1, 2x² − 2x + 4, −x² + x − 2):
+// spaced operators, a leading minus without a space, implicit unit coefficients, zero terms dropped. A multiple is
+// never reduced to its primitive form.
 export function polynomial(point) {
   const terms = [[point[0], 'x²'], [point[1], 'x'], [point[2], '']].filter(([k]) => k !== 0);
   if (!terms.length) return '0';
   return terms.map(([k, power], i) => {
-    const magnitude = Math.abs(k);
-    return (k < 0 ? '−' : i ? '+' : '') + (power && magnitude === 1 ? '' : magnitude) + power;
+    const magnitude = Math.abs(k), term = (power && magnitude === 1 ? '' : magnitude) + power;
+    return i ? (k < 0 ? ' − ' : ' + ') + term : (k < 0 ? '−' : '') + term;
   }).join('');
 }
 export const vector = ([a, b, c]) => [-b, a + c, c - a];

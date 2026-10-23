@@ -68,7 +68,7 @@ The fixture file contains:
 Record app-only, without audio. Each receipt should note the version, commit, fixture IDs, input mechanism, screenshot or video hashes, any console errors, and what was not verified.
 
 1. **Fresh R6 overview:** 480 points, (1,−1,2) selected, projection off.
-2. **Hover:** (1,0,1) shows `x²+1`, then (2,0,2) shows `2x²+2` (browser only; the native gap is stated).
+2. **Hover:** (1,0,1) shows `x² + 1`, then (2,0,2) shows `2x² + 2` (browser only; the native gap is stated).
 3. **Select a multiple:** select (2,0,2); same root as (1,0,1), different depth.
 4. **Pair:** select (1,0,1), pair (1,1,1); the plane is `2a −2c = 0`, endpoints −1 and 1, with 22 interior triples.
 5. **Origin:** facing the upper nappe, then the lower nappe, with the pair and plane kept; then return to Overview.

@@ -22,7 +22,7 @@ without duplication or sampling. At high density, overlapping dots appear
 as a cloud; use Inhabit, zoom or the star-size control to inspect it.
 
 Hover a dot to ring it and read its exact signed polynomial, such as
-2x²+2 for (2,0,2): a multiple is never reduced. The label names exactly
+2x² + 2 for (2,0,2): a multiple is never reduced. The label names exactly
 the dot a click there would select, and never selects or moves anything.
 The panel shows f(x) for the selection; XR readouts include it too.
 Stange's viewer shows hover polynomials in its root pane but labels only

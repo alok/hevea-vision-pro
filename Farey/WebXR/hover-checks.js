@@ -38,13 +38,13 @@ window.__hover={
   const report={cases:[]};
   await settle();await settle(); // the resize must reach the camera before screen positions are computed
   const before=await snapshot();
-  ensure(before.inspector==='f(x) = x²−x+2','Inspector does not name the selected polynomial');
+  ensure(before.inspector==='f(x) = x² − x + 2','Inspector does not name the selected polynomial');
   ensure(before.count===480&&!before.label,'Unexpected default state');
 
   // Each case: hover its center; the label must equal the click oracle there. Aimed exactly at a center, that
   // center's angle is zero, so unless another center projects within a pixel it must be named exactly (signed,
   // unreduced).
-  const cases=[[[1,0,1],'x²+1'],[[2,0,2],'2x²+2'],[[1,1,1],'x²+x+1'],[[-1,1,-2],'−x²+x−2'],[[1,-2,1],'x²−2x+1'],[[1,0,-1],'x²−1'],[[0,1,0],'x'],[[0,0,-3],'−3']];
+  const cases=[[[1,0,1],'x² + 1'],[[2,0,2],'2x² + 2'],[[1,1,1],'x² + x + 1'],[[-1,1,-2],'−x² + x − 2'],[[1,-2,1],'x² − 2x + 1'],[[1,0,-1],'x² − 1'],[[0,1,0],'x'],[[0,0,-3],'−3']];
   for(const [point,text] of cases){
     const s=await page.evaluate(p=>__hover.screen(p),point), isolation=await page.evaluate(p=>__hover.isolation(p),point);
     await page.mouse.move(s.x,s.y);await settle();
@@ -64,7 +64,7 @@ window.__hover={
   await page.mouse.click(multiple.x,multiple.y);await settle();
   const clicked=await snapshot();
   ensure(clicked.selected.join()===hoveredMultiple,'Click selected a different point than the hover named');
-  if(hoveredMultiple==='2,0,2')ensure(clicked.inspector==='f(x) = 2x²+2','Inspector reduced a multiple');
+  if(hoveredMultiple==='2,0,2')ensure(clicked.inspector==='f(x) = 2x² + 2','Inspector reduced a multiple');
   report.click={hovered:hoveredMultiple,inspector:clicked.inspector};
 
   // Leaving the canvas, a press-and-drag, a rebuild and Reset each hide the label.
@@ -85,7 +85,7 @@ window.__hover={
   if(rebuilt.label)ensure(rebuilt.label.point===await page.evaluate(([x,y])=>__hover.oracle(x,y),[center.x+60,center.y+20]),'Label after rebuild is stale');
   report.rebuild={hovered:rebuilt.label?.point??null};
   await page.locator('#reset').click();await settle();
-  ensure(!(await snapshot()).label&&(await snapshot()).inspector==='f(x) = x²−x+2','Reset left a hover label or wrong inspector');
+  ensure(!(await snapshot()).label&&(await snapshot()).inspector==='f(x) = x² − x + 2','Reset left a hover label or wrong inspector');
 
   // Dense R96 (about 1.85M points): pointer moves ask the worker only; the shown answer matches the click rule.
   await page.selectOption('#radius','96');
@@ -137,7 +137,7 @@ window.__hover={
   const cancelled=await page.evaluate(()=>__hover.watch(1200));
   ensure(cancelled.every(([,p])=>p===null),'A label appeared after pointercancel');
   report.xrReadout=await page.evaluate(()=>[__hover.describe([2,-2,4]),__hover.describe([-1,1,-2]),__hover.describe([0,1,0])]);
-  ensure(report.xrReadout[0]==='(2, -2, 4) · 2x²−2x+4 · Δ = -28','XR readout does not name the signed polynomial');
+  ensure(report.xrReadout[0]==='(2, -2, 4) · 2x² − 2x + 4 · Δ = -28','XR readout does not name the signed polynomial');
   // (C) Labels for the right-most and top-most drawn points stay inside the canvas; the ring stays on the center.
   report.edges=[];
   await page.locator('#reset').click();
@@ -155,16 +155,17 @@ window.__hover={
       const b=await page.evaluate(()=>__hover.bounds()), target=await page.evaluate(p=>__hover.screen(p.split(',').map(Number)),shown.label.point);
       ensure(b.text[0]>=b.canvas[0]-0.5&&b.text[1]>=b.canvas[1]-0.5&&b.text[2]<=b.canvas[2]+0.5&&b.text[3]<=b.canvas[3]+0.5,`${side} label leaves the canvas at ${size.width}×${size.height}: ${b.text.map(Math.round)} vs ${b.canvas.map(Math.round)}`);
       ensure(Math.hypot(b.ring[0]-target.x,b.ring[1]-target.y)<1,'Ring moved off the hovered center');
-      // Flip exactly when the default placement (12 px right, 26 px up) would leave the canvas.
-      const w=b.text[2]-b.text[0], needed=side==='right'?b.ring[0]+12+w>b.canvas[2]-4:b.ring[1]-26<b.canvas[1]+4;
-      const flipped=side==='right'?b.text[2]<=b.ring[0]:b.text[1]>=b.ring[1];
+      // The text flips left exactly when the default placement (9 px right) would leave the canvas; vertically it
+      // only clamps, which the bounds check above covers.
+      const w=b.text[2]-b.text[0], needed=side==='right'&&b.ring[0]+9+w>b.canvas[2]-4;
+      const flipped=b.text[2]<=b.ring[0];
       ensure(flipped===needed,`${side} label flip ${flipped}, needed ${needed} at ${size.width}×${size.height}`);
       report.edges.push({size,side,point:shown.label.point,flipped,ring:b.ring.map(Math.round),text:b.text.map(Math.round),canvas:b.canvas.map(Math.round)});
     }
     await page.screenshot({path:`output/hover-edges-${size.width}x${size.height}.png`});
     await page.locator('#reset').click();await settle();
   }
-  ensure(report.edges.some(e=>e.side==='right'&&e.flipped)&&report.edges.some(e=>e.side==='top'&&e.flipped),'No edge case exercised both flips');
+  ensure(report.edges.some(e=>e.side==='right'&&e.flipped),'No edge case exercised the flip');
   await page.setViewportSize({width:1280,height:900});
   // (D) The worker fails while the pointer waits for its first answer: hover falls back without another move.
   await page.route('**/aim-worker.js*',route=>route.fulfill({contentType:'text/javascript',body:"self.onmessage=({data})=>{if(data.type==='query')throw Error('injected worker failure');};"}));
