@@ -213,8 +213,7 @@ struct StarscapeControls: View {
       guard let root = point.representativeRoot else { return "" }
       let flipped = point.kind == .lower ? " (sign-flipped representative)" : ""
       return String(format: "upper root %.3f + %.3fi", root.x, root.y) + flipped + hidden
-    case .null?: return "boundary: one repeated real root" + hidden
-    case .exterior?: return "exterior: two real roots" + hidden
+    case .null?, .exterior?: return (point.realRootDescription ?? "") + hidden
     case nil: return hidden
     }
   }

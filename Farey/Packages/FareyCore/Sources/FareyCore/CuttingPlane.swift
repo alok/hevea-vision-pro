@@ -195,3 +195,22 @@ public enum CuttingPlaneError: Error, Equatable, Sendable {
     }
   }
 }
+
+extension CoefficientPoint {
+  /// Exact real roots of a boundary or exterior form, read projectively as the binary quadratic ax² + bxy + cy²:
+  /// when a = 0 one root (two for a constant) is the point ∞ of the projective line, not a real number, and the
+  /// affine polynomial has correspondingly fewer finite roots. Nil for interior forms and zero.
+  public var realRootDescription: String? {
+    switch kind {
+    case .null?:
+      if a == 0 { return "boundary: the constant \(c) has no finite root; as a binary quadratic its double root is at ∞" }
+      return "boundary: double root x = \(CuttingPlane.rational(-b, 2 * a).label)"
+    case .exterior?:
+      guard case .success(let plane) = CuttingPlane.fromNormal(self) else { return "exterior: two real roots" }
+      let roots = plane.endpoints.map(\.label)
+      if a == 0 { return "exterior: one finite root x = \(roots[0]); as a binary quadratic its second root is at ∞" }
+      return "exterior: two real roots x = \(roots[0]) and \(roots[1])"
+    default: return nil
+    }
+  }
+}

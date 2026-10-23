@@ -111,4 +111,20 @@ final class CuttingPlaneTests: XCTestCase {
     }
     XCTAssertEqual(plane.section(radius: 6, segments: 1).count, 2)
   }
+  /// Finite affine roots versus the projective double root: ∞ is never presented as a real number.
+  func testRealRootDescriptionsSeparateFiniteRootsFromInfinity() {
+    let cases: [(CoefficientPoint, String?)] = [
+      (CoefficientPoint(1, -2, 1), "boundary: double root x = 1"),
+      (CoefficientPoint(4, 4, 1), "boundary: double root x = -1/2"),  // (2x+1)²
+      (CoefficientPoint(0, 0, 1), "boundary: the constant 1 has no finite root; as a binary quadratic its double root is at ∞"),
+      (CoefficientPoint(0, 0, -3), "boundary: the constant -3 has no finite root; as a binary quadratic its double root is at ∞"),
+      (CoefficientPoint(0, 1, 0), "exterior: one finite root x = 0; as a binary quadratic its second root is at ∞"),
+      (CoefficientPoint(0, 2, -1), "exterior: one finite root x = 1/2; as a binary quadratic its second root is at ∞"),
+      (CoefficientPoint(1, 0, -1), "exterior: two real roots x = -1 and 1"),
+      (CoefficientPoint(-1, 0, 1), "exterior: two real roots x = -1 and 1"),
+      (CoefficientPoint(1, 0, -2), "exterior: two real roots x = −√2 and √2"),
+      (CoefficientPoint(1, -1, 2), nil), (CoefficientPoint(0, 0, 0), nil),
+    ]
+    for (point, text) in cases { XCTAssertEqual(point.realRootDescription, text, point.label) }
+  }
 }

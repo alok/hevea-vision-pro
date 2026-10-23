@@ -42,6 +42,15 @@ extension FareyUITests {
     capture("plane-02-exterior")
     type("0,1,0", into: "coefficient-entry", then: "coefficient-select")
     XCTAssertTrue(require("plane-state").label.contains("b = 0 · geodesic endpoints 0 and ∞"))
+    // Finite roots versus the projective root at ∞: x, the constant 1, and (x − 1)².
+    XCTAssertEqual(
+      require("coefficient-root").label, "exterior: one finite root x = 0; as a binary quadratic its second root is at ∞")
+    type("0,0,1", into: "coefficient-entry", then: "coefficient-select")
+    XCTAssertEqual(
+      require("coefficient-root").label,
+      "boundary: the constant 1 has no finite root; as a binary quadratic its double root is at ∞")
+    type("1,-2,1", into: "coefficient-entry", then: "coefficient-select")
+    XCTAssertEqual(require("coefficient-root").label, "boundary: double root x = 1")
     checkPlacement()
     // Leaving the immersive space ends the head placement; re-entry starts at the overview.
     require("placement-origin").tap()
@@ -69,6 +78,46 @@ extension FareyUITests {
     XCTAssertTrue(require("plane-detail").label.contains("Paired with (1, 1, 1) · normal (1, 0, -1)"))
     waitForReceipt(containing: " · plane 2a −2c = 0 · ")
     XCTAssertFalse(require("render-receipt").label.contains("inhabiting"))
+  }
+  /// Visual evidence: one paired plane, (1,0,1) with (1,1,1) at R6 and projection off, seen in Overview, from Origin
+  /// facing each nappe, and back in Overview, with the exact pair and plane kept throughout.
+  func testPairedPlaneSeenFromOrigin() {
+    app = XCUIApplication()
+    app.terminate()
+    Self.launched = false
+    launch()
+    require("enter-void").tap()
+    type("1,0,1", into: "coefficient-entry", then: "coefficient-select")
+    type("1,1,1", into: "pair-entry", then: "pair-select")
+    XCTAssertTrue(app.keyboards.element.waitForNonExistence(timeout: 10))
+    XCTAssertEqual(require("projection-toggle").label, "Show projection")
+    let planeReceipt = "480 coefficient points · radius 6 (native cap 12) · plane 2a −2c = 0 · 22 displayed interior triples"
+    waitForReceipt(containing: planeReceipt)
+    func checkPair() {
+      XCTAssertTrue(require("coefficient-state").label.contains("(1, 0, 1)"))
+      XCTAssertTrue(require("render-receipt").label.contains(planeReceipt))
+    }
+    require("controls-toggle").tap()
+    capture("plane-origin-01-overview")
+    require("controls-toggle").tap()
+    require("placement-origin").tap()
+    waitForReceipt(containing: planeReceipt + " · origin at head center, upper nappe ahead")
+    require("controls-toggle").tap()
+    capture("plane-origin-02-origin-upper")
+    require("controls-toggle").tap()
+    require("origin-nappe").tap()
+    waitForReceipt(containing: planeReceipt + " · origin at head center, lower nappe ahead")
+    require("controls-toggle").tap()
+    capture("plane-origin-03-origin-lower")
+    require("placement-inhabit").tap()  // Overview, from the collapsed header
+    XCTAssertEqual(require("placement-inhabit").label, "Inhabit")
+    capture("plane-origin-04-overview-again")
+    // The receipt and plane readout live in the details, which collapsing removes: reopen before checking them.
+    require("controls-toggle").tap()
+    checkPair()
+    XCTAssertFalse(require("render-receipt").label.contains("origin"))
+    XCTAssertTrue(require("plane-detail").label.contains("Paired with (1, 1, 1) · normal (1, 0, -1)"))
+    exit()
   }
   private func checkPlacement() {
     type("1,-1,2", into: "coefficient-entry", then: "coefficient-select")

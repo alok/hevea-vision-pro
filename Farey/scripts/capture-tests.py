@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Run native tests with synchronized screenshots in a disposable simulator."""
 import argparse
+import plistlib
 import json
 import os
 from pathlib import Path
@@ -11,11 +12,28 @@ import tempfile
 from capture_coordinator import CaptureCoordinator, enable_capture
 
 
+def enable_spatial_probe(xctestrun):
+    """Sets FAREY_SPATIAL_PROBE=1 for the UI test target, which otherwise skips the spatial tap diagnostic."""
+    with xctestrun.open("rb") as file:
+        plan = plistlib.load(file)
+    # The same two xctestrun layouts capture_coordinator.enable_capture handles.
+    targets = [value for value in plan.values() if isinstance(value, dict) and "BlueprintName" in value]
+    for configuration in plan.get("TestConfigurations", []):
+        targets.extend(configuration.get("TestTargets", []))
+    for target in targets:
+        if target.get("BlueprintName") == "FareyVisionUITests":
+            target.setdefault("EnvironmentVariables", {})["FAREY_SPATIAL_PROBE"] = "1"
+    with xctestrun.open("wb") as file:
+        plistlib.dump(plan, file)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--simulator", help="Use an existing simulator instead of creating one")
     parser.add_argument("--output", type=Path, help="A new output directory")
     parser.add_argument("--only-testing", action="append", default=[])
+    parser.add_argument("--spatial-probe", action="store_true",
+                        help="Also run the opt-in spatial tap diagnostic (FAREY_SPATIAL_PROBE=1)")
     args = parser.parse_args()
     source = Path(__file__).resolve().parent.parent
     os.environ["PATH"] = "/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin"
@@ -47,6 +65,8 @@ def main():
             raise RuntimeError("Expected one generated .xctestrun file")
         configured = candidates[0].parent / "Captured.xctestrun"
         enable_capture(candidates[0], configured)
+        if args.spatial_probe:
+            enable_spatial_probe(configured)
         coordinator = CaptureCoordinator(simulator, output / "screenshots")
         coordinator.start()
         result = output / "Tests.xcresult"
