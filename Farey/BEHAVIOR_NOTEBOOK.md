@@ -26,7 +26,7 @@ Durable notes on how Stange's Starscape/Lattice viewer behaves and how this proj
 - **One state:** a single g ∈ SL₂(ℝ), starting at the identity.
 - **Each move:** after a 4 px threshold, both the previous and the current pointer positions are pulled back through the model chart to points z₀ and z₁ of the upper half-plane. Then g ← normalize(T·g), where T is the hyperbolic transvection carrying z₀ to z₁ (composed on the left, so the point under the pointer follows it). Outside the model disk there is no anchor and nothing moves.
 - **Gestures that leave g alone:** Shift-drag pans, the wheel zooms (0.5–8× the fit), and a click under 4 px selects.
-- **Snap:** an optional release snap reduces g to an integer matrix.
+- **Snap:** an optional release snap reduces g to an integer matrix: g·i is reduced into the standard fundamental domain, and of the two integer candidates γ and γS (S fixes i) it keeps the one whose residual γ⁻¹g has the smaller polar rotation about i. Recorded: a drag from −0.4 + 0.1i to −0.4 + i landed on γ = [1, 4; 0, 1] and relabelled (13,20,34) as (13,−84,162).
 - **Coefficients:** they are drawn at j(g)·(a,b,c), with a′ = s²a − rs·b + r²c, b′ = −2qs·a + (ps+qr)·b − 2pr·c and c′ = q²a − pq·b + p²c for g = [[p,q],[r,s]], so roots move by z ↦ (pz+q)/(rz+s) and Δ is preserved. Integer identities, labels and plane membership stay on the base (a,b,c).
 
 **Source, 3D** (`Wr`):
@@ -49,6 +49,7 @@ Durable notes on how Stange's Starscape/Lattice viewer behaves and how this proj
 - **Origin:** dragging at Origin moves the sky.
 - **Snap and generators:** these absorb γ into the selection and pair. That matches the recording for Snap; for the generator buttons it follows the source's code, not a recording.
 - **Compact windows (0.15.1):** below 1000 px a **3D | Roots** switch over the view shows one pane at a time in the same place, keeping selection, g and camera. `compact-checks.js` drives it with real touch input at 390×844 and 844×390: drag, tap, a cancelled touch, Origin and return, and Reset.
+- **Snap criterion (0.15.2):** ours chose between γ and γS by entrywise distance to g, which disagreed with her viewer (T⁴S instead of T⁴ in the recorded case above). It now uses her polar-rotation criterion; the recorded g is a regression on both platforms and in the shared fixtures.
 - **Picking:** multiples share a root, so a tap within half a pixel of several centers picks the largest, visible star (fixed in 0.15.1; before, rounding could pick a hidden multiple).
 - **Departures:** the drawn set is the base ball moved by g (the source recomputes its crop), there is no animation, and there is no pinch zoom in the pane.
 - **Tests:** `mobius-checks.js` checks all of this with real pointer input; the dragged root ends within 0.0001 px of the pointer.
@@ -59,6 +60,6 @@ Euclidean camera motions in both platforms remain separate from g: they change n
 
 ## Versions referenced
 
-- Browser 0.15.1.
+- Browser 0.15.2.
 - Native 0.11.0 (15) in the main simulator.
 - The source was observed live on 2026-10-23.

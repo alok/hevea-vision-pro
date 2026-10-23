@@ -5,7 +5,7 @@
 import { vector, discriminant, kind, upperRoot, positiveRepresentative, polynomial } from '../WebXR/starscape-core.js';
 import { enumerateLattice, tripleAt, inBall } from '../WebXR/lattice.js';
 import { pairPlane, planeFromNormal, inPairPlane } from '../WebXR/pair-plane.js';
-import { pushforward, pushforwardExact, transvection, act, inverse } from '../WebXR/mobius.js';
+import { pushforward, pushforwardExact, transvection, act, inverse, nearestIntegral } from '../WebXR/mobius.js';
 import { readFileSync } from 'node:fs';
 
 const browserVersion = JSON.parse(readFileSync(new URL('../WebXR/package.json', import.meta.url))).version;
@@ -112,6 +112,16 @@ const mobius = {
       imageOfDefaultApprox: pushforward(g).length && applyPush(g, [1, -1, 2]),
     };
   })(),
+  // Snap: reduce g·i into the fundamental domain, then of γ and γS take the residual γ⁻¹g with the smaller polar
+  // rotation about i. Recorded on her viewer (2026-10-23): one drag from −0.4 + 0.1i to −0.4 + i landed on
+  // γ = [1, 4; 0, 1] and relabelled (13,20,34) as (13,−84,162). Entrywise distance would instead pick [4, −1; 1, 0].
+  snap: [{
+    description: 'transvection from −0.4 + 0.1i to −0.4 + i, Snap on',
+    gRecordedApprox: [3.162278103784889, 1.1384199665329495, 4.0371747379733554e-16, 0.31622772165519336],
+    gamma: nearestIntegral([3.162278103784889, 1.1384199665329495, 4.0371747379733554e-16, 0.31622772165519336]),
+    selection: [13, 20, 34],
+    absorbed: pushforwardExact(nearestIntegral(transvection({ x: -0.4, y: 0.1 }, { x: -0.4, y: 1 })), [13, 20, 34]).map(Number),
+  }],
 };
 function applyPush(g, abc) { const m = pushforward(g); return [0, 1, 2].map(i => m[3 * i] * abc[0] + m[3 * i + 1] * abc[1] + m[3 * i + 2] * abc[2]); }
 

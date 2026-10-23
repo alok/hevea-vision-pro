@@ -85,9 +85,19 @@ export function actReal(g, t) {
 }
 export const isIntegral = g => g.every(Number.isInteger) && determinant(g) === 1;
 /**
- * Our Snap: the element of SL₂(ℤ) nearest g. Reduce g·i into the standard fundamental domain |x| ≤ ½, |z| ≥ 1 by
- * translations and inversions m ∈ SL₂(ℤ); γ = m⁻¹ then sends i to the orbit point of i in the cell holding g·i.
- * γ and γS (S fixes i) are the integer candidates; the one nearer g entrywise, up to sign, is returned.
+ * Rotation angle of g about i in its polar decomposition g = P·R(θ) (P symmetric positive definite), folded into
+ * (−π/2, π/2] because ±g act alike: θ = atan2(r − q, p + s).
+ */
+export function polarAngle(g) {
+  let theta = Math.atan2(g[2] - g[1], g[0] + g[3]);
+  while (theta > Math.PI / 2) theta -= Math.PI;
+  while (theta <= -Math.PI / 2) theta += Math.PI;
+  return theta;
+}
+/**
+ * Snap, by her viewer's criterion: reduce g·i into the standard fundamental domain |x| ≤ ½, |z| ≥ 1 by integer
+ * translations and inversions m; γ = m⁻¹ sends i to the orbit point of i in the cell holding g·i. Of the integer
+ * candidates γ and γS (S fixes i), take the one whose residual γ⁻¹g turns least about i (smallest |polar angle|).
  */
 export function nearestIntegral(g) {
   const S = [0, -1, 1, 0];
@@ -97,7 +107,10 @@ export function nearestIntegral(g) {
     if (n) { w = { x: w.x - n, y: w.y }; m = multiply([1, -n, 0, 1], m); }
     if (w.x * w.x + w.y * w.y < 1 - 1e-12) { w = act(S, w); m = multiply(S, m); } else break;
   }
-  const gamma = inverse(m), candidates = [gamma, multiply(gamma, S)].flatMap(c => [c, c.map(x => -x)]);
-  const distance = c => c.reduce((sum, x, i) => sum + (x - g[i]) ** 2, 0);
-  return candidates.reduce((best, c) => distance(c) < distance(best) ? c : best).map(x => x + 0);
+  const gamma = inverse(m), candidates = [gamma, multiply(gamma, S)];
+  const turn = c => Math.abs(polarAngle(multiply(inverse(c), g)));
+  const best = turn(candidates[1]) < turn(candidates[0]) ? candidates[1] : candidates[0];
+  // Of ±γ (one Möbius map), return the sign with positive trace, or positive leading entry.
+  const sign = best[0] + best[3] > 0 || (best[0] + best[3] === 0 && (best[0] || best[2]) > 0) ? 1 : -1;
+  return best.map(x => sign * x + 0);
 }

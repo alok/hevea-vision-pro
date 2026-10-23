@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { identity, multiply, determinant, inverse, normalize, act, transvection, dragStep, pushforward, applyRows,
-  pushforwardExact, kleinToUpper, upperToKlein, toI, fromI, actReal, nearestIntegral, isIntegral } from './mobius.js';
+  pushforwardExact, kleinToUpper, upperToKlein, toI, fromI, actReal, nearestIntegral, isIntegral, polarAngle } from './mobius.js';
 import { vector, discriminant, upperRoot } from './starscape-core.js';
 
 const close = (x, y, tol = 1e-10) => assert.ok(Math.abs(x - y) <= tol * Math.max(1, Math.abs(y)), `${x} vs ${y}`);
@@ -84,4 +84,18 @@ test('real-line action handles infinity, and Snap returns the nearest SL₂(ℤ)
   const near = nearestIntegral(multiply(transvection({ x: 0, y: 1 }, { x: 0.05, y: 1.1 }), T));
   assert.ok(isIntegral(near)); closeZ(act(near, { x: 0, y: 1 }), act(T, { x: 0, y: 1 }));
   assert.ok(!isIntegral(transvection({ x: 0, y: 1 }, { x: 1, y: 1 })));
+});
+
+test('Snap picks the candidate with the smaller polar rotation, as her viewer does', () => {
+  // One drag from −0.4 + 0.1i to −0.4 + i: g = [√10, 1.138…, 0, 1/√10]. Entrywise distance picks T⁴S; the polar
+  // criterion picks T⁴, so (13,20,34) is absorbed as (13,−84,162).
+  const g = transvection({ x: -0.4, y: 0.1 }, { x: -0.4, y: 1 });
+  close(g[0], Math.sqrt(10)); close(g[3], 1 / Math.sqrt(10)); close(g[2], 0);
+  assert.deepEqual(nearestIntegral(g), [1, 4, 0, 1]);
+  // The g recorded from her viewer for that drag (reading 'nearest γ [1,4;0,1]').
+  assert.deepEqual(nearestIntegral([3.162278103784889, 1.1384199665329495, 4.0371747379733554e-16, 0.31622772165519336]), [1, 4, 0, 1]);
+  assert.deepEqual(pushforwardExact(nearestIntegral(g), [13, 20, 34]), [13n, -84n, 162n]);
+  close(polarAngle(identity), 0); close(Math.abs(polarAngle(S)), Math.PI / 2);
+  close(polarAngle([Math.cos(0.3), -Math.sin(0.3), Math.sin(0.3), Math.cos(0.3)]), 0.3);
+  close(polarAngle([-1, 0, 0, -1]), 0);  // −I acts as the identity
 });

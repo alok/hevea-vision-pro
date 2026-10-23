@@ -1,7 +1,7 @@
 {
  "contract": "farey-coefficient-parity",
  "contractVersion": 1,
- "generatedFrom": "browser 0.14.0 modules",
+ "generatedFrom": "browser 0.15.1 modules",
  "basis": {
   "display": "(X,Y,Z) = (−b, a+c, c−a)",
   "discriminant": "Δ = b² − 4ac = X² + Z² − Y²",
@@ -1096,6 +1096,33 @@
     -4.6,
     4.4
    ]
-  }
+  },
+  "snap": [
+   {
+    "description": "transvection from −0.4 + 0.1i to −0.4 + i, Snap on",
+    "gRecordedApprox": [
+     3.162278103784889,
+     1.1384199665329495,
+     4.0371747379733554e-16,
+     0.31622772165519336
+    ],
+    "gamma": [
+     1,
+     4,
+     0,
+     1
+    ],
+    "selection": [
+     13,
+     20,
+     34
+    ],
+    "absorbed": [
+     13,
+     -84,
+     162
+    ]
+   }
+  ]
  }
 }
