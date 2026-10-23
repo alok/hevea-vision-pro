@@ -7,6 +7,12 @@ from functools import partial
 import argparse
 
 
+class Server(ThreadingHTTPServer):
+    # The default listen backlog of 5 is shorter than one page load's burst of module requests; on macOS the excess
+    # connections were reset (ERR_CONNECTION_RESET on a fresh load). 128 is the macOS kern.ipc.somaxconn cap.
+    request_queue_size = 128
+
+
 class Handler(SimpleHTTPRequestHandler):
     def end_headers(self):
         self.send_header("Cache-Control", "no-store")
@@ -21,6 +27,6 @@ if __name__ == "__main__":
     handler = partial(Handler, directory=str(args.directory))
     print(f"Farey preview: http://127.0.0.1:{args.port}", flush=True)
     try:
-        ThreadingHTTPServer(("127.0.0.1", args.port), handler).serve_forever()
+        Server(("127.0.0.1", args.port), handler).serve_forever()
     except KeyboardInterrupt:
         pass
