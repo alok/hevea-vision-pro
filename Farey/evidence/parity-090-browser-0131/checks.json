@@ -1,0 +1,41 @@
+{
+  "sourceCommit": "8b32d7ae8f67fc47f381407bbcdf6f24e28de771",
+  "native": {
+    "version": "0.9.0",
+    "build": "12",
+    "runtime": "visionOS Simulator27.2",
+    "configuration": "Debug, ordinary launch",
+    "test": "testCoefficientSpaceProjectionAndLifecycle",
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "captureProtocol": "state-held request/ack simctl screenshots",
+    "screenshotCount": 5,
+    "physicalInstallVerified": true,
+    "physicalLaunchOrCaptureTested": false,
+    "spatialTapProbe": {
+      "failedTests": 1,
+      "route": "XCTest activation of actual 3D entity",
+      "error": "Failed to received invalid activation point transform (nil) from Accessibility.",
+      "selectionVerified": false,
+      "modelCallSubstituted": false
+    }
+  },
+  "browser": {
+    "version": "0.13.1",
+    "runtime": "isolated headless Chrome156.0.8078.48",
+    "actualXRSession": false,
+    "pointerClickPassed": true,
+    "userChromeModified": false
+  },
+  "cameraMatch": "Diagnostic crop/placement and calibrated pinhole camera, not native pose telemetry or physical stereo calibration",
+  "baselineStatus": "not visually or functionally equivalent",
+  "screenshots": {
+    "parity-090-native-other-side.png": "0a1657b3309753c4cdc46b5f9da0b1638ecb5126993e6aef4857689827750a32",
+    "parity-090-native-oblique.png": "e631db183cce2ff323ff7d6a55f04c598f5f0827bbfbb747d32f3967eb578c25",
+    "parity-090-browser-origin.png": "47bba5e4fd92d55693585f92384862958bb88b2e95048ddba506aee9e384f641",
+    "parity-090-browser-default.png": "44a7867a63ea42ffee5c8f7bdb3f20c6e7f9683f8647d852be06964c55bdafce",
+    "parity-090-browser-matched-subset.png": "76e7f2c2f849fa63323f9fe28d66aa2018c4c36eb2c3f8c37a4b40727cae46f9"
+  },
+  "screenshotDirectory": "../../../docs/screenshots/"
+}

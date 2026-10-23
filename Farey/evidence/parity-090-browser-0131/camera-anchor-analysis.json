@@ -1,0 +1,64 @@
+{
+  "nativeImageSize": [
+    3840,
+    2160
+  ],
+  "centroids": {
+    "apex": {
+      "pixelCount": 1500,
+      "centre": [
+        2413.268666666667,
+        1519.5386666666666
+      ],
+      "predicted": [
+        2413.714285714286,
+        1518.857142857143
+      ],
+      "residualPixels": 0.8142794597363423
+    },
+    "projectedMarker": {
+      "pixelCount": 2085,
+      "centre": [
+        2481.2235011990406,
+        1190.1630695443646
+      ],
+      "predicted": [
+        2481.6769672687124,
+        1191.286527180467
+      ],
+      "residualPixels": 1.2115232298475354
+    }
+  },
+  "calibratedCamera": {
+    "position": [
+      0,
+      1.6,
+      0
+    ],
+    "quaternion": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "horizontalFOVDegrees": 90,
+    "verticalFOVDegrees": 58.715507085582544,
+    "source": "Pinhole calibration checked against two visible native anchors, not device pose telemetry"
+  },
+  "browserAnchorCentres": {
+    "apex": {
+      "pixels": 56,
+      "centre": [
+        2414.0178571428573,
+        1514.8214285714287
+      ]
+    },
+    "projectedMarker": {
+      "pixels": 56,
+      "centre": [
+        2480.785714285714,
+        1193.107142857143
+      ]
+    }
+  }
+}

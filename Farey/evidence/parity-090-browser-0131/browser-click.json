@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "actualPointerClick": true,
+  "actualXRSession": false,
+  "x": 971.3756169914328,
+  "y": 465.0384094325371,
+  "expected": [
+    2,
+    1,
+    1
+  ],
+  "selected": "(a,b,c) = (2, 1, 1) \u00b7 \u0394 = -7"
+}
