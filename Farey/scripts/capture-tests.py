@@ -32,6 +32,8 @@ def main():
     parser.add_argument("--simulator", help="Use an existing simulator instead of creating one")
     parser.add_argument("--output", type=Path, help="A new output directory")
     parser.add_argument("--only-testing", action="append", default=[])
+    parser.add_argument("--record-video", nargs=2, metavar=("START", "STOP"),
+                        help="Record the simulator display from capture START through capture STOP to recording.mp4")
     parser.add_argument("--spatial-probe", action="store_true",
                         help="Also run the opt-in spatial tap diagnostic (FAREY_SPATIAL_PROBE=1)")
     args = parser.parse_args()
@@ -67,7 +69,9 @@ def main():
         enable_capture(candidates[0], configured)
         if args.spatial_probe:
             enable_spatial_probe(configured)
-        coordinator = CaptureCoordinator(simulator, output / "screenshots")
+        coordinator = CaptureCoordinator(
+            simulator, output / "screenshots", record=args.record_video,
+            video=output / "recording.mp4" if args.record_video else None)
         coordinator.start()
         result = output / "Tests.xcresult"
         command = ["xcodebuild", "test-without-building", "-xctestrun", str(configured),
