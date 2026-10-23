@@ -36,6 +36,12 @@ public struct CuttingPlane: Equatable, Sendable {
     }
   }
 
+  /// Supported size of a reduced normal or a paired point's coefficients, far beyond the drawn R ≤ 12, so every
+  /// product used here stays exact. Larger inputs are refused with `.tooLarge`, never trapped.
+  public static let maximumMagnitude = 1 << 20
+  /// Bound on `section` sample counts.
+  public static let maximumSegments = 4096
+
   /// Primitive, with its first nonzero coefficient positive.
   public let normal: CoefficientPoint
   public let endpoints: [Endpoint]
@@ -64,8 +70,10 @@ public struct CuttingPlane: Equatable, Sendable {
   /// and multiples, determine no unique plane.
   public static func pair(_ first: CoefficientPoint, _ second: CoefficientPoint) -> Result<CuttingPlane, CuttingPlaneError> {
     for point in [first, second] {
-      // Products in the dual cross product below must stay exact.
-      guard [point.a, point.b, point.c].allSatisfy({ abs($0) <= 1 << 20 }), let delta = discriminant(point) else {
+      // Products in the dual cross product below must stay exact; compare magnitudes, since abs(Int.min) traps.
+      guard [point.a, point.b, point.c].allSatisfy({ $0.magnitude <= UInt(maximumMagnitude) }),
+        let delta = discriminant(point)
+      else {
         return .failure(.tooLarge)
       }
       guard delta < 0 else { return .failure(.notInterior) }
@@ -77,8 +85,17 @@ public struct CuttingPlane: Equatable, Sendable {
     return fromNormal(normal)
   }
 
+  /// Exact membership; a point whose products would overflow Int is reported as not a member rather than trapping.
   public func contains(_ point: CoefficientPoint) -> Bool {
-    -2 * normal.c * point.a + normal.b * point.b - 2 * normal.a * point.c == 0
+    let terms = [(-2 * normal.c, point.a), (normal.b, point.b), (-2 * normal.a, point.c)]
+    var sum = 0
+    for (k, x) in terms {
+      let (product, o1) = k.multipliedReportingOverflow(by: x)
+      let (next, o2) = sum.addingReportingOverflow(product)
+      if o1 || o2 { return false }
+      sum = next
+    }
+    return sum == 0
   }
 
   /// "2a −2c = 0", in the browser's form.
@@ -102,8 +119,10 @@ public struct CuttingPlane: Equatable, Sendable {
   }
 
   /// The plane's patch inside the drawn double cone's bounding cylinder |Y| ≤ radius, X² + Z² ≤ radius², as a closed
-  /// loop of display-coordinate points around the origin.
+  /// loop of display-coordinate points around the origin; empty for a non-finite or nonpositive radius or a segment
+  /// count outside 1...maximumSegments.
   public func section(radius: Double, segments: Int = 64) -> [SIMD3<Double>] {
+    guard radius.isFinite, radius > 0, (1...Self.maximumSegments).contains(segments) else { return [] }
     let (na, nb, nc) = (Double(normal.a), Double(normal.b), Double(normal.c))
     let (x, y, z) = (-nb, -na - nc, nc - na)
     let horizontal = (x * x + z * z).squareRoot(), length = (x * x + y * y + z * z).squareRoot()
@@ -123,18 +142,24 @@ public struct CuttingPlane: Equatable, Sendable {
     let (delta, o4) = bb.subtractingReportingOverflow(ac4)
     return o1 || o2 || o3 || o4 ? nil : delta
   }
+  /// Reduces by the gcd in unsigned magnitudes (so even Int.min reduces without trapping), makes the first nonzero
+  /// coefficient positive, and refuses a result beyond `maximumMagnitude`. p must be nonzero.
   static func primitive(_ p: CoefficientPoint) -> CoefficientPoint? {
-    let divisor = gcd(gcd(p.a, p.b), p.c)
-    let sign = (p.a != 0 ? p.a : p.b != 0 ? p.b : p.c) < 0 ? -1 : 1
-    let result = CoefficientPoint(p.a / divisor * sign, p.b / divisor * sign, p.c / divisor * sign)
-    // Keep coefficients small enough that every product above stays exact.
-    return [result.a, result.b, result.c].allSatisfy { abs($0) <= 1 << 20 } ? result : nil
+    let magnitudes = [p.a.magnitude, p.b.magnitude, p.c.magnitude]
+    let divisor = magnitudes.reduce(0, gcd)
+    let reduced = magnitudes.map { $0 / divisor }
+    guard reduced.allSatisfy({ $0 <= UInt(maximumMagnitude) }) else { return nil }
+    let lead = (p.a != 0 ? p.a : p.b != 0 ? p.b : p.c) < 0 ? -1 : 1
+    let signed = zip(reduced, [p.a, p.b, p.c]).map { Int($0) * ($1 < 0 ? -1 : 1) * lead }
+    return CoefficientPoint(signed[0], signed[1], signed[2])
   }
-  static func gcd(_ x: Int, _ y: Int) -> Int {
-    var (a, b) = (x.magnitude, y.magnitude)
+  static func gcd(_ x: UInt, _ y: UInt) -> UInt {
+    var (a, b) = (x, y)
     while b != 0 { (a, b) = (b, a % b) }
-    return Int(a)
+    return a
   }
+  /// For the small, already bounded values of endpoint arithmetic.
+  static func gcd(_ x: Int, _ y: Int) -> Int { Int(gcd(x.magnitude, y.magnitude)) }
   static func isqrt(_ n: Int) -> Int {
     var x = Int(Double(n).squareRoot())
     while x * x > n { x -= 1 }

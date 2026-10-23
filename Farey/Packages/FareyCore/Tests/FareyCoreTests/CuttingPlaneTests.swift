@@ -90,4 +90,25 @@ final class CuttingPlaneTests: XCTestCase {
       candidates.filter { plane.contains($0) && $0.discriminant < 0 },
       [CoefficientPoint(1, 0, 1), CoefficientPoint(2, 2, 2), CoefficientPoint(-1, 0, -1)])
   }
+  /// Defensive boundaries of the public helpers (the drawn UI only reaches R ≤ 12): refused or false, never trapped.
+  func testExtremeInputsAreRefusedNotTrapped() throws {
+    XCTAssertEqual(CuttingPlane.fromNormal(CoefficientPoint(Int.min, 0, 0)), .failure(.notExterior))  // reduces to (1,0,0)
+    XCTAssertEqual(CuttingPlane.fromNormal(CoefficientPoint(Int.min, 1, 0)), .failure(.tooLarge))
+    XCTAssertEqual(CuttingPlane.fromNormal(CoefficientPoint(Int.max, 0, 0)), .failure(.notExterior))
+    // A legitimately scaled normal still reduces exactly.
+    XCTAssertEqual(try CuttingPlane.fromNormal(CoefficientPoint(1 << 40, 0, -(1 << 40))).get().normal, CoefficientPoint(1, 0, -1))
+    XCTAssertEqual(CuttingPlane.pair(CoefficientPoint(Int.min, 0, 1), CoefficientPoint(1, 0, 1)), .failure(.tooLarge))
+    XCTAssertEqual(CuttingPlane.pair(CoefficientPoint(1, 0, 1), CoefficientPoint(Int.min, 0, Int.min)), .failure(.tooLarge))
+    let plane = try CuttingPlane.fromNormal(CoefficientPoint(1, 0, -1)).get()
+    XCTAssertFalse(plane.contains(CoefficientPoint(Int.max, 0, Int.max)))
+    XCTAssertFalse(plane.contains(CoefficientPoint(Int.min, 0, Int.min)))
+    XCTAssertTrue(plane.contains(CoefficientPoint(1 << 40, 7, 1 << 40)))
+    let invalid: [(Double, Int)] = [
+      (6, -1), (6, 0), (6, CuttingPlane.maximumSegments + 1), (.nan, 64), (.infinity, 64), (0, 64), (-1, 64),
+    ]
+    for (radius, segments) in invalid {
+      XCTAssertEqual(plane.section(radius: radius, segments: segments), [], "\(radius) \(segments)")
+    }
+    XCTAssertEqual(plane.section(radius: 6, segments: 1).count, 2)
+  }
 }
