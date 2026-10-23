@@ -10,7 +10,7 @@ extension FareyUITests {
     app.launch()
     Self.launched = true
     XCTAssertTrue(require("coefficient-state").label.contains("(1, -1, 2)"))
-    XCTAssertTrue(require("render-receipt").label.contains("280 coefficient points"))
+    XCTAssertTrue(require("render-receipt").label.contains("480 coefficient points · radius 6"))
     capture("showcase-coefficient-cone")
     require("show-farey").tap()
     XCTAssertEqual(require("word-state").label, "RLR")

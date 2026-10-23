@@ -93,8 +93,8 @@ import SwiftUI
         lattice.root.isEnabled = showingLattice
         if model.starscapeMode {
           model.renderReceipt = try starscape.render(
-            selected: model.coefficient,
-            showProjection: model.showProjection, viewpoint: model.coefficientView)
+            selected: model.coefficient, showProjection: model.showProjection,
+            viewpoint: model.coefficientView, crop: model.coefficientCrop)
         } else if showingLattice {
           model.renderReceipt = try lattice.render(
             state: model.state, bound: model.depth * 2,

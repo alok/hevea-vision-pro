@@ -19,16 +19,46 @@ import SwiftUI
   var starscapeMode = true
   var coefficient = Starscape.examples[0]
   var coefficientView = 0
-  var showProjection = true
+  var showProjection = false
+  var coefficientRadius = CoefficientBall.defaultRadius
+  var coefficientUpperOnly = false
+  var coefficientColorLower = false
+  var coefficientEntryError: String?
+  var coefficientCrop: StarscapeRenderer.Crop {
+    .init(radius: coefficientRadius, upperOnly: coefficientUpperOnly, colorLower: coefficientColorLower)
+  }
+  /// The inspected triple keeps its identity when a filter or radius hides it.
+  var coefficientShown: Bool {
+    CoefficientBall.shown(coefficient, radius: coefficientRadius, upperOnly: coefficientUpperOnly)
+  }
   func nextCoefficient() {
-    let index = Starscape.examples.firstIndex(of: coefficient) ?? -1
-    coefficient = Starscape.examples[(index + 1) % Starscape.examples.count]
+    let sequence = CoefficientBall.nextSequence
+    let index = sequence.firstIndex(of: coefficient) ?? -1
+    coefficient = sequence[(index + 1) % sequence.count]
+    coefficientEntryError = nil
     revision += 1
+  }
+  /// Exact signed entry; a rejected entry leaves every part of the coefficient state unchanged.
+  @discardableResult func enterCoefficient(_ text: String) -> Bool {
+    switch CoefficientEntry.parse(text, radius: coefficientRadius) {
+    case .success(let point):
+      coefficient = point
+      coefficientEntryError = nil
+      revision += 1
+      return true
+    case .failure(let error):
+      coefficientEntryError = error.message
+      return false
+    }
   }
   func resetStarscape() {
     coefficient = Starscape.examples[0]
     coefficientView = 0
-    showProjection = true
+    showProjection = false
+    coefficientRadius = CoefficientBall.defaultRadius
+    coefficientUpperOnly = false
+    coefficientColorLower = false
+    coefficientEntryError = nil
     revision += 1
   }
   var immersionOpen = false
