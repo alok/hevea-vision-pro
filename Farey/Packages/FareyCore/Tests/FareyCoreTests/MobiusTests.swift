@@ -92,7 +92,7 @@ final class MobiusTests: XCTestCase {
     XCTAssertEqual(small.nearestIntegral, .identity)
     let nearT = try XCTUnwrap(try XCTUnwrap(Mobius.transvection(from: [0, 1], to: [0.05, 1.1])) * .t)
     let snapped = nearT.nearestIntegral
-    XCTAssertEqual(snapped.asMobius.act(SIMD2(0, 1)), Mobius.t.act(SIMD2(0, 1)))
+    XCTAssertEqual(try XCTUnwrap(snapped).asMobius.act(SIMD2(0, 1)), Mobius.t.act(SIMD2(0, 1)))
     XCTAssertNil(try XCTUnwrap(Mobius.transvection(from: [0, 1], to: [1, 1])).integral)
     XCTAssertEqual(Mobius.t.integral, IntegralMobius(p: 1, q: 1, r: 0, s: 1))
   }
@@ -105,11 +105,22 @@ final class MobiusTests: XCTestCase {
     // The g recorded from her viewer for that drag (reading 'nearest γ [1,4;0,1]').
     let recorded = try XCTUnwrap(Mobius(3.162278103784889, 1.1384199665329495, 4.0371747379733554e-16, 0.31622772165519336))
     XCTAssertEqual(recorded.nearestIntegral, IntegralMobius(p: 1, q: 4, r: 0, s: 1))
-    XCTAssertEqual(try g.nearestIntegral.image(of: CoefficientPoint(13, 20, 34)), CoefficientPoint(13, -84, 162))
+    XCTAssertEqual(try XCTUnwrap(g.nearestIntegral).image(of: CoefficientPoint(13, 20, 34)), CoefficientPoint(13, -84, 162))
     XCTAssertEqual(Mobius.identity.polarAngle, 0)
     XCTAssertEqual(abs(Mobius.sGenerator.polarAngle), .pi / 2, accuracy: 1e-12)
   }
+  /// Half-way translations round toward +∞, as her viewer's Math.round does: [1, −½; 0, 1] snaps to the identity and
+  /// [1, ½; 0, 1] to T.
+  func testSnapRoundsHalvesTowardPositiveInfinity() throws {
+    XCTAssertEqual(try XCTUnwrap(Mobius(1, -0.5, 0, 1)).nearestIntegral, .identity)
+    XCTAssertEqual(try XCTUnwrap(Mobius(1, 0.5, 0, 1)).nearestIntegral, IntegralMobius(p: 1, q: 1, r: 0, s: 1))
+    XCTAssertEqual(try XCTUnwrap(Mobius(1, -1.5, 0, 1)).nearestIntegral, IntegralMobius(p: 1, q: -1, r: 0, s: 1))
+  }
   func testInvalidAndOutOfDomainInputsAreRefused() throws {
+    XCTAssertNil(Mobius(1e200, 0, 0, 1e-200))   // determinant 1, but beyond the supported entry size
+    XCTAssertNil(Mobius(2e6, 0, 0, 5e-7))
+    XCTAssertNotNil(Mobius(1e3, 0, 0, 1e-3))
+    XCTAssertNil(Mobius.transvection(from: [0, 1], to: [0, 1e-300]))
     XCTAssertNil(Mobius(1, 0, 0, -1))
     XCTAssertNil(Mobius(.nan, 0, 0, 1))
     XCTAssertNil(Mobius(.infinity, 0, 0, 1))

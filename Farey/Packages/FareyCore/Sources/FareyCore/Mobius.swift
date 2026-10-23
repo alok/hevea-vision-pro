@@ -18,11 +18,16 @@ public struct Mobius: Equatable, Sendable {
   init(unchecked p: Double, _ q: Double, _ r: Double, _ s: Double) {
     (self.p, self.q, self.r, self.s) = (p, q, r, s)
   }
-  /// Rescaled to determinant 1; nil for a nonfinite matrix or a nonpositive determinant (not in SL₂(ℝ)), so a caller
-  /// keeps its previous g rather than silently substituting the identity.
+  /// Supported entry size: far beyond any drag, small enough that every action and Snap stays finite.
+  public static let maximumEntry = 1e6
+  /// Rescaled to determinant 1; nil for a nonfinite matrix, a nonpositive determinant (not in SL₂(ℝ)) or an entry
+  /// beyond `maximumEntry` after rescaling, so a caller keeps its previous g rather than silently substituting the
+  /// identity.
   public init?(_ p: Double, _ q: Double, _ r: Double, _ s: Double) {
     let det = p * s - q * r
     guard [p, q, r, s, det].allSatisfy(\.isFinite), det > 0 else { return nil }
+    let k = 1 / det.squareRoot()
+    guard [p, q, r, s].allSatisfy({ abs($0 * k) <= Mobius.maximumEntry }) else { return nil }
     if det == 1 {
       self.init(unchecked: p, q, r, s)
     } else {
@@ -102,17 +107,24 @@ public struct Mobius: Equatable, Sendable {
     return theta
   }
   /// Snap, by her viewer's criterion: reduce g·i into the standard fundamental domain by integer translations and
-  /// inversions m; γ = m⁻¹ sends i to the orbit point in that cell. Of γ and γS (S fixes i), return the one whose
-  /// residual γ⁻¹g turns least about i (smallest |polar angle|), signed with positive trace.
-  public var nearestIntegral: IntegralMobius {
+  /// inversions m (rounding halves toward +∞, as her viewer's Math.round does); γ = m⁻¹ sends i to the orbit point in
+  /// that cell. Of γ and γS (S fixes i), keep γ unless γS's residual turns less about i by more than 1e−12, her
+  /// tie tolerance; signed with positive trace. Nil if g·i or the reduction leaves the finite exact range, so the
+  /// caller keeps its state.
+  public var nearestIntegral: IntegralMobius? {
     var w = act(SIMD2(0, 1)), m = IntegralMobius.identity
+    let bound = Double(1 << 20)
+    var reduced = false
     for _ in 0..<200 {
-      let n = Int(w.x.rounded())
+      guard w.x.isFinite, w.y.isFinite, w.y > 0, abs(w.x) <= bound else { return nil }
+      let n = Int((w.x + 0.5).rounded(.down))
       if n != 0 { w.x -= Double(n); m = IntegralMobius(p: 1, q: -n, r: 0, s: 1) * m }
       if w.x * w.x + w.y * w.y < 1 - 1e-12 {
         w = Mobius.sGenerator.act(w); m = IntegralMobius.sGenerator * m
-      } else { break }
+      } else { reduced = true; break }
+      guard [m.p, m.q, m.r, m.s].allSatisfy({ $0.magnitude <= UInt(1 << 20) }) else { return nil }
     }
+    guard reduced else { return nil }
     let gamma = m.inverse, candidates = [gamma, gamma * IntegralMobius.sGenerator]
     func turn(_ c: IntegralMobius) -> Double {
       let residual = c.inverse.asMobius
@@ -121,7 +133,7 @@ public struct Mobius: Equatable, Sendable {
         residual.r * p + residual.s * r, residual.r * q + residual.s * s)
       return abs(product.polarAngle)
     }
-    let best = turn(candidates[1]) < turn(candidates[0]) ? candidates[1] : candidates[0]
+    let best = turn(candidates[1]) < turn(candidates[0]) - 1e-12 ? candidates[1] : candidates[0]
     let trace = best.p + best.s
     return trace > 0 || (trace == 0 && (best.p != 0 ? best.p : best.r) > 0) ? best : best.negated
   }

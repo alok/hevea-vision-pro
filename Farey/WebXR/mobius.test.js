@@ -99,3 +99,11 @@ test('Snap picks the candidate with the smaller polar rotation, as her viewer do
   close(polarAngle([Math.cos(0.3), -Math.sin(0.3), Math.sin(0.3), Math.cos(0.3)]), 0.3);
   close(polarAngle([-1, 0, 0, -1]), 0);  // −I acts as the identity
 });
+
+test('Snap rounds halves toward +∞ and refuses a nonfinite image of i', () => {
+  assert.deepEqual(nearestIntegral([1, -0.5, 0, 1]), [1, 0, 0, 1]);
+  assert.deepEqual(nearestIntegral([1, 0.5, 0, 1]), [1, 1, 0, 1]);
+  assert.deepEqual(nearestIntegral([1, -1.5, 0, 1]), [1, -1, 0, 1]);
+  assert.equal(nearestIntegral([1e200, 0, 0, 1e-200]), null);
+  assert.equal(nearestIntegral([1, 1e300, 0, 1]), null);
+});

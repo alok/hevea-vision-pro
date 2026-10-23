@@ -121,7 +121,9 @@ const mobius = {
     gamma: nearestIntegral([3.162278103784889, 1.1384199665329495, 4.0371747379733554e-16, 0.31622772165519336]),
     selection: [13, 20, 34],
     absorbed: pushforwardExact(nearestIntegral(transvection({ x: -0.4, y: 0.1 }, { x: -0.4, y: 1 })), [13, 20, 34]).map(Number),
-  }],
+  },
+  // Half-way translations: rounding halves toward +∞, as her viewer's Math.round does.
+  ...[[1, -0.5, 0, 1], [1, 0.5, 0, 1], [1, -1.5, 0, 1]].map(g => ({ description: 'half-way translation', gRecordedApprox: g, gamma: nearestIntegral(g) }))],
 };
 function applyPush(g, abc) { const m = pushforward(g); return [0, 1, 2].map(i => m[3 * i] * abc[0] + m[3 * i + 1] * abc[1] + m[3 * i + 2] * abc[2]); }
 

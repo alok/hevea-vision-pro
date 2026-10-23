@@ -257,7 +257,8 @@ function showGroup(){
     $('group-state').textContent=`g = [${group[0]}, ${group[1]}; ${group[2]}, ${group[3]}] ∈ SL₂(ℤ): the lattice maps to itself; the selection (${selected.join(', ')}) is drawn where (${image.join(', ')}) was`;
     return;
   }
-  $('group-state').textContent=`g = ${matrixText(group)} · off SL₂(ℤ) (nearest γ = ${matrixText(nearestIntegral(group)).replace(/\.00/g,'')}); points keep their integer identities at real positions`;
+  const nearest=nearestIntegral(group);
+  $('group-state').textContent=`g = ${matrixText(group)} · off SL₂(ℤ)${nearest?` (nearest γ = ${matrixText(nearest).replace(/\.00/g,'')})`:''}; points keep their integer identities at real positions`;
 }
 // Her Snap and integer generators absorb an integer g: since γ ∈ SL₂(ℤ) maps the lattice to itself, the view with
 // g = γ is the view with g = 1 in which every point is relabelled by γ. So the selection (and pair) become their
@@ -269,7 +270,7 @@ function absorb(gamma){
   if(secondSelection)secondSelection=pushforwardExact(gamma,secondSelection).map(Number);
   setGroup(identity);
 }
-const snapNow=()=>absorb(nearestIntegral(group));
+const snapNow=()=>{const gamma=nearestIntegral(group);if(gamma)absorb(gamma);};
 const rootsPane=new RootsPane($('roots-pane'),{
   onDragStep:(z0,z1)=>setGroup(dragStep(group,z0,z1)),
   onDragEnd:()=>{if(snapGroup)snapNow();},
