@@ -1,5 +1,13 @@
 # Native 0.11.0 (15) candidate: cutting planes and Origin/Inhabit
 
+**Status (2026-10-23):** 0.11.0 (15) is installed in the main simulator, launched and visually checked; every installed file matches the tested build from `7ec3428`. The launch's log receipt was not observed. Test boundaries:
+
+- **Full suite:** 46/46 on the build-14 code (`ca809d2`).
+- **Build 15:** the focused unit, plane/placement and lifecycle tests, plus the matched plane/Origin evidence test (separately, after a harness fix).
+- **Not passing:** the opt-in spatial tap diagnostic did not pass (see below).
+
+A silent 54-second simulator recording of the matched sequence was captured with the test that passed alongside it (`capture-tests.py --record-video`); it stays local.
+
 This stage adds the browser's cutting planes and an ambient Origin/Inhabit placement. The evidence is visionOS Simulator 27.2 screenshots taken by passing XCTests in a disposable simulator, plus an independent cross-check against the browser's code. The main simulator keeps the promoted 0.10.0 (13) showcase until this candidate passes its full regression. Nothing here is a physical-headset claim.
 
 **Implemented and tested**
