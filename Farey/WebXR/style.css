@@ -86,5 +86,5 @@ body.immersive header, body.immersive .controls { display: none; }
 #hover-label { position: fixed; left: 0; top: 0; z-index: 3; pointer-events: none; }
 #hover-label[hidden] { display: none; }
 .hover-ring { position: absolute; left: -6px; top: -6px; width: 12px; height: 12px; box-sizing: border-box; border: 1px solid #f0f5f8bf; border-radius: 50%; }
-#hover-text { position: absolute; left: 9px; top: -4px; white-space: nowrap; font: 12px system-ui,-apple-system,sans-serif; line-height: 1.2; color: #f0f5f8d9;
+#hover-text { position: absolute; left: 9px; top: -8px; white-space: nowrap; font: 12px ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace; line-height: 16px; color: #f0f5f8d9;
   text-shadow: 0 0 2px #05090cf0, 0 0 3px #05090cf0, 0 0 4px #05090ceb, 1px 1px 2px #05090ceb, -1px -1px 2px #05090ceb; }

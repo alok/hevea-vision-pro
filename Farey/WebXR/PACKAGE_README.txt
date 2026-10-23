@@ -36,8 +36,9 @@ saturate. Exterior, cone and lower-interior categories have separate
 swatches. Stange's palette is also available; its category hues are
 approximations. Coloring the lower half is explicitly our extension.
 
-MÖBIUS DRAG (0.15.0)
+MÖBIUS DRAG (0.15.0-0.15.1)
 In a window at least 1000 px wide, the roots pane beside the 3D view shows
+(narrower windows: the 3D | Roots switch over the view shows one at a time)
 the upper interior roots in the upper half-plane. Drag it to apply a real
 Möbius transformation g: the root under the pointer follows it, and the 3D
 cloud moves by the matching Lorentz map. At Origin, dragging the sky does

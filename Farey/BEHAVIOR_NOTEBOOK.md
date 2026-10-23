@@ -7,17 +7,17 @@ Durable notes on how Stange's Starscape/Lattice viewer behaves and how this proj
 **Source** (`Ne`, `rn`):
 
 - **Formatter:** the polynomial is written with spaced operators (`15x² + 31x + 31`, `x² − 2x + 1`), a leading minus without a space, implicit unit coefficients and zero terms dropped. It uses the actual signed coefficients.
-- **Drawing:** one plain line at 12 px, left-aligned, stroked first with a 4 px round-joined halo at 0.92 opacity, then filled. Hover labels use 0.75 ink and selected labels full text colour.
+- **Drawing:** one plain line in `12px ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace`, middle baseline (recorded from her canvas calls), left-aligned, stroked first with a 4 px round-joined pale halo at 0.92 opacity, then filled. Hover labels use 0.75 ink and selected labels full text colour.
 - **Placement:** below-right of the point by max(8, r+7) and max(8, r+6) pixels, with no card.
 - **Where labels appear:** in the roots pane, hover labels the hovered star. In 3D, hover only highlights; labels go on selections.
 
 **Ours (browser, since this commit):**
 
 - **Formatter:** `polynomial()` gives the same typography.
-- **Desktop hover label:** one plain 12 px line just right of a thin ring, over a dark halo (our background is black), flipping left at the right edge and clamping vertically. It never reduces a multiple.
+- **Labels:** the 3D hover label and the roots-pane labels use her 12 px monospace stack, over a dark halo because our background is black (her halo is pale on her light theme). The 3D label sits just right of a thin ring, flipping left at the right edge and clamping vertically. Labels never reduce a multiple.
 - **Our extension:** 3D hover labels, which the source does not show.
 
-**Native:** a polynomial hover label is impossible from gaze alone, because visionOS renders hover outside the app and never tells it which entity is being looked at. Native labels can only follow selection.
+**Native:** polynomial hover is missing. visionOS never tells the app which entity is being looked at, but that doesn't rule out a label revealed by the system itself: RealityKit's shader hover effect and shared hover GroupIDs (visionOS 2 and 26, present in the installed SDK) could show a pre-rendered polynomial for exactly the hovered point. That is an untested route; it needs a prototype and real visual proof before it counts.
 
 ## Möbius drag (2026-10-23)
 
@@ -48,7 +48,9 @@ Durable notes on how Stange's Starscape/Lattice viewer behaves and how this proj
 - **3D lift:** `lattice.xyz` holds J·ρ(g)·(a,b,c), with each lattice change a new picking generation, so drawing, click picking and worker hover use the moved geometry. Glyphs use the base Δ.
 - **Origin:** dragging at Origin moves the sky.
 - **Snap and generators:** these absorb γ into the selection and pair. That matches the recording for Snap; for the generator buttons it follows the source's code, not a recording.
-- **Departures:** the drawn set is the base ball moved by g (the source recomputes its crop), there is no animation, and the pane is hidden below 1000 px.
+- **Compact windows (0.15.1):** below 1000 px a **3D | Roots** switch over the view shows one pane at a time in the same place, keeping selection, g and camera. `compact-checks.js` drives it with real touch input at 390×844 and 844×390: drag, tap, a cancelled touch, Origin and return, and Reset.
+- **Picking:** multiples share a root, so a tap within half a pixel of several centers picks the largest, visible star (fixed in 0.15.1; before, rounding could pick a hidden multiple).
+- **Departures:** the drawn set is the base ball moved by g (the source recomputes its crop), there is no animation, and there is no pinch zoom in the pane.
 - **Tests:** `mobius-checks.js` checks all of this with real pointer input; the dragged root ends within 0.0001 px of the pointer.
 
 **Native:** not yet implemented.
@@ -57,6 +59,6 @@ Euclidean camera motions in both platforms remain separate from g: they change n
 
 ## Versions referenced
 
-- Browser 0.15.0.
+- Browser 0.15.1.
 - Native 0.11.0 (15) in the main simulator.
 - The source was observed live on 2026-10-23.

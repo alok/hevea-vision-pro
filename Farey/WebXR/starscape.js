@@ -280,6 +280,23 @@ const rootsPane=new RootsPane($('roots-pane'),{
 // Her Symmetry controls: generators compose on the left, Identity returns to g = 1, Snap settles drags on SL₂(ℤ).
 for(const [id,generator] of [['g-tinv',[1,-1,0,1]],['g-s',[0,-1,1,0]],['g-t',[1,1,0,1]]])$(id).onclick=()=>absorb(multiply(generator,group));
 $('g-identity').onclick=()=>setGroup(identity);
+// Below 1000 px one pane shows at a time, in the 3D view's place; the switch keeps selection, g and camera.
+let compactRoots=false;
+function layoutPanes(){
+  const compact=innerWidth<1000,pane=$('roots-pane'),toggle=$('view-switch');
+  document.body.classList.toggle('roots-view',compact&&compactRoots);
+  for(const key of ['left','top','width','height','right'])pane.style[key]='';
+  if(compact){
+    const r=$('viewport').getBoundingClientRect();
+    toggle.style.left=`${r.right-toggle.offsetWidth-8}px`;toggle.style.top=`${r.top+8}px`;
+    if(compactRoots)Object.assign(pane.style,{left:`${r.left}px`,top:`${r.top}px`,width:`${r.width}px`,height:`${r.height}px`,right:'auto'});
+  }
+  $('show-3d').setAttribute('aria-pressed',String(!compactRoots));$('show-roots').setAttribute('aria-pressed',String(compactRoots));
+  rootsPane.draw();
+}
+$('show-3d').onclick=()=>{compactRoots=false;layoutPanes();render();};
+$('show-roots').onclick=()=>{compactRoots=true;clearHover();layoutPanes();};
+window.addEventListener('resize',layoutPanes);layoutPanes();
 $('snap').onchange=()=>{snapGroup=$('snap').checked;if(snapGroup)snapNow();};
 const tempLocal=new THREE.Vector3(),tempWorld=new THREE.Vector3();
 // Which of her size causes applies: the origin-eye rule in Origin mode, plane emphasis for upper members.

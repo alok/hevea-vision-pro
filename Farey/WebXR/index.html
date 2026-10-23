@@ -26,6 +26,15 @@
     /* The roots pane sits right of the 3D view, as in her viewer, when the window is wide enough for both. */
     #roots-pane { display: none; position: fixed; z-index: 1; background: #000; border-left: 1px solid #1d2a33; touch-action: none; cursor: grab; }
     #roots-pane.is-dragging { cursor: grabbing; }
+    /* Narrower windows show one pane at a time; the 3D | Roots switch chooses, and both keep their state. */
+    #view-switch { display: none; position: fixed; z-index: 4; gap: 4px; }
+    #view-switch button { padding: 4px 10px; font-size: 13px; }
+    #view-switch button[aria-pressed="true"] { background: #2a4a5c; border-color: #9fdcff; }
+    @media(max-width: 999px) {
+      #view-switch { display: flex; }
+      body.roots-view #roots-pane { display: block; }
+      body.roots-view #viewport { visibility: hidden; }
+    }
     @media(min-width: 1000px) {
       #viewport { right: calc(12px + (100vw - 404px) / 2); }
       #roots-pane { display: block; top: 140px; right: 12px; width: calc((100vw - 404px) / 2); height: calc(100svh - 156px); }
@@ -41,6 +50,7 @@
 <body>
   <noscript><style>.controls,#debug-toggle{display:none}</style><p class="startup-error">JavaScript is needed for the spatial scene. <a href="https://www.katestange.net/starscape-lattice/">See Katherine Stange’s original viewer.</a></p></noscript>
   <main id="viewport" aria-label="Three-dimensional coefficient lattice and its projection"></main>
+  <div id="view-switch" role="group" aria-label="Show the 3D view or the roots pane"><button type="button" id="show-3d" aria-pressed="true">3D</button><button type="button" id="show-roots" aria-pressed="false">Roots</button></div>
   <canvas id="roots-pane" aria-label="Roots of the upper interior forms in the upper half-plane. Drag to apply a Möbius transformation; Shift-drag pans; click selects."></canvas>
   <div id="hover-label" hidden aria-hidden="true"><span class="hover-ring"></span><span id="hover-text"></span></div>
   <button id="debug-toggle" aria-expanded="false" aria-controls="debug">☰ Debug</button>

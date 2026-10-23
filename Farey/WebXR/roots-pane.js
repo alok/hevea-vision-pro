@@ -7,6 +7,8 @@
 import { pushforward } from './mobius.js';
 
 const minPixels = 0.6, pickPixels = 7, threshold = 4;
+// Her label font, as recorded from her viewer.
+const labelFont = '12px ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace';
 
 export class RootsPane {
   constructor(canvas, { onDragStep, onDragEnd, onPick, label, colorOf }) {
@@ -113,24 +115,29 @@ export class RootsPane {
     const ctx = this.ctx; ctx.strokeStyle = color; ctx.lineWidth = 1.2;
     ctx.beginPath(); ctx.arc(this.stars.x[k], this.stars.y[k], Math.max(this.stars.r[k], minPixels) + 3, 0, 2 * Math.PI); ctx.stroke();
   }
-  /** Her label manner: one 12 px line below right of the star, stroked with a halo, then filled. */
+  /** Her label manner: one 12 px monospace line below right of the star (middle baseline), haloed, then filled. */
   text(text, k, color) {
     const ctx = this.ctx, r = this.stars.r[k], offset = Math.max(8, r + 7), y = this.stars.y[k] + Math.max(8, r + 6);
-    ctx.font = '12px system-ui,-apple-system,sans-serif'; ctx.textAlign = 'left';
+    ctx.font = labelFont; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     // Flip left at the pane's right edge so the label is never clipped.
     const width = ctx.measureText(text).width, { w } = this.size();
     const x = this.stars.x[k] + offset + width > w - 4 ? this.stars.x[k] - offset - width : this.stars.x[k] + offset;
     ctx.lineWidth = 4; ctx.lineJoin = 'round'; ctx.strokeStyle = 'rgba(5,9,12,0.92)'; ctx.strokeText(text, x, y);
-    ctx.fillStyle = color; ctx.fillText(text, x, y);
+    ctx.fillStyle = color; ctx.fillText(text, x, y); ctx.textBaseline = 'alphabetic';
   }
-  /** The star nearest (x, y) within max(7 px, its radius), preferring larger stars on ties; −1 if none. */
+  /**
+   * The star nearest (x, y) within max(7 px, its radius); −1 if none. Multiples share a root, so their centers coincide
+   * up to rounding: stars within half a pixel of the nearest count as tied and the largest (the visible one, a
+   * primitive form before its multiples) wins.
+   */
   pick(x, y) {
     if (!this.stars) return -1;
-    let best = -1, bestDistance = Infinity;
-    const { r } = this.stars;
+    const { r } = this.stars, d = r.map((_, k) => Math.hypot(this.stars.x[k] - x, this.stars.y[k] - y));
+    let nearest = Infinity;
+    for (let k = 0; k < r.length; k++) if (d[k] <= Math.max(pickPixels, r[k])) nearest = Math.min(nearest, d[k]);
+    let best = -1;
     for (let k = 0; k < r.length; k++) {
-      const d = Math.hypot(this.stars.x[k] - x, this.stars.y[k] - y);
-      if (d <= Math.max(pickPixels, r[k]) && (d < bestDistance || (d === bestDistance && r[k] > r[best]))) { best = k; bestDistance = d; }
+      if (d[k] <= Math.max(pickPixels, r[k]) && d[k] <= nearest + 0.5 && (best < 0 || r[k] > r[best])) best = k;
     }
     return best;
   }
