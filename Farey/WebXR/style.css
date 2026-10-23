@@ -82,7 +82,7 @@ body.immersive header, body.immersive .controls { display: none; }
   .controls, .controls:has(#lesson:not([hidden])), .controls:has(#cf-inspector[open]), .controls:has(#construction:not([hidden])) { left: 12px; bottom: 12px; width: calc(46vw - 24px); max-height: calc(100svh - 112px); padding: 12px; }
 }
 /* Pointer hover: a ring on the hovered center and its exact polynomial beside it; never intercepts input. */
-#hover-label { position: fixed; left: 0; top: 0; z-index: 2; pointer-events: none; }
+#hover-label { position: fixed; left: 0; top: 0; z-index: 3; pointer-events: none; }
 #hover-label[hidden] { display: none; }
 .hover-ring { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; box-sizing: border-box; border: 1.5px solid #9fdcff; border-radius: 50%; }
 #hover-text { position: absolute; left: 12px; top: -26px; padding: 2px 7px; white-space: nowrap; font: 15px ui-monospace,Menlo,monospace; color: #9fdcff; background: #0b1218d9; border-radius: 6px; }

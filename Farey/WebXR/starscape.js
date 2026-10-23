@@ -15,7 +15,7 @@ let radius = 6, whole = true, symmetricColor = false, projectionVisible = false;
 let selected = examples[0], lattice = null, cloudMesh, imageMesh;
 let session = null, savedView = null, startingXR = false;
 let inhabited=false, overviewView=null, lookDrag=null, look={yaw:0,pitch:0};
-let hoverPointer=null, hoverFrame=0; // desktop pointer hover (see refreshHover)
+let hoverPointer=null, hoverFrame=0, hoverShown=null; // desktop pointer hover (see refreshHover)
 const overviewFov=45, originFov=100;
 let categories='viridis', glyphKey=null, focusGlyphs=[], sigma=1, planeFocus=false;
 let latticeGeneration=0, secondSelection=null, pairMessage='', pairGlyphs=[], planeMembers=new Set(), originMode=false, timings={}, colorKey='', factorKey='';
@@ -235,7 +235,7 @@ function updateGlyphSizes(){
     item.mesh.scale.setScalar(session?(item.extra?1.4:1):glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,item.extra,item.point?radiusFactor(item.point):1));
   }
 }
-function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();if(session)updateAims();renderer.render(scene,camera);if(!$('debug').hidden)showDebug();if(hoverPointer&&!session)scheduleHover();}}
+function render(){if(!renderer.getContext().isContextLost()){updateGlyphSizes();if(session)updateAims();renderer.render(scene,camera);if(!$('debug').hidden)showDebug();if(hoverPointer&&!session){if(hoverShown&&hoverShown!==hoverKey(hoverPointer.x,hoverPointer.y))showHover(null);scheduleHover();}}}
 // Debug overlay: closed by default; reads only counters that already exist, and only while open.
 let frameMeasure=null, frameRequest=null;
 function showDebug(){
@@ -383,12 +383,13 @@ function selectAt(event){const {ray,angle}=pointerRay(event.clientX,event.client
 renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);showHover(null);if(inhabited){lookDrag={x:e.clientX,y:e.clientY};renderer.domElement.setPointerCapture(e.pointerId);}});renderer.domElement.addEventListener('pointermove',e=>{
   tap.move(e);
   if(e.pointerType==='touch')hoverPointer=null;else hoverPointer={x:e.clientX,y:e.clientY};
-  if(e.buttons||lookDrag)showHover(null);else scheduleHover();
+  // The label belongs to the previous position until the next frame recomputes it, so it is hidden now.
+  showHover(null);if(!e.buttons&&!lookDrag)scheduleHover();
   if(!inhabited||!lookDrag)return;
   look.yaw-=(e.clientX-lookDrag.x)*0.004;
   look.pitch=THREE.MathUtils.clamp(look.pitch-(e.clientY-lookDrag.y)*0.004,-Math.PI/2,Math.PI/2);
   lookDrag={x:e.clientX,y:e.clientY};applyLook();
-});renderer.domElement.addEventListener('pointerup',e=>{lookDrag=null;if(tap.end(e)&&!session)selectAt(e);scheduleHover();});renderer.domElement.addEventListener('pointerleave',()=>{hoverPointer=null;showHover(null);});renderer.domElement.addEventListener('pointercancel',e=>{lookDrag=null;tap.cancel(e);});
+});renderer.domElement.addEventListener('pointerup',e=>{lookDrag=null;if(tap.end(e)&&!session)selectAt(e);scheduleHover();});renderer.domElement.addEventListener('pointerleave',()=>{hoverPointer=null;showHover(null);});renderer.domElement.addEventListener('pointercancel',e=>{lookDrag=null;tap.cancel(e);hoverPointer=null;showHover(null);});
 renderer.domElement.addEventListener('keydown',e=>{const move={w:'forward',s:'back',a:'left',d:'right',q:'down',e:'up'}[e.key.toLowerCase()];if(inhabited&&move){e.preventDefault();moveEye(move);return;}if(e.key==='Escape'&&inhabited){leaveInhabit();return;}if(e.key==='Home'){e.preventDefault();leaveInhabit();resetView();}if(['+','=','-'].includes(e.key)){e.preventDefault();if(inhabited){moveEye(e.key==='-'?'back':'forward');return;}const d=camera.position.distanceTo(controls.target),n=THREE.MathUtils.clamp(d*(e.key==='-'?1.1:1/1.1),controls.minDistance,controls.maxDistance);camera.position.sub(controls.target).multiplyScalar(n/d).add(controls.target);controls.update();}});
 controls.addEventListener('change',render);window.addEventListener('resize',resize);new ResizeObserver(resize).observe($('viewport'));
 const xrPanel=new THREE.Group();xrPanel.position.set(0,1,-1.15);xrPanel.visible=false;scene.add(xrPanel);const xrTargets=[];
@@ -419,28 +420,45 @@ const hoverQueries=new HoverQueries(()=>new Worker(new URL('./aim-worker.js',imp
 // Desktop pointer hover names the exact signed polynomial of the point a click there would select: the same
 // angular radius and nearest-center scan as selectAt. It never selects, pairs or moves the camera. Crops of
 // hoverWorkerPoints or more ask the worker on their own slot with one query in flight, so pointer motion never
-// scans a dense crop on the UI thread. As in XR, an answer is shown only for the ray it was computed from, so
-// orbiting, zooming, Inhabit, a rebuild, a press, leaving the canvas or a session hides it until recomputed.
+// scans a dense crop on the UI thread. Unlike the XR preview's angular tolerance, a worker answer is shown only
+// for exactly the inputs it was asked with (hoverKey): in dense crops half a CSS pixel can change the picked
+// point, so any pointer, canvas, camera or lattice change hides the label until the current query returns.
 const pointerSlot='pointer';
 hoverQueries.onsettled=slot=>{if(slot===pointerSlot)scheduleHover();};
+hoverQueries.onfailed=()=>scheduleHover();
+// Everything the click rule depends on: pointer, canvas rect (angle and ray), camera pose and projection, lattice.
+function hoverKey(x,y){
+  const r=renderer.domElement.getBoundingClientRect();
+  return [x,y,r.left,r.top,r.width,r.height,latticeGeneration,...camera.matrixWorld.elements,...camera.projectionMatrix.elements].join();
+}
 function scheduleHover(){if(!hoverFrame)hoverFrame=requestAnimationFrame(refreshHover);}
 function refreshHover(){
   hoverFrame=0;
   if(!hoverPointer||session||lookDrag||tap.active.size||renderer.getContext().isContextLost()){showHover(null);return;}
   const {ray,angle}=pointerRay(hoverPointer.x,hoverPointer.y);
   if(lattice.count>=hoverWorkerPoints&&hoverQueries.available){
-    const result=hoverQueries.result(pointerSlot), fresh=result?.generation===latticeGeneration&&!rayMoved(ray,result.ray);
-    showHover(fresh&&result.index>=0?result.index:null);
-    if(!fresh&&!hoverQueries.busy(pointerSlot)){const local=rayInLattice(ray);hoverQueries.request(pointerSlot,latticeGeneration,lattice,local.origin,local.direction,angle,local.minDistance,ray);}
-  } else {const index=pickIndex(ray,angle);showHover(index>=0?index:null);}
+    const key=hoverKey(hoverPointer.x,hoverPointer.y), result=hoverQueries.result(pointerSlot);
+    const fresh=result?.generation===latticeGeneration&&result.ray.key===key;
+    showHover(fresh&&result.index>=0?result.index:null,key);
+    // Busy: the settling answer reschedules this, which then asks again with the latest inputs.
+    if(!fresh&&!hoverQueries.busy(pointerSlot)){const local=rayInLattice(ray);hoverQueries.request(pointerSlot,latticeGeneration,lattice,local.origin,local.direction,angle,local.minDistance,{key});}
+  } else {const index=pickIndex(ray,angle);showHover(index>=0?index:null,hoverKey(hoverPointer.x,hoverPointer.y));}
 }
-function showHover(index){
+// key: the hoverKey the index was computed for; render() hides the label as soon as the current key differs.
+function showHover(index,key=null){
   const label=$('hover-label');
-  if(index===null){label.hidden=true;label.dataset.point='';return;}
+  if(index===null){label.hidden=true;label.dataset.point='';hoverShown=null;return;}
+  hoverShown=key;
   const point=tripleAt(lattice,index), r=renderer.domElement.getBoundingClientRect();
   const v=new THREE.Vector3().fromArray(lattice.xyz,3*index).applyMatrix4(cloudMesh.matrixWorld).project(camera);
-  $('hover-text').textContent=polynomial(point);label.dataset.point=point.join();
-  label.style.transform=`translate(${r.left+(v.x+1)*r.width/2}px,${r.top+(1-v.y)*r.height/2}px)`;label.hidden=false;
+  const x=r.left+(v.x+1)*r.width/2, y=r.top+(1-v.y)*r.height/2, text=$('hover-text');
+  text.textContent=polynomial(point);label.dataset.point=point.join();
+  label.style.transform=`translate(${x}px,${y}px)`;label.hidden=false;
+  // The ring stays on the center; the text sits above right, flipping and then clamping to stay on the canvas.
+  const w=text.offsetWidth, h=text.offsetHeight, margin=4;
+  let left=x+12+w>r.right-margin?-12-w:12, top=y-26<r.top+margin?12:-26;
+  left=Math.min(Math.max(left,r.left+margin-x),r.right-margin-w-x);top=Math.min(Math.max(top,r.top+margin-y),r.bottom-margin-h-y);
+  text.style.left=`${left}px`;text.style.top=`${top}px`;
 }
 function pointTarget(index,ray){
   const point=new THREE.Vector3().fromArray(lattice.xyz,3*index).applyMatrix4(cloudMesh.matrixWorld);

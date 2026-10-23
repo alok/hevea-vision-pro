@@ -10,14 +10,15 @@
 //   ignored (they still clear the hand's outstanding slot);
 // - any worker error, or a throwing postMessage, marks the queries failed and terminates the worker; callers
 //   then use the synchronous path. Handlers are bound to their own worker and ignore it once replaced.
-// - onsettled(hand), if set, runs whenever a hand's outstanding query is answered, accepted or not, so a caller
-//   that renders on demand (desktop hover) can show the answer or ask again; it never runs for another worker.
+// - onsettled(hand), if set, runs whenever a hand's outstanding query is answered, accepted or not, and
+//   onfailed() once when the queries fail, so a caller that renders on demand (desktop hover) can show the
+//   answer, ask again or fall back without waiting for more input; neither runs for a replaced worker.
 export class HoverQueries {
   constructor(createWorker) {
     this.createWorker = createWorker;
     this.worker = null; this.failed = false;
     this.sentGeneration = null; this.nextRequest = 1;
-    this.outstanding = new Map(); this.pending = new Map(); this.results = new Map(); this.onsettled = null;
+    this.outstanding = new Map(); this.pending = new Map(); this.results = new Map(); this.onsettled = null; this.onfailed = null;
     this.copyMs = undefined; this.copyBytes = 0; this.lastQueryMs = undefined; this.lastLatencyMs = undefined;
   }
   get available() {
@@ -67,9 +68,11 @@ export class HoverQueries {
   result(hand) { return this.results.get(hand) ?? null; }
   reset() { this.pending.clear(); this.results.clear(); }
   fail() {
+    if (this.failed) return;
     this.failed = true;
     const worker = this.worker; this.worker = null;
     try { worker?.terminate(); } catch {}
     this.outstanding.clear(); this.reset();
+    this.onfailed?.();
   }
 }

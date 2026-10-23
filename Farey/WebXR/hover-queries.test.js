@@ -127,3 +127,12 @@ test('onsettled reports every answered query once, including one made obsolete b
   worker().answer(worker().queries[1], 9);
   assert.equal(settled.length, 2);
 });
+test('onfailed runs once when the worker errors, after outstanding queries are cleared', () => {
+  const { queries, worker } = setup(); let calls = 0;
+  queries.onfailed = () => { calls++; assert.equal(queries.busy('pointer'), false); assert.equal(queries.available, false); };
+  assert.ok(queries.request('pointer', 1, lattice, [0, 0, 0], [0, 1, 0], 0.02, 0, 'ray'));
+  worker().onerror(new Event('error'));
+  worker().onerror(new Event('error'));
+  assert.equal(calls, 1);
+  assert.equal(queries.request('pointer', 1, lattice, [0, 0, 0], [0, 1, 0], 0.02, 0, 'ray'), false);
+});
