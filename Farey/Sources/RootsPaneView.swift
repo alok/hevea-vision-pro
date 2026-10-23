@@ -60,6 +60,8 @@ struct RootsPaneView: View {
       Button("Close") { dismissWindow(id: "roots") }.buttonStyle(.bordered).padding(8).accessibilityIdentifier("roots-close")
     }
     .background(.black)
+    // Closing the window (its Close or the system's) cancels an armed Pair next rather than leaving it pending.
+    .onDisappear { model.armPairNext(false) }
   }
 
   private func draw(_ layout: RootsLayout, in context: inout GraphicsContext) {
