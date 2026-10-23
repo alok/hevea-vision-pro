@@ -1,0 +1,158 @@
+{
+ "version": "native 0.10.0 (13) candidate versus browser 0.13.1 default palette",
+ "scope": "visionOS Simulator 27.2 captures and a test-only browser render at a matching pose; not head-pose telemetry, stereo calibration, or physical-headset evidence.",
+ "browserPose": {
+  "root": [
+   0,
+   1.4,
+   -3.1
+  ],
+  "rotation": "Rx(0.2814) Ry(-0.4806)",
+  "eye": [
+   0,
+   1.6,
+   0
+  ],
+  "verticalFovDegrees": 58.715507,
+  "viewport": [
+   3840,
+   2160
+  ],
+  "population": "full R6, 480 signed triples, projection off"
+ },
+ "marker303": {
+  "nativeBeforeTuning": {
+   "greenPixels": 143,
+   "bbox": [
+    1913,
+    584,
+    1926,
+    596
+   ],
+   "size": [
+    14,
+    13
+   ]
+  },
+  "nativeCandidate": {
+   "greenPixels": 54,
+   "bbox": [
+    1916,
+    586,
+    1923,
+    594
+   ],
+   "size": [
+    8,
+    9
+   ]
+  },
+  "browser": {
+   "greenPixels": 40,
+   "bbox": [
+    1916,
+    587,
+    1923,
+    593
+   ],
+   "size": [
+    8,
+    7
+   ]
+  }
+ },
+ "guides": {
+  "nativeBeforeBlendFix": {
+   "insideUpper": [
+    6,
+    23,
+    28
+   ],
+   "insideLower": [
+    6.0,
+    23.0,
+    28.0
+   ],
+   "outside": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rimRowBrightest": [
+    108,
+    130,
+    146
+   ]
+  },
+  "nativeCandidate": {
+   "insideUpper": [
+    1,
+    4,
+    4
+   ],
+   "insideLower": [
+    1.0,
+    4.0,
+    4.0
+   ],
+   "outside": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rimRowBrightest": [
+    47,
+    58,
+    65
+   ]
+  },
+  "browser": {
+   "insideUpper": [
+    3,
+    8,
+    8
+   ],
+   "insideLower": [
+    2.0,
+    4.0,
+    4.0
+   ],
+   "outside": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "rimRowBrightest": [
+    33,
+    44,
+    49
+   ]
+  }
+ },
+ "tests": {
+  "fullSuiteBeforeReviewFixes": {
+   "tests": 39,
+   "failed": 0,
+   "note": "21 unit/renderer + 18 UI; source before focus/collapse, glyph and blend changes"
+  },
+  "focusedAfterFixes": {
+   "tests": 6,
+   "failed": 0,
+   "cases": [
+    "StarscapeRendererTests (5)",
+    "FareyUITests.testCoefficientSpaceProjectionAndLifecycle"
+   ]
+  },
+  "fareyCore": {
+   "tests": 39,
+   "failed": 0
+  }
+ },
+ "screenshots": {
+  "parity-0100-browser-matched-pose.png": "f523a9b251532e1cfce4b7bd2873e00b4330ce5efdcfa5f2d0240d8c52c15c48",
+  "parity-0100-native-controls-hidden.png": "7aecc848bf3c7d633ce8731f52a8ba768d56e2c4d6ff676ec037523e73f231d1",
+  "parity-0100-native-oblique.png": "f1c8ea285e69229d0f4000147de414c45766f28a3c4fc43ce7577a3ef8eca0fa",
+  "parity-0100-native-other-side.png": "8a7a772929a655a7dffc5916658acebba01fdd8fae09be3cecb324683d87829e",
+  "parity-0100-native-radius-12.png": "749beb643d9c95aa78a271f14c7eefb47a198e119677cc13c4ec1e24c41a0582"
+ }
+}

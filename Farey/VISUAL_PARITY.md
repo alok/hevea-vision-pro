@@ -1,3 +1,25 @@
+# Native 0.10.0 (13) candidate versus browser 0.13.1
+
+This candidate corrects the first-priority gaps in the 0.9.0 baseline below, which is preserved unchanged. As before, the evidence is visionOS Simulator 27.2 screenshots taken by passing XCTests, compared with an actual browser render. The physical Vision Pro still has 0.9.0 (12) installed, so nothing here is a headset appearance, comfort or input claim.
+
+| Area | Native 0.10.0 (13), observed | Result |
+| --- | --- | --- |
+| Mathematical domain | Browser ball b²+2a²+2c² ≤ R², zero excluded: R4/6/8/10/12 give 128/480/1060/2100/3608 points, native cap 12 | An independent review compared every point and found them identical for all five radii |
+| Spatial object | Both nappes; upper, lower, null and exterior points; projection off by default | Matches the browser default |
+| Palette | log(\|Δ\|/3)/log(80) on Viridis 0.2–1; browser category swatches; optional lower-half color labelled "ours"; 0.72 factor for nonprimitive upper forms, and lower ones only with that option | Every color and factor was compared and is identical to the browser's (exact data parity) |
+| Glyph size | Fixed unlit 7.5 mm spheres. At the matched pose (3,0,3) draws 8×9 px; the browser draws 8×7 px; 0.9.0-sized 13 mm spheres drew 14×13 px | Close at this pose only: the browser clamps sprite size in pixels and native does not |
+| Guide opacity | Browser opacities (cone 0.018, lines 0.26, disk 0.1/0.8, selection ray 0.35) converted for linear-light blending. Measured inside the cone: (1,4,4) native, (2,4,4)–(3,8,8) browser, (6,23,28) before conversion | Close over black; the formula is exact only over black and for a single layer |
+| Pixel color | Same core value for (3,0,3). The capture PNG carries an sRGB tag and reads [92,178,128], whose Display P3 conversion is consistent; the browser PNG has no profile and fog, and reads [44,163,112] | Data identical. The pixel difference is unexplained and has not been compensated |
+| Entry and filters | Exact signed (a,b,c). Rejected entries keep the text, focus, state and revision. A valid entry dismisses the keyboard. Filtered selections keep their identity and are marked hidden | Tested in the UI and the model |
+| Controls in space | A **Hide controls** toggle leaves one row (readout, Show controls, Reset, Farey L/R, Exit) and clears the apex | The expanded panel still covers the waist; window placement is unchanged |
+| Attribution | Sources credits Harriss, Stange and Trettel, *Algebraic Number Starscapes* (arXiv:2008.07655), for the coefficient and root spaces; Series for Farey/LR; Viridis (CC0) | A UI test confirms the link is present |
+
+[Native oblique](../docs/screenshots/parity-0100-native-oblique.png), [other side after a valid entry](../docs/screenshots/parity-0100-native-other-side.png), [controls hidden](../docs/screenshots/parity-0100-native-controls-hidden.png), [R12](../docs/screenshots/parity-0100-native-radius-12.png) and a [**test-only** browser render at the native pose](../docs/screenshots/parity-0100-browser-matched-pose.png) (root (0,1.4,−3.1), Rx(0.2814)Ry(−0.4806), eye (0,1.6,0), vertical FOV 58.7155°, full R6, projection off). That pose is a matching device, not XR head telemetry. The [measurements, scripts and hashes](evidence/parity-0100/measurements.json) let these numbers be rerun. The rim-line metric is crude: it is one row's brightest pixel.
+
+Tests: a full native suite of 39/39 (21 unit/renderer, 18 UI) passed on source from before the focus/collapse, glyph and blend changes. After those changes, the renderer tests (5) and the coefficient-space UI test passed, with FareyCore at 39/39 and SwiftLint strict clean. A full suite was not repeated for these local control and material changes.
+
+**Remaining gaps:** cutting planes, second selection and plane focus; Origin/Inhabit presets; polynomial-on-hover (next, browser first); densities above R12; pixel-clamped glyph size; the uncompensated pixel-color difference; the expanded panel's placement; spatial tap activation (the earlier AX "invalid activation point transform" failure is unresolved and untested here); everything on the physical headset.
+
 # Native 0.9.0 versus browser 0.13.1
 
 **The baselines do not have visual or UI parity.** This October 23 audit inspected actual simulator and browser screenshots and exercised their controls. It did not infer parity from successful builds. Native 0.9.0 (12) is installed on the physical Vision Pro, but this comparison used visionOS Simulator 27.2; physical launch, appearance and input remain untested.
