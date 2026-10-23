@@ -21,6 +21,15 @@ X²+Y²+Z²<=R², excluding zero. Dense options reach 1,852,484 distinct triples
 without duplication or sampling. At high density, overlapping dots appear
 as a cloud; use Inhabit, zoom or the star-size control to inspect it.
 
+Hover a dot to ring it and read its exact signed polynomial, such as
+2x²+2 for (2,0,2): a multiple is never reduced. The label names exactly
+the dot a click there would select, and never selects or moves anything.
+The panel shows f(x) for the selection; XR readouts include it too.
+Stange's viewer shows hover polynomials in its root pane but labels only
+the selected point in 3D, so 3D hover labels are our extension. At dense
+radii a worker answers hover; overlapping dots mean the label names the
+one the click rule picks.
+
 Viridis shows upper-interior |discriminant| on a fixed logarithmic 3-240
 range, using Viridis positions 0.2-1 for visibility. Values above 240
 saturate. Exterior, cone and lower-interior categories have separate
@@ -103,7 +112,9 @@ a separate 22,229,808-byte lattice copy; its CPU scans still take roughly
 25 ms in one desktop test. Worker failure falls back to the main thread.
 The new worker passes real-browser tests with mocked XR input; a hidden-tab
 emulator check entered and ended a session but received no XR frames.
-Current-version foreground XR frames and physical performance remain unverified. Emulation
+Version 0.14.0 clears desktop hover on XR entry (including keyboard
+activation) and exit, checked only with a mocked session. Current-version
+foreground XR frames and physical performance remain unverified. Emulation
 is not physical headset tracking, input, performance or comfort evidence.
 No browser security changes are needed or recommended for local desktop use.
 WebGL creation failure shows an explanation. The coefficient page pauses

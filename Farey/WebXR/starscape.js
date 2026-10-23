@@ -389,7 +389,7 @@ renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);showHover(nu
   look.yaw-=(e.clientX-lookDrag.x)*0.004;
   look.pitch=THREE.MathUtils.clamp(look.pitch-(e.clientY-lookDrag.y)*0.004,-Math.PI/2,Math.PI/2);
   lookDrag={x:e.clientX,y:e.clientY};applyLook();
-});renderer.domElement.addEventListener('pointerup',e=>{lookDrag=null;if(tap.end(e)&&!session)selectAt(e);scheduleHover();});renderer.domElement.addEventListener('pointerleave',()=>{hoverPointer=null;showHover(null);});renderer.domElement.addEventListener('pointercancel',e=>{lookDrag=null;tap.cancel(e);hoverPointer=null;showHover(null);});
+});renderer.domElement.addEventListener('pointerup',e=>{lookDrag=null;if(tap.end(e)&&!session)selectAt(e);scheduleHover();});renderer.domElement.addEventListener('pointerleave',clearHover);renderer.domElement.addEventListener('pointercancel',e=>{lookDrag=null;tap.cancel(e);clearHover();});
 renderer.domElement.addEventListener('keydown',e=>{const move={w:'forward',s:'back',a:'left',d:'right',q:'down',e:'up'}[e.key.toLowerCase()];if(inhabited&&move){e.preventDefault();moveEye(move);return;}if(e.key==='Escape'&&inhabited){leaveInhabit();return;}if(e.key==='Home'){e.preventDefault();leaveInhabit();resetView();}if(['+','=','-'].includes(e.key)){e.preventDefault();if(inhabited){moveEye(e.key==='-'?'back':'forward');return;}const d=camera.position.distanceTo(controls.target),n=THREE.MathUtils.clamp(d*(e.key==='-'?1.1:1/1.1),controls.minDistance,controls.maxDistance);camera.position.sub(controls.target).multiplyScalar(n/d).add(controls.target);controls.update();}});
 controls.addEventListener('change',render);window.addEventListener('resize',resize);new ResizeObserver(resize).observe($('viewport'));
 const xrPanel=new THREE.Group();xrPanel.position.set(0,1,-1.15);xrPanel.visible=false;scene.add(xrPanel);const xrTargets=[];
@@ -434,7 +434,7 @@ function hoverKey(x,y){
 function scheduleHover(){if(!hoverFrame)hoverFrame=requestAnimationFrame(refreshHover);}
 function refreshHover(){
   hoverFrame=0;
-  if(!hoverPointer||session||lookDrag||tap.active.size||renderer.getContext().isContextLost()){showHover(null);return;}
+  if(!hoverPointer||session||startingXR||lookDrag||tap.active.size||renderer.getContext().isContextLost()){showHover(null);return;}
   const {ray,angle}=pointerRay(hoverPointer.x,hoverPointer.y);
   if(lattice.count>=hoverWorkerPoints&&hoverQueries.available){
     const key=hoverKey(hoverPointer.x,hoverPointer.y), result=hoverQueries.result(pointerSlot);
@@ -444,6 +444,9 @@ function refreshHover(){
     if(!fresh&&!hoverQueries.busy(pointerSlot)){const local=rayInLattice(ray);hoverQueries.request(pointerSlot,latticeGeneration,lattice,local.origin,local.direction,angle,local.minDistance,{key});}
   } else {const index=pickIndex(ray,angle);showHover(index>=0?index:null,hoverKey(hoverPointer.x,hoverPointer.y));}
 }
+// Forget the pointer as well as the label: leaving, cancelling, and XR entry (by mouse or keyboard, with the mouse
+// still resting on the canvas) or exit must not let a later frame or worker answer re-show it.
+function clearHover(){hoverPointer=null;showHover(null);}
 // key: the hoverKey the index was computed for; render() hides the label as soon as the current key differs.
 function showHover(index,key=null){
   const label=$('hover-label');
@@ -536,8 +539,8 @@ function updateAims(){
   showReadout([...aimLines,`Selected    ${describe(selected)}`,...(plane?[`Plane       ${plane.equation}`]:[])]);
 }
 async function checkXR(){const availability=await xrAvailability(navigator.xr,isSecureContext);$('xr').disabled=!availability.supported;$('xr').textContent=availability.supported?'Enter VR':'VR unavailable here';$('xr-status').textContent=availability.message;}
-$('xr').onclick=async()=>{if(startingXR||session)return;startingXR=true;$('xr').disabled=true;savedView=captureView(camera,controls);try{session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor']});await renderer.xr.setSession(session);controls.enabled=false;xrPanel.visible=true;document.body.classList.add('immersive');renderer.setAnimationLoop(render);}catch{await session?.end().catch(()=>{});session=null;$('status').textContent='VR entry was cancelled or unavailable. The browser scene remains usable.';checkXR();}finally{startingXR=false;}};
-renderer.xr.addEventListener('sessionend',()=>{session=null;hoverQueries.reset();for(const aim of aims){aim.target=null;aim.line.visible=aim.ring.visible=false;}controls.enabled=!inhabited;xrPanel.visible=false;document.body.classList.remove('immersive');renderer.setAnimationLoop(null);if(savedView)restoreView(savedView,camera,controls);savedView=null;resize();checkXR();});
+$('xr').onclick=async()=>{if(startingXR||session)return;startingXR=true;clearHover();$('xr').disabled=true;savedView=captureView(camera,controls);try{session=await navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor']});await renderer.xr.setSession(session);controls.enabled=false;xrPanel.visible=true;document.body.classList.add('immersive');renderer.setAnimationLoop(render);}catch{await session?.end().catch(()=>{});session=null;$('status').textContent='VR entry was cancelled or unavailable. The browser scene remains usable.';checkXR();}finally{startingXR=false;}};
+renderer.xr.addEventListener('sessionend',()=>{session=null;clearHover();hoverQueries.reset();for(const aim of aims){aim.target=null;aim.line.visible=aim.ring.visible=false;}controls.enabled=!inhabited;xrPanel.visible=false;document.body.classList.remove('immersive');renderer.setAnimationLoop(null);if(savedView)restoreView(savedView,camera,controls);savedView=null;resize();checkXR();});
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();hoverQueries.reset();$('fatal').hidden=false;$('fatal').textContent='3D graphics paused. Waiting for the browser to restore the graphics context; reload if it does not recover.';controls.enabled=false;$('xr').disabled=true;session?.end().catch(()=>{});});
 renderer.domElement.addEventListener('webglcontextrestored',()=>{$('fatal').hidden=true;controls.enabled=!session&&!inhabited;resize();update();checkXR();});
 for(const option of $('radius').querySelectorAll('optgroup option'))option.textContent=`${option.value} · ${ballCount(Number(option.value)).toLocaleString()} points`;
