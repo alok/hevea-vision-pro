@@ -6,12 +6,12 @@
 
 - **Pair next / Cancel:** one control arms a direct pick, from the Roots window or the immersive scene, to pair with the selection; a one-line state shows only while armed. Refusals (same direction including multiples and sign partners, exterior, outside the ball, filtered out) change nothing and stay armed; success disarms; Cancel, closing Roots, Reset and leaving the space disarm.
 - **Roots window:** one deterministic picker (the largest of coincident multiples) serves tap and pointer hover; the hover ring and its exact base-polynomial label follow the pointer and cannot go stale.
+- **3D pairing by a public Device Hub Select click** (`testDeviceHubSpherePairing`, opt-in; disposable simulator; XCUITest only armed Pair next and waited): from (1,−1,2) a click on the (3,0,3) sphere paired it, plane 2a −2b −2c = 0, endpoints 1 ± √2, 18 members, primary kept, disarmed; with (3,0,3) selected the same click was refused as the same direction, still armed. Evidence `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/native-devicehub-pair-0140/`. Simulator host clicks, not physical gaze/pinch.
 - **Real input (XCUITest, Roots window):** coordinate taps through the measured visionOS 27.2 window mapping (normalized offsets centred, y up; from the separately owned Lean app's probes) picked (1,0,1), refused as the same direction, then (1,1,1), paired: plane 2a −2c = 0, disarmed. A silent 15.9 s recording of that sequence is local at `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/native-pairing-0140-video/recording.mp4`.
 
 **Not verified:**
 
 - Roots-window pointer hover (no visionOS XCUITest hover route; a Device Hub pointer check is pending). Predicted, not observed: with a multiple such as (2,0,2) selected, hovering its root may draw the hover and selection labels at the same place.
-- A 3D sphere pick into Pair next. An opt-in operator-assisted diagnostic (`testDeviceHubSpherePairing`, `--spatial-probe`) arms it through the controls and waits for a public Device Hub click on (3,0,3), expecting plane 2a −2b −2c = 0 with 18 members; it has not been run.
 - 3D spatial hover (a grouped hover-effect label prototype is next), physical gaze, pinch and drag.
 
 # Native 0.13.0 (17): the eye-at-origin drag
