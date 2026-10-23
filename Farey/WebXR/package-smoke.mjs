@@ -29,6 +29,7 @@ export async function auditPackage(directory) {
   }
   const html = (await Promise.all(['index.html', 'farey.html'].map(name => readFile(resolve(root,name),'utf8')))).join('\n');
   const importMap = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
+  const stale = [];
   const localFile = (specifier, from) => {
     const target = new URL(specifier, pathToFileURL(from));
     ensure(target.protocol === 'file:', `External asset: ${specifier}`);
@@ -37,6 +38,9 @@ export async function auditPackage(directory) {
     ensure(path !== '..' && !path.startsWith(`..${sep}`) && !isAbsolute(path), `Asset escapes package: ${specifier}`);
     const name = path.split(sep).join('/');
     ensure(name in manifest, `Missing local asset: ${specifier} from ${relative(root, from)}`);
+    // A cache version must be the SHA-256 of the file actually shipped, or a cache could serve a stale module.
+    const version = target.searchParams.get('v');
+    if (version !== null && version !== manifest[name]) stale.push(`${name} from ${relative(root, from)}`);
     return file;
   };
   const visited = new Set(), modules = new Set();
@@ -80,6 +84,8 @@ export async function auditPackage(directory) {
   ensure(html.includes('Inspired by <strong>Katherine Stange</strong>') && html.includes('https://doi.org/10.1112/jlms/s2-31.1.69'), 'Missing in-app credit');
   ensure((await readFile(resolve(root, 'COPYING.txt'), 'utf8')).includes('GNU GENERAL PUBLIC LICENSE'), 'Missing GPL text');
   ensure((await readFile(resolve(root, 'vendor/THREE-LICENSE.txt'), 'utf8')).includes('Permission is hereby granted'), 'Missing MIT text');
+  // Reported after the other checks, so a more specific failure is named first.
+  ensure(!stale.length, `Stale cache version for ${stale.join(', ')}`);
   return { passed: true, payloadFiles: Object.keys(manifest).length, runtimeScripts: visited.size, runtimeModules: modules.size,
     manifestSHA256: createHash('sha256').update(await readFile(resolve(root, 'manifest.json'))).digest('hex') };
 }

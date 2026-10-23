@@ -26,12 +26,13 @@ for (const name of ['core.js', 'xr-support.js', 'input.js', 'recovery.js', 'cons
   app = app.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
 }
 await writeFile(resolve(destination, 'app.js'), app);
+// Leaf modules first: roots-pane.js imports mobius.js, so its own import is versioned before starscape.js hashes it;
+// otherwise starscape.js would carry the hash of roots-pane.js as it was before that rewrite.
+const roots = (await readFile(resolve(destination, 'roots-pane.js'), 'utf8')).replace("'./mobius.js'", `'./mobius.js?v=${await assetHash('mobius.js')}'`);
+await writeFile(resolve(destination, 'roots-pane.js'), roots);
 let starscape = await readFile(resolve(destination, 'starscape.js'), 'utf8');
 for (const name of ['starscape-core.js', 'xr-support.js', 'input.js', 'appearance.js', 'camera-planes.js', 'pair-plane.js', 'lattice.js', 'point-cloud.js', 'hover-queries.js', 'aim-worker.js', 'mobius.js', 'roots-pane.js']) starscape = starscape.replace(`'./${name}'`, `'./${name}?v=${await assetHash(name)}'`);
 await writeFile(resolve(destination, 'starscape.js'), starscape);
-// roots-pane.js imports mobius.js; version that import too, so a changed module is never served from cache.
-const roots = (await readFile(resolve(destination, 'roots-pane.js'), 'utf8')).replace("'./mobius.js'", `'./mobius.js?v=${await assetHash('mobius.js')}'`);
-await writeFile(resolve(destination, 'roots-pane.js'), roots);
 const html = (await readFile(resolve(root, 'index.html'), 'utf8'))
   .replace('./node_modules/three/build/three.module.js', './vendor/three.module.js')
   .replace('./node_modules/three/examples/jsm/', './vendor/addons/')
