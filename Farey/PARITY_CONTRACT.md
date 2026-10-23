@@ -46,12 +46,12 @@ The fixture file contains:
 
 ## Behavior matrix
 
-| Behavior | Stange's source viewer | Browser 0.15.5 | Native 0.12.0 (16) |
+| Behavior | Stange's source viewer | Browser 0.15.8 | Native 0.13.0 (17) |
 | --- | --- | --- | --- |
 | Signed ball, both nappes, categories | Her own crop and palette | Yes; exact fixtures | Yes; exact fixtures, R ≤ 12 |
 | Exact entry; rejected entry changes nothing | — | Yes | Yes (UI-tested) |
 | Hover names the exact signed polynomial | Root pane only; 3D hover only highlights | Our extension: desktop hover names the point a click there would select and never mutates state; dense crops use a worker | **Missing** |
-| Select a point spatially | Click | Desktop click; XR trigger on its current ray | Coded (tap calls selection); **unverified**, see the probe below |
+| Select a point spatially | Click | Desktop click; XR trigger on its current ray (both hands matched a ray oracle in actual IWE sessions) | Coded (tap and the accessibility activate action call selection); **unverified**: XCUITest's element tap fails with a nil activation point transform |
 | Pair a second point | Shift-click | Shift-click or entry | Entry only; **spatial pairing missing** |
 | Plane: normal, equation, endpoints, members | Yes | Yes; fixtures | Yes; fixtures, members ringed |
 | Drawn plane | — | A finite viewing patch clipped to the cone's bounding cylinder, plus the two null endpoint directions; not the plane's intersection with the cone | Same patch and directions |
@@ -60,7 +60,7 @@ The fixture file contains:
 | Origin glyph size | 0.4·\|Δ\|^¼/√\|a+c\| | Same rule with a pixel knee and cap | Same rule on physical spheres (no knee or cap) |
 | Inhabit and Overview | — | Free camera near the point | Point placed 35 cm ahead once; selection never moves the viewer |
 | Viewing rotations versus SL₂(ℝ) | Origin drag applies an SL₂(ℝ) action to the forms | Euclidean camera or object rotations; exact coefficients, discriminants, selections and planes never change, and this is not SL₂ or intrinsic hyperbolic navigation | Same as the browser |
-| Möbius drag (SL₂(ℝ) on roots, Lorentz map on coefficients) | Roots-pane drag; origin-eye 3D drag; Snap absorbs γ | Same, in a roots pane at widths ≥ 1000 px; drawn set is the base ball moved by g (hers recatalogues); fixtures in `mobius` | Roots window drag (tested by an XCUITest swipe), Symmetry and Snap with exact absorption, scene moved by g, base and shown readouts; **no origin-eye 3D drag** |
+| Möbius drag (SL₂(ℝ) on roots, Lorentz map on coefficients) | Roots-pane drag; origin-eye 3D drag; Snap absorbs γ | Same, in a roots pane at widths ≥ 1000 px; drawn set is the base ball moved by g (hers recatalogues); fixtures in `mobius` | Roots window drag (tested by an XCUITest swipe), Symmetry and Snap with exact absorption, scene moved by g, base and shown readouts; origin-eye 3D drag coded and model-tested (same step as the Roots window), **not exercised by a spatial gesture** |
 | Free view rotation | — | Right-handed display basis, C = Ry·Rx·Rz (YXZ); rotations do not commute | **Missing**: three fixed object poses only |
 | Reset | — | Clears the pair, Inhabit and the view | Clears the pair and the placement; restores defaults |
 

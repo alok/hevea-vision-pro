@@ -56,10 +56,12 @@ Durable notes on how Stange's Starscape/Lattice viewer behaves and how this proj
 
 **Native (0.12.0 (16)):** a Roots window beside the controls, with a Close that keeps all state, draws stars at g·root, and a drag applies the same transvection. The scene moves entity by entity: centers at J·ρ(g)·(a,b,c), with images, markers, the plane patch and its endpoint directions. T⁻¹, S, T, Identity and Snap follow the browser's absorption rules. Under a non-identity g the readouts label exact data as base and add the shown values. Tested through an XCUITest swipe on that window; coordinate routes did not reach it (see [VISUAL_PARITY](VISUAL_PARITY.md)). Not native: the origin-eye 3D sky drag and hover.
 
+**Native (0.13.0 (17)), eye-at-origin drag:** at Origin a drag reads the pointer's display direction from the coefficient origin, takes its Klein point (X/Y, Z/Y) to a root, and applies the same transvection as a Roots-window drag between successive roots; (0,2,0) → (2,3,1) is i → 1 + i, the fixture g = [[3,1],[1,2]]/√5. Off the cone's interior nothing moves (no clamping); in Overview a drag does nothing. The previous direction is tagged with its placement, so a nappe flip, a new Origin, Reset or leaving starts afresh; a cancelled gesture never Snaps. A sky shell (one static mesh, hit-testable only at Origin, scaled by its facet inradius beyond every star's collision sphere) catches drags on empty sky; a raycast in a real RealityKit scene confirmed a ray from inside hits it and a far star is hit before it. **Not exercised through a spatial gesture:** XCUITest's element tap on a star fails with "Received invalid activation point transform (nil) from Accessibility", and no route drives an entity drag; physical gaze, pinch and drag are untested.
+
 Euclidean camera motions in both platforms remain separate from g: they change no coefficients and are not SL₂ or hyperbolic navigation.
 
 ## Versions referenced
 
-- Browser 0.15.5, served locally. Its packaging fix (cache versions now match the shipped modules) does not change behavior. The silent pointer walkthrough at `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/browser-demo-0154/browser-0154-walkthrough.mp4` is browser 0.15.4 footage.
-- Native 0.12.0 (16), in the main simulator.
+- Browser 0.15.8, served locally (0.15.5–0.15.7 were packaging and server fixes; 0.15.8 fits the XR desktop mirror). The silent pointer walkthrough at `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/browser-demo-0154/browser-0154-walkthrough.mp4` is browser 0.15.4 footage.
+- Native 0.13.0 (17), in the main simulator.
 - The source was observed live on 2026-10-23.

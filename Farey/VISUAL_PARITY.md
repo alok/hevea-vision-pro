@@ -1,3 +1,24 @@
+# Native 0.13.0 (17): the eye-at-origin drag
+
+**Status (2026-10-23):** installed in the main simulator (D2ECE520), replacing 0.12.0 (16); the installed bundle is file-for-file the tested build of `bd01480`, and the screen was captured after launch and inspected (`task-7/main-simulator-0130b17/`). Full suite on exactly that source: 58 passed, 2 skipped (the opt-in probes), 0 failed (simulator 64C1E8CA). The opt-in spatial tap probe itself **failed** (below); its skip in the suite is not a pass.
+
+**Implemented and tested (model, renderer and real-scene raycast; not spatial input):**
+
+- At Origin, a drag's display direction from the coefficient origin names a root through its Klein point; successive directions apply the Roots window's transvection, so the fixture (0,2,0) → (2,3,1) gives g = [[3,1],[1,2]]/√5 and the dragged star is then drawn along (2,3,1). Off the cone's interior nothing moves and nothing is clamped. In Overview a drag changes nothing. The direction is read in the object's frame, which g does not move.
+- The drag's state is tagged with its placement: a nappe flip, a new Origin, Reset or leaving the space starts afresh instead of jumping; a cancelled gesture never Snaps; a completed one Snaps as a Roots-window drag does.
+- A sky shell (one static mesh, enabled only at Origin) is scaled so every facet plane (inradius 0.983 of its vertex radius) lies beyond every star's collision sphere, checked at the identity, the fixture g and diag(2, ½). In a real RealityKit scene a ray from the origin through the clearest gap hits the sky from inside, and a ray at (1,−4,3), 2.51 m out under the fixture g, hits that star.
+- Stars declare the accessibility activate action that the immersive view's handler selects with.
+
+**Not verified:**
+
+- **No spatial route reached an entity.** XCUITest's element tap on a star (`--spatial-probe`) failed three times with "Received invalid activation point transform (nil) from Accessibility"; its app-anchored route is skipped because the element reports a placeholder frame (0, 0, 50, 50). An earlier probe run that reported "passed" was an expected failure that ended before that route and proves nothing.
+- No route drives a RealityKit drag gesture in the simulator, so the Origin drag has not been performed by input; physical gaze, pinch and drag are untested. The headset still has 0.9.0 (12), installed but not functionally tested.
+- Still missing natively: polynomial hover (a shader hover-effect prototype is the next candidate, see the feasibility notes), spatial pairing and free view rotation.
+
+**Test history of this increment, as run:** a review run failed 35/37 (a too-strict ray-clearance fixture, and a UI run whose typed entries never landed, cause not established); the typing helper now accepts an entry only when the field holds the text. Its first version gated on `isHittable`, which reads false for these fields, and failed three UI tests; that gate was removed and they passed 3/3.
+
+**Browser alongside (0.15.8, actual IWE):** real XRFrames, both controllers matched a ray oracle, plane, re-entry and Origin; the desktop mirror's 3.42× stretch is fixed (1.0000037, projections unchanged). Evidence: `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/browser-xr-current-0157-final/`, `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/browser-xr-mirror-diagnosis/`.
+
 # Native 0.12.0 (16): the Möbius view
 
 **Status (2026-10-23):** installed in the main simulator (D2ECE520), replacing 0.11.0 (15). The installed bundle is file-for-file the tested build of `5833c7c`; the screen was captured after launch and inspected (`task-7/main-simulator-0120b16/`). A silent 64-second recording of the passing Möbius sequence (pair, Roots swipe, views, projection, both Origin directions, re-entry, Identity, T) is at `task-7/native-demo-0120b16-corrected/native-mobius-walkthrough.mp4`; an earlier partial recording (`native-demo-0120b16-final`) is from the failed `-0.000` run and is not evidence. Nothing here is a physical-headset claim; the headset still has 0.9.0 (12), installed but not functionally tested.
