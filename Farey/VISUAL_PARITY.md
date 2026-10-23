@@ -1,3 +1,31 @@
+# Native 0.12.0 (16) candidate: the Möbius view
+
+**Status (2026-10-23):** a tested candidate, not yet in the main simulator, which keeps 0.11.0 (15) until promotion. Nothing here is a physical-headset claim; the headset still has 0.9.0 (12), installed but not functionally tested.
+
+- **Full suite:** 51 passed, 2 skipped (the opt-in probes), 0 failed, on `2ec43e8` (version 0.12.0 (16)), simulator 386D2449. This predates the label correction below.
+- **Final source `5833c7c`:** a focused run passed 34/34: every app unit test, the Möbius UI sequence, and the coefficient, plane and Origin UI tests (simulator 1A465576). FareyCore passes 60/60. Every one of the 49 tracked build inputs matches `5833c7c`; the app reports 0.12.0 (16), and its debug dylib's SHA-256 is `54956c00…`.
+- **A run that failed before that:** the first focused run on the label correction printed the root of x² + 1 as `-0.000` (negative zero, −0/2). Labels now print values that round to zero as `0.000`, with regressions.
+
+**Implemented and tested**
+
+- **One g ∈ SL₂(ℝ)**, from a Roots window beside the controls (placed there because, overlapping, it hid Reset and Exit) with its own Close. Stars sit at g·root, and a drag applies the browser's transvection step.
+- **The scene follows g:** dot centers at J·ρ(g)·(a,b,c), projection images, selection and pair markers, and the plane's patch (normal ρ(g)n) and endpoint directions (endpoints g·t). Membership stays exact on the base triples. Origin glyphs use the base Δ and the moved height, and a change of g never moves the viewer.
+- **Symmetry controls:** T⁻¹, S, T, Identity and Snap (her polar criterion). An integral result is absorbed exactly into the selection and pair, or refused with all state kept. Identity does not undo absorption, and Reset clears g, Snap and the pair.
+- **Readouts:** under a non-identity g, the panel says "Base plane …" and "base upper root …" and adds where they are shown, for example `shown under g ≈ -1.361 and 1.249`, with ∞ for a point at infinity. The g readout's accessibility value carries g to full precision.
+- **The UI sequence, on a fixed path:** select (1,0,1), pair (1,1,1) at R6, then swipe the Roots window. That gives g = [1.201700999401844, 0.37604373874125496; 0.32849938248608124, 0.9349498223963413], and the selection, pair and exact plane stay unchanged. Captures: Overview, the other side, projection, Origin facing each nappe. Closing and reopening Roots, and leaving and re-entering the space, keep g and the pair, and re-entry is in Overview. Identity keeps the pair. T absorbs: (1,0,1) → (1,−2,2) and (1,1,1) → (1,−1,1). Reset restores (1,−1,2).
+- **Renderer tests** use the exact g = [[3,1],[1,2]]/√5. (1,0,1) moves to display (2,3,1). The plane normal (1,0,−1) goes to (3/5, 2/5, −8/5), its endpoints −1 and 1 to −2 and 4/3, and the root i to 1 + i. The inverse restores every position.
+
+**Matched browser state.** Browser captures with the same g and pair are at `/Users/alokbeniwal/Documents/Codex/2026-10-21/task-7/browser-native-mobius-parity-0154/`. They set that g through a test-only setter, so they are matched state, not the same physical gesture or the same camera. They show the root at 0.760 + 1.018i and endpoints ≈ −1.361 and 1.249, the native values for this g.
+
+**Input routes, kept separate**
+
+- **Works:** XCUITest `swipeRight` on the Roots window (handled by its own DragGesture) changes g.
+- **Did not change g:** coordinate press-drags; the window's accessibility frame is reported at (0, 0, 560, 560).
+- **Failed:** an app-coordinate drag, with "Received invalid scene ID (nil) from Accessibility". This diagnostic is opt-in (`--spatial-probe`), not part of the default suite.
+- **Unverified:** tapping a root in the Roots window, spatial point selection, and gaze/pinch on entities.
+
+**Not implemented natively:** the browser's origin-eye 3D sky drag, polynomial hover, spatial pairing, and free view rotation.
+
 # Native 0.11.0 (15) candidate: cutting planes and Origin/Inhabit
 
 **Status (2026-10-23):** 0.11.0 (15) is installed in the main simulator, launched and visually checked; every installed file matches the tested build from `7ec3428`. The launch's log receipt was not observed. Test boundaries:
