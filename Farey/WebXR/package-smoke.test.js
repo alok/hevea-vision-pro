@@ -21,8 +21,8 @@ after(async () => { if (temporary) await rm(temporary, { recursive: true, force:
 test('built package resolves its complete local runtime graph', async () => {
   const result = await auditPackage(resolve(root, 'dist'));
   assert.equal(result.passed, true);
-  assert.equal(result.runtimeScripts, 21);
-  assert.equal(result.runtimeModules, 20);
+  assert.equal(result.runtimeScripts, 23);  // + mobius.js, roots-pane.js
+  assert.equal(result.runtimeModules, 22);
 });
 
 const faults = [

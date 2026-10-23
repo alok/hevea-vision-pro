@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { identity, multiply, determinant, inverse, normalize, act, transvection, dragStep, pushforward, applyRows,
-  pushforwardExact, kleinToUpper, upperToKlein, toI, fromI } from './mobius.js';
+  pushforwardExact, kleinToUpper, upperToKlein, toI, fromI, actReal, nearestIntegral, isIntegral } from './mobius.js';
 import { vector, discriminant, upperRoot } from './starscape-core.js';
 
 const close = (x, y, tol = 1e-10) => assert.ok(Math.abs(x - y) <= tol * Math.max(1, Math.abs(y)), `${x} vs ${y}`);
@@ -69,4 +69,19 @@ test('our Klein chart gives the quadratic formula root and inverts exactly', () 
   // The user's seed (13,20,34): Δ = −1368, root (−10 + i√342)/13.
   assert.equal(discriminant([13, 20, 34]), -1368);
   closeZ(rootOf([13, 20, 34]), { x: -10 / 13, y: Math.sqrt(342) / 13 });
+});
+
+test('real-line action handles infinity, and Snap returns the nearest SL₂(ℤ) element', () => {
+  assert.equal(actReal(T, Infinity), Infinity); assert.equal(actReal(S, 0), Infinity); assert.equal(actReal(S, Infinity), 0);
+  assert.equal(actReal(T, -1), 0); close(actReal([2, 1, 1, 1], 1), 1.5);
+  assert.deepEqual(nearestIntegral(identity), [1, 0, 0, 1]);
+  for (const integral of [T, S, inverse(T), multiply(T, S), multiply(multiply(T, T), S)]) {
+    const g = nearestIntegral(integral);
+    assert.ok(isIntegral(g)); assert.ok(g.every((x, i) => x === integral[i]) || g.every((x, i) => x === -integral[i]));
+  }
+  // A small drag off the identity snaps back to it; one past a cell boundary lands on the integer neighbour.
+  assert.deepEqual(nearestIntegral(transvection({ x: 0, y: 1 }, { x: 0.1, y: 1.05 })), [1, 0, 0, 1]);
+  const near = nearestIntegral(multiply(transvection({ x: 0, y: 1 }, { x: 0.05, y: 1.1 }), T));
+  assert.ok(isIntegral(near)); closeZ(act(near, { x: 0, y: 1 }), act(T, { x: 0, y: 1 }));
+  assert.ok(!isIntegral(transvection({ x: 0, y: 1 }, { x: 1, y: 1 })));
 });

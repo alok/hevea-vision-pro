@@ -8,6 +8,7 @@ import { coefficientColor, glyphRadius, orbitFactor, sizePixels } from './appear
 
 const vertexShader = `
 attribute float aFactor;
+attribute float aDelta;
 attribute vec3 color;
 uniform float uGlyph, uHalfH, uDpr, uOrigin;
 uniform vec3 uFog, uSize, uKeep;
@@ -20,7 +21,8 @@ void main() {
   gl_Position = projectionMatrix * mv;
   float depth = -mv.z;
   float f = aFactor;
-  float delta = position.x * position.x + position.z * position.z - position.y * position.y;
+  // The base form's exact Δ (invariant under the Möbius view g); position.y is its current a+c.
+  float delta = aDelta;
   if (uOrigin > 0.5) f = delta < 0.0 ? 0.4 * pow(-delta, 0.25) / sqrt(abs(position.y)) : 1.0;
   float px = depth > 0.0 ? uGlyph * f * projectionMatrix[1][1] * uHalfH / depth : 0.0;
   float dim = 1.0;
@@ -89,6 +91,9 @@ export function pointCloud(lattice, material, symmetric, categories) {
   geometry.setAttribute('position', new THREE.BufferAttribute(lattice.xyz, 3));
   geometry.setAttribute('color', new THREE.BufferAttribute(fillColors(lattice, symmetric, categories), 3, true));
   geometry.setAttribute('aFactor', new THREE.BufferAttribute(fillFactors(lattice, symmetric, () => false), 1));
+  const deltas = new Float32Array(lattice.count);
+  for (let i = 0; i < lattice.count; i++) { const a = lattice.abc[3 * i], b = lattice.abc[3 * i + 1], c = lattice.abc[3 * i + 2]; deltas[i] = b * b - 4 * a * c; }
+  geometry.setAttribute('aDelta', new THREE.BufferAttribute(deltas, 1));
   const points = new THREE.Points(geometry, material);
   points.frustumCulled = false;
   return points;

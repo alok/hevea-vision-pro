@@ -10,6 +10,8 @@ import { coefficientColor, gradientCSS, paletteRange, categoryPalettes, glyphRad
 import { enumerateLattice, inBall, isUpper, tripleAt, latticeRadii, ballCount } from './lattice.js';
 import { pointCloudMaterial, pointCloud, fillColors, fillFactors } from './point-cloud.js';
 import { pairPlane, planeFromNormal, planeSection, coneDirections, inPairPlane } from './pair-plane.js';
+import { identity, multiply, normalize, act, actReal, dragStep, pushforward, applyRows, pushforwardExact, nearestIntegral, isIntegral, kleinToUpper } from './mobius.js';
+import { RootsPane } from './roots-pane.js';
 const $ = id => document.getElementById(id);
 let radius = 6, whole = true, symmetricColor = false, projectionVisible = false;
 let selected = examples[0], lattice = null, cloudMesh, imageMesh;
@@ -19,6 +21,10 @@ let hoverPointer=null, hoverFrame=0, hoverShown=null; // desktop pointer hover (
 const overviewFov=45, originFov=100;
 let categories='viridis', glyphKey=null, focusGlyphs=[], sigma=1, planeFocus=false;
 let latticeGeneration=0, secondSelection=null, pairMessage='', pairGlyphs=[], planeMembers=new Set(), originMode=false, timings={}, colorKey='', factorKey='';
+// The view's group element g ∈ SL₂(ℝ) (Harriss–Stange–Trettel §4.2.2). Every base triple keeps its exact integer
+// identity in lattice.abc; lattice.xyz holds its drawn display position J·ρ(g)·(a,b,c), with ρ(g) the coefficient
+// pushforward, recomputed from baseXyz whenever g changes. Only integer g (SL₂(ℤ)) maps the lattice to itself.
+let group=[...identity], groupRows=pushforward(identity), snapGroup=false, baseXyz=null;
 let renderer;
 try { renderer = new THREE.WebGLRenderer({ antialias: true }); }
 catch {
@@ -83,19 +89,49 @@ function rebuild() {
   glyphKey=null;latticeGeneration++;hoverQueries.reset();showHover(null);
   disposeChildren(cloud); disposeChildren(disk); disposeChildren(cone);
   let t=performance.now();
-  lattice = enumerateLattice(radius, !whole);
+  lattice = enumerateLattice(radius, !whole);baseXyz=lattice.xyz.slice();transformPositions();
   timings.enumerate=performance.now()-t;t=performance.now();
   cloudMesh = pointCloud(lattice, cloudMaterial, symmetricColor, categories); cloudMesh.scale.setScalar(scale); cloud.add(cloudMesh);
   colorKey=[radius,whole,symmetricColor,categories].join();factorKey=[radius,whole,symmetricColor,''].join();
   timings.attributes=performance.now()-t;imageMesh=null;
   // Overview distance is 5.4·R/8 (resetView); far clipping and zoom limits leave room beyond the whole ball.
-  camera.far=20+8*radius*scale;camera.updateProjectionMatrix();controls.maxDistance=Math.max(20,8*radius*scale);
+  camera.far=20+8*Math.max(radius,drawnReach)*scale;camera.updateProjectionMatrix();controls.maxDistance=Math.max(20,8*radius*scale);
   disk.add(surface(height,true,0.1), lines([circle(height)],0x54e9f5,0.8));
   for(const sign of [-1,1]) {
     const h=radius*sign;
     cone.add(surface(h,false,0.018));
     cone.add(lines([circle(h),...Array.from({length:8},(_,i)=>[[0,0,0],circle(h)[i*8]])],0x7896a8,0.26));
   }
+}
+const isIdentityGroup=()=>group[0]===1&&group[1]===0&&group[2]===0&&group[3]===1;
+// A base triple's coefficients and display position under g; base identities are never replaced by these.
+const viewCoefficients=p=>isIdentityGroup()?p:applyRows(groupRows,p);
+const viewVector=p=>vector(viewCoefficients(p)).map(x=>x+0);
+// Radial projection to the screen y = height, applied after g (the projection of the transformed vector).
+const projectView=q=>{const v=viewVector(q);return v.map(x=>x*height/v[1]);};
+// The drawn set is the fixed base ball moved by g (her viewer instead recatalogues the crop around g); the far plane
+// follows the furthest moved point so a strong boost is never clipped.
+let drawnReach=0;
+function transformPositions(){
+  const xyz=lattice.xyz,abc=lattice.abc,m=groupRows;let reach=radius*radius;
+  if(isIdentityGroup())xyz.set(baseXyz);
+  else for(let i=0;i<lattice.count;i++){
+    const a=abc[3*i],b=abc[3*i+1],c=abc[3*i+2];
+    const a1=m[0]*a+m[1]*b+m[2]*c,b1=m[3]*a+m[4]*b+m[5]*c,c1=m[6]*a+m[7]*b+m[8]*c;
+    const x=0-b1,y=a1+c1,z=c1-a1;xyz[3*i]=x;xyz[3*i+1]=y;xyz[3*i+2]=z;
+    const d=x*x+y*y+z*z;if(d>reach)reach=d;
+  }
+  drawnReach=Math.sqrt(reach);
+  camera.far=20+8*drawnReach*scale;camera.updateProjectionMatrix();
+}
+// A new g is a new lattice generation for picking: hover answers, cached images and glyph sizes are recomputed.
+function setGroup(next){
+  group=isIntegral(next)?next.map(x=>x+0):normalize(next);groupRows=pushforward(group);
+  const t=performance.now();transformPositions();timings.group=performance.now()-t;
+  cloudMesh.geometry.attributes.position.needsUpdate=true;
+  latticeGeneration++;hoverQueries.reset();showHover(null);glyphKey=null;
+  if(imageMesh){disk.remove(imageMesh);imageMesh.geometry.dispose();imageMesh=null;}
+  update();
 }
 const origin = new THREE.Mesh(sphere,white); world.add(origin);
 const shown=p=>inBall(p,radius)&&(whole||isUpper(p));
@@ -113,7 +149,7 @@ function planeInteriorMembers([A,B,C]){
 // Radial images of every interior point on the screen y = height, built only once projection is shown.
 function buildImages(){
   const t=performance.now(),images=new Float32Array(3*lattice.count);let n=0;
-  for(let i=0;i<lattice.count;i++){const q=positiveRepresentative(tripleAt(lattice,i));if(q){images.set(project(q),3*n);n++;}}
+  for(let i=0;i<lattice.count;i++){const q=positiveRepresentative(tripleAt(lattice,i));if(q){images.set(projectView(q),3*n);n++;}}
   const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.BufferAttribute(images.subarray(0,3*n),3));
   imageMesh=new THREE.Points(geometry,imageMaterial);imageMesh.scale.setScalar(scale);imageMesh.frustumCulled=false;disk.add(imageMesh);
   timings.images=performance.now()-t;
@@ -150,8 +186,10 @@ function updatePair() {
   $('pair-details').hidden=!plane;$('pair-clear').hidden=!secondSelection;
   const focusUniform=cloudMaterial.uniforms.uFocus.value;focusUniform.w=0;
   if(!plane){refreshFactors('');return;}
-  if(planeFocus){const [A,B,C]=plane.normal,n=new THREE.Vector3(-B,-A-C,C-A).normalize();focusUniform.set(n.x,n.y,n.z,1);cloudMaterial.uniforms.uFocusFade.value.x=0.5*radius;}
-  cloudMaterial.uniforms.uKeep.value.set(...vector(selected));
+  // Under g the plane's normal moves by the same ρ(g) (it preserves the Lorentz form), and its endpoints by g.
+  const viewPlane=isIdentityGroup()?plane:{normal:viewCoefficients(plane.normal),endpoints:plane.endpoints.map(e=>({...e,value:actReal(group,e.value)}))};
+  if(planeFocus){const [A,B,C]=viewPlane.normal,n=new THREE.Vector3(-B,-A-C,C-A).normalize();focusUniform.set(n.x,n.y,n.z,1);cloudMaterial.uniforms.uFocusFade.value.x=0.5*radius;}
+  cloudMaterial.uniforms.uKeep.value.set(...viewVector(selected));
   const members=planeInteriorMembers(plane.normal);
   planeMembers=new Set(members.map(p=>p.join()));refreshFactors(plane.normal.join());
   if(secondSelection){
@@ -159,20 +197,20 @@ function updatePair() {
     $('pair-second').textContent=`Second point: (${secondSelection.join(', ')}) · Δ = ${discriminant(secondSelection)} · root ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i`;
   } else $('pair-second').textContent=`Cutting plane with normal (${plane.normal.join(', ')}): the plane Lorentz-orthogonal to the selected exterior triple.`;
   $('pair-equation').textContent=`Plane: ${plane.equation}`;
-  $('pair-endpoints').textContent=`Geodesic endpoints: ${plane.endpoints.map(p=>p.label).join(' and ')}`;
+  $('pair-endpoints').textContent=`Geodesic endpoints: ${plane.endpoints.map(p=>p.label).join(' and ')}`+(isIdentityGroup()?'':` · under g ≈ ${viewPlane.endpoints.map(e=>Number.isFinite(e.value)?e.value.toFixed(3):'∞').join(' and ')}`);
   const secondVisible=!secondSelection||shown(secondSelection);
   $('pair-count').textContent=`${members.length} displayed complex-root points lie exactly in this plane (amber rings). Multiples remain separate points.${secondVisible?'':' The second point is hidden by this filter/crop.'}`;
   const ring=new THREE.InstancedMesh(sphere,pairMaterial,members.length);
   focus.add(ring);pairGlyphs.push({mesh:ring,points:members});
-  const boundary=planeSection(plane.normal,radius).map(p=>physical(p).toArray()), vertices=[];
+  const boundary=planeSection(viewPlane.normal,radius).map(p=>physical(p).toArray()), vertices=[];
   for(let i=1;i<boundary.length;i++)vertices.push(0,0,0,...boundary[i-1],...boundary[i]);
   const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));
   const sheet=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({color:0xffba6b,transparent:true,opacity:0.045,side:THREE.DoubleSide,depthWrite:false}));sheet.name='pair-plane';focus.add(sheet);
   focus.add(lines([boundary],0xffba6b,0.35));
-  const directions=coneDirections(plane);
+  const directions=coneDirections(viewPlane);
   focus.add(lines(directions.map(p=>[p.map(x=>-radius*scale*x),p.map(x=>radius*scale*x)]),0xffba6b,0.7));
   if(secondSelection&&secondVisible) {
-    const marker=new THREE.Mesh(sphere,pairMaterial);marker.position.copy(physical(vector(secondSelection)));
+    const marker=new THREE.Mesh(sphere,pairMaterial);marker.position.copy(physical(viewVector(secondSelection)));
     focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels,point:secondSelection});
   }
   if(projectionVisible)focus.add(lines([directions.map(p=>p.map(x=>height*scale*x))],0xffba6b,0.9));
@@ -182,19 +220,19 @@ function update() {
   disposeChildren(focus);focusGlyphs=[];pairGlyphs=[];glyphKey=null; disk.visible=projectionVisible;if(projectionVisible&&!imageMesh)buildImages(); cone.visible=$('cone').checked;
   const inCloud=shown(selected);
   if(inCloud) {
-    focus.add(lines([[[0,0,0],physical(vector(selected)).toArray()]],0xbacbd6,0.35));
+    focus.add(lines([[[0,0,0],physical(viewVector(selected)).toArray()]],0xbacbd6,0.35));
     const marker=new THREE.Mesh(sphere,selectionMaterial);
-    marker.position.copy(physical(vector(selected)));focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels,point:selected});
+    marker.position.copy(physical(viewVector(selected)));focus.add(marker);focusGlyphs.push({mesh:marker,extra:outlinePixels,point:selected});
   }
   const representative=positiveRepresentative(selected);
   if(projectionVisible && representative && inCloud) {
-    const image=physical(project(representative));focus.add(lines([[[0,0,0],image.toArray()]],0xffffff));
+    const image=physical(projectView(representative));focus.add(lines([[[0,0,0],image.toArray()]],0xffffff));
     const marker=new THREE.Mesh(sphere,white);marker.position.copy(image);focus.add(marker);focusGlyphs.push({mesh:marker,extra:0});
   }
   $('point-state').textContent=`(a,b,c) = (${selected.join(', ')}) · Δ = ${discriminant(selected)}`;
   $('polynomial-state').textContent=`f(x) = ${polynomial(selected)}`;
-  const root=representative?upperRoot(representative):null;
-  $('root-state').textContent=root?`Upper root: ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i${kind(selected)==='lower'?' · sign-flipped representative':''}`:kind(selected)==='null'?(selected[0]===0?'Boundary: double root at infinity':'Boundary: repeated real root'):'Exterior: real roots (outside the Klein disk)';
+  const root=representative?upperRoot(representative):null, moved=root&&!isIdentityGroup()?act(group,{x:root[0],y:root[1]}):null;
+  $('root-state').textContent=root?`Upper root: ${root[0].toFixed(3)} + ${root[1].toFixed(3)}i${kind(selected)==='lower'?' · sign-flipped representative':''}${moved?` · under g: ${moved.x.toFixed(3)} + ${moved.y.toFixed(3)}i`:''}`:kind(selected)==='null'?(selected[0]===0?'Boundary: double root at infinity':'Boundary: repeated real root'):'Exterior: real roots (outside the Klein disk)';
   $('coefficient').value=selected.join(',');$('projection').checked=projectionVisible;
   $('status').textContent=inCloud?'':'The selected point is hidden by this filter or crop.';
   $('inhabit').disabled=!inCloud&&!inhabited;
@@ -205,11 +243,51 @@ function update() {
   $('palette-label').textContent=`Upper interior |Δ| (log, ${categories==='viridis'?'Viridis 0.2–1':'Stange anchors'}) · crop reaches ${reach}`;
   for(const type of ['exterior','null','lower'])$(`swatch-${type}`).style.background=categoryPalettes[categories][type];
   $('palette-low').textContent=lo;$('palette-high').textContent=hi;
+  showGroup();
+  rootsPane.setData({abc:lattice.abc,count:lattice.count,g:group,sigma,selected,second:secondSelection});
   render();
 }
+const fmt=x=>(Math.abs(x)<5e-3?0:x).toFixed(2);
+const matrixText=g=>`[${fmt(g[0])}, ${fmt(g[1])}; ${fmt(g[2])}, ${fmt(g[3])}]`;
+// g, whether it preserves the integer lattice, and how the selection appears under it (exactly when integral).
+function showGroup(){
+  if(isIdentityGroup()){$('group-state').textContent='g = identity';return;}
+  if(isIntegral(group)){
+    const image=pushforwardExact(group,selected).map(Number);
+    $('group-state').textContent=`g = [${group[0]}, ${group[1]}; ${group[2]}, ${group[3]}] ∈ SL₂(ℤ): the lattice maps to itself; the selection (${selected.join(', ')}) is drawn where (${image.join(', ')}) was`;
+    return;
+  }
+  $('group-state').textContent=`g = ${matrixText(group)} · off SL₂(ℤ) (nearest γ = ${matrixText(nearestIntegral(group)).replace(/\.00/g,'')}); points keep their integer identities at real positions`;
+}
+// Her Snap and integer generators absorb an integer g: since γ ∈ SL₂(ℤ) maps the lattice to itself, the view with
+// g = γ is the view with g = 1 in which every point is relabelled by γ. So the selection (and pair) become their
+// exact images γ·(a,b,c) and g returns to the identity. Identity afterwards does not undo the relabelling; Reset does.
+// (Verified for Snap on her viewer; for the generator buttons this follows her code, not a recording.)
+function absorb(gamma){
+  if(!isIntegral(gamma))return setGroup(gamma);
+  selected=pushforwardExact(gamma,selected).map(Number);
+  if(secondSelection)secondSelection=pushforwardExact(gamma,secondSelection).map(Number);
+  setGroup(identity);
+}
+const snapNow=()=>absorb(nearestIntegral(group));
+const rootsPane=new RootsPane($('roots-pane'),{
+  onDragStep:(z0,z1)=>setGroup(dragStep(group,z0,z1)),
+  onDragEnd:()=>{if(snapGroup)snapNow();},
+  onPick:(i,asPair)=>{if(i>=0)selectPoint(tripleAt(lattice,i),asPair);},
+  label:p=>polynomial(p),
+  colorOf:i=>{const c=cloudMesh.geometry.attributes.color.array;return [c[3*i],c[3*i+1],c[3*i+2]];},
+});
+// Her Symmetry controls: generators compose on the left, Identity returns to g = 1, Snap settles drags on SL₂(ℤ).
+for(const [id,generator] of [['g-tinv',[1,-1,0,1]],['g-s',[0,-1,1,0]],['g-t',[1,1,0,1]]])$(id).onclick=()=>absorb(multiply(generator,group));
+$('g-identity').onclick=()=>setGroup(identity);
+$('snap').onchange=()=>{snapGroup=$('snap').checked;if(snapGroup)snapNow();};
 const tempLocal=new THREE.Vector3(),tempWorld=new THREE.Vector3();
 // Which of her size causes applies: the origin-eye rule in Origin mode, plane emphasis for upper members.
-const radiusFactor=p=>sigma*sourceRadiusFactor(p,{origin:originMode,onPlane:!originMode&&kind(p)==='upper'&&planeMembers.has(p.join()),symmetric:symmetricColor});
+// Under g her origin rule uses the base Δ (invariant) and the current a+c, matching the point shader.
+const radiusFactor=p=>{
+  if(originMode&&!isIdentityGroup())return sigma*(discriminant(p)<0?0.4*Math.abs(discriminant(p))**0.25/Math.sqrt(Math.abs(viewVector(p)[1])):1);
+  return sigma*sourceRadiusFactor(p,{origin:originMode,onPlane:!originMode&&kind(p)==='upper'&&planeMembers.has(p.join()),symmetric:symmetricColor});
+};
 function updateGlyphSizes(){
   if(!cloudMesh)return;
   camera.updateMatrixWorld();world.updateMatrixWorld(true);
@@ -222,7 +300,7 @@ function updateGlyphSizes(){
   u.uHalfH.value=height/2;u.uGlyph.value=glyphRadius*sigma;u.uDpr.value=renderer.getPixelRatio();u.uOrigin.value=originMode&&!session?1:0;
   for(const item of pairGlyphs) {
     item.points.forEach((p,i)=>{
-      tempLocal.copy(physical(vector(p)));
+      tempLocal.copy(physical(viewVector(p)));
       tempWorld.copy(tempLocal).applyMatrix4(world.matrixWorld).applyMatrix4(camera.matrixWorldInverse);
       const size=session?1.2:glyphScale(-tempWorld.z,height,camera.fov,camera.zoom,0.65,radiusFactor(p));
       matrix.makeScale(size,size,size);matrix.setPosition(tempLocal);item.mesh.setMatrixAt(i,matrix);
@@ -309,7 +387,7 @@ function beginEgocentric(){
 }
 function enterInhabit() {
   beginEgocentric();originMode=false;camera.fov=overviewFov;camera.updateProjectionMatrix();
-  camera.position.copy(world.position).add(physical(vector(selected))).add(new THREE.Vector3(0.10,0.12,0.10));
+  camera.position.copy(world.position).add(physical(viewVector(selected))).add(new THREE.Vector3(0.10,0.12,0.10));
   const aim=world.position.clone();aim.y=camera.position.y;camera.lookAt(aim);
   const e=new THREE.Euler().setFromQuaternion(camera.quaternion,'YXZ');look={yaw:e.y,pitch:e.x};applyLook();
 }
@@ -342,7 +420,7 @@ function resetView(){controls.target.copy(world.position);camera.position.copy(w
 function resize(){if(session)return;const r=$('viewport').getBoundingClientRect();if(r.width<=0||r.height<=0)return;camera.aspect=r.width/r.height;camera.updateProjectionMatrix();renderer.setSize(r.width,r.height);render();}
 $('next').onclick=()=>{const sequence=[...examples,[-1,1,-2],[1,2,1],[1,3,1]];const i=sequence.findIndex(p=>p.every((x,j)=>x===selected[j]));selectPoint(sequence[(i+1)%sequence.length]);};
 // Her Star size control (0.4–2.5) scales every star radius.
-$('star-size').oninput=()=>{sigma=Number($('star-size').value);$('star-size-value').textContent=sigma.toFixed(2);glyphKey=null;render();};
+$('star-size').oninput=()=>{sigma=Number($('star-size').value);$('star-size-value').textContent=sigma.toFixed(2);glyphKey=null;rootsPane.setData({...rootsPane.data,sigma});render();};
 $('plane-focus').onchange=()=>{planeFocus=$('plane-focus').checked;update();};
 $('palette').onchange=()=>{categories=$('palette').value;update();};
 $('projection').onchange=()=>{projectionVisible=$('projection').checked;update();};
@@ -351,7 +429,7 @@ $('whole').onchange=()=>{whole=$('whole').checked;rebuild();update();};
 $('symmetric-color').onchange=()=>{symmetricColor=$('symmetric-color').checked;update();};
 $('radius').onchange=()=>{radius=Number($('radius').value);rebuild();if(!inhabited)resetView();update();};
 $('view').onclick=()=>{camera.position.sub(controls.target).applyAxisAngle(new THREE.Vector3(0,1,0),Math.PI/3).add(controls.target);controls.update();};
-$('reset').onclick=()=>{leaveInhabit();selected=examples[0];secondSelection=null;pairMessage='';radius=6;whole=true;symmetricColor=false;projectionVisible=false;$('radius').value='6';$('whole').checked=true;$('cone').checked=true;$('symmetric-color').checked=false;rebuild();resetView();update();};
+$('reset').onclick=()=>{leaveInhabit();group=[...identity];groupRows=pushforward(identity);snapGroup=false;$('snap').checked=false;rootsPane.reset();selected=examples[0];secondSelection=null;pairMessage='';radius=6;whole=true;symmetricColor=false;projectionVisible=false;$('radius').value='6';$('whole').checked=true;$('cone').checked=true;$('symmetric-color').checked=false;rebuild();resetView();update();};
 function selectEntered(asPair=false) {
   const parts=$('coefficient').value.split(',').map(s=>s.trim()),next=parts.map(Number);
   if(parts.length!==3||parts.some(s=>!/^[-+]?\d+$/.test(s))||!shown(next)) {
@@ -380,16 +458,28 @@ function pickPoint(ray,maxAngle,asPair=false){const i=pickIndex(ray,maxAngle);if
 const clickAngle=r=>10*2*Math.tan(camera.fov*Math.PI/360)/(r.height*camera.zoom);
 function pointerRay(x,y){const r=renderer.domElement.getBoundingClientRect();pointer.set(2*(x-r.left)/r.width-1,1-2*(y-r.top)/r.height);raycaster.setFromCamera(pointer,camera);return {ray:raycaster.ray.clone(),angle:clickAngle(r)};}
 function selectAt(event){const {ray,angle}=pointerRay(event.clientX,event.clientY);pickPoint(ray,angle,event.shiftKey);}
-renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);showHover(null);if(inhabited){lookDrag={x:e.clientX,y:e.clientY};renderer.domElement.setPointerCapture(e.pointerId);}});renderer.domElement.addEventListener('pointermove',e=>{
+// With the eye at the origin a drag moves the sky by g, as in her viewer: each line of sight is one projective class,
+// whose Klein point (X/Y, Z/Y) maps to a root; the transvection carries the root under the pointer along with it.
+function originRoot(x,y){const d=pointerRay(x,y).ray.direction;return Math.abs(d.y)<1e-9?null:kleinToUpper(d.x/d.y,d.z/d.y);}
+renderer.domElement.addEventListener('pointerdown',e=>{tap.begin(e);showHover(null);if(inhabited){lookDrag={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,moved:false,z:eyeAtOrigin()?originRoot(e.clientX,e.clientY):null};renderer.domElement.setPointerCapture(e.pointerId);}});renderer.domElement.addEventListener('pointermove',e=>{
   tap.move(e);
   if(e.pointerType==='touch')hoverPointer=null;else hoverPointer={x:e.clientX,y:e.clientY};
   // The label belongs to the previous position until the next frame recomputes it, so it is hidden now.
   showHover(null);if(!e.buttons&&!lookDrag)scheduleHover();
   if(!inhabited||!lookDrag)return;
+  if(eyeAtOrigin()){
+    // Her 4-pixel threshold; outside the disk (no anchor) nothing moves until the pointer returns.
+    if(!lookDrag.moved&&Math.hypot(e.clientX-lookDrag.x0,e.clientY-lookDrag.y0)<4)return;
+    lookDrag.moved=true;
+    const z=originRoot(e.clientX,e.clientY);
+    if(lookDrag.z&&z)setGroup(dragStep(group,lookDrag.z,z));
+    if(z)lookDrag.z=z;
+    return;
+  }
   look.yaw-=(e.clientX-lookDrag.x)*0.004;
   look.pitch=THREE.MathUtils.clamp(look.pitch-(e.clientY-lookDrag.y)*0.004,-Math.PI/2,Math.PI/2);
   lookDrag={x:e.clientX,y:e.clientY};applyLook();
-});renderer.domElement.addEventListener('pointerup',e=>{lookDrag=null;if(tap.end(e)&&!session)selectAt(e);scheduleHover();});renderer.domElement.addEventListener('pointerleave',clearHover);renderer.domElement.addEventListener('pointercancel',e=>{lookDrag=null;tap.cancel(e);clearHover();});
+});renderer.domElement.addEventListener('pointerup',e=>{const drag=lookDrag;lookDrag=null;if(drag?.moved&&eyeAtOrigin()&&snapGroup)snapNow();if(tap.end(e)&&!session)selectAt(e);scheduleHover();});renderer.domElement.addEventListener('pointerleave',clearHover);renderer.domElement.addEventListener('pointercancel',e=>{lookDrag=null;tap.cancel(e);clearHover();});
 renderer.domElement.addEventListener('keydown',e=>{const move={w:'forward',s:'back',a:'left',d:'right',q:'down',e:'up'}[e.key.toLowerCase()];if(inhabited&&move){e.preventDefault();moveEye(move);return;}if(e.key==='Escape'&&inhabited){leaveInhabit();return;}if(e.key==='Home'){e.preventDefault();leaveInhabit();resetView();}if(['+','=','-'].includes(e.key)){e.preventDefault();if(inhabited){moveEye(e.key==='-'?'back':'forward');return;}const d=camera.position.distanceTo(controls.target),n=THREE.MathUtils.clamp(d*(e.key==='-'?1.1:1/1.1),controls.minDistance,controls.maxDistance);camera.position.sub(controls.target).multiplyScalar(n/d).add(controls.target);controls.update();}});
 controls.addEventListener('change',render);window.addEventListener('resize',resize);new ResizeObserver(resize).observe($('viewport'));
 const xrPanel=new THREE.Group();xrPanel.position.set(0,1,-1.15);xrPanel.visible=false;scene.add(xrPanel);const xrTargets=[];

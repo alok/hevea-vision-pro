@@ -34,10 +34,29 @@ Durable notes on how Stange's Starscape/Lattice viewer behaves and how this proj
 - With the eye at the origin, a drag uses the view ray's Klein point and the same rule. The cloud moves by the Lorentz map j(g); this is not a camera move.
 - The visible crop is recomputed for the current g (a+c ≤ R in transformed coordinates) after enough motion.
 
-**Ours:** not yet implemented. Euclidean viewing rotations in both platforms leave coefficients, discriminants, selections and planes unchanged, and are not SL₂ or hyperbolic navigation.
+**Recorded behavior** (2026-10-23, real pointer input, read-only state getter):
+- **Drag invariant:** in 51 samples, roots matched the chart within 1.1e−13 px and det g = 1 within 2.2e−16.
+- **Identity and generic g:** an unsnapped (+110, −45) px drag gives a non-integer g; Identity returns to g = 1.
+- **Shift-pan** moves the pane only.
+- **Snap:** a short drag with Snap on snaps back to g = 1. A 350 px drag absorbed T: the selection (13,20,34) became (13,−6,27), g returned to 1, and Identity afterwards kept (13,−6,27).
+- **Origin:** with the eye at the origin, a 3D drag carried the point under the pointer, with the camera unchanged.
+- **Labels:** the hover label can name a different point from the selection label.
+
+**Ours (browser 0.15.0):**
+- **Roots pane:** at widths of 1000 px and up, the pane sits beside the 3D view. Stars are drawn at g·root with radius 0.03·σ·scale/a′.
+- **Drag:** `mobius.dragStep` uses the same transvection composed on the left, the 4 px threshold, and no anchor at or below the axis. Shift-pan and wheel zoom leave g alone, and a click selects.
+- **3D lift:** `lattice.xyz` holds J·ρ(g)·(a,b,c), with each lattice change a new picking generation, so drawing, click picking and worker hover use the moved geometry. Glyphs use the base Δ.
+- **Origin:** dragging at Origin moves the sky.
+- **Snap and generators:** these absorb γ into the selection and pair. That matches the recording for Snap; for the generator buttons it follows the source's code, not a recording.
+- **Departures:** the drawn set is the base ball moved by g (the source recomputes its crop), there is no animation, and the pane is hidden below 1000 px.
+- **Tests:** `mobius-checks.js` checks all of this with real pointer input; the dragged root ends within 0.0001 px of the pointer.
+
+**Native:** not yet implemented.
+
+Euclidean camera motions in both platforms remain separate from g: they change no coefficients and are not SL₂ or hyperbolic navigation.
 
 ## Versions referenced
 
-- Browser 0.14.0 plus this label commit.
+- Browser 0.15.0.
 - Native 0.11.0 (15) in the main simulator.
 - The source was observed live on 2026-10-23.

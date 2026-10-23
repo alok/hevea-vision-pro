@@ -46,7 +46,7 @@ The fixture file contains:
 
 ## Behavior matrix
 
-| Behavior | Stange's source viewer | Browser 0.14.0 | Native 0.11.0 (15) |
+| Behavior | Stange's source viewer | Browser 0.15.0 | Native 0.11.0 (15) |
 | --- | --- | --- | --- |
 | Signed ball, both nappes, categories | Her own crop and palette | Yes; exact fixtures | Yes; exact fixtures, R ≤ 12 |
 | Exact entry; rejected entry changes nothing | — | Yes | Yes (UI-tested) |
@@ -60,6 +60,7 @@ The fixture file contains:
 | Origin glyph size | 0.4·\|Δ\|^¼/√\|a+c\| | Same rule with a pixel knee and cap | Same rule on physical spheres (no knee or cap) |
 | Inhabit and Overview | — | Free camera near the point | Point placed 35 cm ahead once; selection never moves the viewer |
 | Viewing rotations versus SL₂(ℝ) | Origin drag applies an SL₂(ℝ) action to the forms | Euclidean camera or object rotations; exact coefficients, discriminants, selections and planes never change, and this is not SL₂ or intrinsic hyperbolic navigation | Same as the browser |
+| Möbius drag (SL₂(ℝ) on roots, Lorentz map on coefficients) | Roots-pane drag; origin-eye 3D drag; Snap absorbs γ | Same, in a roots pane at widths ≥ 1000 px; drawn set is the base ball moved by g (hers recatalogues); fixtures in `mobius` | **Missing** |
 | Free view rotation | — | Right-handed display basis, C = Ry·Rx·Rz (YXZ); rotations do not commute | **Missing**: three fixed object poses only |
 | Reset | — | Clears the pair, Inhabit and the view | Clears the pair and the placement; restores defaults |
 

@@ -75,3 +75,29 @@ export function upperToKlein(z) {
   const n = z.x * z.x + z.y * z.y;
   return [2 * z.x / (1 + n), (n - 1) / (1 + n)];
 }
+
+/** g·t on the real projective line, with ∞ as Infinity. */
+export function actReal(g, t) {
+  const [p, q, r, s] = g;
+  if (!Number.isFinite(t)) return r === 0 ? Infinity : p / r;
+  const d = r * t + s;
+  return d === 0 ? Infinity : (p * t + q) / d;
+}
+export const isIntegral = g => g.every(Number.isInteger) && determinant(g) === 1;
+/**
+ * Our Snap: the element of SL₂(ℤ) nearest g. Reduce g·i into the standard fundamental domain |x| ≤ ½, |z| ≥ 1 by
+ * translations and inversions m ∈ SL₂(ℤ); γ = m⁻¹ then sends i to the orbit point of i in the cell holding g·i.
+ * γ and γS (S fixes i) are the integer candidates; the one nearer g entrywise, up to sign, is returned.
+ */
+export function nearestIntegral(g) {
+  const S = [0, -1, 1, 0];
+  let w = act(g, { x: 0, y: 1 }), m = [...identity];
+  for (let step = 0; step < 200; step++) {
+    const n = Math.round(w.x);
+    if (n) { w = { x: w.x - n, y: w.y }; m = multiply([1, -n, 0, 1], m); }
+    if (w.x * w.x + w.y * w.y < 1 - 1e-12) { w = act(S, w); m = multiply(S, m); } else break;
+  }
+  const gamma = inverse(m), candidates = [gamma, multiply(gamma, S)].flatMap(c => [c, c.map(x => -x)]);
+  const distance = c => c.reduce((sum, x, i) => sum + (x - g[i]) ** 2, 0);
+  return candidates.reduce((best, c) => distance(c) < distance(best) ? c : best).map(x => x + 0);
+}

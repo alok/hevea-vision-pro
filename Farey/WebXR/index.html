@@ -23,6 +23,13 @@
     #category-key { display:flex;gap:12px;margin-top:6px; }
     #category-key i { display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px; }
     #palette-ticks { display:flex;justify-content:space-between;font:11px ui-monospace,monospace; }
+    /* The roots pane sits right of the 3D view, as in her viewer, when the window is wide enough for both. */
+    #roots-pane { display: none; position: fixed; z-index: 1; background: #000; border-left: 1px solid #1d2a33; touch-action: none; cursor: grab; }
+    #roots-pane.is-dragging { cursor: grabbing; }
+    @media(min-width: 1000px) {
+      #viewport { right: calc(12px + (100vw - 404px) / 2); }
+      #roots-pane { display: block; top: 140px; right: 12px; width: calc((100vw - 404px) / 2); height: calc(100svh - 156px); }
+    }
     @media(max-width: 800px) {
       header { left: 16px; top: 12px; }
       h1 { font-size: 28px; margin: 4px 0 8px; }
@@ -34,6 +41,7 @@
 <body>
   <noscript><style>.controls,#debug-toggle{display:none}</style><p class="startup-error">JavaScript is needed for the spatial scene. <a href="https://www.katestange.net/starscape-lattice/">See Katherine Stange’s original viewer.</a></p></noscript>
   <main id="viewport" aria-label="Three-dimensional coefficient lattice and its projection"></main>
+  <canvas id="roots-pane" aria-label="Roots of the upper interior forms in the upper half-plane. Drag to apply a Möbius transformation; Shift-drag pans; click selects."></canvas>
   <div id="hover-label" hidden aria-hidden="true"><span class="hover-ring"></span><span id="hover-text"></span></div>
   <button id="debug-toggle" aria-expanded="false" aria-controls="debug">☰ Debug</button>
   <section id="debug" role="dialog" aria-label="Debug counts and performance" hidden>
@@ -57,7 +65,7 @@
       <p id="origin-note" hidden>Eye at (0,0,0), the zero polynomial: no unique root or projective point; radial projection is undefined. Each line of sight is one class of nonzero forms; k·(a,b,c) share a ray, and ±(a,b,c), with the same roots, lie opposite. Looking up, the upper nappe appears as the Klein disk.</p>
       <div class="row"><button data-look="up">Look up</button><button data-look="level">Level</button><button data-look="down">Look down</button></div>
       <div class="row"><button data-move="forward">Forward</button><button data-move="back">Back</button><button data-move="left">Left</button><button data-move="right">Right</button><button data-move="up">Up</button><button data-move="down">Down</button></div>
-      <p>Drag to look. W/A/S/D move; Q/E move down/up. This is ambient Euclidean coefficient space, not hyperbolic or Flatland navigation.</p>
+      <p>Drag to look (at Origin, drag moves the sky by a Möbius transformation, as in her viewer; use the Look buttons to turn). W/A/S/D move; Q/E move down/up. Moving the eye is ambient Euclidean motion, not hyperbolic navigation.</p>
     </section>
     <form id="coefficient-form"><label>(a,b,c) <input id="coefficient" value="1,-1,2" aria-label="Integer coefficients a, b, c"></label><button>Select</button></form>
     <p class="hint">Shift-click a second interior point, or enter its coefficients and pair it with the selection.</p>
@@ -68,6 +76,12 @@
       <p id="pair-count"></p>
       <p class="hint">Select an exterior point (Δ&gt;0) to cut by its Lorentz-orthogonal plane, or Shift-click two interior points. The cone intersection gives the boundary directions; the Klein-disk slice is a geodesic chord. Euclidean Inhabit motion is not hyperbolic.</p>
       <p><label><input type="checkbox" id="plane-focus"> Fade points away from the plane</label> <span class="hint">Viewing aid: opacity falls with Euclidean distance to the plane (to 12%); color and size are unchanged.</span></p>
+    </section>
+    <section id="symmetry" aria-label="Symmetry">
+      <div class="row"><button id="g-tinv" type="button">T⁻¹</button><button id="g-s" type="button">S</button><button id="g-t" type="button">T</button><button id="g-identity" type="button">Identity</button></div>
+      <p><label><input type="checkbox" id="snap"> Snap: settle on SL₂(ℤ) after a drag</label></p>
+      <p id="group-state" class="formula" aria-live="polite"></p>
+      <p class="hint">Drag the roots pane (or, with the eye at Origin, the sky) to apply a real Möbius transformation g; Shift-drag pans the pane. Points keep their exact integer identities; under a non-integer g they sit at real positions. Snap and T, S settle on an integer γ and relabel the selection by γ, as her viewer does; Identity returns to g = 1 without undoing that relabelling.</p>
     </section>
     <div class="row"><label>Radius <select id="radius"><option>4</option><option selected>6</option><option>8</option><option>10</option><option>12</option><optgroup label="Dense (explicit)"><option value="24">24</option><option value="48">48</option><option value="96">96</option></optgroup></select></label></div>
     <label>Star size <input type="range" id="star-size" min="0.4" max="2.5" step="0.01" value="1" style="width:120px;vertical-align:middle"> <span id="star-size-value">1.00</span></label>

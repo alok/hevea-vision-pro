@@ -36,6 +36,16 @@ saturate. Exterior, cone and lower-interior categories have separate
 swatches. Stange's palette is also available; its category hues are
 approximations. Coloring the lower half is explicitly our extension.
 
+MÖBIUS DRAG (0.15.0)
+In a window at least 1000 px wide, the roots pane beside the 3D view shows
+the upper interior roots in the upper half-plane. Drag it to apply a real
+Möbius transformation g: the root under the pointer follows it, and the 3D
+cloud moves by the matching Lorentz map. At Origin, dragging the sky does
+the same. Shift-drag pans the pane; the wheel zooms. Points keep their
+exact integer identities. Snap and T, S settle on an integer γ and relabel
+the selection; Identity returns to g = 1; Reset restores everything. The
+drawn set is the base ball moved by g (her viewer recomputes its crop).
+
 CUTTING PLANES
 Select a point with positive discriminant to use it as a Lorentz normal.
 Or select (1,0,1), then Shift-click (1,1,1), or enter that second point
