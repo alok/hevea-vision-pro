@@ -80,7 +80,8 @@ final class ParityContractTests: XCTestCase {
       XCTAssertEqual(p.discriminant, fixture.discriminant, fixture.id)
       XCTAssertEqual([p.vector.x, p.vector.y, p.vector.z].map { Int($0) }, fixture.vector, fixture.id)
       XCTAssertEqual(p.isPrimitive, fixture.primitive, fixture.id)
-      for (radius, inside) in fixture.inBall {
+      // Browser-only radii (96) are beyond native's cap, which contains() refuses by design.
+      for (radius, inside) in fixture.inBall where (Int(radius) ?? 0) <= CoefficientBall.maximumRadius {
         XCTAssertEqual(CoefficientBall.contains(p, radius: Int(radius) ?? 0), inside, "\(fixture.id) R\(radius)")
       }
       if let exact = fixture.upperRootExact {

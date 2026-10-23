@@ -5,6 +5,7 @@
 import { vector, discriminant, kind, upperRoot, positiveRepresentative, polynomial } from '../WebXR/starscape-core.js';
 import { enumerateLattice, tripleAt, inBall } from '../WebXR/lattice.js';
 import { pairPlane, planeFromNormal, inPairPlane } from '../WebXR/pair-plane.js';
+import { pushforward, pushforwardExact, transvection, act, inverse } from '../WebXR/mobius.js';
 import { readFileSync } from 'node:fs';
 
 const browserVersion = JSON.parse(readFileSync(new URL('../WebXR/package.json', import.meta.url))).version;
@@ -29,6 +30,7 @@ const pointCases = [
   ['constant-1', [0, 0, 1], 'null: no finite root; double projective root at ∞'],
   ['x', [0, 1, 0], 'exterior: finite root 0 and projective root ∞; normal of the plane b = 0'],
   ['x2-2', [1, 0, -2], 'exterior: roots ±√2, a nonrational plane normal'],
+  ['user-seed', [13, 20, 34], 'the seed of the user\'s source URL: Δ −1368, norm² 3050, outside R ≤ 12, inside browser R96 only'],
 ];
 // Exact real roots of a boundary or exterior form read projectively (binary quadratic ax² + bxy + cy²): '∞' is the
 // projective point at infinity, not a real number. Interior forms have none.
@@ -62,7 +64,7 @@ const fixturePoints = pointCases.map(([id, abc, note]) => {
       denominator: 2 * representative[0] },
     upperRootApprox: root, positiveRepresentative: representative,
     realRoots: realRoots(abc), realRootsExact: ['null', 'exterior'].includes(kind(abc)) ? exactRoots(abc) : null,
-    inBall: Object.fromEntries(radii.map(r => [r, inBall(abc, r)])),
+    inBall: Object.fromEntries([...radii, 96].map(r => [r, inBall(abc, r)])),
   };
 });
 
@@ -92,6 +94,27 @@ const rejections = [
 ].map(r => ({ ...r, error: code(pairPlane(r.first, r.second).error) }))
   .concat([[1, 2, 1], [1, 0, 1], [0, 0, 0]].map(n => ({ normalInput: n, error: code(planeFromNormal(n).error) })));
 
+// Möbius transformations (WebXR/mobius.js): g = [p, q, r, s] moves roots by z ↦ (pz+q)/(rz+s) and pushes coefficients
+// forward by a′ = s²a − rs b + r²c, b′ = −2qs a + (ps+qr) b − 2pr c, c′ = q²a − pq b + p²c. Integer matrices act
+// exactly; a real transvection is given only approximately, with its exact description.
+const generators = { T: [1, 1, 0, 1], 'T⁻¹': [1, -1, 0, 1], S: [0, -1, 1, 0] };
+const mobius = {
+  convention: 'g = [p, q, r, s] = [[p, q], [r, s]], det 1; roots z ↦ (pz+q)/(rz+s); coefficients Q ↦ Q∘g⁻¹',
+  generators: Object.entries(generators).map(([name, g]) => ({
+    name, g, pushforwardRows: pushforward(g).map(x => x + 0),
+    images: pointCases.map(([id, abc]) => ({ id, image: pushforwardExact(g, abc).map(Number) })),
+  })),
+  dragStep: (() => {
+    const z0 = { x: 0, y: 1 }, z1 = { x: 1, y: 1 }, g = transvection(z0, z1);
+    return {
+      description: 'transvection carrying i to 1 + i along their geodesic: exactly [[3, 1], [1, 2]]/√5',
+      z0, z1, gApprox: g, imageOfZ0Approx: act(g, z0), inverseApprox: inverse(g),
+      imageOfDefaultApprox: pushforward(g).length && applyPush(g, [1, -1, 2]),
+    };
+  })(),
+};
+function applyPush(g, abc) { const m = pushforward(g); return [0, 1, 2].map(i => m[3 * i] * abc[0] + m[3 * i + 1] * abc[1] + m[3 * i + 2] * abc[2]); }
+
 process.stdout.write(JSON.stringify({
   contract: 'farey-coefficient-parity', contractVersion: 1, generatedFrom: `browser ${browserVersion} modules`,
   basis: {
@@ -103,5 +126,5 @@ process.stdout.write(JSON.stringify({
   },
   census: radii.map(census),
   browserOnlyCapacity: { radius: 96, count: 1852484, note: 'browser extension; native caps at R12 (one entity per point)' },
-  points: fixturePoints, planes, rejections,
+  points: fixturePoints, planes, rejections, mobius,
 }, null, 1) + '\n');
