@@ -27,6 +27,9 @@ export async function auditPackage(directory) {
   for (const name of ['README.txt', 'serve.py', 'SOURCE.txt', 'COPYING.txt', 'vendor/THREE-LICENSE.txt', 'source/build.mjs', 'source/package-lock.json']) {
     ensure(name in manifest, `Missing distributable input: ${name}`);
   }
+  // The packaged source's own npm test must be runnable from the extracted package: every test file it names ships.
+  const packagedTest = JSON.parse(await readFile(resolve(root, 'source/package.json'), 'utf8')).scripts?.test ?? '';
+  for (const name of packagedTest.match(/[\w.-]+\.test\.js/g) ?? []) ensure(`source/${name}` in manifest, `Packaged test missing: source/${name}`);
   const html = (await Promise.all(['index.html', 'farey.html'].map(name => readFile(resolve(root,name),'utf8')))).join('\n');
   const importMap = JSON.parse(html.match(/<script type="importmap">([\s\S]*?)<\/script>/)[1]).imports;
   const stale = [];

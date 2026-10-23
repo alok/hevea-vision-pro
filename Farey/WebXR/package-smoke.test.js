@@ -32,6 +32,7 @@ const faults = [
   { name: 'external stylesheets', file: 'index.html', edit: text => text.replace('href="style.css', 'href="https://example.invalid/style.css'), expected: /External asset/ },
   { name: 'unresolved module imports', file: 'app.js', edit: text => `${text}\nimport './missing.js';`, expected: /Missing local asset/ },
   { name: 'bare import inside the hover worker', file: 'aim-worker.js', edit: text => text.replace(/from '\.\/input\.js[^']*'/, "from 'three'"), expected: /Bare import inside a module worker/ },
+  { name: 'a packaged npm test naming a missing file', file: 'source/package.json', edit: text => text.replace('serve.test.js', 'serve.test.js missing.test.js'), expected: /Packaged test missing: source\/missing\.test\.js/ },
   { name: 'a stale module cache version', file: 'starscape.js', edit: text => text.replace(/roots-pane\.js\?v=[0-9a-f]+/, 'roots-pane.js?v=0000'), expected: /Stale cache version/ },
   { name: 'new telemetry APIs', file: 'app.js', edit: text => `${text}\nnavigator.sendBeacon('/metrics', 'data');`, expected: /network API/ }
 ];
