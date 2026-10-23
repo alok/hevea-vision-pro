@@ -251,7 +251,12 @@ import XCTest
       recorder.recordDrag(entity: "origin-sky", direction: [0, 2, 0], outcome: .firstAnchor)
       recorder.recordDragEnd()
       recorder.recordTap(entity: "")
+      recorder.recordActivate(entity: "coefficient:3:0:3")
+      recorder.recordSky("collision yes · input target yes · enabled true · scale 1.000")
     }
+    XCTAssertTrue(diagnostics.summary.contains("activations 1 · last activate entity coefficient:3:0:3"), diagnostics.summary)
+    XCTAssertTrue(diagnostics.summary.hasSuffix("sky collision yes · input target yes · enabled true · scale 1.000"))
+    XCTAssertEqual(silent.activations, 0)
     XCTAssertEqual(diagnostics.dragChanges, 1)
     XCTAssertTrue(diagnostics.summary.contains("last drag entity origin-sky"), diagnostics.summary)
     XCTAssertTrue(diagnostics.summary.contains("outcome first direction recorded · taps 1 · last tap entity unnamed"))

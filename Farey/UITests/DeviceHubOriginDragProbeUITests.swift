@@ -19,6 +19,11 @@ extension FareyUITests {
     }
     return false
   }
+  private func waitForDiagnostics(containing text: String, seconds: TimeInterval) -> Bool {
+    let predicate = NSPredicate(format: "label CONTAINS %@", text)
+    return XCTWaiter().wait(for: [XCTNSPredicateExpectation(predicate: predicate, object: element("input-diagnostics"))], timeout: seconds)
+      == .completed
+  }
   private func checkBaseState(nappe: String) {
     XCTAssertTrue(require("coefficient-state").label.contains("(1, 0, 1)"), require("coefficient-state").label)
     XCTAssertTrue(require("plane-detail").label.contains("Paired with (1, 1, 1)"), require("plane-detail").label)
@@ -33,7 +38,8 @@ extension FareyUITests {
     let simulator = ProcessInfo.processInfo.environment["SIMULATOR_UDID"] ?? "unknown"
     capture("devicehub-origin-ready-\(phase)")
     let at = Date().timeIntervalSince1970
-    print("DEVICEHUB-ORIGIN READY phase \(phase) simulator \(simulator) at \(at) g \(groupEntries()): drag on empty sky now")
+    let ask = phase == "0" ? "click empty sky once" : "drag on empty sky now"
+    print("DEVICEHUB-ORIGIN READY phase \(phase) simulator \(simulator) at \(at) g \(groupEntries()): \(ask)")
     print("DEVICEHUB-ORIGIN phase \(phase) diagnostics at READY: \(diagnostics())")
   }
   /// The app's opt-in input diagnostics line (callback counts, last entity, direction and outcome).
@@ -58,6 +64,13 @@ extension FareyUITests {
     print("DEVICEHUB-ORIGIN snap value \(require("group-snap").value ?? "nil")")  // Snap starts off; a drag would otherwise settle
     require("placement-origin").tap()
     XCTAssertTrue(require("render-receipt").label.contains("upper nappe ahead"), require("render-receipt").label)
+    // Phase 0, a targeting check that is reported, not asserted: one plain click on empty sky. A tap callback naming
+    // origin-sky shows system targeting reaches the sky; none in 60 s points at targeting rather than at the drag.
+    print("DEVICEHUB-ORIGIN phase 0 diagnostics before: \(diagnostics())")
+    announce("0")
+    let tapped = waitForDiagnostics(containing: "last tap entity origin-sky", seconds: 60)
+    print("DEVICEHUB-ORIGIN phase 0 sky click \(tapped ? "reached origin-sky" : "not observed in 60 s"): \(diagnostics())")
+    capture("devicehub-origin-0-after-click")
     // Phase 1, upper nappe ahead: one empty-sky drag should give a non-integer g and leave every base identity alone.
     announce("1")
     let moved = waitForGroup { $0.count == 4 && $0 != [1, 0, 0, 1] } && require("group-state").label.contains("off SL₂(ℤ)")

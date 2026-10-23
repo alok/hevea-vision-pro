@@ -22,6 +22,7 @@ import SwiftUI
       content.add(starscape.anchorHost)
       do { try await starscape.prepareSky() } catch { model.record("Origin sky unavailable: \(error.localizedDescription)") }
       activation = content.subscribe(to: AccessibilityEvents.Activate.self) { [model] event in
+        InputDiagnostics.shared.recordActivate(entity: event.entity.name)
         Self.activate(event.entity, model: model)
       }
       for rational in LatticeRenderer.landmarks {
@@ -101,6 +102,7 @@ import SwiftUI
             viewpoint: model.coefficientView, crop: model.coefficientCrop,
             cuttingPlane: model.cuttingPlane, second: model.coefficientSecond, placement: model.coefficientPlacement,
             placementEpoch: model.coefficientPlacementEpoch, group: model.coefficientGroup)
+          InputDiagnostics.shared.recordSky(starscape.skyState)
         } else if showingLattice {
           model.renderReceipt = try lattice.render(
             state: model.state, bound: model.depth * 2,

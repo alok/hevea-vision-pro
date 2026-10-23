@@ -14,6 +14,11 @@ import Observation
   private(set) var dragEnds = 0
   private(set) var dragResets = 0
   private(set) var taps = 0
+  /// Accessibility activations arrive by a separate route from SpatialTapGesture (a Device Hub click may use either).
+  private(set) var activations = 0
+  private(set) var lastActivateEntity = "none"
+  /// The Origin sky target as the renderer last left it: collision present, enabled, scale.
+  private(set) var sky = "unknown"
   private(set) var lastDragEntity = "none"
   private(set) var lastTapEntity = "none"
   private(set) var lastOutcome = "none"
@@ -28,6 +33,12 @@ import Observation
   }
   func recordDragEnd() { if enabled { dragEnds += 1 } }
   func recordDragReset() { if enabled { dragResets += 1 } }
+  func recordActivate(entity: String) {
+    guard enabled else { return }
+    activations += 1
+    lastActivateEntity = entity.isEmpty ? "unnamed" : entity
+  }
+  func recordSky(_ state: String) { if enabled && sky != state { sky = state } }
   func recordTap(entity: String) {
     guard enabled else { return }
     taps += 1
@@ -37,5 +48,6 @@ import Observation
     let d = lastDirection.map { String(format: "(%.3f, %.3f, %.3f)", $0.x, $0.y, $0.z) } ?? "none"
     return "input: drag changes \(dragChanges) · ends \(dragEnds) · resets \(dragResets) · last drag entity \(lastDragEntity)"
       + " · direction \(d) · outcome \(lastOutcome) · taps \(taps) · last tap entity \(lastTapEntity)"
+      + " · activations \(activations) · last activate entity \(lastActivateEntity) · sky \(sky)"
   }
 }

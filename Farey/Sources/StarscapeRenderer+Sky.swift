@@ -56,6 +56,12 @@ extension StarscapeRenderer {
     sky.components.set(CollisionComponent(shapes: [shape]))
     sky.components.set(InputTargetComponent())
   }
+  /// The sky target's state for the opt-in input diagnostics.
+  var skyState: String {
+    let collision = sky.components[CollisionComponent.self] != nil, target = sky.components[InputTargetComponent.self] != nil
+    return "collision \(collision ? "yes" : "no") · input target \(target ? "yes" : "no") · enabled \(sky.isEnabledInHierarchy)"
+      + String(format: " · scale %.3f", sky.scale.x)
+  }
   /// The display direction from the coefficient origin to a point given in scene coordinates (the object's
   /// placement and Origin turn are undone; length is irrelevant to the Klein point).
   func displayDirection(ofScenePoint point: SIMD3<Float>) -> SIMD3<Double> {
