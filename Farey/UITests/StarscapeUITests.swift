@@ -52,7 +52,7 @@ extension FareyUITests {
     require("sources").tap()
     XCTAssertTrue(require("starscapes-paper").exists)
     require("close-sources").tap()
-    // Collapsed controls clear the apex but keep the readout, Reset and Exit.
+    // Collapsed controls keep the readout, Reset and Exit while covering less of the scene.
     require("controls-toggle").tap()
     XCTAssertEqual(require("controls-toggle").label, "Show controls")
     XCTAssertFalse(element("coefficient-next").exists)

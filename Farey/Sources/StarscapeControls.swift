@@ -17,7 +17,7 @@ struct StarscapeControls: View {
       HStack {
         Text("COEFFICIENT SPACE · ℤ³").font(.headline).foregroundStyle(.cyan)
         Spacer()
-        // Collapsing leaves only this row, so Reset and Exit stay reachable while the panel clears the apex.
+        // Collapsing keeps this row and the readout, so Reset and Exit stay reachable with less of the scene covered.
         Button(collapsed ? "Show controls" : "Hide controls") {
           entryFocused = false
           collapsed.toggle()
