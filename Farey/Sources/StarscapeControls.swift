@@ -11,7 +11,9 @@ struct StarscapeControls: View {
   @State private var showSources = false
   @State private var entry = "1,-1,2"
   @State private var collapsed = false
+  @State private var pairEntry = ""
   @FocusState private var entryFocused: Bool
+  @FocusState private var pairFocused: Bool
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
       HStack {
@@ -20,11 +22,21 @@ struct StarscapeControls: View {
         // Collapsing keeps this row and the readout, so Reset and Exit stay reachable with less of the scene covered.
         Button(collapsed ? "Show controls" : "Hide controls") {
           entryFocused = false
+          pairFocused = false
           collapsed.toggle()
         }.accessibilityIdentifier("controls-toggle")
+        // The one Inhabit/Overview toggle stays here, so Overview is reachable with the controls collapsed.
+        Button(model.coefficientPlacement.anchored ? "Overview" : "Inhabit") {
+          dismissKeyboard()
+          model.place(model.coefficientPlacement.anchored ? .overview : .inhabit(model.coefficient))
+        }
+        .disabled(!model.coefficientPlacement.anchored && !model.coefficientShown)
+        .accessibilityIdentifier("placement-inhabit")
         Button("Reset") {
+          dismissKeyboard()
           model.resetStarscape()
           entry = model.coefficient.entryText
+          pairEntry = ""
         }.accessibilityIdentifier("coefficient-reset")
         Button("Farey L/R") {
           model.starscapeMode = false
@@ -42,7 +54,9 @@ struct StarscapeControls: View {
       }
       Text("(a, b, c) = \(model.coefficient.label)   Δ = \(model.coefficient.discriminant)")
         .font(.title3.monospaced()).accessibilityIdentifier("coefficient-state")
-      if !collapsed { details }
+      // The header and readout stay pinned; the details scroll within whatever height the window allows, so a
+      // taller panel can no longer push Reset, Inhabit/Overview or Exit out of the window.
+      if !collapsed { ScrollView { details.padding(.trailing, 8) } }
     }.padding(20).frame(width: 760).glassBackgroundEffect()
       .sheet(isPresented: $showSources) { SourcesView() }
   }
@@ -67,19 +81,91 @@ struct StarscapeControls: View {
       HStack {
         Button("Next point") { model.nextCoefficient() }.accessibilityIdentifier("coefficient-next")
         Button(model.showProjection ? "Hide projection" : "Show projection") {
+          dismissKeyboard()
           model.showProjection.toggle()
           model.revision += 1
         }.accessibilityIdentifier("projection-toggle")
         Button(["Oblique", "Other side", "Side view"][model.coefficientView]) {
+          dismissKeyboard()
           model.coefficientView = (model.coefficientView + 1) % 3
           model.revision += 1
-        }.accessibilityIdentifier("coefficient-view")
+        }.disabled(model.coefficientPlacement.anchored).accessibilityIdentifier("coefficient-view")
         Button("Sources") { showSources = true }.accessibilityIdentifier("sources")
       }.buttonStyle(.bordered)
+      pairRow
+      if let plane = model.cuttingPlane { planeReadout(plane) }
+      placementRow
       legend
       Text("Inspired by Katherine Stange’s Starscape / Lattice · \(model.renderReceipt)")
         .font(.caption).foregroundStyle(.cyan).accessibilityIdentifier("render-receipt")
     }
+  }
+  private var pairRow: some View {
+    HStack {
+      TextField("pair a,b,c", text: $pairEntry).textFieldStyle(.roundedBorder).frame(width: 150)
+        .focused($pairFocused).onSubmit(pair).accessibilityIdentifier("pair-entry")
+      Button("Pair", action: pair).accessibilityIdentifier("pair-select")
+      if model.coefficientSecond != nil {
+        Button("Clear pair") { model.clearPair() }.accessibilityIdentifier("pair-clear")
+      }
+      if let error = model.coefficientPairError {
+        Text(error).font(.caption).foregroundStyle(.orange).accessibilityIdentifier("pair-error")
+      }
+    }
+  }
+  private func planeReadout(_ plane: CuttingPlane) -> some View {
+    VStack(alignment: .leading, spacing: 2) {
+      Text("Plane \(plane.equation) · geodesic endpoints \(plane.endpoints.map(\.label).joined(separator: " and "))")
+        .font(.caption.monospaced()).accessibilityIdentifier("plane-state")
+      Text(
+        model.coefficientSecond.map { "Paired with \($0.label) · normal \(plane.normal.label)" }
+          ?? "The selected exterior triple is this plane's Lorentz normal \(plane.normal.label)."
+      ).font(.caption2).foregroundStyle(.secondary).accessibilityIdentifier("plane-detail")
+    }
+  }
+  private var placementRow: some View {
+    VStack(alignment: .leading, spacing: 4) {
+      HStack {
+        // Pressing Origin again re-centers it at the current head center.
+        Button("Origin") {
+          dismissKeyboard()
+          model.place(.origin(facingLower: false))
+        }.accessibilityIdentifier("placement-origin")
+        if case .origin(let lower) = model.coefficientPlacement {
+          Button(lower ? "Face upper nappe" : "Face lower nappe") {
+            dismissKeyboard()
+            model.place(.origin(facingLower: !lower), recenter: false)
+          }.accessibilityIdentifier("origin-nappe")
+        }
+      }.buttonStyle(.bordered)
+      if let description = placementDescription {
+        Text(description).font(.caption2).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+          .accessibilityIdentifier("placement-state")
+      }
+    }
+  }
+  /// Exact placement semantics: set once from the head center when chosen, world-stationary afterwards.
+  private var placementDescription: String? {
+    switch model.coefficientPlacement {
+    case .overview: return nil
+    case .origin(let lower):
+      return "Origin: the coefficient origin (the zero polynomial, not a point of the picture) was placed at your "
+        + "head center when you chose it; the \(lower ? "lower" : "upper") nappe's axis is turned toward where you "
+        + "looked. This turns the object; it is not hyperbolic navigation."
+    case .inhabit(let point):
+      return "Inhabiting \(point.label): placed 35 cm ahead of your head center when chosen. Selecting other points "
+        + "does not move you; Overview or Reset returns."
+    }
+  }
+  /// Explicit navigation and Reset close any open keyboard so it does not cover the scene.
+  private func dismissKeyboard() {
+    entryFocused = false
+    pairFocused = false
+  }
+  /// A valid pair dismisses the keyboard; a rejected one keeps the text, focus and current state.
+  private func pair() {
+    guard model.pairCoefficient(pairEntry) else { return }
+    pairFocused = false
   }
   /// A valid entry dismisses the keyboard; a rejected one keeps the text and focus so it can be corrected.
   private func select() {

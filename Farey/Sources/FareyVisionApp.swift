@@ -24,6 +24,21 @@ import SwiftUI
   var coefficientUpperOnly = false
   var coefficientColorLower = false
   var coefficientEntryError: String?
+  /// A second interior point pairs with the selection to define a cutting plane. Both keep their exact signed
+  /// identities; the plane's canonical normal is derived, never substituted for either.
+  var coefficientSecond: CoefficientPoint?
+  var coefficientPairError: String?
+  /// Where the viewer stands. This is separate from the selection: selecting another point while inhabiting does
+  /// not move the viewer; only the placement controls, Reset and leaving the immersive space do.
+  var coefficientPlacement = StarscapeRenderer.Placement.overview
+  /// Counts explicit Origin and Inhabit requests: each one re-anchors at the current head center, even when the
+  /// placement is unchanged. Renders, selection changes and the Origin nappe flip keep the existing anchor.
+  var coefficientPlacementEpoch = 0
+  /// The pair's plane, else the selection's own plane when it is exterior (as in Stange's viewer), else none.
+  var cuttingPlane: CuttingPlane? {
+    if let second = coefficientSecond { return try? CuttingPlane.pair(coefficient, second).get() }
+    return try? CuttingPlane.fromNormal(coefficient).get()
+  }
   var coefficientCrop: StarscapeRenderer.Crop {
     .init(radius: coefficientRadius, upperOnly: coefficientUpperOnly, colorLower: coefficientColorLower)
   }
@@ -34,17 +49,50 @@ import SwiftUI
   func nextCoefficient() {
     let sequence = CoefficientBall.nextSequence
     let index = sequence.firstIndex(of: coefficient) ?? -1
-    coefficient = sequence[(index + 1) % sequence.count]
+    select(sequence[(index + 1) % sequence.count])
+  }
+  /// A new primary selection drops any pair, as in the browser; it never changes the placement.
+  func select(_ point: CoefficientPoint) {
+    coefficient = point
+    coefficientSecond = nil
     coefficientEntryError = nil
+    coefficientPairError = nil
+    revision += 1
+  }
+  /// Pairs an exactly entered second point with the selection. A rejected entry or pair (outside the ball, not
+  /// interior, or the same projective direction, sign partners included) leaves every state unchanged.
+  @discardableResult func pairCoefficient(_ text: String) -> Bool {
+    let point: CoefficientPoint
+    switch CoefficientEntry.parse(text, radius: coefficientRadius) {
+    case .success(let entered): point = entered
+    case .failure(let error):
+      coefficientPairError = error.message
+      return false
+    }
+    if case .failure(let error) = CuttingPlane.pair(coefficient, point) {
+      coefficientPairError = error.message
+      return false
+    }
+    coefficientSecond = point
+    coefficientPairError = nil
+    revision += 1
+    return true
+  }
+  func clearPair() {
+    coefficientSecond = nil
+    coefficientPairError = nil
+    revision += 1
+  }
+  func place(_ placement: StarscapeRenderer.Placement, recenter: Bool = true) {
+    if recenter && placement.anchored { coefficientPlacementEpoch += 1 }
+    coefficientPlacement = placement
     revision += 1
   }
   /// Exact signed entry; a rejected entry leaves every part of the coefficient state unchanged.
   @discardableResult func enterCoefficient(_ text: String) -> Bool {
     switch CoefficientEntry.parse(text, radius: coefficientRadius) {
     case .success(let point):
-      coefficient = point
-      coefficientEntryError = nil
-      revision += 1
+      select(point)
       return true
     case .failure(let error):
       coefficientEntryError = error.message
@@ -59,6 +107,9 @@ import SwiftUI
     coefficientUpperOnly = false
     coefficientColorLower = false
     coefficientEntryError = nil
+    coefficientSecond = nil
+    coefficientPairError = nil
+    coefficientPlacement = .overview
     revision += 1
   }
   var immersionOpen = false

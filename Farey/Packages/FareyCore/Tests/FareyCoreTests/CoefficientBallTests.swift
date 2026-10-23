@@ -159,6 +159,18 @@ final class CoefficientBallTests: XCTestCase {
     XCTAssertNil(CoefficientPalette.color(for: CoefficientPoint(0, 0, 0)))
     XCTAssertEqual(Viridis.table.count, 256)
   }
+  func testOriginSizesFollowTheBrowserRule() {
+    XCTAssertEqual(CoefficientPalette.originRadiusFactor(for: CoefficientPoint(1, 0, 1)), 0.4, accuracy: 1e-12)  // x²+1
+    let d7 = 0.4 * pow(7.0, 0.25) / 3.0.squareRoot()
+    XCTAssertEqual(CoefficientPalette.originRadiusFactor(for: CoefficientPoint(1, -1, 2)), d7, accuracy: 1e-12)
+    // A multiple and a sign partner: |Δ| scales by k², |a+c| by k, so the factor is unchanged (the point is k
+    // times farther, hence 1/k = 1/√(|Δ| ratio) the apparent size); the sign partner is the same size.
+    XCTAssertEqual(CoefficientPalette.originRadiusFactor(for: CoefficientPoint(2, -2, 4)), d7, accuracy: 1e-12)
+    XCTAssertEqual(CoefficientPalette.originRadiusFactor(for: CoefficientPoint(-1, 1, -2)), d7, accuracy: 1e-12)
+    for point in [CoefficientPoint(1, 2, 1), CoefficientPoint(1, 3, 1), CoefficientPoint(0, 1, 0)] {
+      XCTAssertEqual(CoefficientPalette.originRadiusFactor(for: point), 1)
+    }
+  }
   func testGuideOpacityReproducesTheBrowserBlendOverBlack() {
     for (alpha, color) in [
       (0.018, CoefficientPalette.guideCyan), (0.26, CoefficientPalette.guideLine), (0.1, CoefficientPalette.guideCyan),

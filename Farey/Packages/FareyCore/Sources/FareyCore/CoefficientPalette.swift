@@ -15,6 +15,8 @@ public enum CoefficientPalette {
   public static let guideCyan = rgb(0x54e9f5)
   public static let guideLine = rgb(0x7896a8)
   public static let selectionRay = rgb(0xbacbd6)
+  /// The browser's cutting-plane amber: member rings, plane sheet, boundary and endpoint directions.
+  public static let planeAmber = rgb(0xffba6b)
 
   /// WebGL blends sRGB-encoded values, so alpha a over black shows a·c; RealityKit blends in linear light, where
   /// the same a shows toLinear⁻¹(a·toLinear(c)), much brighter for faint guides. This returns the linear-light
@@ -50,6 +52,13 @@ public enum CoefficientPalette {
   }
   /// Stange's whole-lattice star radius factor away from the origin eye: 0.72 for a nonprimitive interior form
   /// that is colored by the ramp; every other point uses the standard radius.
+  /// Stange's size rule with the eye at the coefficient origin (browser sourceRadiusFactor with origin): interior
+  /// forms get 0.4·|Δ|^¼/√|a+c|, replacing the 0.72 multiple factor and the 1.35 plane emphasis, so seen from the
+  /// origin the multiples along one ray shrink as 1/√|Δ|; boundary and exterior points keep the standard radius.
+  public static func originRadiusFactor(for point: CoefficientPoint) -> Double {
+    guard point.discriminant < 0 else { return 1 }
+    return 0.4 * pow(Double(abs(point.discriminant)), 0.25) / Double(abs(point.a + point.c)).squareRoot()
+  }
   public static func radiusFactor(for point: CoefficientPoint, colorLower: Bool = false) -> Double {
     guard point.discriminant < 0, point.a > 0 || colorLower else { return 1 }
     return point.isPrimitive ? 1 : 0.72

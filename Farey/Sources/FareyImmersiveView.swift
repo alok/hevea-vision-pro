@@ -16,7 +16,8 @@ import SwiftUI
     RealityView { content, attachments in
       content.add(renderer.root)
       content.add(lattice.root)
-      content.add(starscape.root)
+      content.add(starscape.stage)
+      content.add(starscape.anchorHost)
       activation = content.subscribe(to: AccessibilityEvents.Activate.self) { [model] event in
         Self.activate(event.entity, model: model)
       }
@@ -94,7 +95,9 @@ import SwiftUI
         if model.starscapeMode {
           model.renderReceipt = try starscape.render(
             selected: model.coefficient, showProjection: model.showProjection,
-            viewpoint: model.coefficientView, crop: model.coefficientCrop)
+            viewpoint: model.coefficientView, crop: model.coefficientCrop,
+            cuttingPlane: model.cuttingPlane, second: model.coefficientSecond, placement: model.coefficientPlacement,
+            placementEpoch: model.coefficientPlacementEpoch)
         } else if showingLattice {
           model.renderReceipt = try lattice.render(
             state: model.state, bound: model.depth * 2,
@@ -131,6 +134,8 @@ import SwiftUI
       model.record("Immersive view disappeared session \(model.immersionSession)")
       model.immersionOpen = false
       model.transitioning = false
+      // A head placement belongs to one immersive session; re-entry starts at the stationary overview.
+      model.coefficientPlacement = .overview
     }
 
   }
@@ -139,8 +144,7 @@ import SwiftUI
       let parts = entity.name.split(separator: ":")
       if parts.count == 4, parts[0] == "coefficient", let a = Int(parts[1]),
         let b = Int(parts[2]), let c = Int(parts[3]) {
-        model.coefficient = CoefficientPoint(a, b, c)
-        model.revision += 1
+        model.select(CoefficientPoint(a, b, c))
       }
     } else if let point = latticePoint(for: entity) {
       model.activatePoint(point)
