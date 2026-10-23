@@ -150,6 +150,7 @@ import SwiftUI
       activation?.cancel()
       activation = nil
       model.endOriginDrag(completed: false)
+      model.armPairNext(false)
       model.record("Immersive view disappeared session \(model.immersionSession)")
       model.immersionOpen = false
       model.transitioning = false
@@ -163,7 +164,7 @@ import SwiftUI
       let parts = entity.name.split(separator: ":")
       if parts.count == 4, parts[0] == "coefficient", let a = Int(parts[1]),
         let b = Int(parts[2]), let c = Int(parts[3]) {
-        model.select(CoefficientPoint(a, b, c))
+        model.activateCoefficient(CoefficientPoint(a, b, c))
       }
     } else if let point = latticePoint(for: entity) {
       model.activatePoint(point)

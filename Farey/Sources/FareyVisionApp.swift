@@ -38,7 +38,7 @@ import SwiftUI
   /// where they are drawn. Only an integer g is absorbed, relabelling the selection and pair exactly.
   var coefficientGroup = Mobius.identity
   var coefficientSnap = false
-  var originDragAnchor: OriginDragAnchor?
+  var coefficientInput = CoefficientInput()
   var coefficientGroupError: String?
   /// The pair's plane, else the selection's own plane when it is exterior (as in Stange's viewer), else none.
   var cuttingPlane: CuttingPlane? {
@@ -110,8 +110,7 @@ import SwiftUI
     coefficientView = 0
     showProjection = false
     coefficientRadius = CoefficientBall.defaultRadius
-    coefficientUpperOnly = false
-    coefficientColorLower = false
+    (coefficientUpperOnly, coefficientColorLower) = (false, false)
     coefficientEntryError = nil
     coefficientSecond = nil
     coefficientPairError = nil
@@ -119,6 +118,7 @@ import SwiftUI
     coefficientGroup = .identity
     coefficientSnap = false
     coefficientGroupError = nil
+    coefficientInput = CoefficientInput()
     revision += 1
   }
   var immersionOpen = false

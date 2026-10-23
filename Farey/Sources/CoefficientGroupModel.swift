@@ -5,6 +5,13 @@ import Foundation
   import FareyCore
 #endif
 
+/// Transient input of the coefficient scene: an Origin drag in progress, and whether the next picked point pairs with
+/// the selection. Reset and leaving the space clear it.
+struct CoefficientInput {
+  var originDrag: OriginDragAnchor?
+  var pairNext = false
+}
+
 /// An Origin drag in progress: its previous display direction and the placement it began under. A step under any
 /// other placement (a nappe flip, a new Origin, Reset, leaving the space) starts afresh rather than jumping.
 struct OriginDragAnchor {

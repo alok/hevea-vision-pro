@@ -139,6 +139,12 @@ struct StarscapeControls: View {
       if model.coefficientSecond != nil {
         Button("Clear pair") { model.clearPair() }.accessibilityIdentifier("pair-clear")
       }
+      // Arms one direct pick (in the Roots window or the immersive scene) to pair with the selection.
+      Button(model.pairNext ? "Cancel" : "Pair next") { model.armPairNext(!model.pairNext) }
+        .accessibilityIdentifier("pair-next")
+      if model.pairNext {
+        Text("next pick pairs with \(model.coefficient.label)").font(.caption).accessibilityIdentifier("pair-next-state")
+      }
       if let error = model.coefficientPairError {
         Text(error).font(.caption).foregroundStyle(.orange).accessibilityIdentifier("pair-error")
       }
