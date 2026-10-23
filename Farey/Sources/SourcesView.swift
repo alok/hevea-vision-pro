@@ -60,7 +60,8 @@ struct SourcesView: View {
       Text(
         "Native draws one entity per point, so its radius is capped at 12 (3,608 points); the browser's dense crops "
           + "are not reproduced here. Points are small unlit spheres of fixed physical size (0.72 for nonprimitive "
-          + "upper-interior forms, and for nonprimitive lower-interior forms only when Color lower is on) rather than the browser's screen-pixel point sprites, so sizes follow ordinary perspective. "
+          + "upper-interior forms, and for nonprimitive lower-interior forms only when Color lower is on) rather than "
+          + "the browser's screen-pixel point sprites, so sizes follow ordinary perspective. "
           + "The ball keeps a 0.96 m radius at every crop, centered 3.1 m ahead. Its oblique and side views are "
           + "stationary orientations, not tracked or hyperbolic navigation."
       )
